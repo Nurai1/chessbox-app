@@ -6,3 +6,7 @@ export interface IUser {
   name: string;
   age?: number;
 }
+
+export interface IFight {
+  
+}

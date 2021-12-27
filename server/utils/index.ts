@@ -1,1 +1,1 @@
-export * from './controllerErrorHandler';
+export * from './controllerErrorHandler.js';

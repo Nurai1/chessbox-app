@@ -14,4 +14,5 @@ export const ACTIONS = {
   readAny: 'readAny',
   updateAny: 'updateAny',
   deleteAny: 'deleteAny',
+  createAny: 'createAny',
 } as const;

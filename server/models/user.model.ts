@@ -1,5 +1,8 @@
-import mongoose, { Schema } from 'mongoose';
-import { IUser } from '../types/user';
+import mongoose from 'mongoose';
+
+import { IUser } from '../types/index.js';
+
+const { Schema } = mongoose;
 
 const userSchema = new Schema<IUser>(
   {

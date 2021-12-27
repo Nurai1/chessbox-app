@@ -1,14 +1,8 @@
-import { AccessControl } from 'accesscontrol';
-// import { ROLES, RESOURCES } from './constants';
+import AC from 'accesscontrol';
 
-export const ROLES = {
-  PARTICIPANT: 'PARTICIPANT',
-  JUDGE: 'JUDGE',
-  ADMIN: 'ADMIN',
-} as const;
-export const RESOURCES = {
-  USER: 'USER',
-} as const;
+import { ROLES, RESOURCES } from './constants.js';
+
+const { AccessControl } = AC;
 
 const ac = new AccessControl();
 
@@ -19,6 +13,7 @@ ac.grant(ROLES.JUDGE).extend(ROLES.PARTICIPANT).readAny(RESOURCES.USER);
 ac.grant(ROLES.ADMIN)
   .extend(ROLES.PARTICIPANT)
   .extend(ROLES.JUDGE)
+  .createAny(RESOURCES.USER)
   .updateAny(RESOURCES.USER)
   .deleteAny(RESOURCES.USER);
 

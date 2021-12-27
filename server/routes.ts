@@ -1,9 +1,10 @@
-import { Router } from 'express';
-import * as UserController from './controlllers/user.controller';
-import { controllerErrorHandler } from './utils';
-import { RESOURCES, ACTIONS } from './constants';
+import express from 'express';
 
-const router = Router();
+import * as UserController from './controlllers/user.controller.js';
+import { controllerErrorHandler } from './utils/index.js';
+import { RESOURCES, ACTIONS } from './constants.js';
+
+const router = express.Router();
 
 router.post('/sigup', UserController.signup);
 
@@ -20,6 +21,13 @@ router.get(
   UserController.allowIfLoggedin,
   UserController.grantAccess(ACTIONS.readAny, RESOURCES.USER),
   controllerErrorHandler(UserController.getUsers)
+);
+
+router.post(
+  '/users/:userId',
+  UserController.allowIfLoggedin,
+  UserController.grantAccess(ACTIONS.createAny, RESOURCES.USER),
+  controllerErrorHandler(UserController.createUser)
 );
 
 router.put(

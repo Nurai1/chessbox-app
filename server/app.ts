@@ -2,9 +2,13 @@ import express, { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-import routes from './routes';
-import { User } from './models';
+import routes from './routes.js';
+import { User } from './models/index.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 dotenv.config();
 
