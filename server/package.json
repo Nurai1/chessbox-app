@@ -3,8 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "license": "MIT",
+  "type": "module",
+  "exports": "./dist/app.js",
   "scripts": {
-    "start": "nodemon -r esm app.ts"
+    "start": "nodemon app.ts"
   },
   "dependencies": {
     "accesscontrol": "^2.2.1",
@@ -28,6 +30,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.15",
     "prettier": "2.5.0",
     "ts-node": "^10.4.0"
   }

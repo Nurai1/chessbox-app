@@ -2,10 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import { User } from '../models';
-import ac from '../roles';
-import { RESOURCES, ACTIONS } from '../constants';
-import { IUser } from '../types/user';
+import { User } from '../models/index.js';
+import ac from '../roles.js';
+import { RESOURCES, ACTIONS } from '../constants.js';
+import { IUser } from '../types/index.js';
 
 async function hashPassword(password: string) {
   return bcrypt.hash(password, 10);
