@@ -8,6 +8,7 @@ const userSchema = new Schema<IUser>(
   {
     email: {
       type: String,
+      unique : true,
       required: true,
       trim: true,
     },
@@ -23,8 +24,12 @@ const userSchema = new Schema<IUser>(
     accessToken: {
       type: String,
     },
-    name: { type: String, required: true },
+    username: { type: String, required: true, unique : true, },
     age: Number,
+    pair: {
+      type: Schema.Types.ObjectId,
+      ref: 'Pair'
+    },
   },
   { versionKey: false }
 );
