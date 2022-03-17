@@ -6,15 +6,30 @@ const { AccessControl } = AC;
 
 const ac = new AccessControl();
 
-ac.grant(ROLES.PARTICIPANT).readOwn(RESOURCES.USER).updateOwn(RESOURCES.USER);
 
-ac.grant(ROLES.JUDGE).extend(ROLES.PARTICIPANT).readAny(RESOURCES.USER);
+ac.grant(ROLES.PARTICIPANT)
+// participant permissions for user entity
+.readAny(RESOURCES.USER)
+.readOwn(RESOURCES.USER).updateOwn(RESOURCES.USER)
+// participant permissions for competition entity
+.readAny(RESOURCES.COMPETITION)
+// participant permissions for pair entity
+.readAny(RESOURCES.PAIR);
+
+ac.grant(ROLES.JUDGE).extend(ROLES.PARTICIPANT)
+// participant permissions for user entity
+.readAny(RESOURCES.USER);
 
 ac.grant(ROLES.ADMIN)
   .extend(ROLES.PARTICIPANT)
   .extend(ROLES.JUDGE)
+  // participant permissions for user entity
   .createAny(RESOURCES.USER)
   .updateAny(RESOURCES.USER)
-  .deleteAny(RESOURCES.USER);
+  .deleteAny(RESOURCES.USER)
+  // participant permissions for competition entity
+  .createAny(RESOURCES.COMPETITION)
+  .updateAny(RESOURCES.COMPETITION)
+  .deleteAny(RESOURCES.COMPETITION);
 
 export default ac;

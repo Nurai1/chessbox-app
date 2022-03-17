@@ -20,19 +20,19 @@ export const signup = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const { email, password, role } = req.body;
+    const { username, email, password, role } = req.body;
     const hashedPassword = await hashPassword(password);
     const newUser = new User({
       email,
-      password: hashedPassword,
-      role: role || 'guest',
+      username,
+      hashedPassword,
+      role: role || 'participant',
     });
 
     const accessToken = jwt.sign(
       { userId: newUser._id },
       process.env.JWT_SECRET_KEY || '',
-      { expiresIn: '1h' }
+      { expiresIn: '7d', }
     );
 
     newUser.accessToken = accessToken;
@@ -43,9 +43,6 @@ export const signup = async (
       data: newUser,
       accessToken,
     });
-  } catch (err: any) {
-    next(err);
-  }
 };
 
 export const login = async (
@@ -53,7 +50,6 @@ export const login = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
@@ -64,23 +60,17 @@ export const login = async (
 
     const accessToken = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET || '',
+      process.env.JWT_SECRET_KEY || '',
       {
-        expiresIn: '1h',
+        expiresIn: '7d',
       }
     );
-    await User.findByIdAndUpdate(user._id, { accessToken });
+    const updatedUser = await User.findByIdAndUpdate(user._id, { accessToken }, { new: true });
 
     res.status(200).json({
-      data: {
-        email: user.email,
-        role: user.role,
-      },
+      data: updatedUser,
       accessToken,
     });
-  } catch (err: any) {
-    next(err);
-  }
 };
 
 interface IGrantAcessReq extends Request {
@@ -114,69 +104,63 @@ export const allowIfLoggedin = async (
 ) => {
   try {
     const user = res.locals.loggedInUser;
-
+    
     if (!user)
       return res.status(401).json({
         error: 'You need to be logged in to access this route',
       });
 
-    // @ts-ignore
     next();
   } catch (error) {
     next(error);
   }
 };
 
-export const getUsers = (req: Request, res: Response, next: NextFunction) => {
-  User.find({}, (err: any, users: IUser[]) => {
-    if (err) return console.log(err);
-    res.send(users);
-  });
+export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
+  const users = await User.find({});
+
+  res.send(users);
 };
 
-export const getUser = (req: Request, res: Response, next: NextFunction) => {
+export const getUser = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  User.findOne({ _id: id }, (err: any, user: IUser | null) => {
-    if (err) return console.log(err);
-    res.send(user);
-  });
+  const user = await User.findOne({ _id: id });
+
+  res.send(user);
 };
 
-export const createUser = (req: Request, res: Response, next: NextFunction) => {
+export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.body) return res.sendStatus(400);
 
   const userName = req.body.name;
   const userAge = req.body.age;
   const user = new User({ name: userName, age: userAge });
 
-  user.save((err: any) => {
-    if (err) return console.log(err);
-    res.send(user);
-  });
+  await user.save();
+
+  res.send(user);
 };
 
-export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
+export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  User.findByIdAndDelete(id, (err: any, user: IUser | null) => {
-    if (err) return console.log(err);
-    res.send(user);
-  });
+
+  const user = await User.findByIdAndDelete(id);
+
+  res.send(user);
 };
 
-export const updateUser = (req: Request, res: Response, next: NextFunction) => {
+export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.body) return res.sendStatus(400);
   const { id } = req.body;
   const userName = req.body.name;
   const userAge = req.body.age;
   const newUser = { age: userAge, name: userName };
 
-  User.findOneAndUpdate(
+  const user = await User.findOneAndUpdate(
     { _id: id },
     newUser,
-    { new: true, rawResult: true },
-    (err: any, user: IUser) => {
-      if (err) return console.log(err);
-      res.send(user);
-    }
+    { new: true, rawResult: true }
   );
+
+  res.send(user);
 };

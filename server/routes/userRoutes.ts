@@ -1,47 +1,45 @@
 import express from 'express';
 
-import * as UserController from './controlllers/user.controller.js';
-import { controllerErrorHandler } from './utils/index.js';
-import { RESOURCES, ACTIONS } from './constants.js';
+import { UserController } from '../controlllers/index.js';
+import { controllerErrorHandler } from '../utils/index.js';
+import { RESOURCES, ACTIONS } from '../constants.js';
 
-const router = express.Router();
+export const userRouter = express.Router();
 
-router.post('/sigup', UserController.signup);
+userRouter.post('/signup', UserController.signup);
 
-router.post('/login', UserController.login);
+userRouter.post('/login', UserController.login);
 
-router.get(
-  '/users/:userId',
+userRouter.get(
+  '/user/:id',
   UserController.allowIfLoggedin,
   controllerErrorHandler(UserController.getUser)
 );
 
-router.get(
+userRouter.get(
   '/users',
   UserController.allowIfLoggedin,
   UserController.grantAccess(ACTIONS.readAny, RESOURCES.USER),
   controllerErrorHandler(UserController.getUsers)
 );
 
-router.post(
-  '/users/:userId',
+userRouter.post(
+  '/user',
   UserController.allowIfLoggedin,
   UserController.grantAccess(ACTIONS.createAny, RESOURCES.USER),
   controllerErrorHandler(UserController.createUser)
 );
 
-router.put(
-  '/user/:userId',
+userRouter.put(
+  '/user/:id',
   UserController.allowIfLoggedin,
   UserController.grantAccess(ACTIONS.updateAny, RESOURCES.USER),
   controllerErrorHandler(UserController.updateUser)
 );
 
-router.delete(
-  '/user/:userId',
+userRouter.delete(
+  '/user/:id',
   UserController.allowIfLoggedin,
   UserController.grantAccess(ACTIONS.deleteAny, RESOURCES.USER),
   controllerErrorHandler(UserController.deleteUser)
 );
-
-export default router;
