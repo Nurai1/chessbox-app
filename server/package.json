@@ -6,7 +6,8 @@
   "type": "module",
   "exports": "./dist/app.js",
   "scripts": {
-    "start": "nodemon app.ts"
+    "start": "nodemon app.ts",
+    "lint": "eslint --ext .ts,.js ."
   },
   "dependencies": {
     "accesscontrol": "^2.2.1",
@@ -16,8 +17,9 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.1.4",
-    "mongoose": "^6.0.14",
-    "typescript": "^4.5.2"
+    "mongoose": "^6.9.2",
+    "typescript": "^4.5.2",
+    "zod": "^3.20.6"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -31,7 +33,7 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-prettier": "^4.0.0",
     "nodemon": "^2.0.15",
-    "prettier": "2.5.0",
-    "ts-node": "^10.4.0"
+    "prettier": "^2.5.0",
+    "ts-node": "^10.9.1"
   }
 }

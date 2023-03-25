@@ -4,35 +4,26 @@ import { IPair } from '../types/index.js';
 
 const { Schema } = mongoose;
 
-const pairSchema = new Schema<IPair>(
+export const pairSchema = new Schema<IPair>(
   {
-    number: {
+    roundNumber: {
       type: Number,
-      required: true,
     },
     blackParticipant: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
     },
     whiteParticipant: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
     },
     winner: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
     },
-    chessWin: Boolean,
-    boxingRounds: [{
-      type: Schema.Types.ObjectId,
-      ref: 'BoxingRound'
-    }],
-    competition: {
-      type: Schema.Types.ObjectId,
-      ref: 'Competition'
+    passed: {
+      type: Boolean,
     },
   },
   { versionKey: false }
 );
-
-export const Pair = mongoose.model('Pair', pairSchema);

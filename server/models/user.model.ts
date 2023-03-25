@@ -8,13 +8,21 @@ const userSchema = new Schema<IUser>(
   {
     email: {
       type: String,
-      unique : true,
+      unique: true,
       required: true,
       trim: true,
     },
     hashedPassword: {
       type: String,
       required: true,
+    },
+    firstName: {
+      type: String,
+      required: false,
+    },
+    lastName: {
+      type: String,
+      required: false,
     },
     role: {
       type: String,
@@ -24,12 +32,24 @@ const userSchema = new Schema<IUser>(
     accessToken: {
       type: String,
     },
-    username: { type: String, required: true, unique : true, },
+    username: { type: String, required: true, unique: true },
     age: Number,
-    pair: {
+    gender: String,
+    birthDate: Date,
+    ratingNumber: { type: Number, required: true },
+    weight: { number: Number, category: String, measureUnit: String },
+    competition: {
       type: Schema.Types.ObjectId,
-      ref: 'Pair'
+      ref: 'Competition',
     },
+    currentGroupId: String,
+    competitionsHistory: [
+      {
+        competitionId: String,
+        groupId: String,
+        placeNumber: Number,
+      },
+    ],
   },
   { versionKey: false }
 );

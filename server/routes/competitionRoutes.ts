@@ -1,7 +1,10 @@
 import express from 'express';
 
-import { CompetitionController, UserController } from '../controlllers/index.js';
-import { controllerErrorHandler } from '../utils/index.js';
+import {
+  CompetitionController,
+  UserController,
+} from '../controlllers/index.js';
+import { controllerErrorHandler } from '../utils/controllerErrorHandler.js';
 import { RESOURCES, ACTIONS } from '../constants.js';
 
 export const competitionRouter = express.Router();
@@ -17,22 +20,57 @@ competitionRouter.get(
 );
 
 competitionRouter.post(
-  '/competition/:id',
-  UserController.allowIfLoggedin,
-  UserController.grantAccess(ACTIONS.createAny, RESOURCES.COMPETITION),
+  '/competition',
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccessACTIONS.createAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.createCompetition)
 );
 
-competitionRouter.put(
+competitionRouter.patch(
+  '/competition/defineWinner',
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccessACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.defineWinner)
+);
+
+competitionRouter.patch(
+  '/competition/launchNextGroupRound',
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccessACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.launchNextGroupRound)
+);
+
+competitionRouter.patch(
   '/competition/:id',
-  UserController.allowIfLoggedin,
-  UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccessACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.updateCompetition)
 );
 
 competitionRouter.delete(
   '/competition/:id',
-  UserController.allowIfLoggedin,
-  UserController.grantAccess(ACTIONS.deleteAny, RESOURCES.COMPETITION),
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccessACTIONS.deleteAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.deleteCompetition)
+);
+
+competitionRouter.post(
+  '/competition/:id/group',
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccessACTIONS.createAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.createCompetitionGroup)
+);
+
+competitionRouter.get(
+  '/competition/:id/groups',
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccessACTIONS.createAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.getCompetitionGroups)
+);
+
+competitionRouter.patch(
+  '/competition/:id/addNewParticipant',
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccessACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.addNewParticipant)
 );

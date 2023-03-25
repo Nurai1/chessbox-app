@@ -1,11 +1,9 @@
-export type ECoefficients = 1 | 0.75 | 0.5 | 0.25;
-export type EBoxingRoundOrder = 1 | 3;
+/* eslint-disable no-use-before-define */
+import { Document, PopulatedDoc, Types } from 'mongoose';
 
-interface ISide {
-  amountOfHits?: number;
-  coefficient?: ECoefficients;
-  points?: number;
-}
+export type ECoefficients = 1 | 0.75 | 0.5 | 0.25;
+export type GenderType = 'woman' | 'man';
+export type WeightUnitType = 'kg';
 
 export interface Address {
   region: string;
@@ -13,43 +11,54 @@ export interface Address {
 }
 
 export interface IUser {
-  id: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
+  weight?: { number: number; category: string; measureUnit: WeightUnitType };
   hashedPassword: string;
   role: string;
   accessToken?: string;
   username: string;
+  birthDate?: string;
   age?: number;
+  gender?: GenderType;
   address?: Address;
   club?: string;
-  rating: number;
-  pair?: string;
-}
-
-export interface IBoxingRound {
-  id: string;
-  order: EBoxingRoundOrder;
-  pair?: string;
-  blackSide: ISide;
-  whiteSide: ISide;
-  winner?: string;
-  judge?: string;
+  ratingNumber: number;
+  competition: PopulatedDoc<ICompetition & Document>;
+  currentGroupId?: string;
+  competitionsHistory: {
+    competitionId: string;
+    placeNumber: number;
+    groupId: string;
+  }[];
 }
 
 export interface IPair {
-  id: string;
-  number: number;
-  blackParticipant?: string;
-  whiteParticipant?: string;
-  winner?: string;
-  chessWin?: boolean;
-  boxingRounds: string[];
-  competition?: string;
+  _id?: Types.ObjectId;
+  roundNumber: number;
+  blackParticipant?: PopulatedDoc<IUser & Document>;
+  whiteParticipant?: PopulatedDoc<IUser & Document>;
+  winner?: PopulatedDoc<IUser & Document>;
+  passed: boolean;
 }
 
 export interface ICompetition {
-  id: string;
-  startDate: any;
-  endDate: any;
+  startDate: string;
+  endDate: string;
   name: string;
+  description?: string;
+  groups: ICompetitionGroup[];
+  participants: PopulatedDoc<IUser & Document>[];
+}
+
+export interface ICompetitionGroup {
+  _id?: Types.ObjectId;
+  ageCategory: string;
+  weightCategory: string;
+  gender: GenderType;
+  allParticipants: PopulatedDoc<IUser & Document>[];
+  pairs: IPair[];
+  currentRoundNumber: number;
+  nextRoundParticipants: PopulatedDoc<IUser & Document>[];
 }

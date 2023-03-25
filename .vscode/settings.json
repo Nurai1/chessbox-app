@@ -4,9 +4,6 @@
     },
     "eslint.validate": [
         "javascript",
-        {
-            "language": "typescript",
-            "autoFix": true
-        }
+        "typescript"
     ],
 }

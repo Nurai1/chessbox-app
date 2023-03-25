@@ -8,7 +8,6 @@ export const RESOURCES = {
   USER: 'USER',
   COMPETITION: 'COMPETITION',
   PAIR: 'PAIR',
-  BOXING_ROUND: 'BOXING_ROUND',
 } as const;
 
 export const ACTIONS = {
