@@ -44,6 +44,7 @@ export interface IPair {
 }
 
 export interface ICompetition {
+  _id: Types.ObjectId;
   startDate: string;
   endDate: string;
   name: string;

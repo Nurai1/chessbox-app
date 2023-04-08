@@ -14,9 +14,12 @@
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
     "consistent-return": 0,
-    "prettier/prettier": [2, {
-      "singleQuote": true
-    }],
+    "prettier/prettier": [
+      2,
+      {
+        "singleQuote": true
+      }
+    ],
     "import/prefer-default-export": 0,
     "import/extensions": 0,
     "import/no-unresolved": 0,

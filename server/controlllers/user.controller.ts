@@ -3,22 +3,11 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 
-import { Competition, User } from '../models/index.js';
+import { User } from '../models/index.js';
 import ac from '../roles.js';
 import { RESOURCES, ACTIONS } from '../constants.js';
 import { IUser } from '../types/index.js';
 import { errorUniqueCheck } from '../utils/errors.js';
-import {
-  getWeightCategoryForUnder11YearsOld,
-  getWeightCategoryFor12And13YearsOld,
-  getWeightCategoryFor14And15YearsOldMan,
-  getWeightCategoryFor14And15YearsOldWoman,
-  getWeightCategoryFor16And17YearsOld,
-  getWeightCategoryFor18To40YearsOldMan,
-  getWeightCategoryFor18To40YearsOldWoman,
-  getWeightCategoryForAbove40YearsOldMan,
-  getWeightCategoryForAbove40YearsOldWoman,
-} from '../utils/weightCategory.js';
 
 const emailParser = z.string().email().min(5);
 const passwordParser = z.string().min(4 /* 8 */);
@@ -239,41 +228,6 @@ export const updateUser = async (
       });
     }
   }
-
-  // if (req.body.weight) {
-  //   let weightCategory;
-
-  //   const {
-  //     weight: { number },
-  //     age,
-  //     gender,
-  //   } = req.body;
-  //   if (age < 12) {
-  //     weightCategory = getWeightCategoryForUnder11YearsOld(number);
-  //   } else if (age === 12 || age === 13) {
-  //     weightCategory = getWeightCategoryFor12And13YearsOld(number);
-  //   } else if ((age === 14 || age === 15) && gender === 'man') {
-  //     weightCategory = getWeightCategoryFor14And15YearsOldMan(number);
-  //   } else if ((age === 14 || age === 15) && gender === 'woman') {
-  //     weightCategory = getWeightCategoryFor14And15YearsOldWoman(number);
-  //   } else if (age === 16 || age === 17) {
-  //     weightCategory = getWeightCategoryFor16And17YearsOld(number);
-  //   } else if ((age > 17 || age <= 40) && gender === 'man') {
-  //     weightCategory = getWeightCategoryFor18To40YearsOldMan(number);
-  //   } else if ((age > 17 || age <= 40) && gender === 'woman') {
-  //     weightCategory = getWeightCategoryFor18To40YearsOldWoman(number);
-  //   } else {
-  //     weightCategory =
-  //       gender === 'man'
-  //         ? getWeightCategoryForAbove40YearsOldMan(number)
-  //         : getWeightCategoryForAbove40YearsOldWoman(number);
-  //   }
-
-  //   result = {
-  //     ...result,
-  //     weight: { number, measureUnit: 'kg', category: weightCategory },
-  //   };
-  // }
 
   const { id } = req.body;
 
