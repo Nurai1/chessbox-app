@@ -17,7 +17,6 @@ export interface IUser {
   weight?: { number: number; category: string; measureUnit: WeightUnitType };
   hashedPassword: string;
   role: string;
-  accessToken?: string;
   username: string;
   birthDate?: string;
   age?: number;
@@ -41,6 +40,9 @@ export interface IPair {
   whiteParticipant?: PopulatedDoc<IUser & Document>;
   winner?: PopulatedDoc<IUser & Document>;
   passed: boolean;
+  order?: number;
+  calledForPreparation?: boolean;
+  calledForFight?: boolean;
 }
 
 export interface ICompetition {
@@ -49,6 +51,8 @@ export interface ICompetition {
   endDate: string;
   name: string;
   description?: string;
+  participantsAmount?: number;
+  lastOrder: { group: number; pair: number };
   groups: ICompetitionGroup[];
   participants: PopulatedDoc<IUser & Document>[];
 }
@@ -59,7 +63,9 @@ export interface ICompetitionGroup {
   weightCategory: string;
   gender: GenderType;
   allParticipants: PopulatedDoc<IUser & Document>[];
-  pairs: IPair[];
+  passedPairs: IPair[];
+  currentRoundPairs: IPair[];
   currentRoundNumber: number;
+  order?: number;
   nextRoundParticipants: PopulatedDoc<IUser & Document>[];
 }

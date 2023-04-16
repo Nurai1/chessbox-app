@@ -57,8 +57,6 @@ export const signup = async (
     { expiresIn: '7d' }
   );
 
-  newUser.accessToken = accessToken;
-
   try {
     await newUser.save();
   } catch (err: any) {
@@ -91,14 +89,8 @@ export const login = async (
       expiresIn: '7d',
     }
   );
-  const updatedUser = await User.findByIdAndUpdate(
-    user._id,
-    { accessToken },
-    { new: true }
-  );
 
   res.status(200).json({
-    data: updatedUser,
     accessToken,
   });
 };

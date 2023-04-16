@@ -29,9 +29,6 @@ const userSchema = new Schema<IUser>(
       default: 'guest',
       enum: ['guest', 'participant', 'judge', 'admin'],
     },
-    accessToken: {
-      type: String,
-    },
     username: { type: String, required: true, unique: true },
     age: Number,
     gender: String,

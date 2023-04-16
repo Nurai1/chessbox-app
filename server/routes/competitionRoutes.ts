@@ -41,6 +41,13 @@ competitionRouter.patch(
 );
 
 competitionRouter.patch(
+  '/competition/callPairPreparation',
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccessACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.callPairPreparation)
+);
+
+competitionRouter.patch(
   '/competition/:id',
   // UserController.allowIfLoggedin,
   // UserController.grantAccessACTIONS.updateAny, RESOURCES.COMPETITION),

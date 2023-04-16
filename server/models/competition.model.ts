@@ -12,6 +12,11 @@ const competitionSchema = new Schema<ICompetition>(
     name: { type: String, required: true },
     description: String,
     groups: [competitionGroupSchema],
+    participantsAmount: Number,
+    lastOrder: {
+      group: { type: Number, default: 0 },
+      pair: { type: Number, default: 0 },
+    },
     participants: [
       {
         type: Schema.Types.ObjectId,

@@ -11,6 +11,7 @@ export const competitionGroupSchema = new Schema<ICompetitionGroup>(
     weightCategory: { type: String, required: true },
     gender: { type: String, required: true },
     currentRoundNumber: { type: Number, required: true },
+    order: { type: Number },
     nextRoundParticipants: [
       {
         type: Schema.Types.ObjectId,
@@ -23,7 +24,8 @@ export const competitionGroupSchema = new Schema<ICompetitionGroup>(
         ref: 'User',
       },
     ],
-    pairs: [pairSchema],
+    passedPairs: [pairSchema],
+    currentRoundPairs: [pairSchema],
   },
   { versionKey: false }
 );
