@@ -19,6 +19,9 @@ export interface IUser {
   role: string;
   username: string;
   birthDate?: string;
+  socialNetworks?: {
+    whatsUp?: string;
+  };
   age?: number;
   gender?: GenderType;
   address?: Address;
@@ -43,6 +46,7 @@ export interface IPair {
   order?: number;
   calledForPreparation?: boolean;
   calledForFight?: boolean;
+  judge?: PopulatedDoc<IUser & Document>;
 }
 
 export interface ICompetition {
@@ -55,6 +59,7 @@ export interface ICompetition {
   lastOrder: { group: number; pair: number };
   groups: ICompetitionGroup[];
   participants: PopulatedDoc<IUser & Document>[];
+  judges: PopulatedDoc<IUser & Document>[];
 }
 
 export interface ICompetitionGroup {

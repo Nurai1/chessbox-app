@@ -48,10 +48,24 @@ competitionRouter.patch(
 );
 
 competitionRouter.patch(
+  '/competition/setJudgesToCompetition',
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccessACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.setJudgesToCompetition)
+);
+
+competitionRouter.patch(
   '/competition/:id',
   // UserController.allowIfLoggedin,
   // UserController.grantAccessACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.updateCompetition)
+);
+
+competitionRouter.patch(
+  '/competition/:id/start',
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccessACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.startCompetition)
 );
 
 competitionRouter.delete(

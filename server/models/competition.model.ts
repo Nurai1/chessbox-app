@@ -23,6 +23,12 @@ const competitionSchema = new Schema<ICompetition>(
         ref: 'User',
       },
     ],
+    judges: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   { versionKey: false }
 );

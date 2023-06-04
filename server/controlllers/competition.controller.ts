@@ -4,6 +4,7 @@ import { Competition, User } from '../models/index.js';
 import { ICompetitionGroup, IPair } from '../types/index.js';
 import { getParticipantsAmountForFirstRound } from '../utils/getParticipantsAmountForFirstRound.js';
 import { recalculateRating } from '../utils/recalculateRating.js';
+import { getPairsWithJudges } from '../utils/competition.js';
 
 export const getCompetitions = async (
   req: Request,
@@ -43,6 +44,33 @@ export const createCompetition = async (
   res.send(competition);
 };
 
+export const setJudgesToCompetition = async (
+  req: Request<any, any, { judgesIds: string[]; competitionId: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.body) return res.sendStatus(400);
+
+  const {
+    body: { judgesIds, competitionId },
+  } = req;
+
+  if (judgesIds.length < 1) {
+    res.status(500).send({ error: 'Judges must be more than 0.' });
+  }
+
+  const competition = await Competition.findById(competitionId);
+  if (competition) {
+    competition.judges = await Promise.all(
+      judgesIds.map((judgeId) => User.findById(judgeId))
+    );
+
+    await competition.save();
+    res.send(competition);
+  }
+  res.status(500).send({ error: 'No competition found.' });
+};
+
 export const startCompetition = async (
   req: Request<{ id: string }>,
   res: Response,
@@ -51,17 +79,35 @@ export const startCompetition = async (
   const { params } = req;
   if (!params.id) return res.sendStatus(400);
 
-  const competition = await Competition.findById(params.id).populate(
-    'participants'
-  );
+  const competition = await Competition.findById(params.id)
+    .populate('participants')
+    .populate('judges');
+
   const participantsAmount = competition?.participants.length;
   if (competition) {
+    if (!competition?.judges) {
+      res.status(500).send({ error: 'No judges in competition.' });
+    }
+
+    if (!competition.groups) {
+      res.status(500).send({ error: 'No groups in competition.' });
+    }
+
+    const orderedGroups = competition.groups.sort((a, b) => {
+      // always true on that stage
+      if (a.order && b.order) {
+        return a.order - b.order;
+      }
+      return 0;
+    });
+
+    competition.groups = orderedGroups;
     competition.participantsAmount = participantsAmount;
     await competition?.save();
 
     res.sendStatus(200);
   }
-  res.sendStatus(500);
+  res.status(500).send({ error: 'No competition with this id.' });
 };
 
 export const deleteCompetition = async (
@@ -102,6 +148,9 @@ export const createCompetitionGroup = async (
 
   const { body } = req;
   const { params } = req;
+
+  const competition = await Competition.findById(params.id);
+
   const { allParticipants } = body;
   const firstRoundPairs: IPair[] = [];
   const participantsAmountForFirstRound = getParticipantsAmountForFirstRound(
@@ -119,19 +168,25 @@ export const createCompetitionGroup = async (
     });
   }
 
-  const group: ICompetitionGroup = {
-    ...body,
-    currentRoundPairs: firstRoundPairs,
-    currentRoundNumber: 1,
-    nextRoundParticipants: shuffledParticipants.slice(
-      participantsAmountForFirstRound
-    ),
-  };
-
-  const competition = await Competition.findById(params.id);
-
   if (competition) {
-    competition.groups = [group, ...competition.groups];
+    const group: ICompetitionGroup = {
+      ...body,
+      currentRoundPairs: firstRoundPairs,
+      currentRoundNumber: 1,
+      nextRoundParticipants: shuffledParticipants.slice(
+        participantsAmountForFirstRound
+      ),
+    };
+
+    const groupWithJudges = {
+      ...group,
+      currentRoundPairs: getPairsWithJudges({
+        pairs: firstRoundPairs,
+        judges: competition?.judges,
+      }),
+    };
+
+    competition.groups = [groupWithJudges, ...competition.groups];
 
     await competition.save();
 
@@ -359,15 +414,45 @@ export const defineWinner = async (
       loser.ratingNumber
     );
 
+    const loserPlaceNumber =
+      competitionGroup.allParticipants.length -
+      (competitionGroup.passedPairs.length + 1);
+
     await Promise.all([
       User.findOneAndUpdate(
         { _id: winnerId },
-        { ratingNumber: newWinnerRating },
+        {
+          ratingNumber: newWinnerRating,
+          ...(loserPlaceNumber === 2
+            ? {
+                competitionsHistory: [
+                  ...winner.competitionsHistory,
+                  {
+                    competitionId,
+                    groupId,
+                    placeNumber: 1,
+                  },
+                ],
+              }
+            : {}),
+        },
         { new: true }
       ),
       User.findOneAndUpdate(
         { _id: loserId },
-        { ratingNumber: newLoserRating },
+        {
+          ratingNumber: newLoserRating,
+          competitionsHistory: [
+            ...loser.competitionsHistory,
+            {
+              competitionId,
+              groupId,
+              placeNumber:
+                competitionGroup.allParticipants.length -
+                (competitionGroup.passedPairs.length + 1),
+            },
+          ],
+        },
         { new: true }
       ),
       competition?.save(),
@@ -402,16 +487,6 @@ export const launchNextGroupRound = async (
   const competitionGroup = competition?.groups.find(
     (group) => group._id?.toString() === groupId
   );
-
-  const allPairPassed =
-    competitionGroup?.passedPairs.length ===
-    competitionGroup?.currentRoundPairs.length;
-
-  if (!allPairPassed) {
-    return res
-      .status(400)
-      .send({ error: 'Not all pair have passed previous round.' });
-  }
 
   const nextRoundPairs = [];
 

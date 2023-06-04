@@ -33,6 +33,10 @@ export const pairSchema = new Schema<IPair>(
     calledForFight: {
       type: Boolean,
     },
+    judge: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
   },
   { versionKey: false }
 );

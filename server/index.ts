@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import serverless from 'serverless-http';
 
 import { userRouter, competitionRouter } from './routes/index.js';
 import { User } from './models/index.js';
@@ -13,7 +14,7 @@ const remoteMongoUri =
 
 const { TokenExpiredError } = jwt;
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+// const __dirname = dirname(fileURLToPath(import.meta.url));
 
 dotenv.config();
 
@@ -35,7 +36,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static(`${__dirname}/public`));
+// app.use(express.static(`${__dirname}/public`));
 
 mongoose.set('strictQuery', true);
 
@@ -90,6 +91,10 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send({ error: err.message });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is started on port: ${PORT}`);
-});
+// if (process.env.ENVIRONMENT !== 'production') {
+//   app.listen(PORT, () => {
+//     console.log(`Server is started on port: ${PORT}`);
+//   });
+// }
+
+export const handler = serverless(app);

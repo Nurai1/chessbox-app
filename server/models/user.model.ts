@@ -27,10 +27,13 @@ const userSchema = new Schema<IUser>(
     role: {
       type: String,
       default: 'guest',
-      enum: ['guest', 'participant', 'judge', 'admin'],
+      enum: ['guest', 'participant', 'judge', 'chief_judge', 'admin'],
     },
     username: { type: String, required: true, unique: true },
     age: Number,
+    socialNetworks: {
+      whatsup: String,
+    },
     gender: String,
     birthDate: Date,
     ratingNumber: { type: Number, required: true },

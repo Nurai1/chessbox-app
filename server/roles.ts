@@ -6,6 +6,7 @@ const { AccessControl } = AC;
 
 const ac = new AccessControl();
 
+// TODO как включу проверку ролей - дописать нормально
 ac.grant(ROLES.PARTICIPANT)
   // participant permissions for user entity
   .readAny(RESOURCES.USER)
