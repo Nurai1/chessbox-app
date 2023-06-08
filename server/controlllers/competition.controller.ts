@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { Competition, User } from '../models/index.js';
-import { ICompetitionGroup, IPair } from '../types/index.js';
-import { getParticipantsAmountForFirstRound } from '../utils/getParticipantsAmountForFirstRound.js';
-import { recalculateRating } from '../utils/recalculateRating.js';
-import { getPairsWithJudges } from '../utils/competition.js';
+import { Competition, User } from '../models/index';
+import { ICompetitionGroup, IPair } from '../types/index';
+import { getParticipantsAmountForFirstRound } from '../utils/getParticipantsAmountForFirstRound';
+import { recalculateRating } from '../utils/recalculateRating';
+import { getPairsWithJudges } from '../utils/competition';
 
 export const getCompetitions = async (
   req: Request,

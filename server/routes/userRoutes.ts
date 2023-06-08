@@ -1,8 +1,8 @@
 import express from 'express';
 
-import { UserController } from '../controlllers/index.js';
-import { controllerErrorHandler } from '../utils/controllerErrorHandler.js';
-import { RESOURCES, ACTIONS } from '../constants.js';
+import { UserController } from '../controlllers/index';
+import { controllerErrorHandler } from '../utils/controllerErrorHandler';
+import { RESOURCES, ACTIONS } from '../constants';
 
 export const userRouter = express.Router();
 

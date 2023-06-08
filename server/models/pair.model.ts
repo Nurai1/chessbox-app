@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { IPair } from '../types/index.js';
+import { IPair } from '../types/index';
 
 const { Schema } = mongoose;
 

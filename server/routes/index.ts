@@ -1,2 +1,2 @@
-export { competitionRouter } from './competitionRoutes.js';
-export { userRouter } from './userRoutes.js';
+export { competitionRouter } from './competitionRoutes';
+export { userRouter } from './userRoutes';

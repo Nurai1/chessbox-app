@@ -6,8 +6,8 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import serverless from 'serverless-http';
 
-import { userRouter, competitionRouter } from './routes/index.js';
-import { User } from './models/index.js';
+import { userRouter, competitionRouter } from './routes/index';
+import { User } from './models/index';
 
 const remoteMongoUri =
   'mongodb+srv://bllndman:M%40%40nAtlasR4y@chessboxingbetacluster.ed9q7tj.mongodb.net/test?retryWrites=true&w=majority';
@@ -91,10 +91,10 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send({ error: err.message });
 });
 
-// if (process.env.ENVIRONMENT !== 'production') {
-//   app.listen(PORT, () => {
-//     console.log(`Server is started on port: ${PORT}`);
-//   });
-// }
+if (process.env.ENVIRONMENT !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server is started on port: ${PORT}`);
+  });
+}
 
-export const handler = serverless(app);
+export const handler = process.env.ENVIRONMENT === 'production' && serverless(app);

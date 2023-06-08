@@ -3,19 +3,18 @@
   "private": true,
   "version": "1.0.0",
   "license": "MIT",
-  "type": "module",
   "exports": "./dist/app.js",
   "scripts": {
     "start": "nodemon index.ts",
     "lint": "eslint --ext .ts,.js .",
-    "build": "npm i && npm run clean && npx tsc && npm i --production && npm run copy-files && zip -r function.zip dist/ && npm run sendToAws",
+    "build": "npm i && npm run clean && npx tsc && npm i --production && npm run copy-files && zip -r function.zip dist/*",
     "sendToAws": "aws lambda update-function-code --function-name chessbox-app --zip-file fileb://function.zip",
     "clean": "rm -rf ./dist",
     "copy-files": "cp -R ./public ./dist/public && cp -R ./node_modules/ ./dist/node_modules"
   },
   "dependencies": {
     "accesscontrol": "^2.2.1",
-    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
@@ -28,6 +27,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.6",
     "@typescript-eslint/eslint-plugin": "^5.4.0",

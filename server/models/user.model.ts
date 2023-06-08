@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { IUser } from '../types/index.js';
+import { IUser } from '../types/index';
 
 const { Schema } = mongoose;
 

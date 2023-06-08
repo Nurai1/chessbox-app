@@ -1,6 +1,6 @@
 import AC from 'accesscontrol';
 
-import { ROLES, RESOURCES } from './constants.js';
+import { ROLES, RESOURCES } from './constants';
 
 const { AccessControl } = AC;
 

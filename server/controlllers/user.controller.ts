@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 
-import { User } from '../models/index.js';
-import ac from '../roles.js';
-import { RESOURCES, ACTIONS } from '../constants.js';
-import { IUser } from '../types/index.js';
-import { errorUniqueCheck } from '../utils/errors.js';
+import { User } from '../models/index';
+import ac from '../roles';
+import { RESOURCES, ACTIONS } from '../constants';
+import { IUser } from '../types/index';
+import { errorUniqueCheck } from '../utils/errors';
 
 const emailParser = z.string().email().min(5);
 const passwordParser = z.string().min(4 /* 8 */);

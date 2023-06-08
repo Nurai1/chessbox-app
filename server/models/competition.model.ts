@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-import { ICompetition } from '../types/index.js';
-import { competitionGroupSchema } from './competitionGroup.model.js';
+import { ICompetition } from '../types/index';
+import { competitionGroupSchema } from './competitionGroup.model';
 
 const { Schema } = mongoose;
 
