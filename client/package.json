@@ -4,11 +4,11 @@
 	"version": "0.1.0",
 	"engines": {
 		"node": "^14.18.0 || ^16 || >=18",
-		"pnpm": "^7.18.0"
+		"pnpm": "^8.2.0"
 	},
 	"scripts": {
 		"build": "pnpm lint && vite build",
-		"dev": "vite --open",
+		"start": "vite --open",
 		"prepare": "pnpm simple-git-hooks",
 		"preview": "vite preview",
 		"format": "prettier -uw --cache --ignore-path .gitignore .",
@@ -21,12 +21,9 @@
 	"dependencies": {
 		"dayjs": "^1.11.7",
 		"jotai": "^2.0.0",
-		"preline": "^1.6.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-router-dom": "^6.7.0",
-		"slate": "^0.88.1",
-		"slate-react": "^0.88.2",
 		"tailwind-merge": "^1.9.1",
 		"tailwind-variants": "^0.0.30",
 		"type-fest": "^3.5.0",

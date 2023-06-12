@@ -1,0 +1,1 @@
+export const AUTH_JWT_TOKEN_KEY = 'AUTH_JWT_TOKEN_KEY'

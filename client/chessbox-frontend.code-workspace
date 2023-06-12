@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"typescript.validate.enable": true,
+		"eslint.options": {
+			"overrideConfigFile": "./.eslintrc.json"
+		},
+		"eslint.alwaysShowStatus": true,
+		"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": false,
+		"editor.tabSize": 2,
+		"css.lint.unknownAtRules": "ignore",
+		"css.validate": true,
+		"typescript.tsdk": "node_modules/typescript/lib",
+		"cSpell.words": ["twMerge", "Privo"],
+		"typescript.disableAutomaticTypeAcquisition": true,
+		"editor.foldingImportsByDefault": true,
+		"editor.codeActionsOnSave": ["source.addMissingImports", "source.fixAll.eslint", "source.sortImports"],
+		"files.watcherExclude": {
+			".eslintcache": true,
+			"dist": true,
+			"build": true,
+			"node_modules": true
+		},
+		"diffEditor.ignoreTrimWhitespace": true,
+		"search.exclude": {
+			"node_modules": false
+		}
+	}
+}
