@@ -2,27 +2,21 @@ import express, { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import serverless from 'serverless-http';
 
 import { userRouter, competitionRouter } from './routes/index';
 import { User } from './models/index';
 
-const remoteMongoUri =
-  'mongodb+srv://bllndman:M%40%40nAtlasR4y@chessboxingbetacluster.ed9q7tj.mongodb.net/test?retryWrites=true&w=majority';
-
 const { TokenExpiredError } = jwt;
-
-// const __dirname = dirname(fileURLToPath(import.meta.url));
 
 dotenv.config();
 
 const app = express();
 
-const { JWT_SECRET_KEY } = process.env;
+const remoteMongoUri = process.env.MONGO_URI;
+const { JWT_SECRET_KEY, ENVIRONMENT } = process.env;
 
-const PORT = process.env.PORT || 8080;
+const PORT = Number(process.env.PORT) || 8080;
+const HOST = ENVIRONMENT === 'development' ? 'localhost' : '0.0.0.0';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -36,11 +30,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use(express.static(`${__dirname}/public`));
-
 mongoose.set('strictQuery', true);
 
-mongoose.connect(remoteMongoUri, (err) => {
+mongoose.connect(remoteMongoUri ?? '', (err) => {
   if (err) {
     console.log(err);
   }
@@ -91,10 +83,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send({ error: err.message });
 });
 
-if (process.env.ENVIRONMENT !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Server is started on port: ${PORT}`);
-  });
-}
-
-export const handler = process.env.ENVIRONMENT === 'production' && serverless(app);
+app.listen(PORT, HOST, () => {
+  console.log(`Running on http://${HOST}:${PORT}`);
+});

@@ -1,15 +1,14 @@
 # Specify a base image
 FROM node:16.17.0
+WORKDIR /usr/src/app
 
-#Install some dependencies
-
-WORKDIR /usr/app
-COPY ./ /usr/app
+COPY package.json ./package.json
+COPY package-lock.json ./package-lock.json
 RUN npm install
 
-RUN apt-get update
-RUN apt-get install zip
+COPY . .
 
-# Set up a default command
-RUN npm run build
-# CMD [ "npm","run","build" ]
+
+ENV PORT 8080
+EXPOSE 8080
+CMD [ "npm","run","start-js" ]
