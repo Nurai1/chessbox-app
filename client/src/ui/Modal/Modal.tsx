@@ -13,7 +13,11 @@ export const Modal: FC<{
 }> = ({ isOpen, onClose, title, content, submitButton }) => {
 	const modalRef = useRef(null)
 
-	useClickOutside({ element: modalRef.current, onClick: onClose, modalOptions: { isModal: true, isModalOpen: isOpen } })
+	useClickOutside({
+		element: modalRef.current,
+		onClick: onClose,
+		modalOptions: { isModal: true, isModalOpen: isOpen }
+	})
 
 	useEffect(() => {
 		const onKeydown = (ev: KeyboardEvent) => {
