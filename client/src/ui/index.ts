@@ -5,7 +5,7 @@ export { Label } from './Label'
 export { LineSuspense } from './LineSuspense'
 export { Modal } from './Modal'
 export { Pagination } from './Pagination'
-export { SearchQuerySelect } from './SearchQuerySelect'
+// export { SearchQuerySelect } from './SearchQuerySelect' такого файла нет, закомментировал, чтобы сборка не падала
 export { Select } from './Select'
 export { SpinnerLoader, SpinnerSuspense } from './SpinnerSuspense'
 export { Table } from './Table'
