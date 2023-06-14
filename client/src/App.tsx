@@ -1,6 +1,6 @@
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import { Route404 } from 'routes/404'
-import { Main } from 'routes/Main'
+import { UILibrary } from 'routes/UILibrary'
 import { AppRoute } from './constants/appRoute'
 
 const App = () => {
@@ -9,7 +9,7 @@ const App = () => {
 			<HashRouter>
 				<div className='overflow-y-auto'>
 					<Routes>
-						<Route element={<Main />} path={AppRoute.Root} />
+						<Route element={<UILibrary />} path={AppRoute.UILibrary} />
 						<Route element={<Route404 />} path={AppRoute.NotFound} />
 					</Routes>
 				</div>

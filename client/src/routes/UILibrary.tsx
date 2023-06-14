@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 import { Button } from '../ui'
 
-export const Main = (): ReactElement => {
+export const UILibrary = (): ReactElement => {
 	const clickHandler = (): void => {}
 	return (
 		<div className='flex flex-col gap-2 p-4'>
