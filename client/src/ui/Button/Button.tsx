@@ -14,20 +14,19 @@ type ButtonPropsType = {
 const button = tv({
 	variants: {
 		shape: {
-			primary: 'bg-blue-500 text-white hover:bg-blue-600',
-			outlined:
-				'text-blue-500 border-2 border-blue-600 py-[10px] px-[14px] hover:text-white hover:bg-blue-500 hover:border-blue-500',
-			ghost: 'text-blue-500 hover:bg-blue-100'
+			primary: 'bg-black text-white border-2 border-black hover:bg-gray-700',
+			outlined: 'text-black border-2 border-black hover:text-white hover:bg-black ',
+			ghost: 'text-black border-2 border-transparent hover:bg-gray-200'
 		},
 		loader: {
-			primary: 'border-gray-300 border-t-blue-500',
-			outlined: 'border-blue-500 border-t-gray-300',
-			ghost: 'border-blue-500 border-t-gray-300'
+			primary: 'border-gray-300 border-t-black',
+			outlined: 'border-gray-300 border-t-black',
+			ghost: 'border-gray-300 border-t-black'
 		},
 		disabled: {
-			primary: 'bg-blue-200 text-gray-50 hover:bg-blue-200',
-			outlined: 'border-blue-200 text-blue-200 hover:bg-transparent hover:text-blue-200 hover:border-blue-200',
-			ghost: 'text-gray-300 hover:text-gray-300 hover:bg-transparent'
+			primary: 'bg-black text-gray-50 bg-gray-300 border-gray-300 pointer-events-none',
+			outlined: 'border-gray-300 text-gray-300 pointer-events-none',
+			ghost: 'text-gray-300 pointer-events-none'
 		}
 	}
 })
@@ -51,7 +50,7 @@ export const Button: FC<ButtonPropsType> = ({ children, type = 'primary', onClic
 			className={twMerge(
 				button({ shape: type }),
 				disabled && button({ disabled: type }),
-				'inline-flex-center h-[46px] gap-2 rounded-md px-4 font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+				'inline-flex-center h-[46px] gap-2 rounded-md px-4 font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2',
 				classes
 			)}
 		>
