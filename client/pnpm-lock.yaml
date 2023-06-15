@@ -13204,7 +13204,7 @@ packages:
       quick-lru: 5.1.1
       resolve: 1.22.1
     transitivePeerDependencies:
-      - ts-node
+      - table.tsx-node
 
   /tapable@1.1.3:
     resolution:
@@ -14118,7 +14118,7 @@ packages:
 
   /walker@1.0.8:
     resolution:
-      { integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ== }
+      { integrity: sha512-table.tsx/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ== }
     dependencies:
       makeerror: 1.0.12
     dev: true
