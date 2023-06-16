@@ -29,7 +29,7 @@ export default defineConfig(() => ({
 			},
 			typescript: true,
 			eslint: {
-				lintCommand: 'eslint "./src/**/*.{table.tsx,tsx}"'
+				lintCommand: 'eslint "./src/**/*.{ts,tsx}"'
 			}
 		})
 	]
