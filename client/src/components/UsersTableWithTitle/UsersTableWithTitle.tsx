@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react'
-import { Table, TableWrapper, TableBody, TableHeader } from '../../ui'
+import { TableWrapper, TableBody, TableHeader } from '../../ui'
 
 type UsersTableWithTitlePropsType = {
 	columns?: { title: string; width?: number | string; classes?: string }[]
@@ -28,10 +28,10 @@ export const UsersTableWithTitle: FC<UsersTableWithTitlePropsType> = ({ columns 
 					{title}
 				</h2>
 			)}
-			<Table>
+			<table className='relative w-full'>
 				<TableHeader columns={columns} />
 				<TableBody rows={rows} />
-			</Table>
+			</table>
 		</TableWrapper>
 	)
 }

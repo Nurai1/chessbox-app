@@ -1,5 +1,5 @@
 import { ReactElement } from 'react'
-import { Button, TableBody, TableWrapper, Table } from '../ui'
+import { Button, TableBody, TableWrapper } from '../ui'
 import { UsersTableWithTitle } from '../components'
 import { ratingTableSchema } from '../helpers/tableSchema'
 import { usersMock } from '../mock/usersData'
@@ -59,9 +59,9 @@ export const UILibrary = (): ReactElement => {
 				>
 					Таблица
 				</h2>
-				<Table>
+				<table className='relative w-full'>
 					<TableBody rows={usersTable} />
-				</Table>
+				</table>
 			</TableWrapper>
 			<hr className='my-8' />
 			<UsersTableWithTitle rows={usersTable} title='Список пользователей' />
