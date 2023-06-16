@@ -1,0 +1,1 @@
+export { UsersTableWithTitle } from './UsersTableWithTitle'

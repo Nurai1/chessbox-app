@@ -11,7 +11,12 @@ const config = {
 			sans: ['Hubot Sans', ...defaultConfig.theme.fontFamily.sans]
 		},
 		screens: {
-			...defaultConfig.theme.screens
+			...defaultConfig.theme.screens,
+			'sm': '375',
+			'md': '536px',
+			'lg': '744px',
+			'xl': '1200px',
+			'2xl': '1440px'
 		},
 		extend: {
 			fontSize: {
@@ -31,7 +36,13 @@ const config = {
 				['show-bottom']: {
 					'0%': { transform: 'translateY(20px)', opacity: 0 }
 				}
-			}
+			},
+			container: {
+				screens: {
+					'2xl': '1440px'
+				},
+			},
+
 		}
 	},
 	plugins: [
