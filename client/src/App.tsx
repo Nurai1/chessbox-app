@@ -7,7 +7,7 @@ const App = () => {
 	return (
 		<div className='flex h-screen'>
 			<HashRouter>
-				<div className='overflow-y-auto'>
+				<div className='overflow-y-auto w-full'>
 					<Routes>
 						<Route element={<UILibrary />} path={AppRoute.UILibrary} />
 						<Route element={<Route404 />} path={AppRoute.NotFound} />

@@ -60,6 +60,7 @@ export const Button: FC<ButtonPropsType> = ({ children, type = 'primary', onClic
 						button({ loader: type }),
 						'm-auto box-border h-5 w-5 animate-spin rounded-full border-[3px]'
 					)}
+					style={{minWidth: "20px"}}
 				/>
 			) : (
 				children
