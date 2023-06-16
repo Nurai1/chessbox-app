@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 import { Button, TableBody, TableWrapper } from '../ui'
-import { UsersTableWithTitle } from '../components'
+import { UsersTableWithTitle, CompetitionRating } from '../components'
 import { ratingTableSchema } from '../helpers/tableSchema'
 import { usersMock } from '../mock/usersData'
 
@@ -10,6 +10,11 @@ export const UILibrary = (): ReactElement => {
 	const clickHandler = (): void => {}
 	return (
 		<div className='container m-auto p-5 md:px-7 lg:px-10 '>
+			<br />
+			<br />
+			<CompetitionRating />
+			<br />
+			<br />
 			<h2 className='mb-5 text-xl font-semibold'>Кнопки</h2>
 			<div className='flex flex-col gap-2'>
 				<div className='flex gap-2'>
