@@ -2,29 +2,29 @@ import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export type HorizontalTabsPropsType = {
-	tabs: { isActive: boolean; title: string; onClick: () => void }[]
+	tabs: { isActive: boolean; title: string }[]
+	handleClick: (index: number) => void
 }
 
-export const HorizontalTabs: FC<HorizontalTabsPropsType> = ({ tabs }) => {
+export const HorizontalTabs: FC<HorizontalTabsPropsType> = ({ tabs, handleClick }) => {
+	const tabBorder =
+		'after:absolute after:w-px after:h-full after:bg-[#DADADA] after:top-0 after:right-[-6px] last:after:content-none'
 	return (
-		<div className='relative'>
-			<div className='flex h-[46px] gap-x-6'>
-				{tabs.map((tab, idx) => (
-					<button
-						// eslint-disable-next-line react/no-array-index-key
-						key={idx}
-						onClick={tab.onClick}
-						type='button'
-						className={twMerge(
-							`h-full truncate text-sm font-medium text-gray-800 max-xl:max-w-[140px]`,
-							tab.isActive && 'relative z-10 box-border border-b-2 border-blue-500 text-blue-500'
-						)}
-					>
-						{tab.title}
-					</button>
-				))}
-			</div>
-			<div className='absolute bottom-0 left-0 z-0 h-[2px] w-full bg-gray-200' />
-		</div>
+		<nav className='inline-flex h-[48px] rounded-lg border border-[#DADADA] bg-[#F2F2F2] p-1'>
+			{tabs.map((tab, idx) => (
+				<button
+					// eslint-disable-next-line react/no-array-index-key
+					key={idx}
+					onClick={() => handleClick(idx)}
+					type='button'
+					className={twMerge(
+						`relative h-full rounded-lg border border-transparent px-3 py-2 text-base font-semibold text-[#6C6A6C] transition-all hover:cursor-pointer [&:not(:last-child)]:mr-[9px] ${tabBorder}`,
+						tab.isActive && 'pointer-events-none border bg-black text-white'
+					)}
+				>
+					{tab.title}
+				</button>
+			))}
+		</nav>
 	)
 }
