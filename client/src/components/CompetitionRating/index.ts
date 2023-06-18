@@ -1,1 +1,0 @@
-export { CompetitionRating } from './CompetitionRating'
