@@ -2,11 +2,10 @@ import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export type HorizontalTabsPropsType = {
-	tabs: { isActive: boolean; title: string }[]
-	handleClick: (index: number) => void
+	tabs: { isActive: boolean; title: string; onClick: (idx: number) => void }[]
 }
 
-export const HorizontalTabs: FC<HorizontalTabsPropsType> = ({ tabs, handleClick }) => {
+export const HorizontalTabs: FC<HorizontalTabsPropsType> = ({ tabs }) => {
 	const tabBorder =
 		'after:absolute after:w-px after:h-full after:bg-[#DADADA] after:top-0 after:right-[-6px] last:after:content-none'
 	return (
@@ -15,10 +14,10 @@ export const HorizontalTabs: FC<HorizontalTabsPropsType> = ({ tabs, handleClick 
 				<button
 					// eslint-disable-next-line react/no-array-index-key
 					key={idx}
-					onClick={() => handleClick(idx)}
+					onClick={() => tab.onClick(idx)}
 					type='button'
 					className={twMerge(
-						`relative h-full rounded-lg border border-transparent px-3 py-2 text-base font-semibold text-[#6C6A6C] transition-all hover:cursor-pointer [&:not(:last-child)]:mr-[9px] ${tabBorder}`,
+						`relative h-full select-none rounded-lg border border-transparent px-3 py-2 text-base font-semibold text-[#6C6A6C] transition-all hover:cursor-pointer [&:not(:last-child)]:mr-[9px] ${tabBorder}`,
 						tab.isActive && 'pointer-events-none border bg-black text-white'
 					)}
 				>
