@@ -19,11 +19,6 @@ export const UILibrary = (): ReactElement => {
 	const clickHandler = (): void => {}
 	return (
 		<div className='container m-auto p-5 md:px-7 lg:px-10 '>
-			<br />
-			<br />
-			<Timer timerData={getEndTime(endTime.time)} />
-			<br />
-			<br />
 			<h2 className='mb-5 text-xl font-semibold'>Кнопки</h2>
 			<div className='flex flex-col gap-2'>
 				<div className='flex gap-2'>
@@ -62,6 +57,11 @@ export const UILibrary = (): ReactElement => {
 				</div>
 			</div>
 			<hr className='my-8' />
+
+			<h2 className='mb-5 text-xl font-semibold'>Таймер</h2>
+			<Timer timerData={getEndTime(endTime.time)} />
+			<hr className='my-8' />
+
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>
 			<TableWrapper>
 				<h2
