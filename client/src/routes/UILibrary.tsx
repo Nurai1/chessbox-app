@@ -5,36 +5,10 @@ import { ratingTableSchema } from '../helpers/tableSchema'
 import { usersMock } from '../mock/usersData'
 
 const usersTable = ratingTableSchema(usersMock)
-
-const initialTabsData = [
-	{
-		isActive: true,
-		title: 'Active competitions'
-	},
-	{
-		isActive: false,
-		title: 'My competitions'
-	},
-	{
-		isActive: false,
-		title: 'Archive'
-	}
-]
-
 const tabsContent = ['Active competitions', 'My competitions', 'Archive']
 export const UILibrary = (): ReactElement => {
-	const [tabsData, setTabsData] = useState(initialTabsData)
 	const [activeIndex, setActiveIndex] = useState(0)
 	const clickHandler = (): void => {}
-	const handleTabClick = (index: number) => {
-		const newTabsData = [...tabsData]
-		newTabsData.forEach(item => {
-			item.isActive = false
-		})
-		newTabsData[index].isActive = !tabsData[index].isActive
-		setTabsData(newTabsData)
-		setActiveIndex(index)
-	}
 
 	return (
 		<div className='container m-auto p-5 md:px-7 lg:px-10 '>
@@ -79,7 +53,25 @@ export const UILibrary = (): ReactElement => {
 			<hr className='my-8' />
 
 			<h2 className='mb-5 text-xl font-semibold'>Табы</h2>
-			<HorizontalTabs tabs={tabsData} handleClick={handleTabClick} />
+			<HorizontalTabs
+				tabs={[
+					{
+						isActive: activeIndex === 0,
+						title: 'Active competitions',
+						onClick: (idx: number) => setActiveIndex(idx)
+					},
+					{
+						isActive: activeIndex === 1,
+						title: 'My competitions',
+						onClick: (idx: number) => setActiveIndex(idx)
+					},
+					{
+						isActive: activeIndex === 2,
+						title: 'Archive',
+						onClick: (idx: number) => setActiveIndex(idx)
+					}
+				]}
+			/>
 			<h3 className='mt-2'>{tabsContent[activeIndex]}</h3>
 			<hr className='my-8' />
 
