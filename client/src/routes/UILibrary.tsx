@@ -1,8 +1,9 @@
 import { ReactElement } from 'react'
-import { Button, TableBody, TableWrapper } from '../ui'
+import { Button, TableBody, TableWrapper, Timer } from '../ui'
 import { UsersTableWithTitle } from '../components'
 import { ratingTableSchema } from '../helpers/tableSchema'
 import { usersMock } from '../mock/usersData'
+import { getEndTime } from '../helpers/datetime'
 
 const usersTable = ratingTableSchema(usersMock)
 
@@ -10,6 +11,11 @@ export const UILibrary = (): ReactElement => {
 	const clickHandler = (): void => {}
 	return (
 		<div className='container m-auto p-5 md:px-7 lg:px-10 '>
+			<br />
+			<br />
+			<Timer timerData={getEndTime('2023-06-29T09:00:00.000Z')} />
+			<br />
+			<br />
 			<h2 className='mb-5 text-xl font-semibold'>Кнопки</h2>
 			<div className='flex flex-col gap-2'>
 				<div className='flex gap-2'>
