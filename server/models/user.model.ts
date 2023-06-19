@@ -41,6 +41,8 @@ const userSchema = new Schema<IUser>(
     competition: {
       type: Schema.Types.ObjectId,
       ref: 'Competition',
+      // info for swagger
+      identificator: true,
     },
     currentGroupId: String,
     competitionsHistory: [
