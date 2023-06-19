@@ -11,7 +11,7 @@ export const UILibrary = (): ReactElement => {
 	const clickHandler = (): void => {}
 
 	return (
-		<div className='container m-auto p-5 md:px-7 lg:px-10 '>
+		<div className='container m-auto p-[17px] md:px-7 lg:px-10 '>
 			<h2 className='mb-5 text-xl font-semibold'>Кнопки</h2>
 			<div className='flex flex-col gap-2'>
 				<div className='flex gap-2'>
@@ -54,10 +54,11 @@ export const UILibrary = (): ReactElement => {
 
 			<h2 className='mb-5 text-xl font-semibold'>Табы</h2>
 			<HorizontalTabs
+				tabMinWidth='155'
 				tabs={[
 					{
 						isActive: activeIndex === 0,
-						title: 'Active competitions',
+						title: 'Active',
 						onClick: (idx: number) => setActiveIndex(idx)
 					},
 					{
@@ -81,8 +82,7 @@ export const UILibrary = (): ReactElement => {
 					className='py-[18px] text-base font-normal font-medium
 				text-black md:pb-[26px] md:text-xl
 				md:font-semibold lg:text-2xl
-				2xl:text-[32px]
-				'
+				2xl:text-[32px]'
 				>
 					Таблица
 				</h2>
