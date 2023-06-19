@@ -12,14 +12,20 @@ export const pairSchema = new Schema<IPair>(
     blackParticipant: {
       type: Schema.Types.ObjectId,
       ref: 'User',
+      // info for swagger
+      identificator: true,
     },
     whiteParticipant: {
       type: Schema.Types.ObjectId,
       ref: 'User',
+      // info for swagger
+      identificator: true,
     },
     winner: {
       type: Schema.Types.ObjectId,
       ref: 'User',
+      // info for swagger
+      identificator: true,
     },
     passed: {
       type: Boolean,
@@ -36,6 +42,8 @@ export const pairSchema = new Schema<IPair>(
     judge: {
       type: Schema.Types.ObjectId,
       ref: 'User',
+      // info for swagger
+      identificator: true,
     },
   },
   { versionKey: false }

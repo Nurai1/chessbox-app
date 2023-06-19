@@ -2,15 +2,15 @@ import express, { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-
-import { userRouter, competitionRouter } from './routes/index';
+import * as swaggerUi from 'swagger-ui-express';
+import * as swaggerFile from './swagger_output.json';
 import { User } from './models/index';
+
+export const app = express();
 
 const { TokenExpiredError } = jwt;
 
 dotenv.config();
-
-const app = express();
 
 const remoteMongoUri = process.env.MONGO_URI;
 const { JWT_SECRET_KEY, ENVIRONMENT } = process.env;
@@ -20,6 +20,8 @@ const HOST = ENVIRONMENT === 'development' ? 'localhost' : '0.0.0.0';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -74,12 +76,8 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-app.use('/api', userRouter);
-app.use('/api', competitionRouter);
-
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
-
   res.status(500).send({ error: err.message });
 });
 
