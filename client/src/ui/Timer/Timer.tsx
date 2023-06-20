@@ -1,10 +1,10 @@
-import { FC, useState, useEffect } from 'react'
+import { FC, useState, useEffect, memo } from 'react'
 import { getEndTime } from '../../helpers/datetime'
 
 type TimerPropsType = {
 	time: string
 }
-export const Timer: FC<TimerPropsType> = ({ time }) => {
+const Timer: FC<TimerPropsType> = memo(({ time }) => {
 	const [endTime, setEndTime] = useState({ time: getEndTime(time) })
 
 	useEffect(() => {
@@ -22,4 +22,8 @@ export const Timer: FC<TimerPropsType> = ({ time }) => {
 			))}
 		</ul>
 	)
-}
+})
+
+Timer.displayName = 'Timer'
+
+export { Timer }
