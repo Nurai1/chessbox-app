@@ -1,21 +1,12 @@
-import { ReactElement, useState, useEffect } from 'react'
+import { ReactElement } from 'react'
 import { Button, TableBody, TableWrapper, Timer } from '../ui'
 import { UsersTableWithTitle } from '../components'
 import { ratingTableSchema } from '../helpers/tableSchema'
 import { usersMock } from '../mock/usersData'
-import { getEndTime } from '../helpers/datetime'
 
 const usersTable = ratingTableSchema(usersMock)
 
 export const UILibrary = (): ReactElement => {
-	const [endTime, setEndTime] = useState({ time: '2023-06-29T09:00:00.000Z' })
-
-	useEffect(() => {
-		setTimeout(() => {
-			setEndTime({ ...endTime })
-		}, 15000)
-	})
-
 	const clickHandler = (): void => {}
 	return (
 		<div className='container m-auto p-5 md:px-7 lg:px-10 '>
@@ -59,7 +50,7 @@ export const UILibrary = (): ReactElement => {
 			<hr className='my-8' />
 
 			<h2 className='mb-5 text-xl font-semibold'>Таймер</h2>
-			<Timer timerData={getEndTime(endTime.time)} />
+			<Timer time='2023-06-29T09:00:00.000Z' />
 			<hr className='my-8' />
 
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>
