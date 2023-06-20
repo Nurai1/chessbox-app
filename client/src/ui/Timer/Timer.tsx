@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react'
-import { getEndTime } from '../../helpers/datetime';
+import { getEndTime } from '../../helpers/datetime'
 
 type TimerPropsType = {
 	time: string
@@ -8,8 +8,7 @@ export const Timer: FC<TimerPropsType> = ({ time }) => {
 	const [endTime, setEndTime] = useState({ time: getEndTime(time) })
 
 	useEffect(() => {
-		const timer = setInterval(() => setEndTime({ ...endTime }), 1000)
-		console.log('tick')
+		const timer = setInterval(() => setEndTime({ time: getEndTime(time) }), 60000)
 		return () => clearInterval(timer)
 	})
 
