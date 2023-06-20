@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerFile from './swagger_output.json';
 import { User } from './models/index';
+import { competitionRouter, userRouter } from './routes/index';
 
 export const app = express();
 
@@ -75,6 +76,10 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 });
+
+app.use('/api', competitionRouter);
+
+app.use('/api', userRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
