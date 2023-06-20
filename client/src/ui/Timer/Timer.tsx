@@ -8,9 +8,10 @@ export const Timer: FC<TimerPropsType> = ({ time }) => {
 	const [endTime, setEndTime] = useState({ time: getEndTime(time) })
 
 	useEffect(() => {
-		const timer = setInterval(() => setEndTime({ ...endTime }), 60000)
+		const timer = setInterval(() => setEndTime({ ...endTime }), 1000)
+		console.log('tick')
 		return () => clearInterval(timer)
-	}, [])
+	})
 
 	return (
 		<ul className='inline-flex gap-3'>
