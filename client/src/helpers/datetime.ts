@@ -32,23 +32,69 @@ export const getISODateTimeStringFromFormat = (date: string, format = 'MM/DD/YYY
 	return dayjs(date, format).utc().hour(0).format()
 }
 
-const addZero = (value: string): string => {
-	return value.length === 1 ? `0${value}` : value
-}
-
 export const getEndTime = (endTime: string) => {
 	const registrationEndTime = dayjs(endTime).valueOf()
 	const timeDiff = registrationEndTime - Date.now()
-	const diffDays = Math.floor(timeDiff / 86400000)
-	const diffHours = Math.floor((timeDiff % 86400000) / 3600000)
-	const diffMinutes = Math.round(((timeDiff % 86400000) % 3600000) / 60000)
-	const formatDays = addZero(diffDays.toString())
-	const formatHours = addZero(diffHours.toString())
-	const formatMinutes = addZero(diffMinutes.toString())
+	const days = Math.floor(timeDiff / 86400000)
+	const hours = Math.floor((timeDiff % 86400000) / 3600000)
+	const minutes = Math.floor(((timeDiff % 86400000) % 3600000) / 60000)
 
-	return [
-		{ title: `${formatDays === '01' ? 'day' : 'days'}`, value: formatDays },
-		{ title: `${formatHours === '01' ? 'hour' : 'hours'}`, value: formatHours },
-		{ title: `${formatMinutes === '01' ? 'minute' : 'minutes'}`, value: formatMinutes }
-	]
+	return { days, hours, minutes }
+}
+
+export const calcTime = (params: { minutes: number; hours: number; days: number }) => {
+	const getHours = () => {
+		if (params.minutes === 0 && params.hours === 0 && params.days !== -1) {
+			params.hours = 23
+			return params.hours
+		}
+
+		if (params.hours === 23 && params.minutes === 0) {
+			params.hours -= 1
+		}
+
+		if (params.minutes === 59 && params.hours !== 0 && params.hours !== 23) {
+			params.hours -= 1
+			return params.hours
+		}
+
+		return params.hours
+	}
+
+	const getMinutes = () => {
+		if (params.hours === 0 && params.minutes === 0) {
+			params.minutes = 0
+			return params.minutes
+		}
+
+		if (params.minutes === 0) {
+			params.minutes = 59
+			return params.minutes
+		}
+
+		params.minutes -= 1
+		return params.minutes
+	}
+
+	const getDays = () => {
+		if (params.minutes === 1 && params.hours === 0 && params.days !== 0) {
+			params.days -= 1
+			return params.days
+		}
+
+		return params.days
+	}
+
+	if (params.hours === 0 && params.days === 0 && params.minutes === 0) {
+		params.minutes = 0
+		params.hours = 0
+		params.days = 0
+		return params
+	}
+
+	return {
+		minutes: getMinutes(),
+		hours: getHours(),
+		days: getDays()
+	}
 }

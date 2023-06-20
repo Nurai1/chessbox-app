@@ -50,7 +50,7 @@ export const UILibrary = (): ReactElement => {
 			<hr className='my-8' />
 
 			<h2 className='mb-5 text-xl font-semibold'>Таймер</h2>
-			<Timer time='2023-06-29T09:00:00.000Z' />
+			<Timer time='2023-06-22T15:00:00.000Z' />
 			<hr className='my-8' />
 
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>
