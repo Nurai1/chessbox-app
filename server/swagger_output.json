@@ -7,9 +7,10 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3001/api"
+      "url": "http://localhost:3001"
     }
   ],
+  "basePath": "",
   "tags": [
     {
       "name": "Users"

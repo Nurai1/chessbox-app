@@ -3,9 +3,9 @@ import express from 'express';
 import { CompetitionController, UserController } from '../controllers/index';
 import { controllerErrorHandler } from '../utils/controllerErrorHandler';
 import { RESOURCES, ACTIONS } from '../constants';
-import { app } from '../index';
+import { routerMockForSwaggerGenerator } from '../utils/routerMockForSwaggerGenerator';
 
-const competitionRouter = express.Router();
+export const competitionRouter = express.Router();
 
 competitionRouter.get(
   '/competition/:id',
@@ -266,7 +266,7 @@ competitionRouter.patch(
   controllerErrorHandler(CompetitionController.addNewParticipant)
 );
 
-app.use(
+routerMockForSwaggerGenerator.use(
   '/api',
   competitionRouter
   /* #swagger.responses[500] = {

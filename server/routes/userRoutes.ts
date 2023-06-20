@@ -3,9 +3,9 @@ import express from 'express';
 import { UserController } from '../controllers/index';
 import { controllerErrorHandler } from '../utils/controllerErrorHandler';
 import { RESOURCES, ACTIONS } from '../constants';
-import { app } from '../index';
+import { routerMockForSwaggerGenerator } from '../utils/routerMockForSwaggerGenerator';
 
-const userRouter = express.Router();
+export const userRouter = express.Router();
 
 userRouter.post(
   '/signup',
@@ -164,7 +164,7 @@ userRouter.delete(
   controllerErrorHandler(UserController.deleteUser)
 );
 
-app.use(
+routerMockForSwaggerGenerator.use(
   '/api',
   userRouter
   /* #swagger.responses[500] = {

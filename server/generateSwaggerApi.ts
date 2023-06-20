@@ -34,7 +34,7 @@ const doc = {
       'This is the private API of the endpoints for Chessbox application.', // by default: ''
   },
   host: 'localhost:3001', // by default: 'localhost:3000'
-  basePath: '/api', // by default: '/'
+  basePath: '', // by default: '/'
   schemes: ['http'], // by default: ['http']
   consumes: ['application/json'], // by default: ['application/json']
   produces: ['application/json'], // by default: ['application/json']
