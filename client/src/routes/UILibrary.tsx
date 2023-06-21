@@ -1,15 +1,17 @@
-import { ReactElement } from 'react'
-import { Button, TableBody, TableWrapper, Timer } from '../ui'
+import { ReactElement, useState } from 'react'
+import { Button, HorizontalTabs, TableBody, TableWrapper, Timer } from '../ui'
 import { UsersTableWithTitle } from '../components'
 import { ratingTableSchema } from '../helpers/tableSchema'
 import { usersMock } from '../mock/usersData'
 
 const usersTable = ratingTableSchema(usersMock)
-
+const tabsContent = ['Active competitions', 'My competitions', 'Archive']
 export const UILibrary = (): ReactElement => {
+	const [activeIndex, setActiveIndex] = useState(0)
 	const clickHandler = (): void => {}
+
 	return (
-		<div className='container m-auto p-5 md:px-7 lg:px-10 '>
+		<div className='container m-auto p-[17px] md:px-7 lg:px-10 '>
 			<h2 className='mb-5 text-xl font-semibold'>Кнопки</h2>
 			<div className='flex flex-col gap-2'>
 				<div className='flex gap-2'>
@@ -35,6 +37,7 @@ export const UILibrary = (): ReactElement => {
 						Button
 					</Button>
 				</div>
+
 				<div className='flex gap-2'>
 					<Button onClick={clickHandler} type='primary' disabled>
 						Button
@@ -49,9 +52,35 @@ export const UILibrary = (): ReactElement => {
 			</div>
 			<hr className='my-8' />
 
+			<h2 className='mb-5 text-xl font-semibold'>Табы</h2>
+			<HorizontalTabs
+				tabMinWidth='155'
+				tabs={[
+					{
+						isActive: activeIndex === 0,
+						title: 'Active',
+						onClick: (idx: number) => setActiveIndex(idx)
+					},
+					{
+						isActive: activeIndex === 1,
+						title: 'My competitions',
+						onClick: (idx: number) => setActiveIndex(idx)
+					},
+					{
+						isActive: activeIndex === 2,
+						title: 'Archive',
+						onClick: (idx: number) => setActiveIndex(idx)
+					}
+				]}
+			/>
+			<h3 className='mt-2'>{tabsContent[activeIndex]}</h3>
+			<hr className='my-8' />
+
 			<h2 className='mb-5 text-xl font-semibold'>Таймер</h2>
 			<Timer time='2023-06-29T07:39:00.000Z' />
+			<br />
 			<Timer time='2023-06-29T13:44:00.000+04:00' />
+			<br />
 			<Timer time='2023-06-29T12:45:00.000+04:00' />
 			<hr className='my-8' />
 
@@ -61,8 +90,7 @@ export const UILibrary = (): ReactElement => {
 					className='py-[18px] text-base font-medium
 				text-black md:pb-[26px] md:text-xl
 				md:font-semibold lg:text-2xl
-				2xl:text-[32px]
-				'
+				2xl:text-[32px]'
 				>
 					Таблица
 				</h2>

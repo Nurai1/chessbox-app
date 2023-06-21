@@ -16,12 +16,15 @@ export const competitionGroupSchema = new Schema<ICompetitionGroup>(
       {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        // info for swagger
+        identificator: true,
       },
     ],
     allParticipants: [
       {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        identificator: true,
       },
     ],
     passedPairs: [pairSchema],
