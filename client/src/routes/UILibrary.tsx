@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react'
 import { Button, HorizontalTabs, TableBody, TableWrapper, Timer } from '../ui'
-import { UsersTableWithTitle } from '../components'
+import { UsersTableWithTitle, CompetitionCard } from '../components'
 import { ratingTableSchema } from '../helpers/tableSchema'
 import { usersMock } from '../mock/usersData'
 
@@ -11,7 +11,7 @@ export const UILibrary = (): ReactElement => {
 	const clickHandler = (): void => {}
 
 	return (
-		<div className='container m-auto p-[17px] md:px-7 lg:px-10 '>
+		<div className='container m-auto p-[17px] md:px-7 lg:px-[46px] '>
 			<h2 className='mb-5 text-xl font-semibold'>Кнопки</h2>
 			<div className='flex flex-col gap-2'>
 				<div className='flex gap-2'>
@@ -99,7 +99,18 @@ export const UILibrary = (): ReactElement => {
 				</table>
 			</TableWrapper>
 			<hr className='my-8' />
+
 			<UsersTableWithTitle rows={usersTable} title='Список пользователей' />
+			<hr className='my-8' />
+
+			<h2 className='mb-5 text-xl font-semibold'>Карточка соревнования</h2>
+			<div className='rounded-3xl border border-[#DADADA] p-2'>
+				<CompetitionCard isEventOver={false} isParticipant={false} />
+				<CompetitionCard isEventOver={false} isParticipant />
+				<CompetitionCard isEventOver={false} isParticipant={false} registrationClosed />
+			</div>
+
+			<hr className='my-8' />
 		</div>
 	)
 }
