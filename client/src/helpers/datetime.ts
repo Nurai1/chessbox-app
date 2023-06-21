@@ -42,51 +42,36 @@ export const getEndTime = (endTime: string) => {
 	return { days, hours, minutes }
 }
 
-let isLastDay = false
 export const calcTime = (params: { minutes: number; hours: number; days: number }) => {
 	const getMinutes = () => {
 		if (params.minutes === 0) {
-			params.minutes = 59
-			return params.minutes
+			return 59
 		}
 
-		params.minutes -= 1
-		return params.minutes
+		return params.minutes - 1
 	}
 
 	const getHours = () => {
-		if (params.minutes === 59 && params.hours === 0) {
-			params.hours = 23
-			return params.hours
+		if (params.minutes === 0 && params.hours === 0) {
+			return 23
 		}
 
-		if (params.minutes === 59 && params.hours !== 0) {
-			params.hours -= 1
-			return params.hours
+		if (params.minutes === 0 && params.hours !== 0) {
+			return params.hours - 1
 		}
 
 		return params.hours
 	}
 
 	const getDays = () => {
-		if (params.minutes === 59 && params.hours === 23 && params.days !== 0) {
-			params.days -= 1
-			return params.days
-		}
-
-		if (params.minutes === 59 && params.hours === 23 && params.days === 0) {
-			params.days = 0
-			return params.days
-		}
-
-		if (params.days === 0) {
-			isLastDay = true
+		if (params.minutes === 0 && params.hours === 0 && params.days !== 0) {
+			return params.days - 1
 		}
 
 		return params.days
 	}
 
-	if (params.minutes === 0 && params.hours === 0 && params.days === 0 && isLastDay) {
+	if (params.minutes === 0 && params.hours === 0 && params.days === 0) {
 		params.minutes = 0
 		params.hours = 0
 		params.days = 0
