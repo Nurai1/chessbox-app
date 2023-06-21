@@ -488,7 +488,7 @@ export const launchNextGroupRound = async (
     (group) => group._id?.toString() === groupId
   );
 
-  const nextRoundPairs = [];
+  const nextRoundPairs: any[] = [];
 
   if (
     competition?.groups &&

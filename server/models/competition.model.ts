@@ -21,12 +21,16 @@ const competitionSchema = new Schema<ICompetition>(
       {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        // info for swagger
+        identificator: true,
       },
     ],
     judges: [
       {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        // info for swagger
+        identificator: true,
       },
     ],
   },

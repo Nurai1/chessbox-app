@@ -196,7 +196,7 @@ export const updateUser = async (
   const result = req.body;
 
   if (req.body.password) {
-    const passwordValidRes = emailParser.safeParse(req.body.password);
+    const passwordValidRes = passwordParser.safeParse(req.body.password);
 
     if (!passwordValidRes.success) {
       res.status(400).send({
