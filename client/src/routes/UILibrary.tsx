@@ -1,5 +1,5 @@
 import { ReactElement, useState } from 'react'
-import { Button, HorizontalTabs, TableBody, TableWrapper } from '../ui'
+import { Button, HorizontalTabs, TableBody, TableWrapper, Timer } from '../ui'
 import { UsersTableWithTitle } from '../components'
 import { ratingTableSchema } from '../helpers/tableSchema'
 import { usersMock } from '../mock/usersData'
@@ -76,10 +76,18 @@ export const UILibrary = (): ReactElement => {
 			<h3 className='mt-2'>{tabsContent[activeIndex]}</h3>
 			<hr className='my-8' />
 
+			<h2 className='mb-5 text-xl font-semibold'>Таймер</h2>
+			<Timer time='2023-06-29T07:39:00.000Z' />
+			<br />
+			<Timer time='2023-06-29T13:44:00.000+04:00' />
+			<br />
+			<Timer time='2023-06-29T12:45:00.000+04:00' />
+			<hr className='my-8' />
+
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>
 			<TableWrapper>
 				<h2
-					className='py-[18px] text-base font-normal font-medium
+					className='py-[18px] text-base font-medium
 				text-black md:pb-[26px] md:text-xl
 				md:font-semibold lg:text-2xl
 				2xl:text-[32px]'
