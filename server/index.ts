@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import cors from 'cors';
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerFile from './swagger_output.json';
 import { User } from './models/index';
@@ -24,8 +25,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
+app.use(
+  cors({
+    origin: '*',
+  })
+);
+
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
