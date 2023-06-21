@@ -1,11 +1,13 @@
 import { FC, useState, useEffect, memo } from 'react'
+import { twMerge } from 'tailwind-merge'
 import { calcTime, getEndTime } from '../../helpers/datetime'
 import { addZero } from '../../helpers/addZero'
 
 type TimerPropsType = {
 	time: string
+	classes?: string
 }
-const Timer: FC<TimerPropsType> = memo(({ time }) => {
+const Timer: FC<TimerPropsType> = memo(({ time, classes }) => {
 	const [endTime, setEndTime] = useState<{
 		minutes: number
 		hours: number
@@ -28,7 +30,7 @@ const Timer: FC<TimerPropsType> = memo(({ time }) => {
 	}, [time])
 
 	return (
-		<ul className='inline-flex gap-3'>
+		<ul className={twMerge('inline-flex gap-3', classes)}>
 			<li className='h-[75px] w-[75px] rounded-2xl border-2 border-[#DADADA] py-2 px-1 text-center'>
 				<p className='text-2xl font-semibold'>{endTime ? addZero(endTime.days.toString()) : '0'}</p>
 				<span className='text-sm font-normal capitalize text-[#6C6A6C]'>{endTime?.days === 1 ? 'day' : 'days'}</span>
