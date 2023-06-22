@@ -1761,7 +1761,8 @@
       "Competition": {
         "title": "Competition",
         "required": [
-          "name"
+          "name",
+          "_id"
         ],
         "properties": {
           "startDate": {
@@ -1847,6 +1848,9 @@
                       "judge": {
                         "type": "string",
                         "identificator": true
+                      },
+                      "_id": {
+                        "type": "string"
                       }
                     },
                     "required": []
@@ -1887,10 +1891,16 @@
                       "judge": {
                         "type": "string",
                         "identificator": true
+                      },
+                      "_id": {
+                        "type": "string"
                       }
                     },
                     "required": []
                   }
+                },
+                "_id": {
+                  "type": "string"
                 }
               },
               "required": [
@@ -1928,6 +1938,9 @@
               "type": "string",
               "identificator": true
             }
+          },
+          "_id": {
+            "type": "string"
           }
         }
       },
@@ -1937,7 +1950,8 @@
           "email",
           "hashedPassword",
           "username",
-          "ratingNumber"
+          "ratingNumber",
+          "_id"
         ],
         "properties": {
           "email": {
@@ -2026,6 +2040,9 @@
               },
               "required": []
             }
+          },
+          "_id": {
+            "type": "string"
           }
         }
       },
@@ -2035,7 +2052,8 @@
           "ageCategory",
           "weightCategory",
           "gender",
-          "currentRoundNumber"
+          "currentRoundNumber",
+          "_id"
         ],
         "properties": {
           "ageCategory": {
@@ -2102,6 +2120,9 @@
                 "judge": {
                   "type": "string",
                   "identificator": true
+                },
+                "_id": {
+                  "type": "string"
                 }
               },
               "required": []
@@ -2142,10 +2163,16 @@
                 "judge": {
                   "type": "string",
                   "identificator": true
+                },
+                "_id": {
+                  "type": "string"
                 }
               },
               "required": []
             }
+          },
+          "_id": {
+            "type": "string"
           }
         }
       },
@@ -2182,8 +2209,14 @@
           "judge": {
             "type": "string",
             "identificator": true
+          },
+          "_id": {
+            "type": "string"
           }
-        }
+        },
+        "required": [
+          "_id"
+        ]
       }
     }
   }

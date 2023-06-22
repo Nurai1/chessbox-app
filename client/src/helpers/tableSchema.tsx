@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
-import { ReactComponent as MedalGold } from 'assets/medal-gold.svg'
-import { ReactComponent as MedalSilver } from 'assets/medal-silver.svg'
-import { ReactComponent as MedalBronze } from 'assets/medal-bronze.svg'
-import { User } from '../types'
+import { ReactComponent as MedalGold } from 'src/assets/medal-gold.svg'
+import { ReactComponent as MedalSilver } from 'src/assets/medal-silver.svg'
+import { ReactComponent as MedalBronze } from 'src/assets/medal-bronze.svg'
+import { UserSchema } from '../types'
 
-export const ratingTableSchema = (tableData: User[]) => {
+export const ratingTableSchema = (tableData: UserSchema[]) => {
 	const renderMedal = (index: number) => {
 		if (index === 1) {
 			return <MedalGold className='absolute top-[-27px] left-[-14px] -z-10' />

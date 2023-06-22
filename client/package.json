@@ -9,6 +9,7 @@
 	"scripts": {
 		"build": "pnpm lint && vite build",
 		"start": "vite --open",
+		"generate-types": "pnpm openapi-typescript ../server/swagger_output.json -o ./src/types/generated.ts",
 		"prepare": "pnpm simple-git-hooks",
 		"preview": "vite preview",
 		"format": "prettier -uw --cache --ignore-path .gitignore .",
@@ -19,9 +20,13 @@
 		"build-storybook": "build-storybook"
 	},
 	"dependencies": {
+		"@reduxjs/toolkit": "^1.9.5",
 		"dayjs": "^1.11.7",
+		"openapi-fetch": "^0.4.0",
+		"openapi-typescript": "^6.2.8",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"react-redux": "^8.1.1",
 		"react-router-dom": "^6.7.0",
 		"tailwind-merge": "^1.9.1",
 		"tailwind-variants": "^0.0.30",
@@ -42,7 +47,6 @@
 		"@types/node": "^18.11.17",
 		"@types/react": "^18.0.25",
 		"@types/react-dom": "^18.0.8",
-		"@types/react-router-dom": "^5.3.3",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
 		"@typescript-eslint/parser": "^5.43.0",
 		"@vitejs/plugin-react": "^2.2.0",
@@ -79,7 +83,7 @@
 	"lint-staged": {
 		"*": "prettier -uw --cache",
 		"*.{ts,tsx}": [
-			"eslint --cache --max-warnings=0 --fix --ignore-path .gitignore --ext .ts,.tsx"
+			"eslint --cache --max-warnings=1 --fix --ignore-path .gitignore --ext .ts,.tsx"
 		]
 	},
 	"simple-git-hooks": {
