@@ -46,7 +46,7 @@
 			"version": "detect"
 		}
 	},
-	"ignorePatterns": ["tailwind.config.js"],
+	"ignorePatterns": ["tailwind.config.js", "generated.ts"],
 	"overrides": [
 		{
 			"files": ["vite.config.ts", "src/**/*.ts?(x)", "global.d.ts"],
