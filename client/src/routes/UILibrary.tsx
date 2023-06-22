@@ -1,12 +1,12 @@
-import { ReactElement, useState } from 'react'
-import { Button, HorizontalTabs, TableBody, TableWrapper, Timer } from '../ui'
+import { FC, useState } from 'react'
 import { UsersTableWithTitle } from '../components'
 import { ratingTableSchema } from '../helpers/tableSchema'
 import { usersMock } from '../mock/usersData'
+import { Button, HorizontalTabs, TableBody, TableWrapper, Timer } from '../ui'
 
 const usersTable = ratingTableSchema(usersMock)
 const tabsContent = ['Active competitions', 'My competitions', 'Archive']
-export const UILibrary = (): ReactElement => {
+export const UILibrary: FC = () => {
 	const [activeIndex, setActiveIndex] = useState(0)
 	const clickHandler = (): void => {}
 
@@ -82,6 +82,7 @@ export const UILibrary = (): ReactElement => {
 			<Timer time='2023-06-29T13:44:00.000+04:00' />
 			<br />
 			<Timer time='2023-06-29T12:45:00.000+04:00' />
+
 			<hr className='my-8' />
 
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>

@@ -17,7 +17,7 @@ const endpointsFiles = [
   './routes/competitionRoutes.ts',
 ];
 
-const m2sOptions = { omitFields: ['_id'], props: ['identificator'] };
+const m2sOptions = { props: ['identificator'] };
 const swaggerCompetition = m2s(Competition, m2sOptions);
 const swaggerUser = m2s(User, m2sOptions);
 const swaggerCompetitionGroup = m2s(
@@ -25,6 +25,14 @@ const swaggerCompetitionGroup = m2s(
   m2sOptions
 );
 const swaggerPair = m2s(mongoose.model('Pair', pairSchema), m2sOptions);
+
+swaggerCompetitionGroup.required = [
+  ...(swaggerCompetitionGroup.required ?? []),
+  '_id',
+];
+swaggerPair.required = [...(swaggerPair.required ?? []), '_id'];
+swaggerUser.required = [...(swaggerUser.required ?? []), '_id'];
+swaggerCompetition.required = [...(swaggerCompetition.required ?? []), '_id'];
 
 const doc = {
   info: {

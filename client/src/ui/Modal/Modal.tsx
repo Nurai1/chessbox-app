@@ -1,8 +1,8 @@
-import { ReactComponent as XmarkIcon } from 'assets/x-mark-big.svg'
-import { useClickOutside } from 'hooks/useClickOutside'
+import { ReactComponent as XmarkIcon } from 'src/assets/x-mark-big.svg'
+import { useClickOutside } from 'src/hooks/useClickOutside'
 import { FC, ReactElement, ReactNode, useEffect, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { Button } from 'ui'
+import { Button } from 'src/ui'
 
 export const Modal: FC<{
 	isOpen: boolean
