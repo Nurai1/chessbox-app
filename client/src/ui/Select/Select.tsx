@@ -1,9 +1,9 @@
-import { ReactComponent as ArrowDownIcon } from 'assets/arrow-down.svg'
-import { ReactComponent as CheckMarkIcon } from 'assets/check-mark.svg'
-import { ReactComponent as CrossIcon } from 'assets/cross.svg'
+import { ReactComponent as ArrowDownIcon } from 'src/assets/arrow-down.svg'
+import { ReactComponent as CheckMarkIcon } from 'src/assets/check-mark.svg'
+import { ReactComponent as CrossIcon } from 'src/assets/cross.svg'
 import { FC, memo, ReactNode, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { Input, Label } from 'ui'
+import { Input, Label } from 'src/ui'
 
 const getOptionById = (options: { renderNode?: ReactNode; value: string; id: string }[], id: string | undefined) =>
 	options.find(option => option.id === id)
@@ -90,7 +90,7 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 								})}
 							</div>
 						</button>
-						<ArrowDownIcon className='absolute right-6 bottom-6 z-10 cursor-pointer transition hs-dropdown-open:rotate-180' />
+						<ArrowDownIcon className='hs-dropdown-open:rotate-180 absolute right-6 bottom-6 z-10 cursor-pointer transition' />
 					</div>
 				) : (
 					<div className='relative w-full'>
@@ -104,14 +104,14 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 								validationErrorText && 'border-red-400 ring-4 ring-red-200'
 							)}
 						/>
-						<ArrowDownIcon className='absolute right-6 bottom-6 z-10 cursor-pointer transition hs-dropdown-open:rotate-180' />
+						<ArrowDownIcon className='hs-dropdown-open:rotate-180 absolute right-6 bottom-6 z-10 cursor-pointer transition' />
 					</div>
 				)}
 				{validationErrorText && (
 					<span className='mt-[10px] inline-block text-xs leading-none text-red-400'>{validationErrorText}</span>
 				)}
 				<div
-					className='hs-dropdown-menu duration dropdown__menu-strict-bottom z-20 mt-2 box-border hidden max-h-[50vh] w-full min-w-[15rem] overflow-y-auto rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] hs-dropdown-open:opacity-100'
+					className='hs-dropdown-menu duration dropdown__menu-strict-bottom hs-dropdown-open:opacity-100 z-20 mt-2 box-border hidden max-h-[50vh] w-full min-w-[15rem] overflow-y-auto rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin]'
 					aria-labelledby='hs-dropdown-basic'
 					data-popper-placement='bottom-start'
 				>

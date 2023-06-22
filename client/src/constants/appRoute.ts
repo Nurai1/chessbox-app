@@ -1,5 +1,5 @@
 export const AppRoute = {
 	Root: '/',
-	UILibrary: 'uilibrary',
+	UILibrary: '/uilibrary',
 	NotFound: '*'
 }
