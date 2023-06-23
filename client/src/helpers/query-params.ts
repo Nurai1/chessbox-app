@@ -1,4 +1,4 @@
-import configEnv from 'configEnv'
+import configEnv from 'src/configEnv'
 
 const DEFAULT_SERVER_URL = configEnv.serviceApiUrl
 

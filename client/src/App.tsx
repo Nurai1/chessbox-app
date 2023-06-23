@@ -1,14 +1,16 @@
 import { HashRouter, Route, Routes } from 'react-router-dom'
-import { Route404 } from 'routes/404'
-import { UILibrary } from 'routes/UILibrary'
-import { AppRoute } from './constants/appRoute'
+import { AppRoute } from 'src/constants/appRoute'
+import { Route404 } from 'src/routes/404'
+import { MainPage } from 'src/routes/MainPage'
+import { UILibrary } from 'src/routes/UILibrary'
 
 const App = () => {
 	return (
 		<div className='flex h-screen'>
 			<HashRouter>
-				<div className='overflow-y-auto w-full'>
+				<div className='w-full overflow-y-auto'>
 					<Routes>
+						<Route element={<MainPage />} path={AppRoute.Root} />
 						<Route element={<UILibrary />} path={AppRoute.UILibrary} />
 						<Route element={<Route404 />} path={AppRoute.NotFound} />
 					</Routes>
