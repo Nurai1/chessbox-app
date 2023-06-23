@@ -1761,6 +1761,8 @@
       "Competition": {
         "title": "Competition",
         "required": [
+          "startDate",
+          "registrationEndsAt",
           "name",
           "_id"
         ],
@@ -1770,6 +1772,10 @@
             "format": "date-time"
           },
           "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "registrationEndsAt": {
             "type": "string",
             "format": "date-time"
           },
@@ -1913,6 +1919,46 @@
           },
           "participantsAmount": {
             "type": "number"
+          },
+          "price": {
+            "type": "object",
+            "properties": {
+              "currentValue": {
+                "type": "number"
+              },
+              "pricesChanges": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "daysBeforeRegistrationDate": {
+                      "type": "number"
+                    },
+                    "newValue": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "daysBeforeRegistrationDate",
+                    "newValue"
+                  ]
+                }
+              }
+            }
+          },
+          "requirements": {
+            "type": "object",
+            "properties": {
+              "ageCategory": {
+                "type": "string"
+              },
+              "weightCategory": {
+                "type": "string"
+              },
+              "gender": {
+                "type": "string"
+              }
+            }
           },
           "lastOrder": {
             "type": "object",
