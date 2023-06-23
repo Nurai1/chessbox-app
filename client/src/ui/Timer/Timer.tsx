@@ -30,18 +30,52 @@ const Timer: FC<TimerPropsType> = memo(({ time, classes }) => {
 	}, [time])
 
 	return (
-		<ul className={twMerge('inline-flex gap-3', classes)}>
-			<li className='h-[75px] w-[75px] rounded-2xl border-2 border-[#DADADA] py-2 px-1 text-center'>
-				<p className='text-2xl font-semibold'>{endTime ? addZero(endTime.days.toString()) : '0'}</p>
-				<span className='text-sm font-normal capitalize text-[#6C6A6C]'>{endTime?.days === 1 ? 'day' : 'days'}</span>
+		<ul className={twMerge('inline-flex gap-2 ', classes)}>
+			<li
+				className='text-base font-bold
+			lg:flex lg:h-[55px] lg:w-[55px] lg:flex-col lg:justify-center lg:rounded-2xl lg:border-2 lg:border-[#DADADA] lg:py-2 lg:px-0.5 lg:text-center
+			xl:h-[75px] xl:w-[75px] xl:py-2 xl:px-1'
+			>
+				<span className='inline font-bold lg:text-sm lg:font-normal xl:block xl:text-2xl xl:font-semibold'>
+					{endTime ? addZero(endTime.days.toString()) : '0'}
+				</span>
+				<span className='text-base font-bold lg:hidden'>&nbsp;d</span>
+				<span
+					className='hidden
+				lg:block lg:text-xs lg:font-normal lg:capitalize lg:text-[#6C6A6C] xl:text-sm'
+				>
+					{endTime?.days === 1 ? 'day' : 'days'}
+				</span>
 			</li>
-			<li className='h-[75px] w-[75px] rounded-2xl border-2 border-[#DADADA] py-2 px-1 text-center'>
-				<p className='text-2xl font-semibold'>{endTime ? addZero(endTime.hours.toString()) : 0}</p>
-				<span className='text-sm font-normal capitalize text-[#6C6A6C]'>{endTime?.hours === 1 ? 'hour' : 'hours'}</span>
+			<li
+				className='text-base font-bold
+			lg:flex lg:h-[55px] lg:w-[55px] lg:flex-col lg:justify-center lg:rounded-2xl lg:border-2 lg:border-[#DADADA] lg:py-2 lg:px-0.5 lg:text-center
+			xl:h-[75px] xl:w-[75px] xl:py-2 xl:px-1'
+			>
+				<span className='inline font-bold lg:text-sm lg:font-normal xl:block xl:text-2xl xl:font-semibold'>
+					{endTime ? addZero(endTime.hours.toString()) : 0}
+				</span>
+				<span className='text-base font-bold lg:hidden'>h</span>
+				<span
+					className='hidden
+				lg:block lg:text-xs lg:font-normal lg:capitalize lg:text-[#6C6A6C] xl:text-sm'
+				>
+					{endTime?.hours === 1 ? 'hour' : 'hours'}
+				</span>
 			</li>
-			<li className='h-[75px] w-[75px] rounded-2xl border-2 border-[#DADADA] py-2 px-1 text-center'>
-				<p className='text-2xl font-semibold'>{endTime ? addZero(endTime.minutes.toString()) : 0}</p>
-				<span className='text-sm font-normal capitalize text-[#6C6A6C]'>
+			<li
+				className='text-base font-bold
+			lg:flex lg:h-[55px] lg:w-[55px] lg:flex-col lg:justify-center lg:rounded-2xl lg:border-2 lg:border-[#DADADA] lg:py-2 lg:px-0.5 lg:text-center
+			xl:h-[75px] xl:w-[75px] xl:py-2 xl:px-1'
+			>
+				<span className='inline font-bold lg:text-sm lg:font-normal xl:block xl:text-2xl xl:font-semibold'>
+					{endTime ? addZero(endTime.minutes.toString()) : 0}
+				</span>
+				<span className='text-base font-bold lg:hidden'>m</span>
+				<span
+					className='hidden
+				lg:block lg:text-xs lg:font-normal lg:capitalize lg:text-[#6C6A6C] xl:text-sm'
+				>
 					{endTime?.minutes === 1 ? 'minute' : 'minutes'}
 				</span>
 			</li>

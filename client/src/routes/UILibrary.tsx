@@ -1,8 +1,10 @@
 import { ReactElement, useState } from 'react'
-import { Button, HorizontalTabs, TableBody, TableWrapper, Timer } from '../ui'
+import { ReactComponent as Banknote } from 'assets/banknote.svg'
+import { ReactComponent as Persons } from 'assets/persons.svg'
+import { Button, HorizontalTabs, TableBody, TableWrapper, Tag, Timer } from '../ui'
 import { UsersTableWithTitle, CompetitionCard } from '../components'
 import { ratingTableSchema } from '../helpers/tableSchema'
-import { usersMock } from '../mock/usersData'
+import { usersMock, competitionsMock } from '../mock'
 
 const usersTable = ratingTableSchema(usersMock)
 const tabsContent = ['Active competitions', 'My competitions', 'Archive']
@@ -11,7 +13,7 @@ export const UILibrary = (): ReactElement => {
 	const clickHandler = (): void => {}
 
 	return (
-		<div className='container m-auto p-[17px] md:px-7 lg:px-[46px] '>
+		<div className='container m-auto p-[17px] md:px-7 lg:px-[41px]'>
 			<h2 className='mb-5 text-xl font-semibold'>Кнопки</h2>
 			<div className='flex flex-col gap-2'>
 				<div className='flex gap-2'>
@@ -84,6 +86,13 @@ export const UILibrary = (): ReactElement => {
 			<Timer time='2023-06-29T12:45:00.000+04:00' />
 			<hr className='my-8' />
 
+			<h2 className='mb-5 text-xl font-semibold'>Тэги</h2>
+			<div className='mt-4 flex flex-wrap gap-4 '>
+				<Tag img={<Banknote className='max-5 mr-2' />} text='888' />
+				<Tag img={<Persons className='max-5 mr-2' />} text='426 participants enrolled' />
+			</div>
+			<hr className='my-8' />
+
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>
 			<TableWrapper>
 				<h2
@@ -104,10 +113,15 @@ export const UILibrary = (): ReactElement => {
 			<hr className='my-8' />
 
 			<h2 className='mb-5 text-xl font-semibold'>Карточка соревнования</h2>
-			<div className='rounded-3xl border border-[#DADADA] p-2'>
-				<CompetitionCard isEventOver={false} isParticipant={false} />
-				<CompetitionCard isEventOver={false} isParticipant />
-				<CompetitionCard isEventOver={false} isParticipant={false} registrationClosed />
+			<div
+				className='border-[#DADADA] lg:rounded-3xl lg:border lg:px-[30px] lg:py-[15px]
+			xl:px-[25px]
+			2xl:px-[9px]'
+			>
+				<CompetitionCard competition={competitionsMock[0]} isParticipant={false} />
+				<CompetitionCard competition={competitionsMock[1]} isParticipant />
+				<CompetitionCard competition={competitionsMock[2]} isParticipant={false} />
+				<CompetitionCard competition={competitionsMock[3]} isParticipant />
 			</div>
 
 			<hr className='my-8' />
