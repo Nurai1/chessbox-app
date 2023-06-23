@@ -644,9 +644,11 @@ export interface components {
 		/** Competition */
 		Competition: {
 			/** Format: date-time */
-			startDate?: string
+			startDate: string
 			/** Format: date-time */
 			endDate?: string
+			/** Format: date-time */
+			registrationEndsAt: string
 			name: string
 			description?: string
 			groups?: {
@@ -684,6 +686,18 @@ export interface components {
 				_id?: string
 			}[]
 			participantsAmount?: number
+			price?: {
+				currentValue?: number
+				pricesChanges?: {
+					daysBeforeRegistrationDate: number
+					newValue: number
+				}[]
+			}
+			requirements?: {
+				ageCategory?: string
+				weightCategory?: string
+				gender?: string
+			}
 			lastOrder?: {
 				group?: number
 				pair?: number

@@ -7,12 +7,27 @@ const { Schema } = mongoose;
 
 const competitionSchema = new Schema<ICompetition>(
   {
-    startDate: Date,
+    startDate: { type: Date, required: true },
     endDate: Date,
+    registrationEndsAt: { type: Date, required: true },
     name: { type: String, required: true },
     description: String,
     groups: [competitionGroupSchema],
     participantsAmount: Number,
+    price: {
+      currentValue: Number,
+      pricesChanges: [
+        {
+          daysBeforeRegistrationDate: { type: Number, required: true },
+          newValue: { type: Number, required: true },
+        },
+      ],
+    },
+    requirements: {
+      ageCategory: { type: String },
+      weightCategory: { type: String },
+      gender: { type: String },
+    },
     lastOrder: {
       group: { type: Number, default: 0 },
       pair: { type: Number, default: 0 },
