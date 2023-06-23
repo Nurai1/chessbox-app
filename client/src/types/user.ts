@@ -1,11 +1,16 @@
-type Pairs = {
+export type LastOrder = {
+	group: number
+	pair: number
+}
+
+export type Pairs = {
 	roundNumber: number
 	blackParticipant: string
 	whiteParticipant: string
 	_id: string
 }
 
-type Groups = {
+export type Groups = {
 	ageCategory: string
 	weightCategory: string
 	gender: string
@@ -19,10 +24,7 @@ type Groups = {
 }
 
 type Competition = {
-	lastOrder: {
-		group: number
-		pair: number
-	}
+	lastOrder: LastOrder
 	judges: string[] | []
 	_id: string
 	startDate: string
