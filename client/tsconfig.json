@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"strictNullChecks": true,
 		"allowSyntheticDefaultImports": true,
-		"baseUrl": "./src",
+		"baseUrl": "./",
 		"forceConsistentCasingInFileNames": true,
 		"isolatedModules": true,
 		"jsx": "react-jsx",

@@ -1,8 +1,8 @@
-import { ReactComponent as BigSearchLoopIcon } from 'assets/big-search-loop.svg'
-import { ReactComponent as SearchLoopIcon } from 'assets/search-loop.svg'
+import { ReactComponent as BigSearchLoopIcon } from 'src/assets/big-search-loop.svg'
+import { ReactComponent as SearchLoopIcon } from 'src/assets/search-loop.svg'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { Label } from 'ui'
+import { Label } from 'src/ui'
 
 export type InputPropsType = {
 	label?: string

@@ -1,4 +1,4 @@
-import { ReactComponent as ArrowDownIcon } from 'assets/arrow-down.svg'
+import { ReactComponent as ArrowDownIcon } from 'src/assets/arrow-down.svg'
 
 import { FC, useMemo } from 'react'
 import { twMerge } from 'tailwind-merge'

@@ -51,11 +51,24 @@ export interface IPair {
 
 export interface ICompetition {
   _id: Types.ObjectId;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate?: Date;
+  registrationEndsAt: Date;
   name: string;
   description?: string;
   participantsAmount?: number;
+  price?: {
+    currentValue?: number;
+    pricesChanges?: {
+      daysBeforeRegistrationDate: number;
+      newValue: number;
+    }[];
+  };
+  requirements?: {
+    ageCategory?: string;
+    weightCategory?: string;
+    gender?: GenderType;
+  };
   lastOrder: { group: number; pair: number };
   groups: ICompetitionGroup[];
   participants: PopulatedDoc<IUser & Document>[];

@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react'
+import { useState, FC } from 'react'
 import { ReactComponent as Banknote } from 'assets/banknote.svg'
 import { ReactComponent as Persons } from 'assets/persons.svg'
 import { Button, HorizontalTabs, TableBody, TableWrapper, Tag, Timer } from '../ui'
@@ -8,7 +8,7 @@ import { usersMock, competitionsMock } from '../mock'
 
 const usersTable = ratingTableSchema(usersMock)
 const tabsContent = ['Active competitions', 'My competitions', 'Archive']
-export const UILibrary = (): ReactElement => {
+export const UILibrary: FC = () => {
 	const [activeIndex, setActiveIndex] = useState(0)
 	const clickHandler = (): void => {}
 
@@ -84,6 +84,7 @@ export const UILibrary = (): ReactElement => {
 			<Timer time='2023-06-29T13:44:00.000+04:00' />
 			<br />
 			<Timer time='2023-06-29T12:45:00.000+04:00' />
+
 			<hr className='my-8' />
 
 			<h2 className='mb-5 text-xl font-semibold'>Тэги</h2>

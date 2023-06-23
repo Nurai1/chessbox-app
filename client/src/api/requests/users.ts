@@ -1,15 +1,19 @@
-import { apiRequest } from 'api/apiRequest'
-import { UserType } from 'api/generatedTypes/users'
-import { UsersParser } from 'api/validation/users'
-import { validateApiData } from 'api/validation/validateApiData'
+import { get } from 'src/api/api'
 
-const getUsersRequest = async () => {
-	return apiRequest({ pathname: '/users' })
+export const getUsersApi = async () => {
+	const result = await get('/api/users', {})
+
+	return result
 }
 
-export const getUsersData = async () => {
-	const raw = await getUsersRequest()
-	const usersData = validateApiData<UserType[]>(raw, UsersParser)
+export const getUserByIdApi = async (id: string) => {
+	const result = await get('/api/user/{id}', {
+		params: {
+			path: {
+				id
+			}
+		}
+	})
 
-	return usersData
+	return result
 }
