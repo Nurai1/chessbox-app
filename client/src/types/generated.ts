@@ -712,22 +712,24 @@ export interface components {
 			hashedPassword: string
 			firstName?: string
 			lastName?: string
+			address?: {
+				country?: string
+				city?: string
+			}
+			fightClub?: {
+				name?: string
+			}
 			/** @enum {string} */
-			role?: 'guest' | 'participant' | 'judge' | 'chief_judge' | 'admin'
+			role: 'participant' | 'judge' | 'chief_judge' | 'admin'
 			username: string
-			age?: number
+			age: number
 			socialNetworks?: {
 				whatsup?: string
 			}
-			gender?: string
-			/** Format: date-time */
-			birthDate?: string
+			/** @enum {string} */
+			gender: 'woman' | 'man'
 			ratingNumber: number
-			weight?: {
-				number?: number
-				category?: string
-				measureUnit?: string
-			}
+			weight: number
 			competition?: string
 			currentGroupId?: string
 			competitionsHistory?: {

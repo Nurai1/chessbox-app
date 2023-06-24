@@ -1995,8 +1995,12 @@
         "required": [
           "email",
           "hashedPassword",
+          "role",
           "username",
+          "age",
+          "gender",
           "ratingNumber",
+          "weight",
           "_id"
         ],
         "properties": {
@@ -2014,10 +2018,28 @@
             "type": "string",
             "required": false
           },
+          "address": {
+            "type": "object",
+            "properties": {
+              "country": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              }
+            }
+          },
+          "fightClub": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            }
+          },
           "role": {
             "type": "string",
             "enum": [
-              "guest",
               "participant",
               "judge",
               "chief_judge",
@@ -2039,28 +2061,17 @@
             }
           },
           "gender": {
-            "type": "string"
-          },
-          "birthDate": {
             "type": "string",
-            "format": "date-time"
+            "enum": [
+              "woman",
+              "man"
+            ]
           },
           "ratingNumber": {
             "type": "number"
           },
           "weight": {
-            "type": "object",
-            "properties": {
-              "number": {
-                "type": "number"
-              },
-              "category": {
-                "type": "string"
-              },
-              "measureUnit": {
-                "type": "string"
-              }
-            }
+            "type": "number"
           },
           "competition": {
             "type": "string",
