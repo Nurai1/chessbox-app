@@ -53,7 +53,7 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
                             md:text-base'
 							>
 								{user?.age ? `age ${user?.age}` : ''}
-								{user.weight?.number ? `, ${user.weight?.number} ${user.weight?.measureUnit}` : ''}
+								{user.weight ? `, ${user.weight} kg` : ''}
 							</p>
 						</div>
 					),

@@ -3,29 +3,28 @@ import { Document, PopulatedDoc, Types } from 'mongoose';
 
 export type ECoefficients = 1 | 0.75 | 0.5 | 0.25;
 export type GenderType = 'woman' | 'man';
-export type WeightUnitType = 'kg';
 
 export interface Address {
-  region: string;
-  city?: string;
+  country: string;
+  city: string;
 }
 
 export interface IUser {
+  _id: Types.ObjectId;
   email: string;
-  firstName?: string;
-  lastName?: string;
-  weight?: { number: number; category: string; measureUnit: WeightUnitType };
+  firstName: string;
+  lastName: string;
+  weight: number;
   hashedPassword: string;
   role: string;
   username: string;
-  birthDate?: string;
   socialNetworks?: {
     whatsUp?: string;
   };
-  age?: number;
-  gender?: GenderType;
-  address?: Address;
-  club?: string;
+  age: number;
+  gender: GenderType;
+  address: Address;
+  fightClub: { name: string };
   ratingNumber: number;
   competition: PopulatedDoc<ICompetition & Document>;
   currentGroupId?: string;

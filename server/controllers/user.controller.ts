@@ -166,9 +166,7 @@ export const createUser = async (
 ) => {
   if (!req.body) return res.sendStatus(400);
 
-  const userName = req.body.name;
-  const userAge = req.body.age;
-  const user = new User({ name: userName, age: userAge, ratingNumber: 1000 });
+  const user = new User(req.body);
 
   await user.save();
 
@@ -221,11 +219,10 @@ export const updateUser = async (
     }
   }
 
-  const { id } = req.body;
-
-  const user = await User.findOneAndUpdate({ _id: id }, result, {
+  const user = await User.findOneAndUpdate({ _id: result._id }, result, {
     new: true,
   });
+  console.log(user);
 
   res.send(user);
 };
