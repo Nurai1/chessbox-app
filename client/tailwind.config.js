@@ -12,7 +12,7 @@ const config = {
 		},
 		screens: {
 			...defaultConfig.theme.screens,
-			sm: '375',
+			sm: '375px',
 			md: '536px',
 			lg: '744px',
 			xl: '1200px',

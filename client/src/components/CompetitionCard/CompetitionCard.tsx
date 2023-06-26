@@ -1,31 +1,35 @@
 import { FC } from 'react'
-import { ReactComponent as Banknote } from 'assets/banknote.svg'
-import { ReactComponent as Persons } from 'assets/persons.svg'
-import { ReactComponent as ThreeStars } from 'assets/three-stars.svg'
-import { ReactComponent as TwoStars } from 'assets/two-stars.svg'
-import { ReactComponent as Hourglass } from 'assets/hourglass.svg'
-import { ReactComponent as Place } from 'assets/place.svg'
+import { useWindowSize } from '@uidotdev/usehooks'
+import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
+import { ReactComponent as Persons } from 'src/assets/persons.svg'
+import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
+import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
+import { ReactComponent as Hourglass } from 'src/assets/hourglass.svg'
+import { ReactComponent as Place } from 'src/assets/place.svg'
 import { Button, Timer, Tag } from '../../ui'
-import { Competition } from '../../types'
+import { components } from '../../types/generated'
 import { getFormattedDate } from '../../helpers/datetime'
+import { BreakPoint } from '../../constants/breakPoints'
 import style from './CompetitionCard.module.css'
 
 type CompetitionPropsType = {
-	competition: Competition
+	competition: components['schemas']['Competition']
 	isParticipant: boolean
 }
 
-const screenWidth = document.documentElement.clientWidth
-
-export const CompetitionCard: FC<CompetitionPropsType> = ({ competition, isParticipant }) => {
+export const CompetitionCard: FC<CompetitionPropsType> = ({
+	competition: { startDate, participantsAmount, registrationEndsAt, endDate, name, price, description },
+	isParticipant
+}) => {
 	const handleClick = () => {}
-	const startDate = getFormattedDate(competition.startDate, 'MMM D, HH:mm')
-	const participantsNumber = competition.participants.length
-	const isRegistrationClosed = new Date(competition.registrationEndsAt).getTime() < new Date().getTime()
-	const isOver = new Date(competition.endDate).getTime() < new Date().getTime()
+	const dateStart = getFormattedDate(startDate, 'MMM D, HH:mm')
+	const participantsNumber = participantsAmount
+	const isRegistrationClosed = new Date(registrationEndsAt).getTime() < new Date().getTime()
+	const isOver = endDate && new Date(endDate).getTime() < new Date().getTime()
+	const { width: screenWidth } = useWindowSize()
 
 	const participateMobile = () =>
-		screenWidth < 744 &&
+		screenWidth < BreakPoint.Lg &&
 		!isRegistrationClosed &&
 		!isParticipant &&
 		!isOver && (
@@ -35,14 +39,14 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition, isParti
 		)
 
 	const participateDesktop = () =>
-		screenWidth > 743 &&
+		screenWidth >= BreakPoint.Lg &&
 		!isRegistrationClosed &&
 		!isParticipant &&
 		!isOver && (
 			<div
 				className='mb-[17px] flex items-center
-				lg:col-start-2 lg:col-end-3 lg:mb-0 lg:max-w-[190px] lg:max-w-[250px] lg:flex-col
-				lg:items-start xl:col-start-3 xl:col-end-4'
+				lg:col-start-2 lg:col-end-3 lg:mb-0 lg:max-w-[190px] lg:flex-col
+				lg:items-start xl:col-start-3 xl:col-end-4 xl:max-w-[250px]'
 			>
 				<h3
 					className='mr-1 text-[#6C6A6C]
@@ -51,8 +55,8 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition, isParti
 				>
 					Registration ends in:
 				</h3>
-				<Timer time={competition.registrationEndsAt} classes='lg:mb-[20px] 2xl:mb-[26px]' />
-				{screenWidth >= 744 && (
+				<Timer time={registrationEndsAt} classes='lg:mb-[20px] 2xl:mb-[26px]' />
+				{screenWidth >= BreakPoint.Lg && (
 					<Button onClick={handleClick} classes='w-full'>
 						Participate
 					</Button>
@@ -61,7 +65,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition, isParti
 		)
 
 	const participantMobile = () =>
-		screenWidth < 744 &&
+		screenWidth < BreakPoint.Lg &&
 		isParticipant &&
 		!isOver && (
 			<Button type='outlined' onClick={handleClick} classes='w-full mt-[17px] md:mt-[12px] pointer-events-none'>
@@ -70,13 +74,13 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition, isParti
 		)
 
 	const participantDesktop = () =>
-		screenWidth > 743 &&
+		screenWidth >= BreakPoint.Lg &&
 		isParticipant &&
 		!isOver && (
 			<div
-				className='relative h-[103px] w-[190px] rounded-3xl border border-[#DADADA] px-[17px] pt-[39px] pb-[16px]
-				pl-[22px] xl:h-[133px] xl:w-[229px] xl:px-[23px]
-				xl:pt-[42px] 2xl:h-[150px] 2xl:w-[275px] 2xl:pt-12 2xl:pb-2 2xl:pb-[29px] 2xl:pr-[50px]'
+				className='relative min-h-[103px] w-[190px] self-center rounded-3xl border border-[#DADADA] pl-[17px] pr-[64px] pt-[39px] pb-[16px]
+				xl:min-h-[133px] xl:w-[229px] xl:pl-[22px] xl:pr-[55px] xl:pt-[42px]
+				2xl:min-h-[150px] 2xl:w-[275px] 2xl:pt-12 2xl:pb-[29px] 2xl:pr-[50px]'
 			>
 				<h3
 					className='text-base text-black
@@ -90,9 +94,9 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition, isParti
 					2xl:left-[114px] 2xl:h-[37px] 2xl:w-[34px]'
 				/>
 				<ThreeStars
-					className='2xl:h-[37px absolute top-[24px] left-[136px] h-[26px]
-					w-[24px] xl:top-[34px] xl:left-[180px] xl:h-[32px]
-					xl:w-[30px] 2xl:left-[192px] 2xl:w-[34px]'
+					className='2xl:h-[37px absolute top-[24px] left-[136px] h-[26px] w-[24px]
+					xl:top-[34px] xl:left-[180px] xl:h-[32px] xl:w-[30px]
+					2xl:left-[192px] 2xl:h-[37px] 2xl:w-[34px]'
 				/>
 				<TwoStars
 					className='absolute top-[66px] left-[121px] h-[22px] w-[23px]
@@ -103,7 +107,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition, isParti
 		)
 
 	const registrationClosedMobile = () =>
-		screenWidth < 744 &&
+		screenWidth < BreakPoint.Lg &&
 		isRegistrationClosed &&
 		!isOver &&
 		!isParticipant && (
@@ -113,14 +117,14 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition, isParti
 		)
 
 	const registrationClosedDesktop = () =>
-		screenWidth > 743 &&
+		screenWidth >= BreakPoint.Lg &&
 		isRegistrationClosed &&
 		!isOver &&
 		!isParticipant && (
 			<div
-				className='relative h-[103px] w-[190px] rounded-3xl border border-[#DADADA] px-[27px] pt-[17px] pb-2
-				xl:h-[133px] xl:w-[229px] xl:px-[22px] xl:pt-[21px] xl:pb-2
-				2xl:h-[150px] 2xl:w-[275px] 2xl:pt-[26px] 2xl:pr-[50px]'
+				className='relative min-h-[103px] w-[190px] self-center rounded-3xl border border-[#DADADA] pl-[27px] pr-[55px] pt-[17px] pb-2
+				xl:min-h-[133px] xl:w-[229px] xl:pt-[21px] xl:pb-2 xl:pl-[22px] xl:pr-[55px]
+				2xl:min-h-[150px] 2xl:w-[275px] 2xl:pt-[26px] 2xl:pr-[70px]'
 			>
 				<h3 className='text-base font-normal text-black xl:text-2xl xl:font-semibold'>Registration closed</h3>
 				<Hourglass
@@ -132,7 +136,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition, isParti
 		)
 
 	const competitionOverMobile = () =>
-		screenWidth < 744 &&
+		screenWidth < BreakPoint.Lg &&
 		isOver && (
 			<Button type='outlined' onClick={handleClick} classes='w-full mt-[17px] md:mt-[12px] pointer-events-none'>
 				This competition is over
@@ -140,19 +144,21 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition, isParti
 		)
 
 	const competitionOverDesktop = () =>
-		screenWidth > 743 &&
+		screenWidth >= BreakPoint.Lg &&
 		isOver && (
 			<div
-				className='relative h-[103px] w-[190px] rounded-3xl border border-[#DADADA] px-[27px] pt-[15px] pb-2
-				xl:h-[133px] xl:w-[229px] xl:px-[22px] xl:pt-[18px] xl:pb-2
-				2xl:h-[150px] 2xl:w-[275px] 2xl:pt-[22px] 2xl:pr-[50px]'
+				className='relative min-h-[103px] w-[190px] self-center rounded-3xl border border-[#DADADA] px-[27px] pt-[15px] pb-2
+				xl:min-h-[133px] xl:w-[229px] xl:px-[22px] xl:pt-[18px] xl:pb-2
+				2xl:min-h-[150px] 2xl:w-[275px] 2xl:pt-[22px] 2xl:pr-[50px]'
 			>
-				<h3 className='mb-1 text-base font-normal text-black xl:text-2xl xl:font-semibold'>This competition is over</h3>
+				<h3 className='mb-1 text-base font-normal text-black xl:mb-[13px] xl:text-2xl xl:font-semibold'>
+					This competition is&nbsp;over
+				</h3>
 				<span className='text-sm text-[#6C6A6C]'>Your place 15</span>
 				<Place
 					className='absolute top-[52px] left-[137px] h-[26px] w-[26px]
-					xl:top-[73px] xl:left-[162px]
-					2xl:top-[80px] 2xl:left-[205px] 2xl:h-[39px] 2xl:w-[39px]'
+					xl:top-[73px] xl:left-[175px]
+					2xl:top-[77px] 2xl:left-[205px] 2xl:h-[39px] 2xl:w-[39px]'
 				/>
 			</div>
 		)
@@ -174,21 +180,23 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition, isParti
 				xl:text-4xl xl:font-bold
 				2xl:mb-[22px]'
 				>
-					{competition.name}
+					{name}
 				</h2>
-				{screenWidth < 744 && (
-					<p className='mb-[17px] text-sm text-[#6C6A6C] xl:text-lg xl:font-medium'>Starts At {startDate}</p>
+				{screenWidth < BreakPoint.Lg && (
+					<p className='mb-[17px] text-sm text-[#6C6A6C] xl:text-lg xl:font-medium'>Starts At {dateStart}</p>
 				)}
-				{screenWidth > 1199 && (
-					<p className='mb-[17px] text-sm text-[#6C6A6C] xl:text-lg xl:font-medium'>Starts At {startDate}</p>
+				{screenWidth >= BreakPoint.Xl && (
+					<p className='mb-[17px] text-sm text-[#6C6A6C] xl:text-lg xl:font-medium'>Starts At {dateStart}</p>
 				)}
-				{screenWidth > 1199 && (
+				{screenWidth >= BreakPoint.Xl && (
 					<div className='mt-4 flex flex-wrap gap-4 '>
-						<Tag img={<Banknote className='max-5 mr-2' />} text={competition.price} />
-						<Tag
-							img={<Persons className='max-5 mr-2' />}
-							text={`${participantsNumber} participant${participantsNumber === 1 ? '' : 's'} enrolled`}
-						/>
+						<Tag img={<Banknote className='max-5 mr-2' />} text={price?.currentValue} />
+						{participantsAmount && (
+							<Tag
+								img={<Persons className='max-5 mr-2' />}
+								text={`${participantsAmount} participant${participantsAmount === 1 ? '' : 's'} enrolled`}
+							/>
+						)}
 					</div>
 				)}
 			</div>
@@ -200,11 +208,11 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition, isParti
 				className='lg:col-start-1 lg:col-end-2 lg:row-start-2 lg:row-end-3
 			 xl:col-start-2 xl:col-end-3 xl:row-start-1 xl:row-end-2'
 			>
-				{screenWidth > 743 && screenWidth < 1200 && (
-					<p className='mb-[17px] text-sm text-[#6C6A6C]'>Starts At {startDate}</p>
+				{screenWidth > 743 && screenWidth < BreakPoint.Xl && (
+					<p className='mb-[17px] text-sm text-[#6C6A6C]'>Starts At {dateStart}</p>
 				)}
-				<p className={`${style['competition-card_text-col-limit']} text-[#3A3A40]`}>{competition.description}</p>
-				{screenWidth < 1200 && (
+				<p className={`${style['competition-card_text-col-limit']} text-[#3A3A40]`}>{description}</p>
+				{screenWidth < BreakPoint.Xl && (
 					<div className='mt-4 flex flex-wrap gap-4 '>
 						<Tag img={<Banknote className='max-5 mr-2' />} text='Price: 15 $' />
 						<Tag

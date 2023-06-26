@@ -11,8 +11,21 @@ export const competitionsMock = [
 		registrationEndsAt: '2023-06-27T09:00:00.000Z',
 		name: 'Championship of Russian Chessbox Federation - march 2022.',
 		description: 'World wide competition challenge.',
-		price: '15',
+		price: {
+			currentValue: 15,
+			pricesChanges: [
+				{
+					daysBeforeRegistrationDate: 12,
+					newValue: 17
+				},
+				{
+					daysBeforeRegistrationDate: 8,
+					newValue: 25
+				}
+			]
+		},
 		participants: ['63ee66b14ee166e852434153', '63f08ad795d112d70b1d9fb7'],
+		participantsAmount: 8,
 		pairs: ['63f0b258cc9c2b70bf404a2d'],
 		groups: [
 			{
@@ -42,13 +55,26 @@ export const competitionsMock = [
 			pair: 0
 		},
 		_id: '641492f3a0462b63f09b7acf01840581661af2df071d0b3d',
-		startDate: '2023-06-24T09:00:00.000Z',
-		endDate: '2023-06-25T09:00:00.000Z',
-		registrationEndsAt: '2023-06-23T09:00:00.000Z',
+		startDate: '2023-07-24T09:00:00.000Z',
+		endDate: '2023-07-25T09:00:00.000Z',
+		registrationEndsAt: '2023-07-23T09:00:00.000Z',
 		name: 'Championship - march 2023.',
 		description: 'First open competition cup of the year.',
-		price: '25',
+		price: {
+			currentValue: 15,
+			pricesChanges: [
+				{
+					daysBeforeRegistrationDate: 12,
+					newValue: 17
+				},
+				{
+					daysBeforeRegistrationDate: 8,
+					newValue: 25
+				}
+			]
+		},
 		participants: ['641a212cb2d0cc59b6180564', '641a211fb2d0cc59b6180562'],
+		participantsAmount: 2,
 		groups: [
 			{
 				ageCategory: '18-55',
@@ -77,8 +103,21 @@ export const competitionsMock = [
 		name: 'Championship of Russian Chessbox Federation - march 2022.',
 		description:
 			'Come to our competition. Come to our competition. Come to our competition.Come to our competition. Come to our competition. Come to our competition. Come to our competition.',
-		price: '117',
+		price: {
+			currentValue: 15,
+			pricesChanges: [
+				{
+					daysBeforeRegistrationDate: 12,
+					newValue: 17
+				},
+				{
+					daysBeforeRegistrationDate: 8,
+					newValue: 25
+				}
+			]
+		},
 		participants: ['63ee66b14ee166e852434153', '63f08ad795d112d70b1d9fb7'],
+		participantsAmount: 97,
 		pairs: ['63f0b258cc9c2b70bf404a2d'],
 		groups: [
 			{
@@ -115,8 +154,21 @@ export const competitionsMock = [
 		name: 'Championship of Russian Chessbox Federation - march 2022.',
 		description:
 			'The best competition in sport ever. Feel how stronger you become. Come and train your brain and muscles. Lorem ipsum delorian van fin uptinum.',
-		price: '97',
+		price: {
+			currentValue: 15,
+			pricesChanges: [
+				{
+					daysBeforeRegistrationDate: 12,
+					newValue: 17
+				},
+				{
+					daysBeforeRegistrationDate: 8,
+					newValue: 25
+				}
+			]
+		},
 		participants: ['63ee66b14ee166e852434153', '63f08ad795d112d70b1d9fb7'],
+
 		pairs: ['63f0b258cc9c2b70bf404a2d'],
 		groups: [
 			{
