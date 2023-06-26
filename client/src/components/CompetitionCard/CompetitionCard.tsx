@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { useWindowSize } from '@uidotdev/usehooks'
+import { useWindowSize } from 'usehooks-ts'
 import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
 import { ReactComponent as Persons } from 'src/assets/persons.svg'
 import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
