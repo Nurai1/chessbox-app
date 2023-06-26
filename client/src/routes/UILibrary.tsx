@@ -1,6 +1,6 @@
 import { useState, FC } from 'react'
-import { ReactComponent as Banknote } from 'assets/banknote.svg'
-import { ReactComponent as Persons } from 'assets/persons.svg'
+import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
+import { ReactComponent as Persons } from 'src/assets/persons.svg'
 import { Button, HorizontalTabs, TableBody, TableWrapper, Tag, Timer } from '../ui'
 import { UsersTableWithTitle, CompetitionCard } from '../components'
 import { ratingTableSchema } from '../helpers/tableSchema'

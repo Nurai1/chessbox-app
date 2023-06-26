@@ -21,6 +21,7 @@
 	},
 	"dependencies": {
 		"@reduxjs/toolkit": "^1.9.5",
+		"@uidotdev/usehooks": "^2.0.1",
 		"dayjs": "^1.11.7",
 		"openapi-fetch": "^0.4.0",
 		"openapi-typescript": "^6.2.8",
