@@ -12,10 +12,10 @@ const config = {
 		},
 		screens: {
 			...defaultConfig.theme.screens,
-			'sm': '375',
-			'md': '536px',
-			'lg': '744px',
-			'xl': '1200px',
+			sm: '375px',
+			md: '536px',
+			lg: '744px',
+			xl: '1200px',
 			'2xl': '1440px'
 		},
 		extend: {
@@ -40,9 +40,11 @@ const config = {
 			container: {
 				screens: {
 					'2xl': '1440px'
-				},
+				}
 			},
-
+			colors: {
+				black: '#09090C'
+			}
 		}
 	},
 	plugins: [

@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useRef } from 'react'
+import { FC, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 
@@ -31,19 +31,9 @@ const button = tv({
 	}
 })
 export const Button: FC<ButtonPropsType> = ({ children, type = 'primary', onClick, loading, classes, disabled }) => {
-	const ref = useRef<HTMLButtonElement>(null)
-
-	useEffect(() => {
-		if (ref.current) {
-			// strange calculated actual browser width equals width + 0.4 but clientWidth doesn't contain it
-			ref.current.style.width = `${ref.current.clientWidth + 0.4}px`
-		}
-	}, [])
-
 	return (
 		<button
 			disabled={disabled}
-			ref={ref}
 			type='button'
 			onClick={loading ? undefined : onClick}
 			className={twMerge(
