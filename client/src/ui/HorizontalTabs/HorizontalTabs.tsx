@@ -4,9 +4,10 @@ import { twMerge } from 'tailwind-merge'
 export type HorizontalTabsPropsType = {
 	tabs: { isActive: boolean; title: string; onClick: () => void }[]
 	tabMinWidth?: string
+	classes?: string
 }
 
-export const HorizontalTabs: FC<HorizontalTabsPropsType> = ({ tabs, tabMinWidth }) => {
+export const HorizontalTabs: FC<HorizontalTabsPropsType> = ({ tabs, tabMinWidth, classes }) => {
 	const tabBorder =
 		'after:absolute after:w-px after:h-full after:bg-[#DADADA] after:top-0 after:right-[-6px] last:after:content-none'
 	return (
