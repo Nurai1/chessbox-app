@@ -6,14 +6,15 @@ import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
 import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
 import { ReactComponent as Hourglass } from 'src/assets/hourglass.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
+import { CompetitionSchema } from '../../types'
 import { Button, Timer, Tag } from '../../ui'
-import { components } from '../../types/generated'
+
 import { getFormattedDate } from '../../helpers/datetime'
 import { BreakPoint } from '../../constants/breakPoints'
 import style from './CompetitionCard.module.css'
 
 type CompetitionPropsType = {
-	competition: components['schemas']['Competition']
+	competition: CompetitionSchema
 	isParticipant: boolean
 }
 
