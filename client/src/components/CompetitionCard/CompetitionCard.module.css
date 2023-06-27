@@ -1,0 +1,18 @@
+.competition-card_text-col-limit {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+@media (min-width: 1200px) {
+	.competition-card_text-col-limit {
+		-webkit-line-clamp: 7;
+	}
+}
+
+@media (min-width: 1440px) {
+	.competition-card_text-col-limit {
+		-webkit-line-clamp: 4;
+	}
+}
