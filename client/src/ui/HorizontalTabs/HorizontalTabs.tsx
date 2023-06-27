@@ -11,7 +11,7 @@ export const HorizontalTabs: FC<HorizontalTabsPropsType> = ({ tabs, tabMinWidth,
 	const tabBorder =
 		'after:absolute after:w-px after:h-full after:bg-[#DADADA] after:top-0 after:right-[-6px] last:after:content-none'
 	return (
-		<div>
+		<div className={twMerge(classes)}>
 			<nav className='flex h-[48px] overflow-x-auto rounded-lg border border-[#DADADA] bg-[#F2F2F2] p-[3px] xl:inline-flex'>
 				{tabs.map((tab, idx) => (
 					<button

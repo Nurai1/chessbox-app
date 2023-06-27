@@ -1,7 +1,7 @@
 import { useState, FC } from 'react'
 import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
 import { ReactComponent as Persons } from 'src/assets/persons.svg'
-import { Button, HorizontalTabs, TableBody, TableWrapper, Tag, Timer } from '../ui'
+import { Button, HorizontalTabs, TableBody, TableWrapper, Tag, Timer, Loader } from '../ui'
 import { UsersTableWithTitle, CompetitionCard } from '../components'
 import { ratingTableSchema } from '../helpers/tableSchema'
 import { usersMock, competitionsMock } from '../mock'
@@ -94,6 +94,10 @@ export const UILibrary: FC = () => {
 			</div>
 			<hr className='my-8' />
 
+			<h2 className='mb-5 text-xl font-semibold'>Лоадер</h2>
+			<Loader />
+			<hr className='my-8' />
+
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>
 			<TableWrapper>
 				<h2
@@ -119,10 +123,10 @@ export const UILibrary: FC = () => {
 			xl:px-[25px]
 			2xl:px-[9px]'
 			>
-				<CompetitionCard competition={competitionsMock[0]} isParticipant={false} />
-				<CompetitionCard competition={competitionsMock[1]} isParticipant />
-				<CompetitionCard competition={competitionsMock[2]} isParticipant={false} />
-				<CompetitionCard competition={competitionsMock[3]} isParticipant />
+				<CompetitionCard competition={competitionsMock[0]} />
+				<CompetitionCard competition={competitionsMock[1]} />
+				<CompetitionCard competition={competitionsMock[2]} />
+				<CompetitionCard competition={competitionsMock[3]} />
 			</div>
 
 			<hr className='my-8' />

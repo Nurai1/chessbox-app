@@ -84,3 +84,5 @@ export const calcTime = (params: { minutes: number; hours: number; days: number 
 		days: getDays()
 	}
 }
+
+export const isPast = (time: string) => new Date(time).getTime() < new Date().getTime()
