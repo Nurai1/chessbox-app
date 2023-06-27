@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export type HorizontalTabsPropsType = {
-	tabs: { isActive: boolean; title: string; onClick: (idx: number) => void }[]
+	tabs: { isActive: boolean; title: string; onClick: () => void }[]
 	tabMinWidth?: string
 }
 
@@ -16,7 +16,7 @@ export const HorizontalTabs: FC<HorizontalTabsPropsType> = ({ tabs, tabMinWidth 
 					<button
 						// eslint-disable-next-line react/no-array-index-key
 						key={idx}
-						onClick={() => tab.onClick(idx)}
+						onClick={() => tab.onClick()}
 						type='button'
 						className={twMerge(
 							`h-full w-full select-none whitespace-nowrap rounded-lg border border-transparent px-3 py-2 text-base font-semibold text-[#6C6A6C] transition-all hover:cursor-pointer [&:not(:last-child)]:mr-[9px] ${tabBorder}

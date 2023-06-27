@@ -1,11 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import usersReducer from 'src/store/slices/usersSlice'
 import userReducer from 'src/store/slices/userSlice'
+import competitionsReducer from 'src/store/slices/competitionsSlice'
+
 
 export const store = configureStore({
 	reducer: {
 		users: usersReducer,
-		user: userReducer
+		user: userReducer,
+		competitions: competitionsReducer
 	}
 })
 

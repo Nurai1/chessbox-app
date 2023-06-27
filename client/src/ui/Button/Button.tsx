@@ -30,7 +30,6 @@ const button = tv({
 		}
 	}
 })
-
 export const Button: FC<ButtonPropsType> = ({ children, type = 'primary', onClick, loading, classes, disabled }) => {
 	const ref = useRef<HTMLButtonElement>(null)
 
