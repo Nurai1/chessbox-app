@@ -59,17 +59,17 @@ export const UILibrary: FC = () => {
 					{
 						isActive: activeIndex === 0,
 						title: 'Active',
-						onClick: (idx: number) => setActiveIndex(idx)
+						onClick: () => setActiveIndex(0)
 					},
 					{
 						isActive: activeIndex === 1,
 						title: 'My competitions',
-						onClick: (idx: number) => setActiveIndex(idx)
+						onClick: () => setActiveIndex(1)
 					},
 					{
 						isActive: activeIndex === 2,
 						title: 'Archive',
-						onClick: (idx: number) => setActiveIndex(idx)
+						onClick: () => setActiveIndex(2)
 					}
 				]}
 			/>
