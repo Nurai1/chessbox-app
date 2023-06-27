@@ -17,7 +17,7 @@ export interface CompetitionsState {
 
 const initialState: CompetitionsState = {
 	data: [],
-	loading: false
+	loading: true
 }
 
 export const competitionsSlice = createSlice({
