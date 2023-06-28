@@ -12,17 +12,27 @@ const userSchema = new Schema<IUser>(
       required: true,
       trim: true,
     },
+    chessPlatform: {
+      username: {
+        type: String,
+        required: true,
+      },
+    },
     hashedPassword: {
       type: String,
       required: true,
     },
     firstName: {
       type: String,
-      required: false,
+      required: true,
     },
     lastName: {
       type: String,
-      required: false,
+      required: true,
+    },
+    fullName: {
+      type: String,
+      required: true,
     },
     address: {
       country: { type: String, required: true },
@@ -34,7 +44,6 @@ const userSchema = new Schema<IUser>(
       required: true,
       enum: ['participant', 'judge', 'chief_judge', 'admin'],
     },
-    username: { type: String, required: true, unique: true },
     age: { type: Number, required: true },
     socialNetworks: {
       whatsup: String,

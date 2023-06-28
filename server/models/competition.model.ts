@@ -13,7 +13,6 @@ const competitionSchema = new Schema<ICompetition>(
     name: { type: String, required: true },
     description: String,
     groups: [competitionGroupSchema],
-    participantsAmount: Number,
     price: {
       currentValue: Number,
       pricesChanges: [

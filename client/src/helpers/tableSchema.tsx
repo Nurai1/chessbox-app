@@ -45,7 +45,7 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
                             xl:text-xl xl:font-medium
                             2xl:text-2xl 2xl:font-semibold'
 							>
-								{user?.username}
+								{user?.fullName}
 							</Link>
 							<p className='xl:hidden'>{user?.gender}</p>
 							<p

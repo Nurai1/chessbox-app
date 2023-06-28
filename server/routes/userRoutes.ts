@@ -17,22 +17,61 @@ userRouter.post(
                   schema: {
                       type: "object",
                       properties: {
-                        username: {  
-                          type: "string",
-                        },
                         email: {  
                           type: "string",
                         },
                         password: {  
                           type: "string",
                         },
-                        role: {  
+                        firstName: {
                           type: "string",
+                        },
+                        lastName: {
+                          type: "string",
+                        },
+                        weight: {
+                          type: "number",
+                        },
+                        age: {
+                          type: "number",
+                        },
+                        gender: {
+                          type: "string"
+                        },
+                        chessPlatform: {  
+                          type: "object",
+                          properties: {
+                            username: {
+                              type: "string"
+                            }
+                          },
+                          required: ["username"]
+                        },
+                        address: {  
+                          type: "object",
+                          properties: {
+                            country: {
+                              type: "string"
+                            },
+                            city: {
+                              type: "string"
+                            },
+                          },
+                          required: ["city", "country"]
+                        },
+                        fightClub: {  
+                          type: "object",
+                          properties: {
+                            name: {
+                              type: "string"
+                            }
+                          },
+                          required: ["name"]
                         }
                       },
-                      required: ["username", "email", "password"]
+                      required: ["firstName", "lastName", "weight", "age", "gender", "address", "chessPlatform", "fightClub", "email", "password"]
                   }
-              },
+              }
           }
       } 
     */
@@ -97,9 +136,22 @@ userRouter.get(
 userRouter.get(
   '/users',
   // #swagger.tags = ['Users']
-  /* #swagger.responses[200] = {
+  /*  #swagger.parameters['search'] = {
+          in: 'query',
+          schema: { type: "string" }
+  } */
+  /*  #swagger.parameters['limit'] = {
+          in: 'query',
+          schema: { type: "string" }
+  } */
+  /*  #swagger.parameters['offset'] = {
+          in: 'query',
+          schema: { type: "string" }
+  } */
+  /* 
+    #swagger.responses[200] = {
             description: '',
-            schema: [{ $ref: '#/definitions/User' }]
+            schema: { items: [{ $ref: '#/definitions/User' }], total: 0 }
     } */
 
   // UserController.allowIfLoggedin,

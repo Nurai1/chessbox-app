@@ -14,10 +14,13 @@ export interface IUser {
   email: string;
   firstName: string;
   lastName: string;
+  fullName: string;
   weight: number;
   hashedPassword: string;
   role: string;
-  username: string;
+  chessPlatform: {
+    username: string;
+  };
   socialNetworks?: {
     whatsUp?: string;
   };
@@ -55,7 +58,6 @@ export interface ICompetition {
   registrationEndsAt: Date;
   name: string;
   description?: string;
-  participantsAmount?: number;
   price?: {
     currentValue?: number;
     pricesChanges?: {
