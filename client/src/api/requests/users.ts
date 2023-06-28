@@ -1,7 +1,9 @@
 import { get } from 'src/api/api'
 
 export const getUsersApi = async () => {
-	const result = await get('/api/users', {})
+	const result = await get('/api/users', {
+		params: {}
+	})
 
 	return result
 }

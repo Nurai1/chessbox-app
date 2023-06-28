@@ -1,27 +1,14 @@
 import { ReactElement, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { createSelector } from '@reduxjs/toolkit'
 import { HorizontalTabs, Loader } from 'src/ui'
-import { fetchCompetitions, CompetitionsState } from 'src/store/slices/competitionsSlice'
+import { fetchCompetitions } from 'src/store/slices/competitionsSlice'
+import {
+	activeCompetitionsSelector,
+	currentUserCompetitionsSelector,
+	expiredCompetitionsSelector
+} from '../store/selectors/competitions'
 import { CompetitionCard } from '../components'
 import { CompetitionSchema } from '../types'
-import { isPast } from '../helpers/datetime'
-import { authorizedUserId } from '../mock/authorizedUserId' // имитация залогиненного юзера
-import { RootState } from 'src/store'
-
-const selectCompetitions = (state: RootState) => state.competitions.data
-
-const activeCompetitionsSelector = createSelector(selectCompetitions, activeCompetitions =>
-	activeCompetitions.filter(competition => !isPast(competition.endDate))
-)
-
-const currentUserCompetitionsSelector = createSelector(selectCompetitions, currentUserCompetitions =>
-	currentUserCompetitions.filter(competition => competition.participants?.includes(authorizedUserId))
-)
-
-const expiredCompetitionsSelector = createSelector(selectCompetitions, competitionsExpired =>
-	competitionsExpired.filter(competition => isPast(competition.endDate))
-)
 
 export const CompetitionsPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
@@ -33,8 +20,6 @@ export const CompetitionsPage = (): ReactElement => {
 		activeIndex: 0,
 		competitionsData: []
 	})
-
-	// const competitions = useAppSelector(state  => state.competitions.data)
 
 	const competitionsActive = useAppSelector(activeCompetitionsSelector)
 	const currentUserCompetitions = useAppSelector(currentUserCompetitionsSelector)

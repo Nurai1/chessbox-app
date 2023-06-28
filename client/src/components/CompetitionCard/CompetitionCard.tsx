@@ -18,7 +18,7 @@ type CompetitionPropsType = {
 }
 
 export const CompetitionCard: FC<CompetitionPropsType> = ({
-	competition: { startDate, participantsAmount, registrationEndsAt, endDate, name, price, description, participants }
+	competition: { startDate, registrationEndsAt, endDate, name, price, description, participants }
 }) => {
 	const handleClick = () => {}
 	const dateStart = getFormattedDate(startDate, 'MMM D, HH:mm')
@@ -190,10 +190,10 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 				{screenWidth >= BreakPoint.Xl && (
 					<div className='mt-4 flex flex-wrap gap-4 '>
 						{price?.currentValue && <Tag img={<Banknote className='max-5 mr-2' />} text={price.currentValue} />}
-						{participantsAmount && (
+						{participants && (
 							<Tag
 								img={<Persons className='max-5 mr-2' />}
-								text={`${participantsAmount} participant${participantsAmount === 1 ? '' : 's'} enrolled`}
+								text={`${participants.length} participant${participants.length === 1 ? '' : 's'} enrolled`}
 							/>
 						)}
 					</div>
@@ -214,10 +214,10 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 				{screenWidth < BreakPoint.Xl && (
 					<div className='mt-4 flex flex-wrap gap-4 '>
 						{price?.currentValue && <Tag img={<Banknote className='max-5 mr-2' />} text={price.currentValue} />}
-						{participantsAmount && (
+						{participants && (
 							<Tag
 								img={<Persons className='max-5 mr-2' />}
-								text={`${participantsAmount} participant${participantsAmount === 1 ? '' : 's'} enrolled`}
+								text={`${participants.length} participant${participants.length === 1 ? '' : 's'} enrolled`}
 							/>
 						)}
 					</div>

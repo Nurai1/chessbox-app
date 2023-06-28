@@ -39,7 +39,7 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.set('strictQuery', true);
+mongoose.set('strictQuery', 'throw');
 
 mongoose.connect(remoteMongoUri ?? '', (err) => {
   if (err) {

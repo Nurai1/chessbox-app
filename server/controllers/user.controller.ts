@@ -1,20 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { z } from 'zod';
 
 import { User } from '../models/index';
 import ac from '../roles';
 import { RESOURCES, ACTIONS } from '../constants';
 import { IUser } from '../types/index';
 import { errorUniqueCheck } from '../utils/errors';
-
-const emailParser = z.string().email().min(5);
-const passwordParser = z.string().min(4 /* 8 */);
-const UserParser = z.object({
-  email: emailParser,
-  password: passwordParser,
-});
+import {
+  CreateUserParser,
+  emailParser,
+  passwordParser,
+} from '../utils/validation';
 
 async function hashPassword(password: string) {
   return bcrypt.hash(password, 10);
@@ -29,25 +26,22 @@ export const signup = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { username, email, password, role } = req.body;
+  const { password, ...userData } = req.body;
 
-  const userValidRes = UserParser.safeParse(req.body);
+  const userValidRes = CreateUserParser.safeParse(req.body);
 
   if (!userValidRes.success) {
     res.status(400).send({
-      error: {
-        message: 'Validation Error',
-        issues: userValidRes.error.issues,
-      },
+      error: 'Validation Error. Some fields do not match requirements.',
+      issues: userValidRes.error.issues,
     });
   }
 
   const hashedPassword = await hashPassword(password);
   const newUser = new User({
-    email,
-    username,
+    ...userData,
+    fullName: `${userData.firstName} ${userData.lastName}`,
     hashedPassword,
-    role: role || 'participant',
     ratingNumber: 1000,
   });
 
@@ -139,13 +133,43 @@ export const allowIfLoggedin = async (
 };
 
 export const getUsers = async (
-  req: Request,
+  req: Request<any, { offset?: string; limit?: string; search?: string }>,
   res: Response,
   next: NextFunction
 ) => {
-  const users = await User.find({}).populate('competition');
+  const { offset, limit, search } = req.query;
 
-  res.send(users);
+  const filter = search
+    ? {
+        $or: [
+          { chessPlatform: { username: { $regex: search } } },
+          { email: { $regex: search } },
+          { fullName: { $regex: search } },
+        ],
+      }
+    : {};
+
+  let usersQuery = User.find(filter).populate('competition');
+  let usersCount = await User.count({});
+
+  const lim = Number(limit);
+  const skip = Number(offset);
+
+  if ((limit && isNaN(lim)) || (offset && isNaN(skip))) {
+    res.status(400).send({
+      error: {
+        type: 'Validation error',
+        message: 'Users query data for limit or offset are incorrect.',
+      },
+    });
+    return;
+  }
+
+  usersQuery = usersQuery.limit(lim).skip(skip);
+
+  const users = await usersQuery.sort({ ratingNumber: 'descending' });
+
+  res.send({ items: users, total: usersCount });
 };
 
 export const getUser = async (
@@ -198,10 +222,7 @@ export const updateUser = async (
 
     if (!passwordValidRes.success) {
       res.status(400).send({
-        error: {
-          message: 'Validation Error',
-          issues: passwordValidRes.error.issues,
-        },
+        error: 'Password does not match requirements.',
       });
     }
   }
@@ -211,10 +232,7 @@ export const updateUser = async (
 
     if (!emailValidRes.success) {
       res.status(400).send({
-        error: {
-          message: 'Validation Error',
-          issues: emailValidRes.error.issues,
-        },
+        error: 'Email does not match requirements.',
       });
     }
   }

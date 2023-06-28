@@ -102,7 +102,6 @@ export const startCompetition = async (
     });
 
     competition.groups = orderedGroups;
-    competition.participantsAmount = participantsAmount;
     await competition?.save();
 
     res.sendStatus(200);
