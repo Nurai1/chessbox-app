@@ -4,15 +4,39 @@
 
 @layer base {
 	@font-face {
-		font-family: 'Hubot Sans';
-		src: url('../fonts/Hubot-Sans.woff2') format('woff2 supports variations'),
-			url('../fonts/Hubot-Sans.woff2') format('woff2-variations');
-		font-weight: 200 900;
-		font-stretch: 75% 125%;
+		font-family: 'Inter';
+		src: url('../fonts/Inter-Regular.woff2') format('woff2');
+		font-weight: 400;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	@font-face {
+		font-family: 'Inter';
+		src: url('../fonts/Inter-Medium.woff2') format('woff2');
+		font-weight: 500;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	@font-face {
+		font-family: 'Inter';
+		src: url('../fonts/Inter-SemiBold.woff2') format('woff2');
+		font-weight: 600;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	@font-face {
+		font-family: 'Inter';
+		src: url('../fonts/Inter-Bold.woff2') format('woff2');
+		font-weight: 700;
+		font-style: normal;
+		font-display: swap;
 	}
 
 	html {
-		font-family: 'Hubot Sans';
+		font-family: 'Inter', 'Arial', sans-serif;
 		font-size: 16px;
 	}
 
