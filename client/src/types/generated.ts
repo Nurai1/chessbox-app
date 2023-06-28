@@ -46,6 +46,32 @@ export interface paths {
 					}
 				}
 				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
 				500: {
 					content: {
 						'application/json': {
@@ -74,6 +100,32 @@ export interface paths {
 			responses: {
 				/** @description OK */
 				200: never
+				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
 				/** @description Internal server error. */
 				500: {
 					content: {
@@ -106,6 +158,32 @@ export interface paths {
 					}
 				}
 				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
 				500: {
 					content: {
 						'application/json': {
@@ -132,6 +210,32 @@ export interface paths {
 					content: {
 						'application/json': components['schemas']['User']
 						'application/xml': components['schemas']['User']
+					}
+				}
+				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
 					}
 				}
 				/** @description Internal server error. */
@@ -176,6 +280,32 @@ export interface paths {
 					}
 				}
 				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
 				500: {
 					content: {
 						'application/json': {
@@ -207,6 +337,32 @@ export interface paths {
 					}
 				}
 				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
 				500: {
 					content: {
 						'application/json': {
@@ -233,6 +389,32 @@ export interface paths {
 					content: {
 						'application/json': components['schemas']['User']
 						'application/xml': components['schemas']['User']
+					}
+				}
+				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
 					}
 				}
 				/** @description Internal server error. */
@@ -267,6 +449,32 @@ export interface paths {
 					}
 				}
 				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
 				500: {
 					content: {
 						'application/json': {
@@ -293,6 +501,32 @@ export interface paths {
 					content: {
 						'application/json': components['schemas']['Competition']
 						'application/xml': components['schemas']['Competition']
+					}
+				}
+				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
 					}
 				}
 				/** @description Internal server error. */
@@ -330,6 +564,32 @@ export interface paths {
 					}
 				}
 				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
 				500: {
 					content: {
 						'application/json': {
@@ -353,6 +613,32 @@ export interface paths {
 					content: {
 						'application/json': components['schemas']['Competition'][]
 						'application/xml': components['schemas']['Competition'][]
+					}
+				}
+				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
 					}
 				}
 				/** @description Internal server error. */
@@ -384,6 +670,32 @@ export interface paths {
 					content: {
 						'application/json': components['schemas']['Competition']
 						'application/xml': components['schemas']['Competition']
+					}
+				}
+				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
 					}
 				}
 				/** @description Internal server error. */
@@ -419,6 +731,32 @@ export interface paths {
 				/** @description Winner defined. */
 				200: never
 				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
 				500: {
 					content: {
 						'application/json': {
@@ -447,6 +785,32 @@ export interface paths {
 			responses: {
 				/** @description Next Group Round launched. */
 				200: never
+				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
 				/** @description Internal server error. */
 				500: {
 					content: {
@@ -480,6 +844,32 @@ export interface paths {
 					content: {
 						'application/json': components['schemas']['Competition']
 						'application/xml': components['schemas']['Competition']
+					}
+				}
+				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
 					}
 				}
 				/** @description Internal server error. */
@@ -517,6 +907,32 @@ export interface paths {
 					}
 				}
 				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
 				500: {
 					content: {
 						'application/json': {
@@ -542,6 +958,32 @@ export interface paths {
 			responses: {
 				/** @description OK */
 				200: never
+				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
 				/** @description Internal server error. */
 				500: {
 					content: {
@@ -579,6 +1021,32 @@ export interface paths {
 					}
 				}
 				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
 				500: {
 					content: {
 						'application/json': {
@@ -607,6 +1075,32 @@ export interface paths {
 					content: {
 						'application/json': components['schemas']['CompetitionGroup'][]
 						'application/xml': components['schemas']['CompetitionGroup'][]
+					}
+				}
+				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
 					}
 				}
 				/** @description Internal server error. */
@@ -645,6 +1139,32 @@ export interface paths {
 					content: {
 						'application/json': components['schemas']['Competition']
 						'application/xml': components['schemas']['Competition']
+					}
+				}
+				/** @description Internal server error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
 					}
 				}
 				/** @description Internal server error. */

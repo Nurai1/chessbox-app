@@ -32,10 +32,8 @@ export const signup = async (
 
   if (!userValidRes.success) {
     res.status(400).send({
-      error: {
-        message: 'Validation Error',
-        issues: userValidRes.error.issues,
-      },
+      error: 'Validation Error. Some fields do not match requirements.',
+      issues: userValidRes.error.issues,
     });
   }
 
@@ -224,10 +222,7 @@ export const updateUser = async (
 
     if (!passwordValidRes.success) {
       res.status(400).send({
-        error: {
-          message: 'Validation Error',
-          issues: passwordValidRes.error.issues,
-        },
+        error: 'Password does not match requirements.',
       });
     }
   }
@@ -237,10 +232,7 @@ export const updateUser = async (
 
     if (!emailValidRes.success) {
       res.status(400).send({
-        error: {
-          message: 'Validation Error',
-          issues: emailValidRes.error.issues,
-        },
+        error: 'Email does not match requirements.',
       });
     }
   }

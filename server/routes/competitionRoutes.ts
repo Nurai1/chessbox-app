@@ -275,4 +275,16 @@ routerMockForSwaggerGenerator.use(
               error: "string"
             }
     } */
+  /* #swagger.responses[400] = {
+            description: 'Internal server error.',
+            schema: {
+              error: "string",
+            }
+    } */
+  /* #swagger.responses[401] = {
+          description: 'Internal server error.',
+          schema: {
+            error: "string",
+          }
+  } */
 );
