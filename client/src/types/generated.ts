@@ -9,10 +9,23 @@ export interface paths {
 			requestBody: {
 				content: {
 					'application/json': {
-						username: string
 						email: string
 						password: string
-						role?: string
+						firstName: string
+						lastName: string
+						weight: number
+						age: number
+						gender: string
+						chessPlatform: {
+							username: string
+						}
+						address: {
+							country: string
+							city: string
+						}
+						fightClub: {
+							name: string
+						}
 					}
 				}
 			}
@@ -139,12 +152,27 @@ export interface paths {
 	}
 	'/api/users': {
 		get: {
+			parameters: {
+				query?: {
+					search?: string
+					limit?: string
+					offset?: string
+				}
+			}
 			responses: {
 				/** @description OK */
 				200: {
 					content: {
-						'application/json': components['schemas']['User'][]
-						'application/xml': components['schemas']['User'][]
+						'application/json': {
+							items?: components['schemas']['User'][]
+							/** @example 0 */
+							total?: number
+						}
+						'application/xml': {
+							items?: components['schemas']['User'][]
+							/** @example 0 */
+							total?: number
+						}
 					}
 				}
 				/** @description Internal server error. */
@@ -685,7 +713,6 @@ export interface components {
 				}[]
 				_id?: string
 			}[]
-			participantsAmount?: number
 			price?: {
 				currentValue?: number
 				pricesChanges?: {
@@ -709,9 +736,13 @@ export interface components {
 		/** User */
 		User: {
 			email: string
+			chessPlatform?: {
+				username?: string
+			}
 			hashedPassword: string
-			firstName?: string
-			lastName?: string
+			firstName: string
+			lastName: string
+			fullName: string
 			address?: {
 				country?: string
 				city?: string
@@ -721,7 +752,6 @@ export interface components {
 			}
 			/** @enum {string} */
 			role: 'participant' | 'judge' | 'chief_judge' | 'admin'
-			username: string
 			age: number
 			socialNetworks?: {
 				whatsup?: string

@@ -121,21 +121,74 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "username": {
-                    "type": "string"
-                  },
                   "email": {
                     "type": "string"
                   },
                   "password": {
                     "type": "string"
                   },
-                  "role": {
+                  "firstName": {
                     "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "weight": {
+                    "type": "number"
+                  },
+                  "age": {
+                    "type": "number"
+                  },
+                  "gender": {
+                    "type": "string"
+                  },
+                  "chessPlatform": {
+                    "type": "object",
+                    "properties": {
+                      "username": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "username"
+                    ]
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "country": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "city",
+                      "country"
+                    ]
+                  },
+                  "fightClub": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ]
                   }
                 },
                 "required": [
-                  "username",
+                  "firstName",
+                  "lastName",
+                  "weight",
+                  "age",
+                  "gender",
+                  "address",
+                  "chessPlatform",
+                  "fightClub",
                   "email",
                   "password"
                 ]
@@ -395,16 +448,47 @@
           "Users"
         ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/User"
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    },
+                    "total": {
+                      "type": "number",
+                      "example": 0
+                    }
                   },
                   "xml": {
                     "name": "main"
@@ -413,9 +497,18 @@
               },
               "application/xml": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/User"
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    },
+                    "total": {
+                      "type": "number",
+                      "example": 0
+                    }
                   },
                   "xml": {
                     "name": "main"
@@ -1917,9 +2010,6 @@
               ]
             }
           },
-          "participantsAmount": {
-            "type": "number"
-          },
           "price": {
             "type": "object",
             "properties": {
@@ -1995,8 +2085,10 @@
         "required": [
           "email",
           "hashedPassword",
+          "firstName",
+          "lastName",
+          "fullName",
           "role",
-          "username",
           "age",
           "gender",
           "ratingNumber",
@@ -2007,16 +2099,25 @@
           "email": {
             "type": "string"
           },
+          "chessPlatform": {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type": "string"
+              }
+            }
+          },
           "hashedPassword": {
             "type": "string"
           },
           "firstName": {
-            "type": "string",
-            "required": false
+            "type": "string"
           },
           "lastName": {
-            "type": "string",
-            "required": false
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
           },
           "address": {
             "type": "object",
@@ -2045,9 +2146,6 @@
               "chief_judge",
               "admin"
             ]
-          },
-          "username": {
-            "type": "string"
           },
           "age": {
             "type": "number"
