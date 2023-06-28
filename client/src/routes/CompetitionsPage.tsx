@@ -7,10 +7,25 @@ import { CompetitionCard } from '../components'
 import { CompetitionSchema } from '../types'
 import { isPast } from '../helpers/datetime'
 import { authorizedUserId } from '../mock/authorizedUserId' // имитация залогиненного юзера
+import { RootState } from 'src/store'
+
+const selectCompetitions = (state: RootState) => state.competitions.data
+
+const activeCompetitionsSelector = createSelector(selectCompetitions, activeCompetitions =>
+	activeCompetitions.filter(competition => !isPast(competition.endDate))
+)
+
+const currentUserCompetitionsSelector = createSelector(selectCompetitions, currentUserCompetitions =>
+	currentUserCompetitions.filter(competition => competition.participants?.includes(authorizedUserId))
+)
+
+const expiredCompetitionsSelector = createSelector(selectCompetitions, competitionsExpired =>
+	competitionsExpired.filter(competition => isPast(competition.endDate))
+)
 
 export const CompetitionsPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
-	const isLoading = useAppSelector(state  => state.competitions.loading)
+	const isLoading = useAppSelector(state => state.competitions.loading)
 	const [activeCompetitions, setActiveCompetitions] = useState<{
 		activeIndex: number
 		competitionsData: CompetitionSchema[] | []
@@ -19,23 +34,11 @@ export const CompetitionsPage = (): ReactElement => {
 		competitionsData: []
 	})
 
-	const selectCompetitions = (state: CompetitionsState) => state.competitions.data
-	
-	const getActiveCompetitions = createSelector(selectCompetitions,
-		(activeCompetitions) => activeCompetitions.filter(competition => !isPast(competition.endDate as string)))
-
-	const getCurrentUserCompetitions = createSelector(selectCompetitions,
-		(currentUserCompetitions) => currentUserCompetitions.filter(competition => competition.participants?.includes(authorizedUserId)))
-
-	const getExpiredCompetitions = createSelector(selectCompetitions,
-		(competitionsExpired) => competitionsExpired.filter(competition => isPast(competition.endDate as string)))
-
-
 	// const competitions = useAppSelector(state  => state.competitions.data)
 
-	const competitionsActive = useAppSelector(getActiveCompetitions)
-	const currentUserCompetitions = useAppSelector(getCurrentUserCompetitions)
-	const expiredCompetitions = useAppSelector(getExpiredCompetitions)
+	const competitionsActive = useAppSelector(activeCompetitionsSelector)
+	const currentUserCompetitions = useAppSelector(currentUserCompetitionsSelector)
+	const expiredCompetitions = useAppSelector(expiredCompetitionsSelector)
 
 	useEffect(() => {
 		dispatch(fetchCompetitions())
