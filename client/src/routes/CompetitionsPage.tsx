@@ -1,7 +1,8 @@
 import { ReactElement, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { createSelector } from '@reduxjs/toolkit'
 import { HorizontalTabs, Loader } from 'src/ui'
-import { fetchCompetitions } from 'src/store/slices/competitionsSlice'
+import { fetchCompetitions, CompetitionsState } from 'src/store/slices/competitionsSlice'
 import { CompetitionCard } from '../components'
 import { CompetitionSchema } from '../types'
 import { isPast } from '../helpers/datetime'
@@ -9,7 +10,7 @@ import { authorizedUserId } from '../mock/authorizedUserId' // имитация 
 
 export const CompetitionsPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
-	const isLoading = useAppSelector(competition => competition.competitions.loading)
+	const isLoading = useAppSelector(state  => state.competitions.loading)
 	const [activeCompetitions, setActiveCompetitions] = useState<{
 		activeIndex: number
 		competitionsData: CompetitionSchema[] | []
@@ -18,11 +19,23 @@ export const CompetitionsPage = (): ReactElement => {
 		competitionsData: []
 	})
 
-	const competitions = useAppSelector(competition => competition.competitions.data)
-	const getActiveCompetitions = () => competitions.filter(competition => !isPast(competition.endDate as string))
-	const getCurrentUserCompetitions = () =>
-		getActiveCompetitions().filter(competition => competition.participants?.includes(authorizedUserId))
-	const getExpiredCompetitions = () => competitions.filter(competition => isPast(competition.endDate as string))
+	const selectCompetitions = (state: CompetitionsState) => state.competitions.data
+	
+	const getActiveCompetitions = createSelector(selectCompetitions,
+		(activeCompetitions) => activeCompetitions.filter(competition => !isPast(competition.endDate as string)))
+
+	const getCurrentUserCompetitions = createSelector(selectCompetitions,
+		(currentUserCompetitions) => currentUserCompetitions.filter(competition => competition.participants?.includes(authorizedUserId)))
+
+	const getExpiredCompetitions = createSelector(selectCompetitions,
+		(competitionsExpired) => competitionsExpired.filter(competition => isPast(competition.endDate as string)))
+
+
+	// const competitions = useAppSelector(state  => state.competitions.data)
+
+	const competitionsActive = useAppSelector(getActiveCompetitions)
+	const currentUserCompetitions = useAppSelector(getCurrentUserCompetitions)
+	const expiredCompetitions = useAppSelector(getExpiredCompetitions)
 
 	useEffect(() => {
 		dispatch(fetchCompetitions())
@@ -31,10 +44,10 @@ export const CompetitionsPage = (): ReactElement => {
 	useEffect(() => {
 		setActiveCompetitions({
 			...activeCompetitions,
-			competitionsData: getActiveCompetitions()
+			competitionsData: competitionsActive
 		})
 		// eslint-disable-next-line
-	}, [competitions])
+	}, [isLoading])
 
 	return (
 		<main className='container m-auto px-[17px] pt-[15px] md:px-7 md:pt-[25px] lg:px-10 lg:pt-[33px] 2xl:px-[40px]'>
@@ -57,7 +70,7 @@ export const CompetitionsPage = (): ReactElement => {
 								onClick: () => {
 									setActiveCompetitions({
 										activeIndex: 0,
-										competitionsData: getActiveCompetitions()
+										competitionsData: competitionsActive
 									})
 								}
 							},
@@ -67,7 +80,7 @@ export const CompetitionsPage = (): ReactElement => {
 								onClick: () => {
 									setActiveCompetitions({
 										activeIndex: 1,
-										competitionsData: getCurrentUserCompetitions()
+										competitionsData: currentUserCompetitions
 									})
 								}
 							},
@@ -77,7 +90,7 @@ export const CompetitionsPage = (): ReactElement => {
 								onClick: () => {
 									setActiveCompetitions({
 										activeIndex: 2,
-										competitionsData: getExpiredCompetitions()
+										competitionsData: expiredCompetitions
 									})
 								}
 							}
