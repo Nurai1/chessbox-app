@@ -23,7 +23,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 	const handleClick = () => {}
 	const dateStart = getFormattedDate(startDate, 'MMM D, HH:mm')
 	const isRegistrationClosed = isPast(registrationEndsAt)
-	const isOver = endDate && isPast(endDate)
+	const isOver = Boolean(endDate)
 	const isParticipant = participants?.includes(authorizedUserId)
 	const { width: screenWidth } = useWindowSize()
 
