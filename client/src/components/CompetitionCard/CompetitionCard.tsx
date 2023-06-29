@@ -8,25 +8,23 @@ import { ReactComponent as Hourglass } from 'src/assets/hourglass.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
 import { CompetitionSchema } from '../../types'
 import { Button, Timer, Tag } from '../../ui'
-
-import { getFormattedDate } from '../../helpers/datetime'
+import { getFormattedDate, isPast } from '../../helpers/datetime'
 import { BreakPoint } from '../../constants/breakPoints'
+import { authorizedUserId } from '../../mock/authorizedUserId' // имитация залогиненного юзера
 import style from './CompetitionCard.module.css'
 
 type CompetitionPropsType = {
 	competition: CompetitionSchema
-	isParticipant: boolean
 }
 
 export const CompetitionCard: FC<CompetitionPropsType> = ({
-	competition: { startDate, participantsAmount, registrationEndsAt, endDate, name, price, description },
-	isParticipant
+	competition: { startDate, registrationEndsAt, endDate, name, price, description, participants }
 }) => {
 	const handleClick = () => {}
 	const dateStart = getFormattedDate(startDate, 'MMM D, HH:mm')
-	const participantsNumber = participantsAmount
-	const isRegistrationClosed = new Date(registrationEndsAt).getTime() < new Date().getTime()
-	const isOver = endDate && new Date(endDate).getTime() < new Date().getTime()
+	const isRegistrationClosed = isPast(registrationEndsAt)
+	const isOver = Boolean(endDate)
+	const isParticipant = participants?.includes(authorizedUserId)
 	const { width: screenWidth } = useWindowSize()
 
 	const participateMobile = () =>
@@ -191,11 +189,11 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 				)}
 				{screenWidth >= BreakPoint.Xl && (
 					<div className='mt-4 flex flex-wrap gap-4 '>
-						<Tag img={<Banknote className='max-5 mr-2' />} text={price?.currentValue} />
-						{participantsAmount && (
+						{price?.currentValue && <Tag img={<Banknote className='max-5 mr-2' />} text={price.currentValue} />}
+						{participants && (
 							<Tag
 								img={<Persons className='max-5 mr-2' />}
-								text={`${participantsAmount} participant${participantsAmount === 1 ? '' : 's'} enrolled`}
+								text={`${participants.length} participant${participants.length === 1 ? '' : 's'} enrolled`}
 							/>
 						)}
 					</div>
@@ -215,11 +213,13 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 				<p className={`${style['competition-card_text-col-limit']} text-[#3A3A40]`}>{description}</p>
 				{screenWidth < BreakPoint.Xl && (
 					<div className='mt-4 flex flex-wrap gap-4 '>
-						<Tag img={<Banknote className='max-5 mr-2' />} text='Price: 15 $' />
-						<Tag
-							img={<Persons className='max-5 mr-2' />}
-							text={`${participantsNumber} participant${participantsNumber === 1 ? '' : 's'} enrolled`}
-						/>
+						{price?.currentValue && <Tag img={<Banknote className='max-5 mr-2' />} text={price.currentValue} />}
+						{participants && (
+							<Tag
+								img={<Persons className='max-5 mr-2' />}
+								text={`${participants.length} participant${participants.length === 1 ? '' : 's'} enrolled`}
+							/>
+						)}
 					</div>
 				)}
 				{participateMobile()}

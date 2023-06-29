@@ -3,6 +3,7 @@ import { AppRoute } from 'src/constants/appRoute'
 import { Route404 } from 'src/routes/404'
 import { MainPage } from 'src/routes/MainPage'
 import { UILibrary } from 'src/routes/UILibrary'
+import { CompetitionsPage } from './routes/CompetitionsPage'
 
 const App = () => {
 	return (
@@ -12,6 +13,7 @@ const App = () => {
 					<Routes>
 						<Route element={<MainPage />} path={AppRoute.Root} />
 						<Route element={<UILibrary />} path={AppRoute.UILibrary} />
+						<Route element={<CompetitionsPage />} path={AppRoute.Competitions} />
 						<Route element={<Route404 />} path={AppRoute.NotFound} />
 					</Routes>
 				</div>
