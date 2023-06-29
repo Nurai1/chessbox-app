@@ -39,8 +39,6 @@ export const competitionsSlice = createSlice({
 	}
 })
 
-// export const getCompetitions = () => (state: CompetitionsState) => state.data
-
 // export const {} = competitionsSlice.actions
 
 export default competitionsSlice.reducer

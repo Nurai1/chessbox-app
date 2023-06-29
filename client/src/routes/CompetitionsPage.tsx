@@ -13,7 +13,7 @@ import { CompetitionSchema } from '../types'
 export const CompetitionsPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
 	const isLoading = useAppSelector(state => state.competitions.loading)
-	const [activeCompetitions, setActiveCompetitions] = useState<{
+	const [competitions, setCompetitions] = useState<{
 		activeIndex: number
 		competitionsData: CompetitionSchema[] | []
 	}>({
@@ -30,8 +30,8 @@ export const CompetitionsPage = (): ReactElement => {
 	}, [dispatch])
 
 	useEffect(() => {
-		setActiveCompetitions({
-			...activeCompetitions,
+		setCompetitions({
+			...competitions,
 			competitionsData: competitionsActive
 		})
 		// eslint-disable-next-line
@@ -53,30 +53,30 @@ export const CompetitionsPage = (): ReactElement => {
 						classes='pb-[30px] md:border-[#DADADA] md:border-b lg:border-0 lg:pb-[17px] xl:pb-[20px] xl:border-b 2xl:pb-[28px] 2xl:px-[24px]'
 						tabs={[
 							{
-								isActive: activeCompetitions.activeIndex === 0,
+								isActive: competitions.activeIndex === 0,
 								title: 'Active',
 								onClick: () => {
-									setActiveCompetitions({
+									setCompetitions({
 										activeIndex: 0,
 										competitionsData: competitionsActive
 									})
 								}
 							},
 							{
-								isActive: activeCompetitions.activeIndex === 1,
+								isActive: competitions.activeIndex === 1,
 								title: 'My competitions',
 								onClick: () => {
-									setActiveCompetitions({
+									setCompetitions({
 										activeIndex: 1,
 										competitionsData: currentUserCompetitions
 									})
 								}
 							},
 							{
-								isActive: activeCompetitions.activeIndex === 2,
+								isActive: competitions.activeIndex === 2,
 								title: 'Archive',
 								onClick: () => {
-									setActiveCompetitions({
+									setCompetitions({
 										activeIndex: 2,
 										competitionsData: expiredCompetitions
 									})
@@ -85,7 +85,7 @@ export const CompetitionsPage = (): ReactElement => {
 						]}
 					/>
 					<div className='lg:rounded-3xl lg:border lg:border-[#DADADA] lg:px-[30px] lg:pb-[8px] xl:border-0 xl:p-0'>
-						{activeCompetitions.competitionsData.map(competition => (
+						{competitions.competitionsData.map(competition => (
 							<CompetitionCard competition={competition} key={competition._id} />
 						))}
 					</div>
