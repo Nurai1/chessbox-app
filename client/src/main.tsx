@@ -11,7 +11,7 @@ const container = document.querySelector('#root')
 if (container) {
 	const root = createRoot(container)
 	root.render(
-		<StrictMode>
+		// <StrictMode>
 			<ErrorBoundary>
 				<Provider store={store}>
 					<SpinnerSuspense>
@@ -19,6 +19,6 @@ if (container) {
 					</SpinnerSuspense>
 				</Provider>
 			</ErrorBoundary>
-		</StrictMode>
+		// </StrictMode>
 	)
 }

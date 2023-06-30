@@ -1,10 +1,15 @@
 import { FC, ReactNode } from 'react'
-import { TableWrapper, TableBody, TableHeader } from '../../ui'
+import { TableBody, TableHeader } from '../../ui'
+import { UserSchema } from '../../types'
 
 type UsersTableWithTitlePropsType = {
 	columns?: { title: string; width?: number | string; classes?: string }[]
 	rows: { cells: { node: ReactNode; classes?: string }[] }[]
 	title?: string
+	isInfiniteLoader?: boolean
+	itemsCount?: number
+	loadMoreItems?: (startIndex: number, stopIndex: number) => void
+	isItemLoaded?: (index: number) => boolean
 }
 
 const columnsDefault = [
@@ -14,12 +19,17 @@ const columnsDefault = [
 	{ title: 'Points', classes: '2xl:min-w-[45%] xl:min-w-[40%]' }
 ]
 
-export const UsersTableWithTitle: FC<UsersTableWithTitlePropsType> = ({ columns = columnsDefault, rows, title }) => {
+export const UsersTableWithTitle: FC<UsersTableWithTitlePropsType> = ({
+	columns = columnsDefault,
+	rows,
+	title,
+	...rest
+}) => {
 	return (
-		<TableWrapper>
+		<>
 			{title && (
 				<h2
-					className='border-b py-[18px] text-base font-normal font-medium
+					className='border-b py-[18px] text-base font-medium
 				text-black md:pb-[26px] md:text-xl
 				md:font-semibold lg:text-2xl
 				2xl:text-[32px]
@@ -30,8 +40,8 @@ export const UsersTableWithTitle: FC<UsersTableWithTitlePropsType> = ({ columns 
 			)}
 			<table className='relative w-full'>
 				<TableHeader columns={columns} />
-				<TableBody rows={rows} />
+				<TableBody rows={rows} {...rest}/>
 			</table>
-		</TableWrapper>
+		</>
 	)
 }
