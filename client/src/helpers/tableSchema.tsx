@@ -45,14 +45,14 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
                             xl:text-xl xl:font-medium
                             2xl:text-2xl 2xl:font-semibold'
 							>
-								{user?.fullName}
+								{user.fullName}
 							</Link>
-							<p className='xl:hidden'>{user?.gender}</p>
+							<p className='xl:hidden'>{user.gender}</p>
 							<p
 								className='text-[#6C6A6C]
                             md:text-base'
 							>
-								{user?.age ? `age ${user?.age}` : ''}
+								{user.age ? `age ${user.age}` : ''}
 								{user.weight ? `, ${user.weight} kg` : ''}
 							</p>
 						</div>
@@ -60,7 +60,9 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
 					classes: 'min-h-[90px] md:min-h-[134px] lg:min-h-[140px] xl:min-h-[115px] !grow-[2] xl:!grow-[1]'
 				},
 				{
-					node: <p className='text-xl font-medium text-black'>Russia, Ufa</p>,
+					node: <p className='text-xl font-medium text-black'>
+						{user.address?.country}{user.address?.country ? ',' : ''} {user.address?.city}
+					</p>,
 					classes: 'hidden xl:flex'
 				},
 				{
