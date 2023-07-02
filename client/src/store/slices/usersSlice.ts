@@ -2,13 +2,15 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getUsersApi } from 'src/api/requests/users'
 import { UserSchema } from 'src/types'
 
-export const fetchUsers = createAsyncThunk('users/fetchAll',
-	async (query: { limit?: string, offset?: string }, thunkApi) => {
-	const response = await getUsersApi(query)
-	if (response.error) return thunkApi.rejectWithValue(response.error.error)
+export const fetchUsers = createAsyncThunk(
+	'users/fetchAll',
+	async (query: { limit?: number; offset?: number }, thunkApi) => {
+		const response = await getUsersApi(query)
+		if (response.error) return thunkApi.rejectWithValue(response.error.error)
 
-	return response.data
-})
+		return response.data
+	}
+)
 
 interface ResponseData {
 	items: UserSchema[]
