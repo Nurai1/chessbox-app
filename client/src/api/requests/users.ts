@@ -1,9 +1,12 @@
 import { get } from 'src/api/api'
 
-export const getUsersApi = async (query: {limit?: string, offset?: string}) => {
+export const getUsersApi = async (query: { limit?: number; offset?: number }) => {
 	const result = await get('/api/users', {
 		params: {
-			query
+			query: {
+				limit: query.limit + '',
+				offset: query.offset + ''
+			}
 		}
 	})
 

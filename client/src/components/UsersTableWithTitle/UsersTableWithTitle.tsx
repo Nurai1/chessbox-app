@@ -7,9 +7,9 @@ type UsersTableWithTitlePropsType = {
 	rows: { cells: { node: ReactNode; classes?: string }[] }[]
 	title?: string
 	isInfiniteLoader?: boolean
-	itemsCount?: number
-	loadMoreItems?: (startIndex: number, stopIndex: number) => void
-	isItemLoaded?: (index: number) => boolean
+	hasNextPage: boolean
+	isNextPageLoading: boolean
+	loadNextPage: () => void
 }
 
 const columnsDefault = [
@@ -40,7 +40,7 @@ export const UsersTableWithTitle: FC<UsersTableWithTitlePropsType> = ({
 			)}
 			<table className='relative w-full'>
 				<TableHeader columns={columns} />
-				<TableBody rows={rows} {...rest}/>
+				<TableBody rows={rows} {...rest} />
 			</table>
 		</>
 	)

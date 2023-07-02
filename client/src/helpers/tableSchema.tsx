@@ -60,9 +60,12 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
 					classes: 'min-h-[90px] md:min-h-[134px] lg:min-h-[140px] xl:min-h-[115px] !grow-[2] xl:!grow-[1]'
 				},
 				{
-					node: <p className='text-xl font-medium text-black'>
-						{user.address?.country}{user.address?.country ? ',' : ''} {user.address?.city}
-					</p>,
+					node: (
+						<p className='text-xl font-medium text-black'>
+							{user.address?.country}
+							{user.address?.country ? ',' : ''} {user.address?.city}
+						</p>
+					),
 					classes: 'hidden xl:flex'
 				},
 				{
