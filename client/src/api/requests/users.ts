@@ -4,8 +4,8 @@ export const getUsersApi = async (query: { limit?: number; offset?: number }) =>
 	const result = await get('/api/users', {
 		params: {
 			query: {
-				limit: query.limit + '',
-				offset: query.offset + ''
+				limit: `${query.limit}`,
+				offset: `${query.offset}`
 			}
 		}
 	})

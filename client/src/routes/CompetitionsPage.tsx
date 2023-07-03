@@ -38,7 +38,7 @@ export const CompetitionsPage = (): ReactElement => {
 	}, [isLoading])
 
 	return (
-		<main className='container m-auto px-[17px] pt-[15px] md:px-7 md:pt-[25px] lg:px-10 lg:pt-[33px] 2xl:px-[40px]'>
+		<main className='container m-auto grow px-[17px] pt-[15px] md:px-7 md:pt-[25px] lg:px-10 lg:pt-[33px] 2xl:px-[40px]'>
 			<h1 className='2xl:[mb-40px] mb-[13px] text-[24px] font-semibold xl:mb-[17px] xl:text-[54px] xl:font-bold'>
 				Competitions
 			</h1>

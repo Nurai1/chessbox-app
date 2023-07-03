@@ -4,15 +4,19 @@ import { twMerge } from 'tailwind-merge'
 import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeList } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { Loader } from '../Loader'
+import styles from './TableBody.module.css'
 
 export type TablePropsType = {
 	columns?: { title: string; width?: number | string; classes?: string }[]
 	rows: { cells: { node: ReactNode; classes?: string }[] }[]
 	isInfiniteLoader?: boolean
-	hasNextPage: boolean
-	isNextPageLoading: boolean
-	loadNextPage: () => void
+	hasNextPage?: boolean
+	isNextPageLoading?: boolean
+	loadNextPage?: () => void
 }
+
+type AutoSizerProps = { height: number; width: number }
 
 export const TableBody: FC<TablePropsType> = ({
 	columns,
@@ -30,60 +34,70 @@ export const TableBody: FC<TablePropsType> = ({
 	const isItemLoaded = (index: number) => !hasNextPage || index < rows.length
 
 	return (
-		<tbody>
+		<div className='grow'>
 			{isInfiniteLoader && (
-				<InfiniteLoader isItemLoaded={isItemLoaded} itemCount={itemCount} loadMoreItems={loadMoreItems}>
-					{({ onItemsRendered, ref }) => (
-						<FixedSizeList
+				<AutoSizer>
+					{(props: AutoSizerProps) => (
+						// типизировал так, потому что интерфейс пропса loadMoreItems не соотвтетсвует интерфесу нашей функции
+						<InfiniteLoader
+							isItemLoaded={isItemLoaded}
 							itemCount={itemCount}
-							onItemsRendered={onItemsRendered}
-							ref={ref}
-							itemSize={105}
-							height={450}
-							width={900}
+							loadMoreItems={loadMoreItems as (startIndex: number, stopIndex: number) => Promise<void> | void}
 						>
-							{({ index, style }) =>
-								!isItemLoaded(index) ? (
-									<tr key={index} style={style}>
-										Loading...
-									</tr>
-								) : (
-									<tr key={index} style={style} className='flex'>
-										{rows[index].cells.map((cell, cellIndex) => {
-											const column = columns ? columns[cellIndex] : null
-											return (
-												<td
-													key={cellIndex}
-													className={twMerge(
-														'inline-flex min-w-0 border-t px-2.5 py-[14px] text-sm font-normal text-[#6C6A6C] first:pl-0 last:pr-0 md:py-[22px] md:text-base 2xl:py-[24px]',
-														cell.classes
-													)}
-													style={{
-														flexGrow: column?.width ? 0 : 1,
-														flexBasis: column?.width || '0px',
-														width: column?.width
-													}}
-												>
-													{cell.node}
-												</td>
-											)
-										})}
-									</tr>
-								)
-							}
-						</FixedSizeList>
+							{({ onItemsRendered, ref }) => (
+								<FixedSizeList
+									itemCount={itemCount}
+									onItemsRendered={onItemsRendered}
+									ref={ref}
+									itemSize={105}
+									height={props.height}
+									width={props.width}
+									className={`${styles['table-scroll-custom']}`}
+								>
+									{({ index, style }) =>
+										!isItemLoaded(index) ? (
+											<div key={index} style={style}>
+												<Loader classes='scale-75 h-full' />
+											</div>
+										) : (
+											<div key={index} style={style} className='flex md:!w-[99%]'>
+												{rows[index].cells.map((cell, cellIndex) => {
+													const column = columns ? columns[cellIndex] : null
+													return (
+														<div
+															key={cellIndex}
+															className={twMerge(
+																'inline-flex min-w-0 border-t px-2.5 py-[14px] text-sm font-normal text-[#6C6A6C] first:pl-0 last:pr-0 md:py-[22px] md:text-base 2xl:py-[24px]',
+																cell.classes
+															)}
+															style={{
+																flexGrow: column?.width ? 0 : 1,
+																flexBasis: column?.width || '0px',
+																width: column?.width
+															}}
+														>
+															{cell.node}
+														</div>
+													)
+												})}
+											</div>
+										)
+									}
+								</FixedSizeList>
+							)}
+						</InfiniteLoader>
 					)}
-				</InfiniteLoader>
+				</AutoSizer>
 			)}
 
 			{!isInfiniteLoader &&
 				rows.map((row, rowIndex) => {
 					return (
-						<tr key={rowIndex} className='flex'>
+						<div key={rowIndex} className='flex'>
 							{row.cells.map((cell, cellIndex) => {
 								const column = columns ? columns[cellIndex] : null
 								return (
-									<td
+									<div
 										key={cellIndex}
 										className={twMerge(
 											'inline-flex min-w-0 border-t px-2.5 py-[14px] text-sm font-normal text-[#6C6A6C] first:pl-0 last:pr-0 md:py-[22px] md:text-base 2xl:py-[24px]',
@@ -96,12 +110,12 @@ export const TableBody: FC<TablePropsType> = ({
 										}}
 									>
 										{cell.node}
-									</td>
+									</div>
 								)
 							})}
-						</tr>
+						</div>
 					)
 				})}
-		</tbody>
+		</div>
 	)
 }

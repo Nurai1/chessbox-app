@@ -108,11 +108,12 @@ export const UILibrary: FC = () => {
 				>
 					Таблица
 				</h2>
-				<table className='relative w-full'>
+				<div className='relative w-full'>
 					<TableBody rows={usersTable} />
-				</table>
+				</div>
 			</TableWrapper>
 			<hr className='my-8' />
+
 			<TableWrapper>
 				<UsersTableWithTitle rows={usersTable} title='Список пользователей' />
 			</TableWrapper>
