@@ -1,15 +1,14 @@
 import { FC, ReactNode } from 'react'
 import { TableBody, TableHeader } from '../../ui'
-import { UserSchema } from '../../types'
 
 type UsersTableWithTitlePropsType = {
-	columns?: { title: string; width?: number | string; classes?: string }[]
 	rows: { cells: { node: ReactNode; classes?: string }[] }[]
+	columns?: { title: string; width?: number | string; classes?: string }[]
 	title?: string
 	isInfiniteLoader?: boolean
-	hasNextPage: boolean
-	isNextPageLoading: boolean
-	loadNextPage: () => void
+	hasNextPage?: boolean
+	isNextPageLoading?: boolean
+	loadNextPage?: () => void
 }
 
 const columnsDefault = [
@@ -38,10 +37,10 @@ export const UsersTableWithTitle: FC<UsersTableWithTitlePropsType> = ({
 					{title}
 				</h2>
 			)}
-			<table className='relative w-full'>
+			<div className='relative flex w-full grow flex-col'>
 				<TableHeader columns={columns} />
 				<TableBody rows={rows} {...rest} />
-			</table>
+			</div>
 		</>
 	)
 }

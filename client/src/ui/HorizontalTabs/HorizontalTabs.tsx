@@ -20,7 +20,7 @@ export const HorizontalTabs: FC<HorizontalTabsPropsType> = ({ tabs, tabMinWidth,
 						onClick={() => tab.onClick()}
 						type='button'
 						className={twMerge(
-							`h-full w-full select-none whitespace-nowrap rounded-lg border border-transparent px-3 py-2 text-base font-semibold text-[#6C6A6C] transition-all hover:cursor-pointer [&:not(:last-child)]:mr-[9px] ${tabBorder}
+							`relative h-full w-full select-none whitespace-nowrap rounded-lg border border-transparent px-3 py-2 text-base font-semibold text-[#6C6A6C] transition-all hover:cursor-pointer [&:not(:last-child)]:mr-[9px] ${tabBorder}
 							xl:w-[${tabMinWidth}px]`,
 							tab.isActive && 'pointer-events-none border bg-black text-white'
 						)}
