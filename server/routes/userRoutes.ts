@@ -142,11 +142,35 @@ userRouter.get(
   } */
   /*  #swagger.parameters['limit'] = {
           in: 'query',
-          schema: { type: "string" }
+          schema: { type: "number" }
   } */
   /*  #swagger.parameters['offset'] = {
           in: 'query',
-          schema: { type: "string" }
+          schema: { type: "number" }
+  } */
+  /*  #swagger.parameters['ageFrom'] = {
+          in: 'query',
+          schema: { type: "number" }
+  } */
+  /*  #swagger.parameters['ageTo'] = {
+          in: 'query',
+          schema: { type: "number" }
+  } */
+  /*  #swagger.parameters['weightFrom'] = {
+          in: 'query',
+          schema: { type: "number" }
+  } */
+  /*  #swagger.parameters['weightTo'] = {
+          in: 'query',
+          schema: { type: "number" }
+  } */
+  /*  #swagger.parameters['withWomen'] = {
+          in: 'query',
+          schema: { type: "boolean" }
+  } */
+  /*  #swagger.parameters['withMen'] = {
+          in: 'query',
+          schema: { type: "boolean" }
   } */
   /* 
     #swagger.responses[200] = {

@@ -133,24 +133,81 @@ export const allowIfLoggedin = async (
 };
 
 export const getUsers = async (
-  req: Request<any, { offset?: string; limit?: string; search?: string }>,
+  req: Request<
+    any,
+    {
+      offset?: string;
+      limit?: string;
+      search?: string;
+      ageFrom?: string;
+      ageTo?: string;
+      weightFrom?: string;
+      weightTo?: string;
+      withWomen?: string;
+      withMen?: string;
+    }
+  >,
   res: Response,
   next: NextFunction
 ) => {
-  const { offset, limit, search } = req.query;
+  const {
+    offset,
+    limit,
+    search,
+    ageFrom,
+    ageTo,
+    weightFrom,
+    weightTo,
+    withWomen,
+    withMen,
+  } = req.query;
 
-  const filter = search
-    ? {
-        $or: [
-          { chessPlatform: { username: { $regex: search } } },
-          { email: { $regex: search } },
-          { fullName: { $regex: search } },
-        ],
-      }
-    : {};
+  const getGenderFilter = () => {
+    if (withWomen === 'true' && withMen === 'true') {
+      return null;
+    }
+    if (withWomen === 'true') {
+      return { gender: 'woman' };
+    }
+    if (withMen === 'true') {
+      return { gender: 'man' };
+    }
+    return null;
+  };
+
+  const allFilters = [
+    ageTo && {
+      age: { $lte: Number(ageTo) },
+    },
+    ageFrom && {
+      age: { $gte: Number(ageFrom) },
+    },
+    weightTo && {
+      weight: { $lte: Number(weightTo) },
+    },
+    weightFrom && {
+      weight: { $gte: Number(weightFrom) },
+    },
+    getGenderFilter(),
+    search && {
+      $or: [
+        { 'chessPlatform.username': { $regex: search } },
+        { fullName: { $regex: search } },
+      ],
+    },
+  ].filter((val) => {
+    return !!val;
+  }) as Record<string, any>[];
+
+  const filter =
+    allFilters.length > 0
+      ? {
+          $and: allFilters,
+        }
+      : {};
 
   let usersQuery = User.find(filter).populate('competition');
-  let usersCount = await User.count({});
+  let usersCount = await User.count(filter);
 
   const lim = Number(limit);
   const skip = Number(offset);
