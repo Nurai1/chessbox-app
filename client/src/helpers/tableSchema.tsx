@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { ReactComponent as MedalGold } from 'src/assets/medal-gold.svg'
 import { ReactComponent as MedalSilver } from 'src/assets/medal-silver.svg'
 import { ReactComponent as MedalBronze } from 'src/assets/medal-bronze.svg'
@@ -37,8 +36,7 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
 				{
 					node: (
 						<div>
-							<Link
-								to={user._id}
+							<p
 								className='text-base font-normal text-black transition hover:opacity-70
                             md:text-xl md:font-medium
                             lg:text-2xl lg:font-semibold
@@ -46,7 +44,7 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
                             2xl:text-2xl 2xl:font-semibold'
 							>
 								{user.fullName}
-							</Link>
+							</p>
 							<p className='xl:hidden'>{user.gender}</p>
 							<p
 								className='text-[#6C6A6C]
