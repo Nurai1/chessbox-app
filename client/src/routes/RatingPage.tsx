@@ -19,7 +19,8 @@ export const RatingPage = (): ReactElement => {
 
 	useEffect(() => {
 		dispatch(fetchUsers({ ...query, limit: USERS_PER_STEP }))
-	}, [dispatch, query])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	const usersTable = ratingTableSchema(users)
 

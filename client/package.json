@@ -21,8 +21,6 @@
 	},
 	"dependencies": {
 		"@reduxjs/toolkit": "^1.9.5",
-		"@types/react-virtualized-auto-sizer": "^1.0.1",
-		"@types/react-window": "^1.8.5",
 		"dayjs": "^1.11.7",
 		"openapi-fetch": "^0.4.0",
 		"openapi-typescript": "^6.2.8",
@@ -53,6 +51,8 @@
 		"@types/node": "^18.11.17",
 		"@types/react": "^18.0.25",
 		"@types/react-dom": "^18.0.8",
+		"@types/react-virtualized-auto-sizer": "^1.0.1",
+		"@types/react-window": "^1.8.5",
 		"@types/react-window-infinite-loader": "^1.0.6",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
 		"@typescript-eslint/parser": "^5.43.0",
