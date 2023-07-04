@@ -5,5 +5,7 @@ type TableWrapperPropsType = {
 }
 
 export const TableWrapper: FC<TableWrapperPropsType> = ({ children }) => {
-	return <div className='rounded-3xl border border-[#DADADA] p-3 md:px-5 lg:px-[50px]'>{children}</div>
+	return (
+		<div className=' flex grow flex-col rounded-3xl border border-[#DADADA] p-3 md:px-5 lg:px-[50px]'>{children}</div>
+	)
 }

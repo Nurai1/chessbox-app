@@ -17,7 +17,7 @@ export interface UserState {
 
 const initialState: UserState = {
 	data: null,
-	loading: false
+	loading: true
 }
 
 export const currentUserSlice = createSlice({

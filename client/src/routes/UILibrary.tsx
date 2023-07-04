@@ -116,13 +116,15 @@ export const UILibrary: FC = () => {
 				>
 					Таблица
 				</h2>
-				<table className='relative w-full'>
+				<div className='relative w-full'>
 					<TableBody rows={usersTable} />
-				</table>
+				</div>
 			</TableWrapper>
 			<hr className='my-8' />
 
-			<UsersTableWithTitle rows={usersTable} title='Список пользователей' />
+			<TableWrapper>
+				<UsersTableWithTitle rows={usersTable} title='Список пользователей' />
+			</TableWrapper>
 			<hr className='my-8' />
 
 			<h2 className='mb-5 text-xl font-semibold'>Карточка соревнования</h2>
