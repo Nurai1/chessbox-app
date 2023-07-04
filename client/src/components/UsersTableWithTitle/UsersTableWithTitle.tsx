@@ -1,15 +1,10 @@
-import { FC, ReactNode } from 'react'
-import { TableBody, TableHeader } from '../../ui'
+import { FC } from 'react'
+import { TableBody, TableHeader } from 'src/ui'
+import { TablePropsType } from 'src/ui/Table/TableBody'
 
 type UsersTableWithTitlePropsType = {
-	rows: { cells: { node: ReactNode; classes?: string }[] }[]
-	columns?: { title: string; width?: number | string; classes?: string }[]
 	title?: string
-	isInfiniteLoader?: boolean
-	hasNextPage?: boolean
-	isNextPageLoading?: boolean
-	loadNextPage?: () => void
-}
+} & TablePropsType
 
 const columnsDefault = [
 	{ title: 'Place', classes: 'max-w-[50px] md:max-w-[70px] lg:max-w-[100px]' },

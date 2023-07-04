@@ -7,14 +7,23 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { Loader } from '../Loader'
 import styles from './TableBody.module.css'
 
-export type TablePropsType = {
-	columns?: { title: string; width?: number | string; classes?: string }[]
-	rows: { cells: { node: ReactNode; classes?: string }[] }[]
-	isInfiniteLoader?: boolean
-	hasNextPage?: boolean
-	isNextPageLoading?: boolean
-	loadNextPage?: () => void
-}
+export type TablePropsType =
+	| {
+			columns?: { title: string; width?: number | string; classes?: string }[]
+			rows: { cells: { node: ReactNode; classes?: string }[] }[]
+			isInfiniteLoader?: false
+			hasNextPage?: never
+			isNextPageLoading?: never
+			loadNextPage?: never
+	  }
+	| {
+			columns?: { title: string; width?: number | string; classes?: string }[]
+			rows: { cells: { node: ReactNode; classes?: string }[] }[]
+			isInfiniteLoader: true
+			hasNextPage?: boolean
+			isNextPageLoading?: boolean
+			loadNextPage?: () => void
+	  }
 
 type AutoSizerProps = { height: number; width: number }
 
