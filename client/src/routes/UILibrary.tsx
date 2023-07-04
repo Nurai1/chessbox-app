@@ -1,7 +1,7 @@
 import { useState, FC } from 'react'
 import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
 import { ReactComponent as Persons } from 'src/assets/persons.svg'
-import { Button, HorizontalTabs, TableBody, TableWrapper, Tag, Timer, Loader } from '../ui'
+import { Button, HorizontalTabs, TableBody, TableWrapper, Tag, Timer, Loader, Checkbox } from '../ui'
 import { UsersTableWithTitle, CompetitionCard } from '../components'
 import { ratingTableSchema } from '../helpers/tableSchema'
 import { usersMock, competitionsMock } from '../mock'
@@ -10,6 +10,7 @@ const usersTable = ratingTableSchema(usersMock)
 const tabsContent = ['Active competitions', 'My competitions', 'Archive']
 export const UILibrary: FC = () => {
 	const [activeIndex, setActiveIndex] = useState(0)
+	const [checked, setChecked] = useState(true)
 	const clickHandler = (): void => {}
 
 	return (
@@ -80,10 +81,6 @@ export const UILibrary: FC = () => {
 
 			<h2 className='mb-5 text-xl font-semibold'>Таймер</h2>
 			<Timer time='2023-06-29T07:39:00.000Z' />
-			<br />
-			<Timer time='2023-06-29T13:44:00.000+04:00' />
-			<br />
-			<Timer time='2023-06-29T12:45:00.000+04:00' />
 
 			<hr className='my-8' />
 
@@ -96,6 +93,17 @@ export const UILibrary: FC = () => {
 
 			<h2 className='mb-5 text-xl font-semibold'>Лоадер</h2>
 			<Loader />
+			<hr className='my-8' />
+
+			<h2 className='mb-5 text-xl font-semibold'>Чекбокс</h2>
+			<Checkbox
+				title='Choose something'
+				name='something'
+				checked={checked}
+				classes='mr-5'
+				onChange={() => setChecked(!checked)}
+			/>
+			<Checkbox title='Disabled' name='disabled' disabled />
 			<hr className='my-8' />
 
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>
