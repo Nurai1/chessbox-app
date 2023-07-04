@@ -820,14 +820,56 @@
             "name": "limit",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           },
           {
             "name": "offset",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "number"
+            }
+          },
+          {
+            "name": "ageFrom",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "ageTo",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "weightFrom",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "weightTo",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "withWomen",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "withMen",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           }
         ],

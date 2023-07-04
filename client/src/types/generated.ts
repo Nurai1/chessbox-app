@@ -259,8 +259,14 @@ export interface paths {
 			parameters: {
 				query?: {
 					search?: string
-					limit?: string
-					offset?: string
+					limit?: number
+					offset?: number
+					ageFrom?: number
+					ageTo?: number
+					weightFrom?: number
+					weightTo?: number
+					withWomen?: boolean
+					withMen?: boolean
 				}
 			}
 			responses: {
