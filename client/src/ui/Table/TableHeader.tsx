@@ -8,25 +8,23 @@ export type TableHeaderPropsType = {
 
 export const TableHeader: FC<TableHeaderPropsType> = ({ columns }) => {
 	return (
-		<thead>
-			<tr className='flex'>
-				{columns.map((column, idx) => (
-					<th
-						key={idx}
-						className={twMerge(
-							'flex min-h-[50px] items-center p-2.5 text-sm font-normal uppercase text-gray-500 first:pl-0 last:pr-0 md:min-h-[85px]  md:font-bold lg:text-xl lg:font-medium',
-							column.classes
-						)}
-						style={{
-							flexGrow: column.width ? 0 : 1,
-							flexBasis: column.width || '0px',
-							width: column.width
-						}}
-					>
-						{column.title}
-					</th>
-				))}
-			</tr>
-		</thead>
+		<div className='flex'>
+			{columns.map((column, idx) => (
+				<div
+					key={idx}
+					className={twMerge(
+						'flex min-h-[50px] items-center p-2.5 text-sm font-normal uppercase text-gray-500 first:pl-0 last:pr-0 md:min-h-[85px]  md:font-bold lg:text-xl lg:font-medium',
+						column.classes
+					)}
+					style={{
+						flexGrow: column.width ? 0 : 1,
+						flexBasis: column.width || '0px',
+						width: column.width
+					}}
+				>
+					{column.title}
+				</div>
+			))}
+		</div>
 	)
 }

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { ReactComponent as MedalGold } from 'src/assets/medal-gold.svg'
 import { ReactComponent as MedalSilver } from 'src/assets/medal-silver.svg'
 import { ReactComponent as MedalBronze } from 'src/assets/medal-bronze.svg'
@@ -37,22 +36,21 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
 				{
 					node: (
 						<div>
-							<Link
-								to={user._id}
+							<p
 								className='text-base font-normal text-black transition hover:opacity-70
                             md:text-xl md:font-medium
                             lg:text-2xl lg:font-semibold
                             xl:text-xl xl:font-medium
                             2xl:text-2xl 2xl:font-semibold'
 							>
-								{user?.fullName}
-							</Link>
-							<p className='xl:hidden'>{user?.gender}</p>
+								{user.fullName}
+							</p>
+							<p className='xl:hidden'>{user.gender}</p>
 							<p
 								className='text-[#6C6A6C]
                             md:text-base'
 							>
-								{user?.age ? `age ${user?.age}` : ''}
+								{user.age ? `age ${user.age}` : ''}
 								{user.weight ? `, ${user.weight} kg` : ''}
 							</p>
 						</div>
@@ -60,7 +58,12 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
 					classes: 'min-h-[90px] md:min-h-[134px] lg:min-h-[140px] xl:min-h-[115px] !grow-[2] xl:!grow-[1]'
 				},
 				{
-					node: <p className='text-xl font-medium text-black'>Russia, Ufa</p>,
+					node: (
+						<p className='text-xl font-medium text-black'>
+							{user.address?.country}
+							{user.address?.country ? ',' : ''} {user.address?.city}
+						</p>
+					),
 					classes: 'hidden xl:flex'
 				},
 				{
