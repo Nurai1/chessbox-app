@@ -7,8 +7,14 @@ const { Schema } = mongoose;
 
 export const competitionGroupSchema = new Schema<ICompetitionGroup>(
   {
-    ageCategory: { type: String, required: true },
-    weightCategory: { type: String, required: true },
+    ageCategory: {
+      from: { type: Number, required: true },
+      to: { type: Number, required: true },
+    },
+    weightCategory: {
+      from: { type: Number, required: true },
+      to: { type: Number, required: true },
+    },
     gender: { type: String, required: true },
     currentRoundNumber: { type: Number, required: true },
     order: { type: Number },

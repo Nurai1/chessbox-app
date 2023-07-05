@@ -3726,10 +3726,26 @@
               "type": "object",
               "properties": {
                 "ageCategory": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "from": {
+                      "type": "number"
+                    },
+                    "to": {
+                      "type": "number"
+                    }
+                  }
                 },
                 "weightCategory": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "from": {
+                      "type": "number"
+                    },
+                    "to": {
+                      "type": "number"
+                    }
+                  }
                 },
                 "gender": {
                   "type": "string"
@@ -3845,8 +3861,6 @@
                 }
               },
               "required": [
-                "ageCategory",
-                "weightCategory",
                 "gender",
                 "currentRoundNumber"
               ]
@@ -3882,10 +3896,26 @@
             "type": "object",
             "properties": {
               "ageCategory": {
-                "type": "string"
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "number"
+                  },
+                  "to": {
+                    "type": "number"
+                  }
+                }
               },
               "weightCategory": {
-                "type": "string"
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "number"
+                  },
+                  "to": {
+                    "type": "number"
+                  }
+                }
               },
               "gender": {
                 "type": "string"
@@ -4046,18 +4076,32 @@
       "CompetitionGroup": {
         "title": "CompetitionGroup",
         "required": [
-          "ageCategory",
-          "weightCategory",
           "gender",
           "currentRoundNumber",
           "_id"
         ],
         "properties": {
           "ageCategory": {
-            "type": "string"
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "number"
+              },
+              "to": {
+                "type": "number"
+              }
+            }
           },
           "weightCategory": {
-            "type": "string"
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "number"
+              },
+              "to": {
+                "type": "number"
+              }
+            }
           },
           "gender": {
             "type": "string"
