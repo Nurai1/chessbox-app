@@ -26,13 +26,20 @@ const swaggerCompetitionGroup = m2s(
 );
 const swaggerPair = m2s(mongoose.model('Pair', pairSchema), m2sOptions);
 
-swaggerCompetitionGroup.required = [
-  ...(swaggerCompetitionGroup.required ?? []),
+const swaggerCompetitionGroupBody = swaggerCompetitionGroup;
+swaggerCompetitionGroupBody.required = [
+  ...(swaggerCompetitionGroupBody.required ?? []),
   '_id',
 ];
-swaggerPair.required = [...(swaggerPair.required ?? []), '_id'];
-swaggerUser.required = [...(swaggerUser.required ?? []), '_id'];
-swaggerCompetition.required = [...(swaggerCompetition.required ?? []), '_id'];
+const swaggerCompetitionBody = swaggerCompetition;
+swaggerCompetitionBody.required = [
+  ...(swaggerCompetitionBody.required ?? []),
+  '_id',
+];
+const swaggerPairBody = swaggerPair;
+swaggerPairBody.required = [...(swaggerPairBody.required ?? []), '_id'];
+const swaggerUserBody = swaggerUser;
+swaggerUserBody.required = [...(swaggerUserBody.required ?? []), '_id'];
 
 const doc = {
   info: {
@@ -60,6 +67,10 @@ const doc = {
     User: swaggerUser,
     CompetitionGroup: swaggerCompetitionGroup,
     Pair: swaggerPair,
+    CompetitionBody: swaggerCompetitionBody,
+    UserBody: swaggerUserBody,
+    CompetitionGroupBody: swaggerCompetitionGroupBody,
+    PairBody: swaggerPairBody,
   },
   components: {}, // by default: empty object (OpenAPI 3.x)
 };

@@ -102,7 +102,7 @@ export const grantAccess =
       const permission = ac.can(user?.role)[action](resource);
 
       if (!permission.granted) {
-        return res.status(401).json({
+        return res.status(403).json({
           error: "You don't have enough permission to perform this action",
         });
       }
@@ -237,6 +237,8 @@ export const getUser = async (
   const { id } = req.params;
   const user = await User.findOne({ _id: id });
 
+  if (!user) return res.status(404).send({ error: "User wasn't found" });
+
   res.send(user);
 };
 
@@ -262,6 +264,8 @@ export const deleteUser = async (
   const { id } = req.params;
 
   const user = await User.findByIdAndDelete(id);
+
+  if (!user) return res.status(404).send({ error: "User wasn't found" });
 
   res.send(user);
 };
@@ -297,7 +301,8 @@ export const updateUser = async (
   const user = await User.findOneAndUpdate({ _id: result._id }, result, {
     new: true,
   });
-  console.log(user);
+
+  if (!user) return res.status(404).send({ error: "User wasn't found" });
 
   res.send(user);
 };

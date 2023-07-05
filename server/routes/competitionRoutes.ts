@@ -9,7 +9,6 @@ export const competitionRouter = express.Router();
 
 competitionRouter.get(
   '/competition/:id',
-  // #swagger.tags = ['Competitions']
   /* #swagger.responses[200] = {
             description: 'Competition successfully obtained.',
             schema: { $ref: '#/definitions/Competition' }
@@ -19,7 +18,6 @@ competitionRouter.get(
 
 competitionRouter.get(
   '/competitions',
-  // #swagger.tags = ['Competitions']
   /* #swagger.responses[200] = {
             description: 'Competition successfully obtained.',
             schema: [{ $ref: '#/definitions/Competition' }]
@@ -29,12 +27,11 @@ competitionRouter.get(
 
 competitionRouter.post(
   '/competition',
-  // #swagger.tags = ['Competitions']
   /*	#swagger.requestBody = {
           required: true,
           content: {
               "application/json": {
-                  schema: { $ref: "#/definitions/Competition" }
+                  schema: { $ref: "#/definitions/CompetitionBody" }
               },
           }
       } 
@@ -50,7 +47,6 @@ competitionRouter.post(
 
 competitionRouter.patch(
   '/competition/defineWinner',
-  // #swagger.tags = ['Competitions']
   /*	#swagger.requestBody = {
             required: true,
             content: {
@@ -80,7 +76,6 @@ competitionRouter.patch(
 
 competitionRouter.patch(
   '/competition/launchNextGroupRound',
-  // #swagger.tags = ['Competitions']
   /*	#swagger.requestBody = {
             required: true,
             content: {
@@ -107,7 +102,6 @@ competitionRouter.patch(
 
 competitionRouter.patch(
   '/competition/callPairPreparation',
-  // #swagger.tags = ['Competitions']
   /*	#swagger.requestBody = {
             required: true,
             content: {
@@ -136,7 +130,6 @@ competitionRouter.patch(
 
 competitionRouter.patch(
   '/competition/setJudgesToCompetition',
-  // #swagger.tags = ['Competitions']
   /*	#swagger.requestBody = {
             required: true,
             content: {
@@ -164,7 +157,6 @@ competitionRouter.patch(
 
 competitionRouter.patch(
   '/competition/:id',
-  // #swagger.tags = ['Competitions']
   /*	#swagger.requestBody = {
           required: true,
           content: {
@@ -185,7 +177,6 @@ competitionRouter.patch(
 
 competitionRouter.patch(
   '/competition/:id/start',
-  // #swagger.tags = ['Competitions']
   /* #swagger.responses[200] = {
             description: '',
     } */
@@ -196,7 +187,6 @@ competitionRouter.patch(
 
 competitionRouter.delete(
   '/competition/:id',
-  // #swagger.tags = ['Competitions']
   /* #swagger.responses[200] = {
             description: '',
             schema: { $ref: '#/definitions/Competition' }
@@ -208,12 +198,11 @@ competitionRouter.delete(
 
 competitionRouter.post(
   '/competition/:id/group',
-  // #swagger.tags = ['Competitions']
   /*	#swagger.requestBody = {
           required: true,
           content: {
               "application/json": {
-                  schema: { $ref: "#/definitions/CompetitionGroup" }
+                  schema: { $ref: "#/definitions/CompetitionGroupBody" }
               },
           }
       } 
@@ -229,7 +218,6 @@ competitionRouter.post(
 
 competitionRouter.get(
   '/competition/:id/groups',
-  // #swagger.tags = ['Competitions']
   /* #swagger.responses[200] = {
             description: '',
             schema: [{ $ref: '#/definitions/CompetitionGroup' }]
@@ -241,7 +229,6 @@ competitionRouter.get(
 
 competitionRouter.patch(
   '/competition/:id/addNewParticipant',
-  // #swagger.tags = ['Competitions']
   /* #swagger.responses[200] = {
             description: '',
             schema: { $ref: '#/definitions/Competition' }
@@ -256,7 +243,7 @@ competitionRouter.patch(
                         userId: { type: "string" },
                       },
                       required: ["userId"]
-                    }  
+                    }
                 },
             }
         } 
@@ -266,9 +253,19 @@ competitionRouter.patch(
   controllerErrorHandler(CompetitionController.addNewParticipant)
 );
 
+competitionRouter.get(
+  '/competition/:id/participants',
+  /* #swagger.responses[200] = {
+            description: 'Competition\'s Participants',
+            schema: [{ $ref: '#/definitions/User' }]
+    } */
+  controllerErrorHandler(CompetitionController.getCompetitionParticipants)
+);
+
 routerMockForSwaggerGenerator.use(
   '/api',
   competitionRouter
+  // #swagger.tags = ['Competitions']
   /* #swagger.responses[500] = {
             description: 'Internal server error.',
             schema: {
@@ -276,15 +273,27 @@ routerMockForSwaggerGenerator.use(
             }
     } */
   /* #swagger.responses[400] = {
-            description: 'Internal server error.',
+            description: 'Client error.',
             schema: {
               error: "string",
             }
     } */
   /* #swagger.responses[401] = {
-          description: 'Internal server error.',
+          description: 'Unauthorized error.',
           schema: {
             error: "string",
           }
   } */
+  /* #swagger.responses[403] = {
+          description: 'Permissions error.',
+          schema: {
+            error: "string",
+          }
+  } */
+  /* #swagger.responses[404] = {
+            description: 'Not Found error.',
+            schema: {
+              error: "string",
+            }
+    } */
 );

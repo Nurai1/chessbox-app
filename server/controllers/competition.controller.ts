@@ -11,9 +11,9 @@ export const getCompetitions = async (
   res: Response,
   next: NextFunction
 ) => {
-  const competions = await Competition.find({});
+  const competitions = await Competition.find({});
 
-  res.send(competions);
+  res.send(competitions);
 };
 
 export const getCompetition = async (
@@ -24,6 +24,8 @@ export const getCompetition = async (
   const { id } = req.params;
 
   const competition = await Competition.findOne({ _id: id });
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
 
   res.send(competition);
 };
@@ -60,15 +62,15 @@ export const setJudgesToCompetition = async (
   }
 
   const competition = await Competition.findById(competitionId);
-  if (competition) {
-    competition.judges = await Promise.all(
-      judgesIds.map((judgeId) => User.findById(judgeId))
-    );
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
 
-    await competition.save();
-    res.send(competition);
-  }
-  res.status(500).send({ error: 'No competition found.' });
+  competition.judges = await Promise.all(
+    judgesIds.map((judgeId) => User.findById(judgeId))
+  );
+
+  await competition.save();
+  res.send(competition);
 };
 
 export const startCompetition = async (
@@ -82,6 +84,8 @@ export const startCompetition = async (
   const competition = await Competition.findById(params.id)
     .populate('participants')
     .populate('judges');
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
 
   const participantsAmount = competition?.participants.length;
   if (competition) {
@@ -117,6 +121,8 @@ export const deleteCompetition = async (
   const { id } = req.params;
 
   const competition = await Competition.findByIdAndDelete(id);
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
 
   res.send(competition);
 };
@@ -134,6 +140,8 @@ export const updateCompetition = async (
     req.body,
     { new: true }
   );
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
 
   res.send(competition);
 };
@@ -149,6 +157,8 @@ export const createCompetitionGroup = async (
   const { params } = req;
 
   const competition = await Competition.findById(params.id);
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
 
   const { allParticipants } = body;
   const firstRoundPairs: IPair[] = [];
@@ -207,6 +217,8 @@ export const getCompetitionGroups = async (
   if (!req.params?.id) return res.sendStatus(400);
 
   const competition = await Competition.findById(req.params.id);
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
 
   res.send(competition?.groups);
 };
@@ -220,7 +232,11 @@ export const addNewParticipant = async (
   const { userId } = req.body;
 
   const competition = await Competition.findOne({ _id: req.params.id });
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
   const user = await User.findOne({ _id: userId });
+  if (!user) return res.status(404).send({ error: "user wasn't found" });
 
   if (competition && user) {
     user.competition = competition;
@@ -242,6 +258,9 @@ export const callPairPreparation = async (
 ) => {
   const { competitionId, groupId, pairId } = req.body;
   const competition = await Competition.findById(competitionId);
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
   const newGroups = competition?.groups.map((group) => {
     if (group._id?.toString() === groupId) {
       return {
@@ -283,6 +302,9 @@ export const callPairFight = async (
 ) => {
   const { competitionId, groupId, pairId } = req.body;
   const competition = await Competition.findById(competitionId);
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
   const newGroups = competition?.groups.map((group) => {
     if (group._id?.toString() === groupId) {
       return {
@@ -321,6 +343,9 @@ export const setNextCompetitionGroupOrder = async (
   const { competitionId, groupId } = req.body;
 
   const competition = await Competition.findById(competitionId);
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
   const group = competition?.groups.find((g) => g._id?.toString() === groupId);
   const currentRoundPairs = group?.currentRoundPairs;
 
@@ -374,6 +399,9 @@ export const defineWinner = async (
     path: 'groups',
     populate: 'nextRoundParticipants',
   });
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
 
   const competitionGroup = competition?.groups.find(
     (group) => group._id?.toString() === groupId
@@ -483,6 +511,10 @@ export const launchNextGroupRound = async (
     path: 'groups',
     populate: 'nextRoundParticipants',
   });
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
   const competitionGroup = competition?.groups.find(
     (group) => group._id?.toString() === groupId
   );
@@ -524,4 +556,21 @@ export const launchNextGroupRound = async (
   return res
     .status(400)
     .send({ error: 'No groups or nextRoundParticipants or pairs' });
+};
+
+export const getCompetitionParticipants = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+
+  const competition = await Competition.findOne({ _id: id }).populate(
+    'participants'
+  );
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  res.send(competition?.participants);
 };
