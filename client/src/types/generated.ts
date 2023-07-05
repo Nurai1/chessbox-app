@@ -1206,8 +1206,14 @@ export interface components {
 			name: string
 			description?: string
 			groups?: {
-				ageCategory: string
-				weightCategory: string
+				ageCategory?: {
+					from?: number
+					to?: number
+				}
+				weightCategory?: {
+					from?: number
+					to?: number
+				}
 				gender: string
 				currentRoundNumber: number
 				order?: number
@@ -1247,8 +1253,14 @@ export interface components {
 				}[]
 			}
 			requirements?: {
-				ageCategory?: string
-				weightCategory?: string
+				ageCategory?: {
+					from?: number
+					to?: number
+				}
+				weightCategory?: {
+					from?: number
+					to?: number
+				}
 				gender?: string
 			}
 			lastOrder?: {
@@ -1297,8 +1309,14 @@ export interface components {
 		}
 		/** CompetitionGroup */
 		CompetitionGroup: {
-			ageCategory: string
-			weightCategory: string
+			ageCategory?: {
+				from?: number
+				to?: number
+			}
+			weightCategory?: {
+				from?: number
+				to?: number
+			}
 			gender: string
 			currentRoundNumber: number
 			order?: number
