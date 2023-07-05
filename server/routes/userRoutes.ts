@@ -9,7 +9,6 @@ export const userRouter = express.Router();
 
 userRouter.post(
   '/signup',
-  // #swagger.tags = ['Users']
   /*	#swagger.requestBody = {
           required: true,
           content: {
@@ -89,7 +88,6 @@ userRouter.post(
 
 userRouter.post(
   '/login',
-  // #swagger.tags = ['Users']
   /*	#swagger.requestBody = {
           required: true,
           content: {
@@ -123,7 +121,6 @@ userRouter.post(
 
 userRouter.get(
   '/user/:id',
-  // #swagger.tags = ['Users']
   /* #swagger.responses[200] = {
             description: '',
             schema: { $ref: '#/definitions/User' }
@@ -135,7 +132,6 @@ userRouter.get(
 
 userRouter.get(
   '/users',
-  // #swagger.tags = ['Users']
   /*  #swagger.parameters['search'] = {
           in: 'query',
           schema: { type: "string" }
@@ -185,12 +181,11 @@ userRouter.get(
 
 userRouter.post(
   '/user',
-  // #swagger.tags = ['Users']
   /*	#swagger.requestBody = {
           required: true,
           content: {
               "application/json": {
-                  schema: { $ref: "#/definitions/User" }
+                  schema: { $ref: "#/definitions/UserBody" }
               },
           }
       } 
@@ -207,7 +202,6 @@ userRouter.post(
 
 userRouter.patch(
   '/user',
-  // #swagger.tags = ['Users']
   /*	#swagger.requestBody = {
           required: true,
           content: {
@@ -229,7 +223,6 @@ userRouter.patch(
 
 userRouter.delete(
   '/user/:id',
-  // #swagger.tags = ['Users']
   /* #swagger.responses[200] = {
             description: '',
             schema: { $ref: '#/definitions/User' }
@@ -243,6 +236,7 @@ userRouter.delete(
 routerMockForSwaggerGenerator.use(
   '/api',
   userRouter
+  // #swagger.tags = ['Users']
   /* #swagger.responses[500] = {
             description: 'Internal server error.',
             schema: {
@@ -250,15 +244,27 @@ routerMockForSwaggerGenerator.use(
             }
     } */
   /* #swagger.responses[400] = {
-            description: 'Internal server error.',
+            description: 'Client error.',
             schema: {
               error: "string",
             }
     } */
   /* #swagger.responses[401] = {
-          description: 'Internal server error.',
+          description: 'Unauthorized error.',
           schema: {
             error: "string",
           }
   } */
+  /* #swagger.responses[403] = {
+          description: 'Permissions error.',
+          schema: {
+            error: "string",
+          }
+  } */
+  /* #swagger.responses[404] = {
+            description: 'Not Found error.',
+            schema: {
+              error: "string",
+            }
+    } */
 );
