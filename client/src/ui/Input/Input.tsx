@@ -9,6 +9,8 @@ export type InputPropsType = {
 	onChange: (value: string | undefined, name: string | undefined) => void
 	onFocus?: () => void
 	value?: string
+	name?: string
+	type?: string
 	placeholder?: string
 	isTextarea?: boolean
 	isRequired?: boolean
@@ -19,12 +21,12 @@ export type InputPropsType = {
 	isControlledValue?: boolean
 	classes?: string
 	needLabel?: boolean
-	name?: string
 }
 
 export const Input: FC<InputPropsType> = ({
 	value,
 	name,
+	type = 'text',
 	isTextarea,
 	label,
 	onChange,
@@ -85,7 +87,7 @@ export const Input: FC<InputPropsType> = ({
 							isSearch && loopPosition === 'left' && 'pl-12',
 							classes
 						)}
-						type='text'
+						type={type}
 					/>
 					{isSearch && loopPosition === 'right' && <BigSearchLoopIcon className='absolute right-5 z-20' />}
 				</div>

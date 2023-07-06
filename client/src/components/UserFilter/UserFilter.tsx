@@ -49,8 +49,16 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, cla
 							classes='mr-[7px] h-[48px]'
 							placeholder='Min'
 							name='ageFrom'
+							type='number'
 						/>
-						<Input onChange={onChange} value={inputValues.ageTo} classes='h-[48px]' placeholder='Max' name='ageTo' />
+						<Input
+							onChange={onChange}
+							value={inputValues.ageTo}
+							classes='h-[48px]'
+							placeholder='Max'
+							name='ageTo'
+							type='number'
+						/>
 					</td>
 				</tr>
 				<tr>
@@ -64,6 +72,7 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, cla
 							classes='mr-[7px] h-[48px]'
 							placeholder='Min'
 							name='weightFrom'
+							type='number'
 						/>
 						<Input
 							onChange={onChange}
@@ -71,6 +80,7 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, cla
 							classes='h-[48px]'
 							placeholder='Max'
 							name='weightTo'
+							type='number'
 						/>
 					</td>
 				</tr>

@@ -9,7 +9,8 @@ export const Modal: FC<{
 	content: ReactElement
 	title: ReactNode
 	submitButton?: ReactElement
-}> = ({ isOpen, onClose, title, content, submitButton }) => {
+	clearButton?: ReactElement
+}> = ({ isOpen, onClose, title, content, submitButton, clearButton }) => {
 	const modalRef = useRef(null)
 
 	useClickOutside({
@@ -43,9 +44,7 @@ export const Modal: FC<{
 				>
 					<div className='relative rounded-[15px] bg-white px-[18px] py-[25px] md:px-[40px]'>
 						<div className='mb-px flex'>
-							<button type='button' className='text-base font-bold'>
-								Clean up
-							</button>
+							{clearButton}
 							<button
 								type='button'
 								className='ml-auto focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white'
