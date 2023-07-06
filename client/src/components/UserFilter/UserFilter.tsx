@@ -1,10 +1,19 @@
-import { ChangeEvent, FC } from 'react'
+import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Checkbox, Input } from 'src/ui'
 
+export type UserFilterType = {
+	ageFrom: string
+	ageTo: string
+	weightFrom: string
+	weightTo: string
+	withWomen: boolean
+	withMen: boolean
+}
+
 type UserFilterPropsType = {
-	onChange: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => void
-	inputValues: Record<string, string>
+	onChange: (value?: string | boolean, name?: string) => void
+	inputValues: UserFilterType
 	classes?: string
 }
 
@@ -18,8 +27,14 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, cla
 					</td>
 					<td className='pb-[30px]'>
 						<div>
-							<Checkbox title='Man' name='man' classes='mr-[10px]' />
-							<Checkbox title='Woman' name='Woman' />
+							<Checkbox
+								onChange={onChange}
+								checked={inputValues.withMen}
+								title='Man'
+								name='withMen'
+								classes='mr-[10px]'
+							/>
+							<Checkbox onChange={onChange} checked={inputValues.withWomen} title='Woman' name='withWomen' />
 						</div>
 					</td>
 				</tr>

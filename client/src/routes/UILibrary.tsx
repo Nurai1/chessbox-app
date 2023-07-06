@@ -103,12 +103,9 @@ export const UILibrary: FC = () => {
 				name='something'
 				checked={checked}
 				classes='mr-5'
-				onChange={evt => {
-					console.log(evt.target.name, evt.target.checked)
-					setChecked(!checked)
-				}}
+				onChange={() => setChecked(!checked)}
 			/>
-			<Checkbox title='Disabled' name='disabled' disabled />
+			<Checkbox title='Disabled' name='disabled' onChange={() => ''} disabled />
 			<hr className='my-8' />
 
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>
