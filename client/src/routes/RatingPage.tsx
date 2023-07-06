@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchUsers } from 'src/store/slices/usersSlice'
 import { ratingTableSchema } from '../helpers/tableSchema'
-import { UsersTableWithTitle } from '../components'
+import { UsersTableWithTitle, Search } from '../components'
 import { TableWrapper, Loader } from '../ui'
 
 const USERS_PER_STEP = 5
@@ -45,14 +45,7 @@ export const RatingPage = (): ReactElement => {
 			</h1>
 
 			<TableWrapper>
-				<h2
-					className='border-b py-[18px] text-base font-medium
-                                        text-black md:pb-[26px] md:text-xl
-                                        md:font-semibold lg:text-2xl
-                                        2xl:text-[32px]'
-				>
-					Заголовок таблицы
-				</h2>
+				<Search classes='mb-[35px] md:mb-[30px]' />
 				{!users.length && <Loader classes='h-[80vh]' />}
 				{users && (
 					<UsersTableWithTitle
@@ -61,6 +54,7 @@ export const RatingPage = (): ReactElement => {
 						isInfiniteLoader
 						isNextPageLoading={isNextPageLoading}
 						loadNextPage={loadNextPage}
+						classes='border-t'
 					/>
 				)}
 			</TableWrapper>

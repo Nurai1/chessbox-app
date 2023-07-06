@@ -6,30 +6,52 @@ import { UserSchema } from '../types'
 export const ratingTableSchema = (tableData: UserSchema[]) => {
 	const renderMedal = (index: number) => {
 		if (index === 1) {
-			return <MedalGold className='absolute top-[-27px] left-[-14px] -z-10' />
+			return (
+				<>
+					<MedalGold
+						className='absolute top-[-5px] left-[-7px] -z-10 h-[28px] w-[21px]
+										md:top-[-15px] md:left-[-12px] md:h-[44px] md:w-[36px]
+										xl:top-[-23px] xl:left-[-14px] xl:h-[64px] xl:w-[50px]'
+					/>
+					<span className='hidden md:inline'>{index}</span>
+				</>
+			)
 		}
 
 		if (index === 2) {
-			return <MedalSilver className='absolute top-[-27px] left-[-14px] -z-10' />
+			return (
+				<>
+					<MedalSilver
+						className='absolute top-[-5px] left-[-7px] -z-10 h-[28px] w-[21px]
+											md:top-[-15px] md:left-[-12px] md:h-[44px] md:w-[36px]
+											xl:top-[-23px] xl:left-[-14px] xl:h-[64px] xl:w-[50px]'
+					/>
+					<span className='hidden md:inline'>{index}</span>
+				</>
+			)
 		}
 
 		if (index === 3) {
-			return <MedalBronze className='absolute top-[-27px] left-[-14px] -z-10' />
+			return (
+				<>
+					<MedalBronze
+						className='absolute top-[-5px] left-[-7px] -z-10 h-[28px] w-[21px]
+											md:top-[-15px] md:left-[-12px] md:h-[44px] md:w-[36px]
+											xl:top-[-23px] xl:left-[-14px] xl:h-[64px] xl:w-[50px]'
+					/>
+					<span className='hidden md:inline'>{index}</span>
+				</>
+			)
 		}
 
-		return null
+		return <span>{index}</span>
 	}
 
 	return tableData.map((user, i) => {
 		return {
 			cells: [
 				{
-					node: (
-						<div className='relative'>
-							{renderMedal(i + 1)}
-							{i + 1}
-						</div>
-					),
+					node: <div className='relative text-sm font-normal xl:text-2xl xl:font-semibold'>{renderMedal(i + 1)}</div>,
 					classes:
 						'flex items-center justify-center w-full text-base text-black max-w-[50px] md:font-bold md:max-w-[70px] lg:font-semibold lg:text-2xl lg:max-w-[100px] xl:font-medium lg:text-xl 2xl:text-2xl 2xl:font-semibold'
 				},
@@ -37,11 +59,8 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
 					node: (
 						<div>
 							<p
-								className='text-base font-normal text-black transition hover:opacity-70
-                            md:text-xl md:font-medium
-                            lg:text-2xl lg:font-semibold
-                            xl:text-xl xl:font-medium
-                            2xl:text-2xl 2xl:font-semibold'
+								className='text-sm font-normal text-black transition hover:opacity-70
+                            xl:text-2xl xl:font-semibold'
 							>
 								{user.fullName}
 							</p>
@@ -70,9 +89,7 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
 					node: (
 						<p
 							className='text-sm font-normal text-black
-                    md:text-base md:font-medium
-                    xl:text-xl
-                    2xl:text-xl 2xl:font-medium'
+                    xl:text-xl xl:font-medium'
 						>
 							{user?.ratingNumber} Points
 						</p>

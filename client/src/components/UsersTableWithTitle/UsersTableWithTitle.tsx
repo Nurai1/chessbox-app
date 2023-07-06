@@ -1,9 +1,11 @@
 import { FC } from 'react'
+import { twMerge } from 'tailwind-merge'
 import { TableBody, TableHeader } from 'src/ui'
 import { TablePropsType } from 'src/ui/Table/TableBody'
 
 type UsersTableWithTitlePropsType = {
 	title?: string
+	classes?: string
 } & TablePropsType
 
 const columnsDefault = [
@@ -17,6 +19,7 @@ export const UsersTableWithTitle: FC<UsersTableWithTitlePropsType> = ({
 	columns = columnsDefault,
 	rows,
 	title,
+	classes,
 	...rest
 }) => {
 	return (
@@ -32,7 +35,7 @@ export const UsersTableWithTitle: FC<UsersTableWithTitlePropsType> = ({
 					{title}
 				</h2>
 			)}
-			<div className='relative flex w-full grow flex-col'>
+			<div className={twMerge('relative flex w-full grow flex-col', classes)}>
 				<TableHeader columns={columns} />
 				<TableBody rows={rows} {...rest} />
 			</div>
