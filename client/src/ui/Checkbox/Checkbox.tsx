@@ -23,9 +23,9 @@ export const Checkbox: FC<CheckboxPropsType> = ({ title, name, onChange, checked
 				name={name}
 				checked={checked}
 				onChange={onChange}
-				className='peer pointer-events-none absolute h-[24px] w-[24px] rounded border-2 border-[#DADADA] focus:outline-none focus:ring-transparent focus-visible:ring-black'
+				className='peer absolute h-[24px] w-[24px] rounded border-2 border-[#DADADA] focus:outline-none focus:ring-transparent focus-visible:ring-black'
 			/>
-			<label htmlFor={name} className={`relative select-none pl-[32px] ${checkedStyle}`}>
+			<label htmlFor={name} className={`relative select-none pl-[32px] hover:cursor-pointer ${checkedStyle}`}>
 				{title}
 			</label>
 			{checked && <CheckMark className='pointer-events-none absolute left-[5px] top-[6px] z-10 h-[11px] w-[14px]' />}
