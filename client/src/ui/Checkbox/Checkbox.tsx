@@ -5,7 +5,7 @@ import { ReactComponent as CheckMark } from 'src/assets/check-mark.svg'
 type CheckboxPropsType = {
 	title: string
 	name: string
-	onChange?: () => void
+	onChange: (value?: boolean, name?: string) => void
 	checked?: boolean
 	disabled?: boolean
 	classes?: string
@@ -22,7 +22,9 @@ export const Checkbox: FC<CheckboxPropsType> = ({ title, name, onChange, checked
 				id={name}
 				name={name}
 				checked={checked}
-				onChange={onChange}
+				onChange={event => {
+					onChange(event?.target?.checked ?? '', event?.target?.name ?? '')
+				}}
 				className='peer absolute h-[24px] w-[24px] rounded border-2 border-[#DADADA] focus:outline-none focus:ring-transparent focus-visible:ring-black'
 			/>
 			<label htmlFor={name} className={`relative select-none pl-[32px] hover:cursor-pointer ${checkedStyle}`}>

@@ -1,8 +1,8 @@
-import { ChangeEvent, FC, useState } from 'react'
+import { FC, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { ReactComponent as Settings } from 'src/assets/settings.svg'
 import { Tag, Input, Modal, Button } from 'src/ui'
-import { UserFilter } from '../UserFilter'
+import { UserFilter, UserFilterType } from '../UserFilter'
 
 type SearchPropsType = {
 	classes?: string
@@ -12,23 +12,32 @@ const hasFilter = true
 
 export const Search: FC<SearchPropsType> = ({ classes }) => {
 	const [searchValue, setSearchValue] = useState('')
-	const [filterValues, setFilterValues] = useState({
+	const [filterValues, setFilterValues] = useState<UserFilterType>({
 		ageFrom: '',
 		ageTo: '',
 		weightFrom: '',
-		weightTo: ''
+		weightTo: '',
+		withMen: false,
+		withWomen: false
 	})
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const handleSearchInput = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
-		setSearchValue(event.target.value)
+
+	const handleSearchInput = (value?: string) => {
+		setSearchValue(value as string)
 	}
 
-	const handleFilter = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
-		const { name, value } = event.target
+	const handleFilter = (value?: string | boolean, name?: string) => {
+		if (typeof value === 'boolean') {
+			setFilterValues({
+				...filterValues,
+				[name as string]: value
+			})
+			return
+		}
 
 		setFilterValues({
 			...filterValues,
-			[name]: value
+			[name as string]: value
 		})
 	}
 

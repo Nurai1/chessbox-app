@@ -1,12 +1,12 @@
 import { ReactComponent as BigSearchLoopIcon } from 'src/assets/big-search-loop.svg'
 import { ReactComponent as SearchLoopIcon } from 'src/assets/search-loop.svg'
-import { FC, ChangeEvent } from 'react'
+import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Label } from 'src/ui'
 
 export type InputPropsType = {
 	label?: string
-	onChange: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => void
+	onChange: (value: string | undefined, name: string | undefined) => void
 	onFocus?: () => void
 	value?: string
 	placeholder?: string
@@ -52,7 +52,9 @@ export const Input: FC<InputPropsType> = ({
 						name={name}
 						required={isRequired}
 						placeholder={placeholder}
-						onChange={onChange}
+						onChange={event => {
+							onChange(event?.target?.value ?? '', event?.target?.name ?? '')
+						}}
 						onFocus={onFocus}
 						className={twMerge(
 							generalClasses,
@@ -71,7 +73,9 @@ export const Input: FC<InputPropsType> = ({
 						name={name}
 						required={isRequired}
 						placeholder={placeholder}
-						onChange={onChange}
+						onChange={event => {
+							onChange(event?.target?.value ?? '', event?.target?.name ?? '')
+						}}
 						onFocus={onFocus}
 						className={twMerge(
 							generalClasses,
