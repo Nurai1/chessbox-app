@@ -1,10 +1,24 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getUsersApi } from 'src/api/requests/users'
 import { UserSchema } from 'src/types'
+import { UserFilterType } from 'src/components/UserFilter'
 
 export const fetchUsers = createAsyncThunk(
 	'users/fetchAll',
-	async (query: { limit?: number; offset?: number }, thunkApi) => {
+	async (
+		query: {
+			limit?: number
+			offset?: number
+			search?: string
+			ageFrom?: number
+			ageTo?: number
+			weightFrom?: number
+			weightTo?: number
+			withWomen?: boolean
+			withMen?: boolean
+		},
+		thunkApi
+	) => {
 		const response = await getUsersApi(query)
 		if (response.error) return thunkApi.rejectWithValue(response.error.error)
 
@@ -19,8 +33,9 @@ interface ResponseData {
 
 export interface UsersState {
 	data: ResponseData
-	error?: string
 	loading: boolean
+	filterState: UserFilterType
+	error?: string
 }
 
 const initialState: UsersState = {
@@ -28,13 +43,22 @@ const initialState: UsersState = {
 		items: [],
 		total: 0
 	},
-	loading: true
+	loading: true,
+	filterState: {}
 }
 
 export const usersSlice = createSlice({
 	name: 'users',
 	initialState,
-	reducers: {},
+	reducers: {
+		setUserFilter: (state, action) => {
+			state.filterState = action.payload
+		},
+		clearUsers: state => {
+			state.data.total = 0
+			state.data.items = []
+		}
+	},
 	extraReducers: {
 		[fetchUsers.fulfilled.type]: (state, action: PayloadAction<ResponseData>) => {
 			state.loading = false
@@ -53,6 +77,6 @@ export const usersSlice = createSlice({
 	}
 })
 
-// export const {} = usersSlice.actions
+export const { setUserFilter, clearUsers } = usersSlice.actions
 
 export default usersSlice.reducer

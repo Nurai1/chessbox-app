@@ -3,12 +3,12 @@ import { twMerge } from 'tailwind-merge'
 import { Checkbox, Input } from 'src/ui'
 
 export type UserFilterType = {
-	ageFrom: string
-	ageTo: string
-	weightFrom: string
-	weightTo: string
-	withWomen: boolean
-	withMen: boolean
+	ageFrom?: string
+	ageTo?: string
+	weightFrom?: string
+	weightTo?: string
+	withWomen?: boolean
+	withMen?: boolean
 }
 
 type UserFilterPropsType = {
@@ -45,29 +45,6 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, cla
 					<td className='flex pb-[20px]'>
 						<Input
 							onChange={onChange}
-							value={inputValues.ageFrom}
-							classes='mr-[7px] h-[48px]'
-							placeholder='Min'
-							name='ageFrom'
-							type='number'
-						/>
-						<Input
-							onChange={onChange}
-							value={inputValues.ageTo}
-							classes='h-[48px]'
-							placeholder='Max'
-							name='ageTo'
-							type='number'
-						/>
-					</td>
-				</tr>
-				<tr>
-					<td className='pr-[10px]'>
-						<h3 className='text-sm font-bold'>Age:</h3>
-					</td>
-					<td className='flex'>
-						<Input
-							onChange={onChange}
 							value={inputValues.weightFrom}
 							classes='mr-[7px] h-[48px]'
 							placeholder='Min'
@@ -80,6 +57,29 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, cla
 							classes='h-[48px]'
 							placeholder='Max'
 							name='weightTo'
+							type='number'
+						/>
+					</td>
+				</tr>
+				<tr>
+					<td className='pr-[10px]'>
+						<h3 className='text-sm font-bold'>Age:</h3>
+					</td>
+					<td className='flex'>
+						<Input
+							onChange={onChange}
+							value={inputValues.ageFrom}
+							classes='mr-[7px] h-[48px]'
+							placeholder='Min'
+							name='ageFrom'
+							type='number'
+						/>
+						<Input
+							onChange={onChange}
+							value={inputValues.ageTo}
+							classes='h-[48px]'
+							placeholder='Max'
+							name='ageTo'
 							type='number'
 						/>
 					</td>
