@@ -29,8 +29,8 @@ export const competitionsMock = [
 		pairs: ['63f0b258cc9c2b70bf404a2d'],
 		groups: [
 			{
-				ageCategory: '14-15',
-				weightCategory: '67-',
+				ageCategory: { from: 14, to: 15 },
+				weightCategory: { from: 56, to: 100 },
 				gender: 'woman',
 				currentRoundNumber: 1,
 				nextRoundParticipants: [],
@@ -76,8 +76,8 @@ export const competitionsMock = [
 		participantsAmount: 2,
 		groups: [
 			{
-				ageCategory: '18-55',
-				weightCategory: '56+',
+				ageCategory: { from: 18, to: 55 },
+				weightCategory: { from: 56, to: 100 },
 				gender: 'man',
 				currentRoundNumber: 1,
 				nextRoundParticipants: [],
@@ -119,8 +119,8 @@ export const competitionsMock = [
 		pairs: ['63f0b258cc9c2b70bf404a2d'],
 		groups: [
 			{
-				ageCategory: '14-15',
-				weightCategory: '67-',
+				ageCategory: { from: 14, to: 15 },
+				weightCategory: { from: 56, to: 100 },
 				gender: 'woman',
 				currentRoundNumber: 1,
 				nextRoundParticipants: [],
@@ -170,8 +170,8 @@ export const competitionsMock = [
 		pairs: ['63f0b258cc9c2b70bf404a2d'],
 		groups: [
 			{
-				ageCategory: '14-15',
-				weightCategory: '67-',
+				ageCategory: { from: 14, to: 15 },
+				weightCategory: { from: 56, to: 100 },
 				gender: 'woman',
 				currentRoundNumber: 1,
 				nextRoundParticipants: [],
@@ -219,8 +219,8 @@ export const competitionsMock = [
 		pairs: ['63f0b258cc9c2b70bf404a2d'],
 		groups: [
 			{
-				ageCategory: '14-15',
-				weightCategory: '67-',
+				ageCategory: { from: 14, to: 15 },
+				weightCategory: { from: 56, to: 100 },
 				gender: 'woman',
 				currentRoundNumber: 1,
 				nextRoundParticipants: [],
@@ -269,8 +269,8 @@ export const competitionsMock = [
 		pairs: ['63f0b258cc9c2b70bf404a2d'],
 		groups: [
 			{
-				ageCategory: '14-15',
-				weightCategory: '67-',
+				ageCategory: { from: 14, to: 15 },
+				weightCategory: { from: 56, to: 100 },
 				gender: 'woman',
 				currentRoundNumber: 1,
 				nextRoundParticipants: [],

@@ -3,6 +3,10 @@ import { Document, PopulatedDoc, Types } from 'mongoose';
 
 export type ECoefficients = 1 | 0.75 | 0.5 | 0.25;
 export type GenderType = 'woman' | 'man';
+export type Category = {
+  from: number;
+  to: number;
+};
 
 export interface Address {
   country: string;
@@ -66,8 +70,8 @@ export interface ICompetition {
     }[];
   };
   requirements?: {
-    ageCategory?: string;
-    weightCategory?: string;
+    ageCategory?: Category;
+    weightCategory?: Category;
     gender?: GenderType;
   };
   lastOrder: { group: number; pair: number };
