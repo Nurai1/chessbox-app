@@ -69,7 +69,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -114,7 +114,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -305,7 +395,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -350,7 +440,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -497,7 +677,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -542,7 +722,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -665,7 +935,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -710,7 +980,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -920,7 +1280,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -965,7 +1325,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1081,7 +1531,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1126,7 +1576,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1221,7 +1761,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/UserBody"
               }
             }
           }
@@ -1250,7 +1790,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1295,7 +1835,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1430,7 +2060,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1475,7 +2105,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1598,7 +2318,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1643,7 +2363,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1776,7 +2586,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1821,7 +2631,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1949,7 +2849,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1994,7 +2894,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2110,7 +3100,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2155,7 +3145,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2250,7 +3330,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Competition"
+                "$ref": "#/components/schemas/CompetitionBody"
               }
             }
           }
@@ -2269,7 +3349,7 @@
             "description": "Winner defined."
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2314,7 +3394,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2450,7 +3620,7 @@
             "description": "Next Group Round launched."
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2495,7 +3665,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2633,7 +3893,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2678,7 +3938,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2820,7 +4170,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2865,7 +4215,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3003,7 +4443,7 @@
             "description": "OK"
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3048,7 +4488,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3173,7 +4703,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3218,7 +4748,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3313,7 +4933,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CompetitionGroup"
+                "$ref": "#/components/schemas/CompetitionGroupBody"
               }
             }
           }
@@ -3365,7 +4985,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3410,7 +5030,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3535,7 +5245,7 @@
             }
           },
           "400": {
-            "description": "Internal server error.",
+            "description": "Client error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3580,7 +5290,97 @@
             }
           },
           "401": {
-            "description": "Internal server error.",
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3689,6 +5489,278 @@
           }
         }
       }
+    },
+    "/api/competition/{id}/participants": {
+      "get": {
+        "tags": [
+          "Competitions"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Competition's Participants",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3726,10 +5798,26 @@
               "type": "object",
               "properties": {
                 "ageCategory": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "from": {
+                      "type": "number"
+                    },
+                    "to": {
+                      "type": "number"
+                    }
+                  }
                 },
                 "weightCategory": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "from": {
+                      "type": "number"
+                    },
+                    "to": {
+                      "type": "number"
+                    }
+                  }
                 },
                 "gender": {
                   "type": "string"
@@ -3845,8 +5933,6 @@
                 }
               },
               "required": [
-                "ageCategory",
-                "weightCategory",
                 "gender",
                 "currentRoundNumber"
               ]
@@ -3882,10 +5968,26 @@
             "type": "object",
             "properties": {
               "ageCategory": {
-                "type": "string"
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "number"
+                  },
+                  "to": {
+                    "type": "number"
+                  }
+                }
               },
               "weightCategory": {
-                "type": "string"
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "number"
+                  },
+                  "to": {
+                    "type": "number"
+                  }
+                }
               },
               "gender": {
                 "type": "string"
@@ -4046,18 +6148,32 @@
       "CompetitionGroup": {
         "title": "CompetitionGroup",
         "required": [
-          "ageCategory",
-          "weightCategory",
           "gender",
           "currentRoundNumber",
           "_id"
         ],
         "properties": {
           "ageCategory": {
-            "type": "string"
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "number"
+              },
+              "to": {
+                "type": "number"
+              }
+            }
           },
           "weightCategory": {
-            "type": "string"
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "number"
+              },
+              "to": {
+                "type": "number"
+              }
+            }
           },
           "gender": {
             "type": "string"
@@ -4174,6 +6290,572 @@
         }
       },
       "Pair": {
+        "title": "Pair",
+        "properties": {
+          "roundNumber": {
+            "type": "number"
+          },
+          "blackParticipant": {
+            "type": "string",
+            "identificator": true
+          },
+          "whiteParticipant": {
+            "type": "string",
+            "identificator": true
+          },
+          "winner": {
+            "type": "string",
+            "identificator": true
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "order": {
+            "type": "number"
+          },
+          "calledForPreparation": {
+            "type": "boolean"
+          },
+          "calledForFight": {
+            "type": "boolean"
+          },
+          "judge": {
+            "type": "string",
+            "identificator": true
+          },
+          "_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_id"
+        ]
+      },
+      "CompetitionBody": {
+        "title": "Competition",
+        "required": [
+          "startDate",
+          "registrationEndsAt",
+          "name",
+          "_id"
+        ],
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "registrationEndsAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ageCategory": {
+                  "type": "object",
+                  "properties": {
+                    "from": {
+                      "type": "number"
+                    },
+                    "to": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "weightCategory": {
+                  "type": "object",
+                  "properties": {
+                    "from": {
+                      "type": "number"
+                    },
+                    "to": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "currentRoundNumber": {
+                  "type": "number"
+                },
+                "order": {
+                  "type": "number"
+                },
+                "nextRoundParticipants": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "identificator": true
+                  }
+                },
+                "allParticipants": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "identificator": true
+                  }
+                },
+                "passedPairs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "roundNumber": {
+                        "type": "number"
+                      },
+                      "blackParticipant": {
+                        "type": "string",
+                        "identificator": true
+                      },
+                      "whiteParticipant": {
+                        "type": "string",
+                        "identificator": true
+                      },
+                      "winner": {
+                        "type": "string",
+                        "identificator": true
+                      },
+                      "passed": {
+                        "type": "boolean"
+                      },
+                      "order": {
+                        "type": "number"
+                      },
+                      "calledForPreparation": {
+                        "type": "boolean"
+                      },
+                      "calledForFight": {
+                        "type": "boolean"
+                      },
+                      "judge": {
+                        "type": "string",
+                        "identificator": true
+                      },
+                      "_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": []
+                  }
+                },
+                "currentRoundPairs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "roundNumber": {
+                        "type": "number"
+                      },
+                      "blackParticipant": {
+                        "type": "string",
+                        "identificator": true
+                      },
+                      "whiteParticipant": {
+                        "type": "string",
+                        "identificator": true
+                      },
+                      "winner": {
+                        "type": "string",
+                        "identificator": true
+                      },
+                      "passed": {
+                        "type": "boolean"
+                      },
+                      "order": {
+                        "type": "number"
+                      },
+                      "calledForPreparation": {
+                        "type": "boolean"
+                      },
+                      "calledForFight": {
+                        "type": "boolean"
+                      },
+                      "judge": {
+                        "type": "string",
+                        "identificator": true
+                      },
+                      "_id": {
+                        "type": "string"
+                      }
+                    },
+                    "required": []
+                  }
+                },
+                "_id": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "gender",
+                "currentRoundNumber"
+              ]
+            }
+          },
+          "price": {
+            "type": "object",
+            "properties": {
+              "currentValue": {
+                "type": "number"
+              },
+              "pricesChanges": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "daysBeforeRegistrationDate": {
+                      "type": "number"
+                    },
+                    "newValue": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "daysBeforeRegistrationDate",
+                    "newValue"
+                  ]
+                }
+              }
+            }
+          },
+          "requirements": {
+            "type": "object",
+            "properties": {
+              "ageCategory": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "number"
+                  },
+                  "to": {
+                    "type": "number"
+                  }
+                }
+              },
+              "weightCategory": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "number"
+                  },
+                  "to": {
+                    "type": "number"
+                  }
+                }
+              },
+              "gender": {
+                "type": "string"
+              }
+            }
+          },
+          "lastOrder": {
+            "type": "object",
+            "properties": {
+              "group": {
+                "type": "number"
+              },
+              "pair": {
+                "type": "number"
+              }
+            }
+          },
+          "participants": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "identificator": true
+            }
+          },
+          "judges": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "identificator": true
+            }
+          },
+          "_id": {
+            "type": "string"
+          }
+        }
+      },
+      "UserBody": {
+        "title": "User",
+        "required": [
+          "email",
+          "hashedPassword",
+          "firstName",
+          "lastName",
+          "fullName",
+          "role",
+          "age",
+          "gender",
+          "ratingNumber",
+          "weight",
+          "_id"
+        ],
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "chessPlatform": {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type": "string"
+              }
+            }
+          },
+          "hashedPassword": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "country": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              }
+            }
+          },
+          "fightClub": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "participant",
+              "judge",
+              "chief_judge",
+              "admin"
+            ]
+          },
+          "age": {
+            "type": "number"
+          },
+          "socialNetworks": {
+            "type": "object",
+            "properties": {
+              "whatsup": {
+                "type": "string"
+              }
+            }
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "woman",
+              "man"
+            ]
+          },
+          "ratingNumber": {
+            "type": "number"
+          },
+          "weight": {
+            "type": "number"
+          },
+          "competition": {
+            "type": "string",
+            "identificator": true
+          },
+          "currentGroupId": {
+            "type": "string"
+          },
+          "competitionsHistory": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "competitionId": {
+                  "type": "string"
+                },
+                "groupId": {
+                  "type": "string"
+                },
+                "placeNumber": {
+                  "type": "number"
+                }
+              },
+              "required": []
+            }
+          },
+          "_id": {
+            "type": "string"
+          }
+        }
+      },
+      "CompetitionGroupBody": {
+        "title": "CompetitionGroup",
+        "required": [
+          "gender",
+          "currentRoundNumber",
+          "_id"
+        ],
+        "properties": {
+          "ageCategory": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "number"
+              },
+              "to": {
+                "type": "number"
+              }
+            }
+          },
+          "weightCategory": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "number"
+              },
+              "to": {
+                "type": "number"
+              }
+            }
+          },
+          "gender": {
+            "type": "string"
+          },
+          "currentRoundNumber": {
+            "type": "number"
+          },
+          "order": {
+            "type": "number"
+          },
+          "nextRoundParticipants": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "identificator": true
+            }
+          },
+          "allParticipants": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "identificator": true
+            }
+          },
+          "passedPairs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "roundNumber": {
+                  "type": "number"
+                },
+                "blackParticipant": {
+                  "type": "string",
+                  "identificator": true
+                },
+                "whiteParticipant": {
+                  "type": "string",
+                  "identificator": true
+                },
+                "winner": {
+                  "type": "string",
+                  "identificator": true
+                },
+                "passed": {
+                  "type": "boolean"
+                },
+                "order": {
+                  "type": "number"
+                },
+                "calledForPreparation": {
+                  "type": "boolean"
+                },
+                "calledForFight": {
+                  "type": "boolean"
+                },
+                "judge": {
+                  "type": "string",
+                  "identificator": true
+                },
+                "_id": {
+                  "type": "string"
+                }
+              },
+              "required": []
+            }
+          },
+          "currentRoundPairs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "roundNumber": {
+                  "type": "number"
+                },
+                "blackParticipant": {
+                  "type": "string",
+                  "identificator": true
+                },
+                "whiteParticipant": {
+                  "type": "string",
+                  "identificator": true
+                },
+                "winner": {
+                  "type": "string",
+                  "identificator": true
+                },
+                "passed": {
+                  "type": "boolean"
+                },
+                "order": {
+                  "type": "number"
+                },
+                "calledForPreparation": {
+                  "type": "boolean"
+                },
+                "calledForFight": {
+                  "type": "boolean"
+                },
+                "judge": {
+                  "type": "string",
+                  "identificator": true
+                },
+                "_id": {
+                  "type": "string"
+                }
+              },
+              "required": []
+            }
+          },
+          "_id": {
+            "type": "string"
+          }
+        }
+      },
+      "PairBody": {
         "title": "Pair",
         "properties": {
           "roundNumber": {

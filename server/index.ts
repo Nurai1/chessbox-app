@@ -49,7 +49,14 @@ mongoose.connect(remoteMongoUri ?? '', (err) => {
 
 const { connection } = mongoose;
 connection.once('open', () => {
-  console.log('MongoDB database connection established successfully');
+  const mongo_env = remoteMongoUri?.slice(
+    remoteMongoUri?.lastIndexOf('mongodb.net/') + 'mongodb.net/'.length,
+    remoteMongoUri?.lastIndexOf('?retryWrites=true&w=majority')
+  );
+  console.log(
+    'MongoDB database connection established successfully on mongo env: ',
+    mongo_env
+  );
 });
 
 app.use(async (req: Request, res: Response, next: NextFunction) => {

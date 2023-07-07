@@ -87,12 +87,6 @@
 		"last 2 chrome versions",
 		"last 2 firefox versions"
 	],
-	"lint-staged": {
-		"*": "prettier -uw --cache",
-		"*.{ts,tsx}": [
-			"eslint --cache --max-warnings=1 --fix --ignore-path .gitignore --ext .ts,.tsx"
-		]
-	},
 	"simple-git-hooks": {
 		"pre-commit": "cd client && pnpm lint-staged"
 	}

@@ -45,7 +45,7 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -58,8 +58,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -100,7 +126,7 @@ export interface paths {
 			responses: {
 				/** @description OK */
 				200: never
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -113,8 +139,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -157,7 +209,7 @@ export interface paths {
 						'application/xml': components['schemas']['User']
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -170,8 +222,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -212,7 +290,7 @@ export interface paths {
 						'application/xml': components['schemas']['User']
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -225,8 +303,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -285,7 +389,7 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -298,8 +402,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -331,7 +461,7 @@ export interface paths {
 		post: {
 			requestBody: {
 				content: {
-					'application/json': components['schemas']['User']
+					'application/json': components['schemas']['UserBody']
 				}
 			}
 			responses: {
@@ -342,7 +472,7 @@ export interface paths {
 						'application/xml': components['schemas']['User']
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -355,8 +485,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -397,7 +553,7 @@ export interface paths {
 						'application/xml': components['schemas']['User']
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -410,8 +566,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -454,7 +636,7 @@ export interface paths {
 						'application/xml': components['schemas']['Competition']
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -467,8 +649,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -509,7 +717,7 @@ export interface paths {
 						'application/xml': components['schemas']['Competition']
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -522,8 +730,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -569,7 +803,7 @@ export interface paths {
 						'application/xml': components['schemas']['Competition']
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -582,8 +816,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -621,7 +881,7 @@ export interface paths {
 						'application/xml': components['schemas']['Competition'][]
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -634,8 +894,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -667,7 +953,7 @@ export interface paths {
 		post: {
 			requestBody: {
 				content: {
-					'application/json': components['schemas']['Competition']
+					'application/json': components['schemas']['CompetitionBody']
 				}
 			}
 			responses: {
@@ -678,7 +964,7 @@ export interface paths {
 						'application/xml': components['schemas']['Competition']
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -691,8 +977,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -736,7 +1048,7 @@ export interface paths {
 			responses: {
 				/** @description Winner defined. */
 				200: never
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -749,8 +1061,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -791,7 +1129,7 @@ export interface paths {
 			responses: {
 				/** @description Next Group Round launched. */
 				200: never
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -804,8 +1142,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -852,7 +1216,7 @@ export interface paths {
 						'application/xml': components['schemas']['Competition']
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -865,8 +1229,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -912,7 +1302,7 @@ export interface paths {
 						'application/xml': components['schemas']['Competition']
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -925,8 +1315,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -964,7 +1380,7 @@ export interface paths {
 			responses: {
 				/** @description OK */
 				200: never
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -977,8 +1393,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -1015,7 +1457,7 @@ export interface paths {
 			}
 			requestBody: {
 				content: {
-					'application/json': components['schemas']['CompetitionGroup']
+					'application/json': components['schemas']['CompetitionGroupBody']
 				}
 			}
 			responses: {
@@ -1026,7 +1468,7 @@ export interface paths {
 						'application/xml': components['schemas']['Competition']
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -1039,8 +1481,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -1083,7 +1551,7 @@ export interface paths {
 						'application/xml': components['schemas']['CompetitionGroup'][]
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -1096,8 +1564,34 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -1147,7 +1641,7 @@ export interface paths {
 						'application/xml': components['schemas']['Competition']
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Client error. */
 				400: {
 					content: {
 						'application/json': {
@@ -1160,8 +1654,117 @@ export interface paths {
 						}
 					}
 				}
-				/** @description Internal server error. */
+				/** @description Unauthorized error. */
 				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+	}
+	'/api/competition/{id}/participants': {
+		get: {
+			parameters: {
+				path: {
+					id: string
+				}
+			}
+			responses: {
+				/** @description Competition's Participants */
+				200: {
+					content: {
+						'application/json': components['schemas']['User'][]
+						'application/xml': components['schemas']['User'][]
+					}
+				}
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
 					content: {
 						'application/json': {
 							/** @example string */
@@ -1206,8 +1809,14 @@ export interface components {
 			name: string
 			description?: string
 			groups?: {
-				ageCategory: string
-				weightCategory: string
+				ageCategory?: {
+					from?: number
+					to?: number
+				}
+				weightCategory?: {
+					from?: number
+					to?: number
+				}
 				gender: string
 				currentRoundNumber: number
 				order?: number
@@ -1247,8 +1856,14 @@ export interface components {
 				}[]
 			}
 			requirements?: {
-				ageCategory?: string
-				weightCategory?: string
+				ageCategory?: {
+					from?: number
+					to?: number
+				}
+				weightCategory?: {
+					from?: number
+					to?: number
+				}
 				gender?: string
 			}
 			lastOrder?: {
@@ -1297,8 +1912,14 @@ export interface components {
 		}
 		/** CompetitionGroup */
 		CompetitionGroup: {
-			ageCategory: string
-			weightCategory: string
+			ageCategory?: {
+				from?: number
+				to?: number
+			}
+			weightCategory?: {
+				from?: number
+				to?: number
+			}
 			gender: string
 			currentRoundNumber: number
 			order?: number
@@ -1332,6 +1953,172 @@ export interface components {
 		}
 		/** Pair */
 		Pair: {
+			roundNumber?: number
+			blackParticipant?: string
+			whiteParticipant?: string
+			winner?: string
+			passed?: boolean
+			order?: number
+			calledForPreparation?: boolean
+			calledForFight?: boolean
+			judge?: string
+			_id: string
+		}
+		/** Competition */
+		CompetitionBody: {
+			/** Format: date-time */
+			startDate: string
+			/** Format: date-time */
+			endDate?: string
+			/** Format: date-time */
+			registrationEndsAt: string
+			name: string
+			description?: string
+			groups?: {
+				ageCategory?: {
+					from?: number
+					to?: number
+				}
+				weightCategory?: {
+					from?: number
+					to?: number
+				}
+				gender: string
+				currentRoundNumber: number
+				order?: number
+				nextRoundParticipants?: string[]
+				allParticipants?: string[]
+				passedPairs?: {
+					roundNumber?: number
+					blackParticipant?: string
+					whiteParticipant?: string
+					winner?: string
+					passed?: boolean
+					order?: number
+					calledForPreparation?: boolean
+					calledForFight?: boolean
+					judge?: string
+					_id?: string
+				}[]
+				currentRoundPairs?: {
+					roundNumber?: number
+					blackParticipant?: string
+					whiteParticipant?: string
+					winner?: string
+					passed?: boolean
+					order?: number
+					calledForPreparation?: boolean
+					calledForFight?: boolean
+					judge?: string
+					_id?: string
+				}[]
+				_id?: string
+			}[]
+			price?: {
+				currentValue?: number
+				pricesChanges?: {
+					daysBeforeRegistrationDate: number
+					newValue: number
+				}[]
+			}
+			requirements?: {
+				ageCategory?: {
+					from?: number
+					to?: number
+				}
+				weightCategory?: {
+					from?: number
+					to?: number
+				}
+				gender?: string
+			}
+			lastOrder?: {
+				group?: number
+				pair?: number
+			}
+			participants?: string[]
+			judges?: string[]
+			_id: string
+		}
+		/** User */
+		UserBody: {
+			email: string
+			chessPlatform?: {
+				username?: string
+			}
+			hashedPassword: string
+			firstName: string
+			lastName: string
+			fullName: string
+			address?: {
+				country?: string
+				city?: string
+			}
+			fightClub?: {
+				name?: string
+			}
+			/** @enum {string} */
+			role: 'participant' | 'judge' | 'chief_judge' | 'admin'
+			age: number
+			socialNetworks?: {
+				whatsup?: string
+			}
+			/** @enum {string} */
+			gender: 'woman' | 'man'
+			ratingNumber: number
+			weight: number
+			competition?: string
+			currentGroupId?: string
+			competitionsHistory?: {
+				competitionId?: string
+				groupId?: string
+				placeNumber?: number
+			}[]
+			_id: string
+		}
+		/** CompetitionGroup */
+		CompetitionGroupBody: {
+			ageCategory?: {
+				from?: number
+				to?: number
+			}
+			weightCategory?: {
+				from?: number
+				to?: number
+			}
+			gender: string
+			currentRoundNumber: number
+			order?: number
+			nextRoundParticipants?: string[]
+			allParticipants?: string[]
+			passedPairs?: {
+				roundNumber?: number
+				blackParticipant?: string
+				whiteParticipant?: string
+				winner?: string
+				passed?: boolean
+				order?: number
+				calledForPreparation?: boolean
+				calledForFight?: boolean
+				judge?: string
+				_id?: string
+			}[]
+			currentRoundPairs?: {
+				roundNumber?: number
+				blackParticipant?: string
+				whiteParticipant?: string
+				winner?: string
+				passed?: boolean
+				order?: number
+				calledForPreparation?: boolean
+				calledForFight?: boolean
+				judge?: string
+				_id?: string
+			}[]
+			_id: string
+		}
+		/** Pair */
+		PairBody: {
 			roundNumber?: number
 			blackParticipant?: string
 			whiteParticipant?: string
