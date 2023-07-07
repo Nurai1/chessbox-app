@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { fetchUsers } from 'src/store/slices/usersSlice'
+import { fetchUsers, clearUsers } from 'src/store/slices/usersSlice'
 import { ratingTableSchema } from '../helpers/tableSchema'
 import { UsersTableWithTitle, Search } from '../components'
 import { TableWrapper, Loader } from '../ui'
@@ -13,17 +13,23 @@ export const RatingPage = (): ReactElement => {
 		offset: 0
 	})
 
+	const searchParams = useAppSelector(s => s.users.filterState)
 	const { items: users, total } = useAppSelector(s => s.users.data)
 	const isNextPageLoading = useAppSelector(s => s.users.loading)
-	const hasMoreUsers = total !== users.length
 
 	useEffect(() => {
-		dispatch(fetchUsers({ ...query, limit: USERS_PER_STEP }))
+		dispatch(fetchUsers({ ...query, limit: USERS_PER_STEP, offset: 0 }))
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, [searchParams])
 
+	useEffect(() => {
+		setQuery({ offset: 0, ...searchParams })
+		dispatch(clearUsers())
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [searchParams])
+
+	const hasMoreUsers = total !== users.length
 	const usersTable = ratingTableSchema(users)
-
 	const hasNextPage = users.length < total
 
 	const loadNextPage = () => {
@@ -31,6 +37,7 @@ export const RatingPage = (): ReactElement => {
 
 		const newOffset = query.offset + USERS_PER_STEP
 		const newQuery = {
+			...query,
 			limit: USERS_PER_STEP,
 			offset: newOffset
 		}
