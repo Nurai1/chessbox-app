@@ -16,30 +16,29 @@ export const RatingPage = (): ReactElement => {
 	const searchParams = useAppSelector(s => s.users.filterState)
 	const { items: users, total } = useAppSelector(s => s.users.data)
 	const isNextPageLoading = useAppSelector(s => s.users.loading)
+	const isLoaded = useAppSelector(s => s.users.loaded)
 
 	useEffect(() => {
-		dispatch(fetchUsers({ ...query, limit: USERS_PER_STEP, offset: 0 }))
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [searchParams])
-
-	useEffect(() => {
-		setQuery({ offset: 0, ...searchParams })
+		setQuery({ ...searchParams, offset: 0 })
+		dispatch(fetchUsers({ ...searchParams, limit: USERS_PER_STEP, offset: 0 }))
 		dispatch(clearUsers())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchParams])
 
-	const hasMoreUsers = total !== users.length
 	const usersTable = ratingTableSchema(users)
+	const hasUsers = users.length > 0
+	const hasMoreUsers = total !== users.length
 	const hasNextPage = users.length < total
+	const isLoading = !users.length && !isLoaded
+	const nothingFound = total === 0 && isLoaded
 
 	const loadNextPage = () => {
 		if (isNextPageLoading || !hasMoreUsers) return
 
-		const newOffset = query.offset + USERS_PER_STEP
 		const newQuery = {
 			...query,
 			limit: USERS_PER_STEP,
-			offset: newOffset
+			offset: query.offset + USERS_PER_STEP
 		}
 		setQuery(newQuery)
 		dispatch(fetchUsers(newQuery))
@@ -53,8 +52,8 @@ export const RatingPage = (): ReactElement => {
 
 			<TableWrapper>
 				<Search classes='mb-[35px] md:mb-[30px]' />
-				{!users.length && <Loader classes='h-[80vh]' />}
-				{users && (
+				{isLoading && <Loader classes='h-[80vh]' />}
+				{hasUsers && (
 					<UsersTableWithTitle
 						rows={usersTable}
 						hasNextPage={hasNextPage}
@@ -64,6 +63,7 @@ export const RatingPage = (): ReactElement => {
 						classes='border-t'
 					/>
 				)}
+				{nothingFound && <h2 className='m-auto text-2xl'>Nothing found</h2>}
 			</TableWrapper>
 		</main>
 	)
