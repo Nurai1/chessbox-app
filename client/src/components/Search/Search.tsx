@@ -1,4 +1,4 @@
-import { FC, ReactElement, useState, useEffect } from 'react'
+import { FC, ReactElement, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { ReactComponent as SettingsIcon } from 'src/assets/settings.svg'
 import { useAppDispatch } from 'src/hooks/redux'
@@ -10,9 +10,13 @@ type SearchPropsType = {
 	classes?: string
 }
 
+type FilterValuesType = {
+	search?: string
+} & UserFilterType
+
 export const Search: FC<SearchPropsType> = ({ classes }) => {
-	const [searchValue, setSearchValue] = useState('')
-	const [filterValues, setFilterValues] = useState<UserFilterType>({})
+	const [searchValue, setSearchValue] = useState<null | string>(null)
+	const [filterValues, setFilterValues] = useState<FilterValuesType>({})
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [tags, setTags] = useState<ReactElement[] | []>([])
 	const dispatch = useAppDispatch()
@@ -20,6 +24,22 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 	const handleSearchInput = (value?: string) => {
 		setSearchValue(value as string)
 	}
+
+	// debounce
+	useEffect(() => {
+		const searchByString = setTimeout(() => {
+			if (searchValue === null) return
+			const newValues = {
+				...filterValues,
+				search: searchValue
+			}
+			setFilterValues(newValues)
+			dispatch(setUserFilter(newValues))
+		}, 500)
+
+		return () => clearTimeout(searchByString)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [searchValue])
 
 	const handleFilter = (value?: string | boolean, name?: string) => {
 		if (typeof value === 'boolean') {
@@ -36,67 +56,77 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 		})
 	}
 
-	const createTags = () => {
+	const createTags = (data: UserFilterType) => {
 		const tagsData = []
 
-		if (filterValues.ageFrom || filterValues.ageTo) {
+		const updateState = (updateDValues: UserFilterType) => {
+			const newValues = {
+				...data,
+				...updateDValues
+			}
+			setFilterValues(newValues)
+			setTags(createTags(newValues))
+			dispatch(setUserFilter(newValues))
+		}
+
+		if (data.ageFrom || data.ageTo) {
 			tagsData.push(
 				<Tag
 					type='search'
-					text={`${filterValues.ageFrom ?? ''}-${filterValues.ageTo ?? ''} years`}
+					text={`${data.ageFrom ?? ''}-${data.ageTo ?? ''} years`}
 					key='age'
-					onClick={() => {
-						const newValues = { ...filterValues }
-						delete newValues.ageFrom
-						delete newValues.ageTo
-						setFilterValues(newValues)
-					}}
+					onClick={() =>
+						updateState({
+							ageFrom: undefined,
+							ageTo: undefined
+						})
+					}
 				/>
 			)
 		}
 
-		if (filterValues.weightFrom || filterValues.weightTo) {
+		if (data.weightFrom || data.weightTo) {
 			tagsData.push(
 				<Tag
 					type='search'
-					text={`${filterValues.weightFrom ?? ''}-${filterValues.weightTo ?? ''} kg`}
+					text={`${data.weightFrom ?? ''}-${data.weightTo ?? ''} kg`}
 					key='weigh'
-					onClick={() => {
-						const newValues = { ...filterValues }
-						delete newValues.weightFrom
-						delete newValues.weightTo
-						setFilterValues(newValues)
-					}}
+					onClick={() =>
+						updateState({
+							weightFrom: undefined,
+							weightTo: undefined
+						})
+					}
 				/>
 			)
 		}
 
-		if (filterValues.withMen) {
+		if (data.withMen) {
 			tagsData.push(
 				<Tag
 					type='search'
 					text='Man'
 					key='withMen'
-					onClick={() => {
-						const newValues = { ...filterValues }
-						delete newValues.withMen
-						setFilterValues(newValues)
-					}}
+					onClick={() =>
+						updateState({
+							withMen: undefined
+						})
+					}
 				/>
 			)
 		}
 
-		if (filterValues.withWomen) {
+		if (data.withWomen) {
 			tagsData.push(
 				<Tag
 					type='search'
 					text='Woman'
 					key='withWomen'
-					onClick={() => {
-						const newValues = { ...filterValues }
-						delete newValues.withWomen
-						setFilterValues(newValues)
-					}}
+					onClick={() =>
+						updateState({
+							withWomen: undefined
+						})
+					}
 				/>
 			)
 		}
@@ -104,26 +134,20 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 		return tagsData
 	}
 
-	useEffect(() => {
-		if (!isModalOpen) {
-			setTags(createTags())
-			dispatch(setUserFilter(filterValues))
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [filterValues])
-
 	const handleModalOpen = () => {
 		setIsModalOpen(!isModalOpen)
 	}
 
 	const handleClearFilter = () => {
-		setFilterValues({})
+		setFilterValues({
+			search: searchValue ?? ''
+		})
 	}
 
 	return (
 		<div className={twMerge('', classes)}>
 			<div className={twMerge('flex items-center gap-[20px]')}>
-				<Input onChange={handleSearchInput} value={searchValue} isSearch placeholder='Search users' />
+				<Input onChange={handleSearchInput} value={searchValue ?? ''} isSearch placeholder='Search users' />
 				<button
 					onClick={handleModalOpen}
 					className={`relative transition hover:opacity-70 ${
@@ -155,7 +179,7 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 						type='primary'
 						classes='w-full'
 						onClick={() => {
-							setTags(createTags())
+							setTags(createTags(filterValues))
 							setIsModalOpen(false)
 							dispatch(setUserFilter(filterValues))
 						}}

@@ -55,7 +55,7 @@ export const Modal: FC<{
 							</button>
 						</div>
 						<h2 className='flex-center mt-[-27px] w-full text-2xl font-semibold leading-none text-gray-800'>{title}</h2>
-						<div className='mt-[30px] mb-[25px]'>{isOpen ? content : null}</div>
+						<div className='mt-[30px] mb-[25px] md:mb-[35px]'>{isOpen ? content : null}</div>
 						{submitButton && submitButton}
 					</div>
 				</div>
