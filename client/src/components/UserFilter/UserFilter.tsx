@@ -1,6 +1,8 @@
-import { FC } from 'react'
+import { FC, useState, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Checkbox, Input } from 'src/ui'
+import { useAppDispatch } from 'src/hooks/redux'
+import { setFilterValidationError } from 'src/store/slices/usersSlice'
 
 export type UserFilterType = {
 	ageFrom?: number
@@ -17,7 +19,66 @@ type UserFilterPropsType = {
 	classes?: string
 }
 
+type ValidationErrors = {
+	weightFrom: string | null
+	weightTo: string | null
+	ageFrom: string | null
+	ageTo: string | null
+}
+
 export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, classes }) => {
+	const [errors, setErrors] = useState<ValidationErrors>({
+		weightFrom: null,
+		weightTo: null,
+		ageFrom: null,
+		ageTo: null
+	})
+
+	const dispatch = useAppDispatch()
+
+	const filterValidation = (key1: keyof typeof errors, key2: keyof typeof errors, value: number) => {
+		if (Number(inputValues[key1]) < value) {
+			setErrors({ ...errors, [key1]: null })
+		}
+
+		if (Number(inputValues[key2]) < value) {
+			setErrors({ ...errors, [key2]: null })
+		}
+
+		if (inputValues[key2] && Number(inputValues[key1]) < Number(inputValues[key2])) {
+			setErrors({ ...errors, [key2]: null })
+		}
+
+		if (Number(inputValues[key1]) > value) {
+			return setErrors({ ...errors, [key1]: `${value} max value` })
+		}
+
+		if (Number(inputValues[key2]) > value) {
+			return setErrors({ ...errors, [key2]: `${value} max value` })
+		}
+
+		if (inputValues[key2] && Number(inputValues[key1]) > Number(inputValues[key2])) {
+			return setErrors({ ...errors, [key2]: 'cannot be less than min value' })
+		}
+
+		return null
+	}
+
+	useEffect(() => {
+		filterValidation('weightFrom', 'weightTo', 199)
+		filterValidation('ageFrom', 'ageTo', 99)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [inputValues])
+
+	useEffect(() => {
+		const hasValidationError = Object.values(errors)
+			.map(item => item && item?.length > 0)
+			.includes(true)
+
+		dispatch(setFilterValidationError(hasValidationError))
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [errors])
+
 	return (
 		<div className={twMerge('flex flex-col gap-[20px]', classes)}>
 			<div className='flex gap-[10px] pb-[10px]'>
@@ -34,6 +95,7 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, cla
 					placeholder='Min'
 					name='weightFrom'
 					type='number'
+					validationErrorText={errors.weightFrom}
 				/>
 				<Input
 					onChange={onChange}
@@ -42,6 +104,7 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, cla
 					placeholder='Max'
 					name='weightTo'
 					type='number'
+					validationErrorText={errors.weightTo}
 				/>
 			</div>
 			<div className='flex items-center gap-[10px]'>
@@ -53,6 +116,7 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, cla
 					placeholder='Min'
 					name='ageFrom'
 					type='number'
+					validationErrorText={errors.ageFrom}
 				/>
 				<Input
 					onChange={onChange}
@@ -61,6 +125,7 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, cla
 					placeholder='Max'
 					name='ageTo'
 					type='number'
+					validationErrorText={errors.ageTo}
 				/>
 			</div>
 		</div>

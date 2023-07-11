@@ -1,7 +1,7 @@
 import { FC, ReactElement, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { ReactComponent as SettingsIcon } from 'src/assets/settings.svg'
-import { useAppDispatch } from 'src/hooks/redux'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { setUserFilter } from 'src/store/slices/usersSlice'
 import { Tag, Input, Modal, Button } from 'src/ui'
 import { UserFilter, UserFilterType } from '../UserFilter'
@@ -20,6 +20,7 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [tags, setTags] = useState<ReactElement[] | []>([])
 	const dispatch = useAppDispatch()
+	const hasValidationError = useAppSelector(state => state.users.filterValidationError)
 
 	const handleSearchInput = (value?: string) => {
 		setSearchValue(value as string)
@@ -52,7 +53,7 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 
 		setFilterValues({
 			...filterValues,
-			[name as string]: Number(value)
+			[name as string]: value
 		})
 	}
 
@@ -73,7 +74,7 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 			tagsData.push(
 				<Tag
 					type='search'
-					text={`${data.ageFrom ?? ''}-${data.ageTo ?? ''} years`}
+					text={`${data.ageFrom ?? '0'}${data.ageFrom && !data.ageTo ? '+' : '-'}${data.ageTo ?? ''} years`}
 					key='age'
 					onClick={() =>
 						updateState({
@@ -89,7 +90,7 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 			tagsData.push(
 				<Tag
 					type='search'
-					text={`${data.weightFrom ?? ''}-${data.weightTo ?? ''} kg`}
+					text={`${data.weightFrom ?? '0'}${data.weightFrom && !data.weightTo ? '+' : '-'}${data.weightTo ?? ''} kg`}
 					key='weigh'
 					onClick={() =>
 						updateState({
@@ -183,6 +184,7 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 							setIsModalOpen(false)
 							dispatch(setUserFilter(filterValues))
 						}}
+						disabled={hasValidationError}
 					>
 						Show
 					</Button>
