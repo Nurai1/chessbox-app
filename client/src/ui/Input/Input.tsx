@@ -16,7 +16,7 @@ export type InputPropsType = {
 	isRequired?: boolean
 	isSearch?: boolean
 	loopPosition?: 'left' | 'right'
-	validationErrorText?: string
+	validationErrorText?: string | null
 	disabled?: boolean
 	isControlledValue?: boolean
 	classes?: string
@@ -44,7 +44,7 @@ export const Input: FC<InputPropsType> = ({
 	const generalClasses = 'w-full rounded-lg border-gray-200 text-input font-light z-10'
 
 	return (
-		<div className='flex w-full flex-wrap'>
+		<div className='relative flex w-full flex-wrap'>
 			{needLabel && <Label label={label} showOptional={!isRequired && !isSearch} />}
 			{isTextarea ? (
 				<div className='relative flex w-full'>
@@ -93,7 +93,7 @@ export const Input: FC<InputPropsType> = ({
 				</div>
 			)}
 			{validationErrorText && (
-				<span className='mt-[10px] inline-block text-xs leading-none text-red-400'>{validationErrorText}</span>
+				<span className='absolute bottom-[-17px] text-xs leading-none text-red-400'>{validationErrorText}</span>
 			)}
 		</div>
 	)

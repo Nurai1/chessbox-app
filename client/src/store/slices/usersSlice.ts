@@ -36,6 +36,7 @@ export interface UsersState {
 	loading: boolean
 	loaded: boolean
 	filterState: UserFilterType
+	filterValidationError: boolean
 	error?: string
 }
 
@@ -46,7 +47,8 @@ const initialState: UsersState = {
 	},
 	loading: true,
 	loaded: false,
-	filterState: {}
+	filterState: {},
+	filterValidationError: false
 }
 
 export const usersSlice = createSlice({
@@ -59,6 +61,9 @@ export const usersSlice = createSlice({
 		clearUsers: state => {
 			state.data.total = 0
 			state.data.items = []
+		},
+		setFilterValidationError: (state, action) => {
+			state.filterValidationError = action.payload
 		}
 	},
 	extraReducers: {
@@ -81,6 +86,6 @@ export const usersSlice = createSlice({
 	}
 })
 
-export const { setUserFilter, clearUsers } = usersSlice.actions
+export const { setUserFilter, clearUsers, setFilterValidationError } = usersSlice.actions
 
 export default usersSlice.reducer
