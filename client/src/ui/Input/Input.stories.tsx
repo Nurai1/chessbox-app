@@ -27,8 +27,8 @@ WithValidationMessage.args = {
 
 export const SearchInput = Template.bind({})
 SearchInput.args = {
-	label: 'Search Input label',
-	placeholder: 'Search active services',
+	label: 'UsersSearch Input label',
+	placeholder: 'UsersSearch active services',
 	isSearch: true
 }
 
