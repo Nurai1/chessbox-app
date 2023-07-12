@@ -86,8 +86,10 @@ export const UILibrary: FC = () => {
 
 			<h2 className='mb-5 text-xl font-semibold'>Тэги</h2>
 			<div className='mt-4 flex flex-wrap gap-4 '>
-				<Tag img={<Banknote className='max-5 mr-2' />} text='888' />
-				<Tag img={<Persons className='max-5 mr-2' />} text='426 participants enrolled' />
+				<Tag img={<Banknote className='max-5' />} text='888' />
+				<Tag img={<Persons className='max-5' />} text='426 participants enrolled' />
+				<Tag type='search' text='Woman' />
+				<Tag type='search' text='60-75 kg' />
 			</div>
 			<hr className='my-8' />
 
@@ -103,7 +105,7 @@ export const UILibrary: FC = () => {
 				classes='mr-5'
 				onChange={() => setChecked(!checked)}
 			/>
-			<Checkbox title='Disabled' name='disabled' disabled />
+			<Checkbox title='Disabled' name='disabled' onChange={() => ''} disabled />
 			<hr className='my-8' />
 
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>

@@ -13,7 +13,7 @@ export const TableHeader: FC<TableHeaderPropsType> = ({ columns }) => {
 				<div
 					key={idx}
 					className={twMerge(
-						'flex min-h-[50px] items-center p-2.5 text-sm font-normal uppercase text-gray-500 first:pl-0 last:pr-0 md:min-h-[85px]  md:font-bold lg:text-xl lg:font-medium',
+						'flex min-h-[50px] items-center p-2.5 text-sm font-medium uppercase text-gray-500 first:pl-0 last:pr-0 md:min-h-[85px] lg:text-xl',
 						column.classes
 					)}
 					style={{
