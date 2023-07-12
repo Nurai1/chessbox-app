@@ -192,7 +192,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 						{price?.currentValue && <Tag img={<Banknote className='max-5 mr-2' />} text={price.currentValue} />}
 						{participants && (
 							<Tag
-								img={<Persons className='max-5 mr-2' />}
+								img={<Persons className='max-5' />}
 								text={`${participants.length} participant${participants.length === 1 ? '' : 's'} enrolled`}
 							/>
 						)}

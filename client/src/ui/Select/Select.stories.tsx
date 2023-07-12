@@ -63,7 +63,7 @@ MultipleDefault.args = {
 
 export const MultipleWithSearch = MultipleTemplate.bind({})
 MultipleWithSearch.args = {
-	label: 'Multiple With Search Select Label',
+	label: 'Multiple With UsersSearch Select Label',
 	withSearch: true,
 	menuOptions: options
 }

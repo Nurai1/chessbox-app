@@ -1,8 +1,7 @@
-import { ReactComponent as XmarkIcon } from 'src/assets/x-mark-big.svg'
+import { ReactComponent as XmarkIcon } from 'src/assets/x-mark.svg'
 import { useClickOutside } from 'src/hooks/useClickOutside'
 import { FC, ReactElement, ReactNode, useEffect, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { Button } from 'src/ui'
 
 export const Modal: FC<{
 	isOpen: boolean
@@ -10,7 +9,8 @@ export const Modal: FC<{
 	content: ReactElement
 	title: ReactNode
 	submitButton?: ReactElement
-}> = ({ isOpen, onClose, title, content, submitButton }) => {
+	clearButton?: ReactElement
+}> = ({ isOpen, onClose, title, content, submitButton, clearButton }) => {
 	const modalRef = useRef(null)
 
 	useClickOutside({
@@ -38,32 +38,26 @@ export const Modal: FC<{
 					ref={modalRef}
 					className={twMerge(
 						isOpen ? '-translate-y-1/2 opacity-100 duration-500' : '-translate-y-2/3 opacity-0',
-						'absolute left-1/2 top-1/2 m-3 w-[530px] -translate-x-1/2 shadow-xl transition-all ease-out',
+						'absolute left-1/2 top-1/2 w-[calc(100%-52px)] -translate-x-1/2 shadow-xl transition-all ease-out lg:w-[667px]',
 						submitButton && 'rounded-b-none'
 					)}
 				>
-					<div className={twMerge('rounded-2xl bg-white p-5 shadow-xl', submitButton && 'rounded-b-none')}>
-						<div className='mb-px flex justify-end'>
+					<div className='relative rounded-[15px] bg-white px-[18px] py-[25px] md:px-[40px]'>
+						<div className='mb-px flex'>
+							{clearButton}
 							<button
 								type='button'
-								className='inline-flex-center focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white'
+								className='ml-auto focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white'
 								onClick={onClose}
 							>
 								<span className='sr-only'>Close</span>
-								<XmarkIcon onClick={onClose} className='hover:stroke-gray-500' />
+								<XmarkIcon onClick={onClose} className='transition hover:opacity-70' />
 							</button>
 						</div>
-						<div className='flex-center w-full text-xl font-bold leading-none text-gray-800'>{title}</div>
-						<div className='mx-5 mt-5'>{isOpen ? content : null}</div>
+						<h2 className='flex-center mt-[-27px] w-full text-2xl font-semibold leading-none text-gray-800'>{title}</h2>
+						<div className='mt-[30px] mb-[25px] md:mb-[35px]'>{isOpen ? content : null}</div>
+						{submitButton && submitButton}
 					</div>
-					{submitButton && (
-						<div className='flex justify-end gap-[10px] rounded-b-2xl border-t border-gray-200 bg-gray-50 p-5'>
-							<Button type='ghost' onClick={onClose}>
-								Cancel
-							</Button>
-							{submitButton}
-						</div>
-					)}
 				</div>
 			</div>
 			{isOpen && <div className='duration fixed inset-0 z-50 bg-gray-900 bg-opacity-50 transition' />}

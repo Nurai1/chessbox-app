@@ -6,22 +6,27 @@ import { Label } from 'src/ui'
 
 export type InputPropsType = {
 	label?: string
-	onChange: (value: string | undefined) => void
+	onChange: (value: string | undefined, name: string | undefined) => void
 	onFocus?: () => void
 	value?: string
+	name?: string
+	type?: string
 	placeholder?: string
 	isTextarea?: boolean
 	isRequired?: boolean
 	isSearch?: boolean
 	loopPosition?: 'left' | 'right'
-	validationErrorText?: string
+	validationErrorText?: string | null
 	disabled?: boolean
 	isControlledValue?: boolean
 	classes?: string
+	needLabel?: boolean
 }
 
 export const Input: FC<InputPropsType> = ({
 	value,
+	name,
+	type = 'text',
 	isTextarea,
 	label,
 	onChange,
@@ -33,25 +38,29 @@ export const Input: FC<InputPropsType> = ({
 	onFocus,
 	disabled,
 	isControlledValue = true,
-	classes
+	classes,
+	needLabel
 }) => {
-	const generalClasses = 'w-full rounded-md border-gray-200 text-input font-medium z-10'
+	const generalClasses = 'w-full rounded-lg border-gray-200 text-input font-light z-10'
 
 	return (
-		<div className='flex w-full flex-wrap'>
-			<Label label={label} showOptional={!isRequired && !isSearch} />
+		<div className='relative flex w-full flex-wrap'>
+			{needLabel && <Label label={label} showOptional={!isRequired && !isSearch} />}
 			{isTextarea ? (
 				<div className='relative flex w-full'>
 					<textarea
 						disabled={disabled}
 						value={isControlledValue ? value ?? '' : undefined}
+						name={name}
 						required={isRequired}
 						placeholder={placeholder}
-						onChange={event => onChange(event?.target?.value ?? '')}
+						onChange={event => {
+							onChange(event?.target?.value ?? '', event?.target?.name ?? '')
+						}}
 						onFocus={onFocus}
 						className={twMerge(
 							generalClasses,
-							'h-28 resize-none px-4 py-[0.875rem] placeholder:text-gray-400 disabled:bg-gray-50 disabled:text-gray-400',
+							'h-28 resize-none px-4 py-[0.875rem] placeholder:text-[#B3B3B3] disabled:bg-gray-50 disabled:text-gray-400',
 							validationErrorText && 'border-red-400 ring-4 ring-red-200',
 							classes
 						)}
@@ -63,27 +72,28 @@ export const Input: FC<InputPropsType> = ({
 					<input
 						disabled={disabled}
 						value={isControlledValue ? value ?? '' : undefined}
+						name={name}
 						required={isRequired}
 						placeholder={placeholder}
 						onChange={event => {
-							onChange(event?.target?.value ?? '')
+							onChange(event?.target?.value ?? '', event?.target?.name ?? '')
 						}}
 						onFocus={onFocus}
 						className={twMerge(
 							generalClasses,
-							'h-16 px-5 placeholder:text-gray-500 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/25 disabled:bg-gray-50 disabled:text-gray-400',
+							'h-[54px] px-5 placeholder:text-[#B3B3B3] focus:border-blue-500 focus:ring-4 focus:ring-blue-500/25 disabled:bg-gray-50 disabled:text-gray-400',
 							validationErrorText && 'border-red-400 ring-4 ring-red-200',
-							isSearch && loopPosition === 'right' && 'h-12 pr-12',
-							isSearch && loopPosition === 'left' && 'h-12 pl-12',
+							isSearch && loopPosition === 'right' && 'pr-12',
+							isSearch && loopPosition === 'left' && 'pl-12',
 							classes
 						)}
-						type='text'
+						type={type}
 					/>
 					{isSearch && loopPosition === 'right' && <BigSearchLoopIcon className='absolute right-5 z-20' />}
 				</div>
 			)}
 			{validationErrorText && (
-				<span className='mt-[10px] inline-block text-xs leading-none text-red-400'>{validationErrorText}</span>
+				<span className='absolute bottom-[-17px] text-xs leading-none text-red-400'>{validationErrorText}</span>
 			)}
 		</div>
 	)
