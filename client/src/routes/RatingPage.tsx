@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchUsers, clearUsers } from 'src/store/slices/usersSlice'
 import { ratingTableSchema } from '../helpers/tableSchema'
-import { UsersTableWithTitle, Search } from '../components'
+import { UsersTableWithTitle, UsersSearch } from '../components'
 import { TableWrapper, Loader } from '../ui'
 
 const USERS_PER_STEP = 5
@@ -51,7 +51,7 @@ export const RatingPage = (): ReactElement => {
 			</h1>
 
 			<TableWrapper>
-				<Search classes='mb-[35px] md:mb-[30px]' />
+				<UsersSearch classes='mb-[35px] md:mb-[30px]' />
 				{isLoading && <Loader classes='h-[80vh]' />}
 				{hasUsers && (
 					<UsersTableWithTitle

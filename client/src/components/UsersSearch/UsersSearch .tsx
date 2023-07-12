@@ -1,7 +1,7 @@
 import { FC, ReactElement, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { ReactComponent as SettingsIcon } from 'src/assets/settings.svg'
-import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { useAppDispatch } from 'src/hooks/redux'
 import { setUserFilter } from 'src/store/slices/usersSlice'
 import { Tag, Input, Modal, Button } from 'src/ui'
 import { UserFilter, UserFilterType } from '../UserFilter'
@@ -14,13 +14,13 @@ type FilterValuesType = {
 	search?: string
 } & UserFilterType
 
-export const Search: FC<SearchPropsType> = ({ classes }) => {
+export const UsersSearch: FC<SearchPropsType> = ({ classes }) => {
 	const [searchValue, setSearchValue] = useState<null | string>(null)
 	const [filterValues, setFilterValues] = useState<FilterValuesType>({})
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [tags, setTags] = useState<ReactElement[] | []>([])
+	const [validationError, setValidationError] = useState(false)
 	const dispatch = useAppDispatch()
-	const hasValidationError = useAppSelector(state => state.users.filterValidationError)
 
 	const handleSearchInput = (value?: string) => {
 		setSearchValue(value as string)
@@ -43,14 +43,6 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 	}, [searchValue])
 
 	const handleFilter = (value?: string | boolean, name?: string) => {
-		if (typeof value === 'boolean') {
-			setFilterValues({
-				...filterValues,
-				[name as string]: value
-			})
-			return
-		}
-
 		setFilterValues({
 			...filterValues,
 			[name as string]: value
@@ -148,7 +140,7 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 	return (
 		<div className={twMerge('', classes)}>
 			<div className={twMerge('flex items-center gap-[20px]')}>
-				<Input onChange={handleSearchInput} value={searchValue ?? ''} isSearch placeholder='Search users' />
+				<Input onChange={handleSearchInput} value={searchValue ?? ''} isSearch placeholder='UsersSearch users' />
 				<button
 					onClick={handleModalOpen}
 					className={`relative transition hover:opacity-70 ${
@@ -169,7 +161,9 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 				isOpen={isModalOpen}
 				onClose={handleModalOpen}
 				title='Filter'
-				content={<UserFilter onChange={handleFilter} inputValues={filterValues} />}
+				content={
+					<UserFilter onChange={handleFilter} inputValues={filterValues} setValidationError={setValidationError} />
+				}
 				clearButton={
 					<button onClick={handleClearFilter} type='button' className='text-base font-bold transition hover:opacity-70'>
 						Clean up
@@ -184,7 +178,7 @@ export const Search: FC<SearchPropsType> = ({ classes }) => {
 							setIsModalOpen(false)
 							dispatch(setUserFilter(filterValues))
 						}}
-						disabled={hasValidationError}
+						disabled={validationError}
 					>
 						Show
 					</Button>
