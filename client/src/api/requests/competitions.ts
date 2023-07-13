@@ -5,3 +5,15 @@ export const getCompetitionsApi = async () => {
 
 	return result
 }
+
+export const getCompetitionByIdApi = async (id: string) => {
+	const result = await get('/api/competition/{id}', {
+		params: {
+			path: {
+				id
+			}
+		}
+	})
+
+	return result
+}
