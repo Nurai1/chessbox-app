@@ -9,7 +9,7 @@ import { RatingPage } from './routes/RatingPage'
 
 const App = () => {
 	return (
-		<div className='flex h-screen min-h-screen w-full flex-col'>
+		<div className='relative flex h-screen min-h-screen flex-col overflow-x-hidden'>
 			<HashRouter>
 				<Routes>
 					<Route element={<MainPage />} path={AppRoute.Root} />
