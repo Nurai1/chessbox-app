@@ -179,6 +179,16 @@ userRouter.get(
   controllerErrorHandler(UserController.getUsers)
 );
 
+userRouter.get(
+  '/user/:id/nearestPair',
+  /* #swagger.responses[200] = {
+            description: 'Each attrubute can be null. If pair is null, then the user is waiting in the "Next Round Participants"',
+            schema: { pair: { $ref: '#/definitions/Pair' }, roundDivider: 8 }
+    } */
+
+  controllerErrorHandler(UserController.getUserCurrentPair)
+);
+
 userRouter.post(
   '/user',
   /*	#swagger.requestBody = {

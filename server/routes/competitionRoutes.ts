@@ -176,6 +176,40 @@ competitionRouter.patch(
 );
 
 competitionRouter.patch(
+  '/competition/:id/setCompetitionGroupsOrders',
+  /*	#swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                      type: "object",
+                      properties: {
+                        orders: { type: "array", items: { 
+                            type: "object",
+                            properties: {
+                              groupId: { type: "string" },
+                              order: { type: "number" },
+                            },
+                            required: ["groupId", "order"]
+                          } 
+                        },
+                      },
+                      required: ["orders"]
+                    }  
+                },
+            }
+        } 
+    */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccessACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.setJudgesToCompetition)
+);
+
+competitionRouter.patch(
   '/competition/:id/start',
   /* #swagger.responses[200] = {
             description: '',

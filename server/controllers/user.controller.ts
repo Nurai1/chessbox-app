@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import { User } from '../models/index';
 import ac from '../roles';
 import { RESOURCES, ACTIONS } from '../constants';
-import { IUser } from '../types/index';
+import { ICompetition, IUser } from '../types/index';
 import { errorUniqueCheck } from '../utils/errors';
 import {
   CreateUserParser,
@@ -305,4 +305,47 @@ export const updateUser = async (
   if (!user) return res.status(404).send({ error: "User wasn't found" });
 
   res.send(user);
+};
+
+export const getUserCurrentPair = async (
+  req: Request<{ id?: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id: userId } = req.params;
+  if (!userId) return res.status(400).send({ error: 'No user id was sent.' });
+
+  const user = await User.findOne({ _id: userId }).populate('competition');
+  if (!user) return res.status(404).send({ error: "User wasn't found" });
+
+  const competition = user?.competition as ICompetition;
+
+  const currentUserGroup = competition?.groups?.find(
+    (g) => g._id?.toString() === user?.currentGroupId
+  );
+
+  if (
+    currentUserGroup?.nextRoundParticipants?.find(
+      (participant) => participant._id?.toString() === userId
+    )
+  ) {
+    res.send({ pair: null, roundDivider: null });
+  }
+
+  const pair = currentUserGroup?.currentRoundPairs?.find(
+    (p) =>
+      p.blackParticipant?.toString() === userId ||
+      p.whiteParticipant?.toString() === userId
+  );
+
+  if (!pair) {
+    return res.status(404).send({ error: "Pair wasn't found" });
+  }
+
+  res.send({
+    pair: pair,
+    roundDivider: currentUserGroup?.nextRoundParticipants.length
+      ? null
+      : currentUserGroup?.currentRoundPairs?.length,
+  });
 };

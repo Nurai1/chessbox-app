@@ -87,7 +87,6 @@ export const startCompetition = async (
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
 
-  const participantsAmount = competition?.participants.length;
   if (competition) {
     if (!competition?.judges) {
       res.status(500).send({ error: 'No judges in competition.' });
@@ -177,35 +176,33 @@ export const createCompetitionGroup = async (
     });
   }
 
-  if (competition) {
-    const group: ICompetitionGroup = {
-      ...body,
-      currentRoundPairs: firstRoundPairs,
-      currentRoundNumber: 1,
-      nextRoundParticipants: shuffledParticipants.slice(
-        participantsAmountForFirstRound
-      ),
-    };
+  const group: ICompetitionGroup = {
+    ...body,
+    currentRoundPairs: firstRoundPairs,
+    currentRoundNumber: 1,
+    nextRoundParticipants: shuffledParticipants.slice(
+      participantsAmountForFirstRound
+    ),
+  };
 
-    const groupWithJudges = {
-      ...group,
-      currentRoundPairs: getPairsWithJudges({
-        pairs: firstRoundPairs,
-        judges: competition?.judges,
-      }),
-    };
+  const groupWithJudges = {
+    ...group,
+    currentRoundPairs: getPairsWithJudges({
+      pairs: firstRoundPairs,
+      judges: competition?.judges,
+    }),
+  };
 
-    competition.groups = [groupWithJudges, ...competition.groups];
+  competition.groups = [groupWithJudges, ...competition.groups];
 
-    await competition.save();
+  await competition.save();
 
-    const groupId = competition.groups[0]._id;
+  const groupId = competition.groups[0]._id;
 
-    await User.updateMany(
-      { _id: { $in: allParticipants.map((p) => p._id) } },
-      { currentGroupId: groupId }
-    );
-  }
+  await User.updateMany(
+    { _id: { $in: allParticipants.map((p) => p._id) } },
+    { currentGroupId: groupId }
+  );
 
   res.send(competition);
 };
@@ -336,44 +333,34 @@ export const callPairFight = async (
   res.sendStatus(500);
 };
 
-export const setNextCompetitionGroupOrder = async (
-  req: Request<any, any, { competitionId: string; groupId: string }>,
+export const setCompetitionGroupsOrders = async (
+  req: Request<
+    { id: string },
+    any,
+    { orders: { groupId: string; order: number }[] }
+  >,
   res: Response
 ) => {
-  const { competitionId, groupId } = req.body;
+  const { orders } = req.body;
 
-  const competition = await Competition.findById(competitionId);
+  const competition = await Competition.findById(req.params.id);
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
 
-  const group = competition?.groups.find((g) => g._id?.toString() === groupId);
-  const currentRoundPairs = group?.currentRoundPairs;
+  let currentPairOrder = 0;
+  const newGroups = competition?.groups.map((g) => ({
+    ...g,
+    order: orders.find((order) => order.groupId === g._id?.toString())?.order,
+    currentRoundPairs: g.currentRoundPairs.map((pair) => ({
+      ...pair,
+      order: ++currentPairOrder,
+    })),
+  }));
 
-  if (competition && group && currentRoundPairs) {
-    competition.lastOrder.group += 1;
+  competition.groups = newGroups;
+  await competition.save();
 
-    let currentLastPairOrder = competition.lastOrder.pair;
-
-    const currentRoundPairsWithOrder = currentRoundPairs.map((p) => ({
-      ...p,
-      order: currentLastPairOrder++,
-    }));
-
-    competition.lastOrder.pair = currentLastPairOrder;
-
-    const newGroups = competition?.groups.map((g) => {
-      if (g._id?.toString() === groupId) {
-        return { ...group, currentRoundPairs: currentRoundPairsWithOrder };
-      }
-      return g;
-    });
-    competition.groups = newGroups;
-    await competition?.save();
-
-    res.sendStatus(200);
-  }
-
-  res.sendStatus(500);
+  res.send(competition);
 };
 
 export const defineWinner = async (
