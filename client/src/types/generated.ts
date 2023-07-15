@@ -457,6 +457,97 @@ export interface paths {
 			}
 		}
 	}
+	'/api/user/{id}/nearestPair': {
+		get: {
+			parameters: {
+				path: {
+					id: string
+				}
+			}
+			responses: {
+				/** @description OK */
+				200: {
+					content: {
+						'application/json': {
+							pair?: components['schemas']['Pair']
+							/** @example 8 */
+							roundDivider?: number
+						}
+						'application/xml': {
+							pair?: components['schemas']['Pair']
+							/** @example 8 */
+							roundDivider?: number
+						}
+					}
+				}
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+	}
 	'/api/user': {
 		post: {
 			requestBody: {
@@ -1291,6 +1382,99 @@ export interface paths {
 					'application/json': {
 						judgesIds: string[]
 						competitionId: string
+					}
+				}
+			}
+			responses: {
+				/** @description OK */
+				200: {
+					content: {
+						'application/json': components['schemas']['Competition']
+						'application/xml': components['schemas']['Competition']
+					}
+				}
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+	}
+	'/api/competition/{id}/setCompetitionGroupsOrders': {
+		patch: {
+			parameters: {
+				path: {
+					id: string
+				}
+			}
+			requestBody: {
+				content: {
+					'application/json': {
+						orders: {
+							groupId: string
+							order: number
+						}[]
 					}
 				}
 			}
