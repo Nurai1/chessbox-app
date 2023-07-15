@@ -6,7 +6,7 @@ import { ReactComponent as ArrowLeft } from 'src/assets/arrow-left.svg'
 import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
 import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { fetchCompetitionById, fetchCompetitionParticipants, clearParticipants } from '../store/slices/competitionSlice'
+import { fetchCompetitionById, fetchCompetitionParticipants } from '../store/slices/competitionSlice'
 import { Loader, Tag, Timer, Button, Modal, TableBody } from '../ui'
 import { getFormattedDate, isPast } from '../helpers/datetime'
 import { AppRoute } from '../constants/appRoute'
@@ -20,7 +20,7 @@ export const CompetitionPage = (): ReactElement => {
 	const competitionDataExisting = useAppSelector(s => s.competitions.data).find(({ _id }) => _id === competitionId)
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
 	const fetchError = useAppSelector(s => s.competition.error)
-	const participants = useAppSelector(s => s.competition.participants)
+	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
 	const competitionData = competitionDataExisting || competitionDataFetched
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
 	const isParticipant = competitionData?.participants && competitionData.participants.includes(authorizedUserId)
@@ -29,7 +29,7 @@ export const CompetitionPage = (): ReactElement => {
 	const participantsTable = participants && tableSchemaParticipants(participants)
 
 	useEffect(() => {
-		dispatch(clearParticipants())
+		// dispatch(clearParticipants())
 		if (!competitionDataExisting) {
 			dispatch(fetchCompetitionById(competitionId as string))
 		}
