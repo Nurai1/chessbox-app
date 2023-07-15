@@ -15,31 +15,27 @@ export const fetchCompetitionParticipants = createAsyncThunk(
 		const response = await getCompetitionParticipantsApi(id)
 		if (response.error) return thunkApi.rejectWithValue(response.error.error)
 
-		return response.data
+		return { competitionId: id, participants: response.data }
 	}
 )
 
 export interface CompetitionState {
 	data: CompetitionSchema | null
-	participants: UserSchema[] | null
+	participants: Record<string, UserSchema[] | null>
 	loading: boolean
 	error?: string
 }
 
 const initialState: CompetitionState = {
 	data: null,
-	participants: null,
+	participants: {},
 	loading: true
 }
 
 export const competitionSlice = createSlice({
 	name: 'competition',
 	initialState,
-	reducers: {
-		clearParticipants: state => {
-			state.participants = null
-		}
-	},
+	reducers: {},
 	extraReducers: {
 		[fetchCompetitionById.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.loading = false
@@ -52,9 +48,12 @@ export const competitionSlice = createSlice({
 			state.loading = false
 			state.error = action.payload
 		},
-		[fetchCompetitionParticipants.fulfilled.type]: (state, action: PayloadAction<UserSchema[]>) => {
+		[fetchCompetitionParticipants.fulfilled.type]: (
+			state,
+			action: PayloadAction<{ competitionId: string; participants: UserSchema[] }>
+		) => {
 			state.loading = false
-			state.participants = action.payload
+			state.participants[action.payload.competitionId] = action.payload.participants
 		},
 		[fetchCompetitionParticipants.pending.type]: state => {
 			state.loading = true
@@ -66,6 +65,6 @@ export const competitionSlice = createSlice({
 	}
 })
 
-export const { clearParticipants } = competitionSlice.actions
+// export const {} = competitionSlice.actions
 
 export default competitionSlice.reducer
