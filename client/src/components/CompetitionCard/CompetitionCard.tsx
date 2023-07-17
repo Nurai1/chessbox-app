@@ -6,6 +6,7 @@ import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
 import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
 import { ReactComponent as Hourglass } from 'src/assets/hourglass.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
+import { Link } from 'react-router-dom'
 import { CompetitionSchema } from '../../types'
 import { Button, Timer, Tag } from '../../ui'
 import { getFormattedDate, isPast } from '../../helpers/datetime'
@@ -18,7 +19,7 @@ type CompetitionPropsType = {
 }
 
 export const CompetitionCard: FC<CompetitionPropsType> = ({
-	competition: { startDate, registrationEndsAt, endDate, name, price, description, participants }
+	competition: { startDate, registrationEndsAt, endDate, name, price, description, participants, _id }
 }) => {
 	const handleClick = () => {}
 	const dateStart = getFormattedDate(startDate, 'MMM D, HH:mm')
@@ -179,7 +180,9 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 				xl:text-4xl xl:font-bold
 				2xl:mb-[22px]'
 				>
-					{name}
+					<Link to={_id} className='transition hover:opacity-70'>
+						{name}
+					</Link>
 				</h2>
 				{screenWidth < BreakPoint.Lg && (
 					<p className='mb-[17px] text-sm text-[#6C6A6C] xl:text-lg xl:font-medium'>Starts At {dateStart}</p>

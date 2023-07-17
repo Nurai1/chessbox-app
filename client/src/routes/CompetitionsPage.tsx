@@ -5,7 +5,8 @@ import { fetchCompetitions } from 'src/store/slices/competitionsSlice'
 import {
 	activeCompetitionsSelector,
 	currentUserCompetitionsSelector,
-	expiredCompetitionsSelector
+	expiredCompetitionsSelector,
+	selectCompetitions
 } from '../store/selectors/competitions'
 import { CompetitionCard } from '../components'
 import { CompetitionSchema } from '../types'
@@ -21,12 +22,13 @@ export const CompetitionsPage = (): ReactElement => {
 		competitionsData: []
 	})
 
+	const allCompetitions = useAppSelector(selectCompetitions)
 	const competitionsActive = useAppSelector(activeCompetitionsSelector)
 	const currentUserCompetitions = useAppSelector(currentUserCompetitionsSelector)
 	const expiredCompetitions = useAppSelector(expiredCompetitionsSelector)
 
 	useEffect(() => {
-		dispatch(fetchCompetitions())
+		if (!allCompetitions.length) dispatch(fetchCompetitions())
 	}, [dispatch])
 
 	useEffect(() => {
