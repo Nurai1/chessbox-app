@@ -55,8 +55,8 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 	const chosenOptions = chosenIds?.map(mId => getOptionById(menuOptions, mId))
 
 	return (
-		<div className='flex w-full flex-wrap text-sm font-medium leading-none'>
-			<Label label={label} showOptional={!isRequired} />
+		<div className='flex w-full flex-wrap text-sm font-normal leading-none'>
+			<Label label={label} showOptional={false} />
 			<div className={twMerge('hs-dropdown relative w-full', multiple && '[--auto-close:inside]')}>
 				{multiple ? (
 					<div className='relative w-full'>
@@ -67,7 +67,7 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 								validationErrorText && 'border-red-400 ring-4 ring-red-200'
 							)}
 						>
-							<div className='box-border flex h-16 w-full items-center gap-x-1.5 overflow-x-auto pl-4 text-input font-medium text-gray-500'>
+							<div className='box-border flex h-16 w-full items-center gap-x-1.5 overflow-x-auto pl-4 text-input font-normal text-gray-500'>
 								{!chosenOptions?.length && <span className='pl-1'>{placeholder}</span>}
 								{chosenOptions?.map(option => {
 									const clearThisOption = () => {
@@ -100,7 +100,7 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 							placeholder={placeholder}
 							type='text'
 							className={twMerge(
-								'hs-dropdown-toggle relative z-10 box-border h-16 w-full cursor-pointer rounded-md border border-gray-200 bg-white pl-5 pr-14 text-input font-medium placeholder:text-gray-500 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/25',
+								'hs-dropdown-toggle relative z-10 box-border h-16 w-full cursor-pointer rounded-md border border-gray-200 bg-white pl-5 pr-14 text-input font-normal placeholder:text-[#B3B3B3] focus:border-blue-500 focus:ring-4 focus:ring-blue-500/25',
 								validationErrorText && 'border-red-400 ring-4 ring-red-200'
 							)}
 						/>
