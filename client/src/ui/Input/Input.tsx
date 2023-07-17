@@ -20,7 +20,6 @@ export type InputPropsType = {
 	disabled?: boolean
 	isControlledValue?: boolean
 	classes?: string
-	needLabel?: boolean
 }
 
 export const Input: FC<InputPropsType> = ({
@@ -38,14 +37,13 @@ export const Input: FC<InputPropsType> = ({
 	onFocus,
 	disabled,
 	isControlledValue = true,
-	classes,
-	needLabel
+	classes
 }) => {
 	const generalClasses = 'w-full rounded-lg border-gray-200 text-input font-light z-10'
 
 	return (
 		<div className='relative flex w-full flex-wrap'>
-			{needLabel && <Label label={label} showOptional={!isRequired && !isSearch} />}
+			{label && <Label label={label} />}
 			{isTextarea ? (
 				<div className='relative flex w-full'>
 					<textarea
