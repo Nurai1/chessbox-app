@@ -29,7 +29,6 @@ export const CompetitionPage = (): ReactElement => {
 	const participantsTable = participants && tableSchemaParticipants(participants)
 
 	useEffect(() => {
-		// dispatch(clearParticipants())
 		if (!competitionDataExisting) {
 			dispatch(fetchCompetitionById(competitionId as string))
 		}
@@ -179,9 +178,6 @@ export const CompetitionPage = (): ReactElement => {
 						<div>
 							<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
 							<p className='mb-[24px] text-sm'>{competitionData.description}</p>
-							<Link to='/' className='font-medium underline xl:text-2xl xl:font-semibold'>
-								Read Regulations
-							</Link>
 						</div>
 					</div>
 				)}
