@@ -9,48 +9,59 @@ type ValidationConfigType =
     >
 
 export const validator = (fieldData: Record<string, string>, validationConfig: ValidationConfigType) => {
-    const errors: Record<string, Record<string, string>>  = {}
+    const errors: Record<string, string>  = {}
+
+    const validate = (validateMethod: string, validationData: string, config: Record<string, string> ) => {
+         switch (validateMethod) {
+            case 'isRequired':
+                if (validationData.trim() === '') {
+                    return config.errorMessage
+                }
+                break
+            case 'isEmail':
+                if (!EMAIL_REGEX.test(validationData)) {
+                    return config.errorMessage
+                }
+                break
+            case 'isPassword':
+                if (!PASSWORD_REGEX.test(validationData)) {
+                    return config.errorMessage
+                }
+                break
+            case 'minLength':
+                if (validationData.trim().length < 8) {
+                    return config.errorMessage
+                }
+                break
+            case 'isNumber':
+                if (!DIGIT_REGEX.test(validationData)) {
+                    return config.errorMessage
+                }
+                break
+            case 'maxWeight':
+                if (Number(validationData) > 199) {
+                    return config.errorMessage
+                }
+                break
+            case 'maxAge':
+                if (Number(validationData) > 99) {
+                    return config.errorMessage
+                }
+                break
+            default:
+                break
+        }
+
+        return null
+    };
 
     for (const fieldName in fieldData) {
         for (const validateMethod in validationConfig[fieldName]) {
-            switch (validateMethod) {
-                case 'isRequired':
-                    if (fieldData[fieldName].trim() === '') {
-                        errors[fieldName] = validationConfig[fieldName][validateMethod]
-                    }
-                    break
-                case 'isEmail':
-                    if (!EMAIL_REGEX.test(fieldData[fieldName])) {
-                        errors[fieldName] = validationConfig[fieldName][validateMethod]
-                    }
-                    break
-                case 'isPassword':
-                    if (!PASSWORD_REGEX.test(fieldData[fieldName])) {
-                        errors[fieldName] = validationConfig[fieldName][validateMethod]
-                    }
-                    break
-                case 'minLength':
-                    if (fieldData[fieldName].trim().length < 8) {
-                        errors[fieldName] = validationConfig[fieldName][validateMethod]
-                    }
-                    break
-                case 'isNumber':
-                    if (!DIGIT_REGEX.test(fieldData[fieldName])) {
-                        errors[fieldName] = validationConfig[fieldName][validateMethod]
-                    }
-                    break
-                case 'maxWeight':
-                    if (Number(fieldData[fieldName]) > 199) {
-                        errors[fieldName] = validationConfig[fieldName][validateMethod]
-                    }
-                    break
-                case 'maxAge':
-                    if (Number(fieldData[fieldName]) > 99) {
-                        errors[fieldName] = validationConfig[fieldName][validateMethod]
-                    }
-                    break
-                default:
-                    break
+            const error = validate(validateMethod, fieldData[fieldName], validationConfig[fieldName][validateMethod])
+
+            if (error) {
+                errors[fieldName] = error
+                break
             }
         }
     }

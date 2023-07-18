@@ -37,7 +37,7 @@ const requiredFields = ['firstName', 'lastName', 'weight', 'gender', 'age', 'fig
 
 export const SingUpPage = (): ReactElement => {
     const [formData, setFormData] = useState<SingInFormData>({})
-    const [validateErrors, setValidateErrors] = useState<Record<string, Record<string, string>>>({})
+    const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 
     const onChange = (value?: string, name?: string) => {
         setFormData({
@@ -127,7 +127,7 @@ export const SingUpPage = (): ReactElement => {
                         name="firstName"
                         placeholder="Enter First Name"
                         classes="h-[48px]"
-                        validationErrorText={validateErrors?.firstName?.errorMessage}
+                        validationErrorText={validateErrors?.firstName}
                     />
                     <Input
                         onChange={onChange}
@@ -136,7 +136,7 @@ export const SingUpPage = (): ReactElement => {
                         name="lastName"
                         placeholder="Enter Last Name"
                         classes="h-[48px]"
-                        validationErrorText={validateErrors?.lastName?.errorMessage}
+                        validationErrorText={validateErrors?.lastName}
                     />
                     <Input
                         onChange={onChange}
@@ -146,7 +146,7 @@ export const SingUpPage = (): ReactElement => {
                         placeholder="Weight"
                         classes="h-[48px]"
                         type="text"
-                        validationErrorText={validateErrors?.weight?.errorMessage}
+                        validationErrorText={validateErrors?.weight}
                     />
                     <Select chosenId={formData.gender}
                             onChange={onChange}
@@ -154,7 +154,7 @@ export const SingUpPage = (): ReactElement => {
                             label="Gender"
                             placeholder="Select gender"
                             name="gender"
-                            validationErrorText={validateErrors?.gender?.errorMessage}
+                            validationErrorText={validateErrors?.gender}
                     />
                     <Input
                         onChange={onChange}
@@ -164,7 +164,7 @@ export const SingUpPage = (): ReactElement => {
                         placeholder="Age"
                         classes="h-[48px]"
                         type="number"
-                        validationErrorText={validateErrors?.age?.errorMessage}
+                        validationErrorText={validateErrors?.age}
                     />
                     <Input
                         onChange={onChange}
@@ -173,7 +173,7 @@ export const SingUpPage = (): ReactElement => {
                         name="fightClub"
                         placeholder="Enter Fight Club"
                         classes="h-[48px]"
-                        validationErrorText={validateErrors?.fightClub?.errorMessage}
+                        validationErrorText={validateErrors?.fightClub}
                     />
                     <Input
                         onChange={onChange}
@@ -182,7 +182,7 @@ export const SingUpPage = (): ReactElement => {
                         name="country"
                         placeholder="Enter Your country"
                         classes="h-[48px]"
-                        validationErrorText={validateErrors?.country?.errorMessage}
+                        validationErrorText={validateErrors?.country}
                     />
                     <Input
                         onChange={onChange}
@@ -191,7 +191,7 @@ export const SingUpPage = (): ReactElement => {
                         name="city"
                         placeholder="Enter City"
                         classes="h-[48px]"
-                        validationErrorText={validateErrors?.city?.errorMessage}
+                        validationErrorText={validateErrors?.city}
                     />
                     <Input
                         onChange={onChange}
@@ -200,7 +200,7 @@ export const SingUpPage = (): ReactElement => {
                         name="email"
                         placeholder="Inter Email"
                         classes="h-[48px]"
-                        validationErrorText={validateErrors?.email?.errorMessage}
+                        validationErrorText={validateErrors?.email}
                     />
                     <Input
                         onChange={onChange}
@@ -209,7 +209,7 @@ export const SingUpPage = (): ReactElement => {
                         name="chessPlatformUserName"
                         placeholder="Inter `Lichess` Username"
                         classes="h-[48px]"
-                        validationErrorText={validateErrors?.chessPlatformUserName?.errorMessage}
+                        validationErrorText={validateErrors?.chessPlatformUserName}
                     />
                     <Input
                         onChange={onChange}
@@ -219,17 +219,17 @@ export const SingUpPage = (): ReactElement => {
                         placeholder="Enter Password"
                         classes="h-[48px]"
                         type="password"
-                        validationErrorText={validateErrors?.password?.errorMessage}
+                        validationErrorText={validateErrors?.password}
                     />
                     <Input
                         onChange={onChange}
                         value={formData?.passwordConfirm}
                         label="Repeat Password"
                         name="passwordConfirm"
-                        placeholder="Enter Password"
+                        placeholder="Repeat Password"
                         classes="h-[48px]"
                         type="password"
-                        validationErrorText={validateErrors?.passwordConfirm?.errorMessage}
+                        validationErrorText={validateErrors?.passwordConfirm}
                     />
                     <button onClick={handleSubmit}
                             className="font-medium underline ml-auto mt-[6px] hover:opacity-70 transition md:mr-[-20px]"
