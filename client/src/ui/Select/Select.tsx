@@ -20,18 +20,19 @@ export type SingleSelectProps = {
 	multiple?: never
 	chosenIds?: never
 	chosenId: string | undefined
-	onChange: (value: string) => void
+	onChange: (value: string, name?: string) => void
 	menuOptions: { value: string; id: string }[]
 }
 
 export type GeneralSelectProps = {
 	label?: string
-	isRequired?: boolean
+	// isRequired?: boolean
 	placeholder?: string
 	withSearch?: boolean
 	validationErrorText?: string
 	selectClasses?: string
 	disabled?: boolean
+	name?: string
 }
 
 export type SelectPropsType = GeneralSelectProps & (MultipleSelectProps | SingleSelectProps)
@@ -40,7 +41,7 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 	label,
 	onChange,
 	placeholder,
-	isRequired,
+	// isRequired,
 	chosenId,
 	chosenIds,
 	multiple,
@@ -48,7 +49,8 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 	withSearch,
 	validationErrorText,
 	selectClasses,
-	disabled
+	disabled,
+	name
 }) {
 	const [isOpen, setIsOpen] = useState(false)
 	const [searchValue, setSearchValue] = useState<string>()
@@ -60,8 +62,8 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 	const chosenOptions = chosenIds?.map(mId => getOptionById(menuOptions, mId))
 
 	return (
-		<div className='flex w-full flex-wrap font-medium leading-none'>
-			<Label label={label} showOptional={!isRequired} />
+		<div className='flex w-full flex-wrap font-normal leading-none'>
+			<Label label={label} />
 			<div className='relative w-full text-sm'>
 				{multiple ? (
 					<button
@@ -117,8 +119,9 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 							value={chosenSingleValue ?? ''}
 							placeholder={placeholder}
 							type='text'
+							name={name}
 							className={twMerge(
-								'relative z-10 box-border h-16 w-full cursor-pointer rounded-md border border-gray-200 bg-white pl-5 pr-14 text-input font-medium placeholder:text-gray-500 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/25',
+								'relative z-10 box-border h-[48px] w-full cursor-pointer rounded-md border border-gray-200 bg-white pl-5 pr-14 text-input font-normal placeholder:text-[#B3B3B3] focus:border-blue-500 focus:ring-4 focus:ring-blue-500/25',
 								validationErrorText && 'border-red-400 ring-4 ring-red-200',
 								selectClasses,
 								disabled && 'text-gray-400'
@@ -149,7 +152,7 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 					<div className='flex flex-col'>
 						{visibleOptions.map(menuOption => {
 							const isChosenOption = multiple ? chosenIds.includes(menuOption.id) : menuOption.id === chosenId
-							const onOptionClick = () => {
+							const onOptionClick = (fieldName?: string) => {
 								if (multiple) {
 									const hasChosen = chosenIds.some(optionId => optionId === menuOption.id)
 
@@ -159,7 +162,7 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 										onChange([...chosenIds, menuOption.id])
 									}
 								} else {
-									onChange(menuOption.id)
+									onChange(menuOption.id, fieldName)
 									setIsOpen(false)
 								}
 							}
@@ -172,7 +175,7 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 									)}
 									type='button'
 									key={menuOption.id}
-									onClick={onOptionClick}
+									onClick={() => onOptionClick(name)}
 								>
 									<span
 										className={twMerge(

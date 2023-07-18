@@ -10,7 +10,7 @@ export type InputPropsType = {
 	onFocus?: () => void
 	value?: string
 	name?: string
-	type?: string
+	type?: 'text' | 'number' | 'password'
 	placeholder?: string
 	isTextarea?: boolean
 	isRequired?: boolean
@@ -43,7 +43,7 @@ export const Input: FC<InputPropsType> = ({
 
 	return (
 		<div className='relative flex w-full flex-wrap'>
-			{label && <Label label={label} />}
+			{label && <Label label={label} htmlFor={name} />}
 			{isTextarea ? (
 				<div className='relative flex w-full'>
 					<textarea
@@ -62,6 +62,7 @@ export const Input: FC<InputPropsType> = ({
 							validationErrorText && 'border-red-400 ring-4 ring-red-200',
 							classes
 						)}
+						id={name}
 					/>
 				</div>
 			) : (
@@ -86,6 +87,7 @@ export const Input: FC<InputPropsType> = ({
 							classes
 						)}
 						type={type}
+						id={name}
 					/>
 					{isSearch && loopPosition === 'right' && <BigSearchLoopIcon className='absolute right-5 z-20' />}
 				</div>
