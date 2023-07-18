@@ -10,14 +10,14 @@ export const validatorConfigSingUp = {
         }
     },
     weight: {
+        isRequired: {
+            errorMessage: 'Weight is required'
+        },
         isNumber: {
             errorMessage: 'Weight must be a number'
         },
         maxWeight: {
             errorMessage: "199 max value"
-        },
-        isRequired: {
-            errorMessage: 'Weight is required'
         }
     },
     gender: {
@@ -26,14 +26,14 @@ export const validatorConfigSingUp = {
         }
     },
     age: {
+        isRequired: {
+            errorMessage: 'Age is required'
+        },
         isNumber: {
             errorMessage: 'Age must be a number'
         },
         maxAge: {
             errorMessage: "99 max value"
-        },
-        isRequired: {
-            errorMessage: 'Age is required'
         }
     },
     fightClub: {
@@ -52,6 +52,9 @@ export const validatorConfigSingUp = {
         }
     },
     email: {
+        isRequired: {
+            errorMessage: 'Email is required'
+        },
         isEmail: {
             errorMessage: 'Email incorrect'
         }
@@ -62,6 +65,9 @@ export const validatorConfigSingUp = {
         }
     },
     password: {
+        isRequired: {
+            errorMessage: 'Password is required'
+        },
         isPassword: {
             errorMessage: 'Password must contain number, letter and special character'
         },
@@ -73,6 +79,9 @@ export const validatorConfigSingUp = {
         }
     },
     passwordConfirm: {
+        isRequired: {
+            errorMessage: 'Repeat Password is required'
+        },
         isPassword: {
             errorMessage: 'Password must contain number, letter and special character'
         },
