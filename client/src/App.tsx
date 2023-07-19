@@ -6,7 +6,8 @@ import { UILibrary } from 'src/routes/UILibrary'
 import { CompetitionsPage } from 'src/routes/CompetitionsPage'
 import { CompetitionPage } from 'src/routes/CompetitionPage'
 import { RatingPage } from 'src/routes/RatingPage'
-import { SingUpPage } from 'src/routes/SingUp'
+import { SignUpPage } from 'src/routes/SignUpPage'
+import { SignInPage } from 'src/routes/SignInPage'
 
 const App = () => {
 	return (
@@ -20,7 +21,8 @@ const App = () => {
 						<Route element={<CompetitionPage />} path={AppRoute.Competition} />
 					</Route>
 					<Route element={<RatingPage />} path={AppRoute.Rating} />
-					<Route element={<SingUpPage />} path={AppRoute.SingUp} />
+					<Route element={<SignUpPage />} path={AppRoute.SignUp} />
+					<Route element={<SignInPage />} path={AppRoute.SignIn} />
 					<Route element={<Route404 />} path={AppRoute.NotFound} />
 				</Routes>
 			</HashRouter>
