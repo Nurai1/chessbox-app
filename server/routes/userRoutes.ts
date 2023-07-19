@@ -174,7 +174,7 @@ userRouter.get(
             schema: { items: [{ $ref: '#/definitions/User' }], total: 0 }
     } */
 
-  // UserController.allowIfLoggedin,
+  UserController.allowIfLoggedin,
   // UserController.grantAccessACTIONS.readAny, RESOURCES.USER),
   controllerErrorHandler(UserController.getUsers)
 );
