@@ -16,5 +16,5 @@ export const invalidUrlStringValidator = z.custom<string>(val => URL_REGEX.test(
 // eslint-disable-next-line
 export const EMAIL_REGEX = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
 
-export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/
-export const DIGIT_REGEX = /^[0-9]*$/;
+export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*\d)(?=.*[^\da-zA-Z]).{3,}$/
+export const DIGIT_REGEX = /^[0-9]*$/

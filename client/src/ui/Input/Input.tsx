@@ -1,5 +1,6 @@
 import { ReactComponent as BigSearchLoopIcon } from 'src/assets/big-search-loop.svg'
 import { ReactComponent as SearchLoopIcon } from 'src/assets/search-loop.svg'
+import { ReactComponent as Eye } from 'src/assets/eye.svg'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Label } from 'src/ui'
@@ -20,6 +21,8 @@ export type InputPropsType = {
 	disabled?: boolean
 	isControlledValue?: boolean
 	classes?: string
+	onShowPassword?: () => void
+	showPasswordIcon?: boolean
 }
 
 export const Input: FC<InputPropsType> = ({
@@ -37,7 +40,9 @@ export const Input: FC<InputPropsType> = ({
 	onFocus,
 	disabled,
 	isControlledValue = true,
-	classes
+	classes,
+	onShowPassword,
+	showPasswordIcon
 }) => {
 	const generalClasses = 'w-full rounded-lg border-gray-200 text-input font-light z-10'
 
@@ -90,6 +95,17 @@ export const Input: FC<InputPropsType> = ({
 						id={name}
 					/>
 					{isSearch && loopPosition === 'right' && <BigSearchLoopIcon className='absolute right-5 z-20' />}
+					{showPasswordIcon && (
+						<span
+							className={twMerge(
+								'absolute right-5 z-20',
+								type === 'text' &&
+									'before:absolute before:top-[11px] before:block before:h-[1px] before:w-full before:rotate-45 before:bg-[#999999]'
+							)}
+						>
+							<Eye onClick={onShowPassword} className='cursor-pointer transition hover:opacity-70' />
+						</span>
+					)}
 				</div>
 			)}
 			{validationErrorText && (

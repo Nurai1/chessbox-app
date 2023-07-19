@@ -29,6 +29,7 @@ export const CompetitionsPage = (): ReactElement => {
 
 	useEffect(() => {
 		if (!allCompetitions.length) dispatch(fetchCompetitions())
+		// eslint-disable-next-line
 	}, [dispatch])
 
 	useEffect(() => {
