@@ -2057,7 +2057,7 @@ export interface components {
       };
       participants?: (string)[];
       judges?: (string)[];
-      _id: string;
+      _id?: string;
     };
     /** User */
     User: {
@@ -2093,7 +2093,7 @@ export interface components {
           groupId?: string;
           placeNumber?: number;
         })[];
-      _id: string;
+      _id?: string;
     };
     /** CompetitionGroup */
     CompetitionGroup: {
@@ -2134,7 +2134,7 @@ export interface components {
           judge?: string;
           _id?: string;
         })[];
-      _id: string;
+      _id?: string;
     };
     /** Pair */
     Pair: {
@@ -2147,7 +2147,7 @@ export interface components {
       calledForPreparation?: boolean;
       calledForFight?: boolean;
       judge?: string;
-      _id: string;
+      _id?: string;
     };
     /** Competition */
     CompetitionBody: {
@@ -2183,7 +2183,6 @@ export interface components {
               calledForPreparation?: boolean;
               calledForFight?: boolean;
               judge?: string;
-              _id?: string;
             })[];
           currentRoundPairs?: ({
               roundNumber?: number;
@@ -2195,9 +2194,7 @@ export interface components {
               calledForPreparation?: boolean;
               calledForFight?: boolean;
               judge?: string;
-              _id?: string;
             })[];
-          _id?: string;
         })[];
       price?: {
         currentValue?: number;
@@ -2223,7 +2220,6 @@ export interface components {
       };
       participants?: (string)[];
       judges?: (string)[];
-      _id: string;
     };
     /** User */
     UserBody: {
@@ -2259,7 +2255,6 @@ export interface components {
           groupId?: string;
           placeNumber?: number;
         })[];
-      _id: string;
     };
     /** CompetitionGroup */
     CompetitionGroupBody: {
@@ -2286,7 +2281,6 @@ export interface components {
           calledForPreparation?: boolean;
           calledForFight?: boolean;
           judge?: string;
-          _id?: string;
         })[];
       currentRoundPairs?: ({
           roundNumber?: number;
@@ -2298,9 +2292,7 @@ export interface components {
           calledForPreparation?: boolean;
           calledForFight?: boolean;
           judge?: string;
-          _id?: string;
         })[];
-      _id: string;
     };
     /** Pair */
     PairBody: {
@@ -2313,7 +2305,6 @@ export interface components {
       calledForPreparation?: boolean;
       calledForFight?: boolean;
       judge?: string;
-      _id: string;
     };
   };
   responses: never;
