@@ -8,7 +8,6 @@ export const CreateUserParser = z.object({
   firstName: z.string(),
   lastName: z.string(),
   weight: z.number(),
-  role: z.string(),
   chessPlatform: z.object({ username: z.string() }),
   age: z.number(),
   gender: z.enum(['woman', 'man']),

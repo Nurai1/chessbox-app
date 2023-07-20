@@ -40,6 +40,7 @@ export const signup = async (
   const hashedPassword = await hashPassword(password);
   const newUser = new User({
     ...userData,
+    role: 'participant',
     fullName: `${userData.firstName} ${userData.lastName}`,
     hashedPassword,
     ratingNumber: 1000,
@@ -86,6 +87,7 @@ export const login = async (
 
   res.status(200).json({
     accessToken,
+    userId: user._id,
   });
 };
 
