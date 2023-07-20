@@ -7,11 +7,11 @@ import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
 import { ReactComponent as Hourglass } from 'src/assets/hourglass.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
 import { Link } from 'react-router-dom'
-import { CompetitionSchema } from '../../types'
-import { Button, Timer, Tag } from '../../ui'
-import { getFormattedDate, isPast } from '../../helpers/datetime'
-import { BreakPoint } from '../../constants/breakPoints'
-import { authorizedUserId } from '../../mock/authorizedUserId' // имитация залогиненного юзера
+import { useAppSelector } from 'src/hooks/redux'
+import { CompetitionSchema } from 'src/types'
+import { Button, Timer, Tag } from 'src/ui'
+import { getFormattedDate, isPast } from 'src/helpers/datetime'
+import { BreakPoint } from 'src/constants/breakPoints'
 import style from './CompetitionCard.module.css'
 
 type CompetitionPropsType = {
@@ -21,11 +21,12 @@ type CompetitionPropsType = {
 export const CompetitionCard: FC<CompetitionPropsType> = ({
 	competition: { startDate, registrationEndsAt, endDate, name, price, description, participants, _id }
 }) => {
+	const authorizedUserId = useAppSelector(state => state.user.authorizedUser.id)
 	const handleClick = () => {}
 	const dateStart = getFormattedDate(startDate, 'MMM D, HH:mm')
 	const isRegistrationClosed = isPast(registrationEndsAt)
 	const isOver = Boolean(endDate)
-	const isParticipant = participants?.includes(authorizedUserId)
+	const isParticipant = participants?.includes(authorizedUserId ?? '')
 	const { width: screenWidth } = useWindowSize()
 
 	const participateMobile = () =>
