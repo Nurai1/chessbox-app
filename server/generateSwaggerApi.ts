@@ -20,26 +20,27 @@ const endpointsFiles = [
 const m2sOptions = { props: ['identificator'] };
 const swaggerCompetition = m2s(Competition, m2sOptions);
 const swaggerUser = m2s(User, m2sOptions);
+const swaggerUserBody = m2s(User, { ...m2sOptions, omitFields: ['_id'] });
+const swaggerPairBody = m2s(mongoose.model('Pair', pairSchema), {
+  ...m2sOptions,
+  omitFields: ['_id'],
+});
+const swaggerCompetitionBody = m2s(Competition, {
+  ...m2sOptions,
+  omitFields: ['_id'],
+});
+const swaggerCompetitionGroupBody = m2s(
+  mongoose.model('CompetitionGroup', competitionGroupSchema),
+  {
+    ...m2sOptions,
+    omitFields: ['_id'],
+  }
+);
 const swaggerCompetitionGroup = m2s(
   mongoose.model('CompetitionGroup', competitionGroupSchema),
   m2sOptions
 );
 const swaggerPair = m2s(mongoose.model('Pair', pairSchema), m2sOptions);
-
-const swaggerCompetitionGroupBody = swaggerCompetitionGroup;
-swaggerCompetitionGroupBody.required = [
-  ...(swaggerCompetitionGroupBody.required ?? []),
-  '_id',
-];
-const swaggerCompetitionBody = swaggerCompetition;
-swaggerCompetitionBody.required = [
-  ...(swaggerCompetitionBody.required ?? []),
-  '_id',
-];
-const swaggerPairBody = swaggerPair;
-swaggerPairBody.required = [...(swaggerPairBody.required ?? []), '_id'];
-const swaggerUserBody = swaggerUser;
-swaggerUserBody.required = [...(swaggerUserBody.required ?? []), '_id'];
 
 const doc = {
   info: {
