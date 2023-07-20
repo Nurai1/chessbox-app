@@ -113,6 +113,7 @@ userRouter.post(
             "application/json": {
               schema: {
                   accessToken: "string",
+                  userId: "string",
               }
             },
     } */

@@ -390,7 +390,8 @@
             "description": "OK",
             "application/json": {
               "schema": {
-                "accessToken": "string"
+                "accessToken": "string",
+                "userId": "string"
               }
             }
           },
@@ -1525,7 +1526,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Each attrubute can be null. If pair is null, then the user is waiting in the \"Next Round Participants\"",
             "content": {
               "application/json": {
                 "schema": {
