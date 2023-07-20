@@ -3,8 +3,8 @@ import { getUserByIdApi } from 'src/api/requests/users'
 import { signIn } from 'src/api/requests/signIn'
 import { signUp } from 'src/api/requests/signUp'
 import { UserSchema } from 'src/types'
-import { SignInFormServerData } from 'src/routes/SignInPage'
-import { SignUpFormServerData } from 'src/routes/SignUpPage'
+import { SignInFormServerData } from 'src/components/SignInForm/SignInForm'
+import { SignUpFormServerData } from 'src/components/SignUpForm/SignUpForm'
 import { AuthorizationStatus } from 'src/constants/authorizationStatus'
 import { saveToken } from 'src/helpers/tokenLocalStorage'
 
@@ -15,21 +15,19 @@ export const fetchUserById = createAsyncThunk('user/fetchById', async (id: strin
 	return response.data
 })
 
-export const signInUser =  createAsyncThunk('user/signIn',
-	async (userData: SignInFormServerData, thunkApi) => {
-		const response = await signIn(userData)
-		if (response.error) return thunkApi.rejectWithValue(response.error.error)
+export const signInUser = createAsyncThunk('user/signIn', async (userData: SignInFormServerData, thunkApi) => {
+	const response = await signIn(userData)
+	if (response.error) return thunkApi.rejectWithValue(response.error.error)
 
-		return response.data
+	return response.data
 })
 
-export const signUpUser =  createAsyncThunk('user/signUp',
-	async (userData: SignUpFormServerData, thunkApi) => {
-		const response = await signUp(userData)
-		if (response.error) return thunkApi.rejectWithValue(response.error.error)
+export const signUpUser = createAsyncThunk('user/signUp', async (userData: SignUpFormServerData, thunkApi) => {
+	const response = await signUp(userData)
+	if (response.error) return thunkApi.rejectWithValue(response.error.error)
 
-		return response.data
-	})
+	return response.data
+})
 
 export interface UserState {
 	data: UserSchema | null
@@ -38,14 +36,14 @@ export interface UserState {
 	authLoading: boolean
 	authorizationStatus: AuthorizationStatus.Auth | AuthorizationStatus.NoAuth | AuthorizationStatus.Unknown
 	authError?: string
+	authorizedUser: {
+		id?: string
+	}
 }
 
-type Token = {
+type SuccessSignIn = {
 	accessToken: string
-}
-
-type Error = {
-	error: string
+	userId: string
 }
 
 type SuccessSignUp = {
@@ -57,7 +55,8 @@ const initialState: UserState = {
 	data: null,
 	loading: true,
 	authLoading: false,
-	authorizationStatus: AuthorizationStatus.Unknown
+	authorizationStatus: AuthorizationStatus.Unknown,
+	authorizedUser: {}
 }
 
 export const currentUserSlice = createSlice({
@@ -76,9 +75,10 @@ export const currentUserSlice = createSlice({
 			state.loading = false
 			state.error = action.payload
 		},
-		[signInUser.fulfilled.type]: (state, action: PayloadAction<Token>) => {
+		[signInUser.fulfilled.type]: (state, action: PayloadAction<SuccessSignIn>) => {
 			state.authLoading = false
 			state.authorizationStatus = AuthorizationStatus.Auth
+			state.authorizedUser.id = action.payload.userId
 			saveToken(action.payload.accessToken)
 			state.authError = ''
 		},
@@ -93,6 +93,7 @@ export const currentUserSlice = createSlice({
 		[signUpUser.fulfilled.type]: (state, action: PayloadAction<SuccessSignUp>) => {
 			state.authLoading = false
 			state.authorizationStatus = AuthorizationStatus.Auth
+			state.authorizedUser.id = action.payload.data._id
 			saveToken(action.payload.accessToken)
 			state.authError = ''
 		},
