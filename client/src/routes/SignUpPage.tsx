@@ -2,8 +2,10 @@ import { ReactElement, useEffect, useState } from 'react'
 import { Input, Select, Button } from 'src/ui'
 import { validator } from 'src/helpers/validator'
 import { validatorConfigSingUp } from 'src/helpers/validatorConfigSingUp'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { signUpUser } from 'src/store/slices/userSlice'
 
-type SingUpFormData = {
+type SignUpFormData = {
 	firstName?: string
 	lastName?: string
 	weight?: string
@@ -16,22 +18,30 @@ type SingUpFormData = {
 	chessPlatformUserName?: string
 	password?: string
 	passwordConfirm?: string
+	role?: string
 }
 
-type OmitedFormData = Omit<SingUpFormData, 'fightClub' | 'country' | 'city' | 'chessPlatformUserName'>
-
-type SingUpFormServerData = {
+export type SignUpFormServerData = {
 	chessPlatform: {
-		username?: string
+		username: string
 	}
 	address: {
 		country: string
 		city: string
 	}
 	fightClub: {
-		name?: string
+		name: string
 	}
-} & OmitedFormData
+	firstName: string
+	lastName: string
+	weight: number
+	gender: string
+	age: number
+	password: string
+	passwordConfirm: string
+	email: string
+	role: string
+}
 
 const requiredFields = [
 	'firstName',
@@ -45,14 +55,18 @@ const requiredFields = [
 	'email',
 	'chessPlatformUserName',
 	'password',
-	'passwordConfirm'
+	'passwordConfirm',
+	'role'
 ]
 
 export const SignUpPage = (): ReactElement => {
-	const [formData, setFormData] = useState<SingUpFormData>({})
+	const [formData, setFormData] = useState<SignUpFormData>({role: 'participant'})
 	const [showPassword, setShowPassword] = useState(false)
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
+	const dispatch = useAppDispatch()
+	const isAuthRequestPending = useAppSelector(state => state.user.authLoading)
+	const authError = useAppSelector(state => state.user.authError)
 
 	const onChange = (value?: string, name?: string) => {
 		setFormData({
@@ -70,7 +84,7 @@ export const SignUpPage = (): ReactElement => {
 			switch (item) {
 				case 'chessPlatformUserName':
 					acc.chessPlatform = {
-						username: formData[item]
+						username: formData[item] ?? ''
 					}
 					break
 				case 'city':
@@ -82,7 +96,7 @@ export const SignUpPage = (): ReactElement => {
 					break
 				case 'fightClub':
 					acc.fightClub = {
-						name: formData[item]
+						name: formData[item] ?? ''
 					}
 					break
 				case 'age':
@@ -96,17 +110,17 @@ export const SignUpPage = (): ReactElement => {
 				default:
 					return {
 						...acc,
-						[item]: formData[item as keyof SingUpFormData]
+						[item]: formData[item as keyof SignUpFormData]
 					}
 			}
 
 			return acc
-		}, {} as SingUpFormServerData)
+		}, {} as SignUpFormServerData)
 	}
 
 	const fillEmptyInputs = () => {
 		return requiredFields.reduce((acc, fieldName) => {
-			if (!formData[fieldName as keyof SingUpFormData]) {
+			if (!formData[fieldName as keyof SignUpFormData]) {
 				return {
 					...acc,
 					[fieldName]: ''
@@ -114,19 +128,19 @@ export const SignUpPage = (): ReactElement => {
 			}
 			return {
 				...acc,
-				[fieldName]: formData[fieldName as keyof SingUpFormData]
+				[fieldName]: formData[fieldName as keyof SignUpFormData]
 			}
 		}, {})
 	}
 
 	const handleSubmit = () => {
 		if (Object.keys(formData).length !== requiredFields.length) {
-			setFormData(fillEmptyInputs())
+			 setFormData(fillEmptyInputs())
+			return
 		}
 
 		if (Object.keys(validateErrors).length === 0) {
-			// submit
-			adaptDataToServer()
+			dispatch(signUpUser(adaptDataToServer()))
 		}
 	}
 
@@ -254,10 +268,11 @@ export const SignUpPage = (): ReactElement => {
 						onShowPassword={() => setShowConfirmPassword(!showConfirmPassword)}
 						showPasswordIcon
 					/>
-					<Button type='ghost' classes='font-medium underline ml-auto mr-[-40px]' onClick={handleSubmit}>
+					<Button type='ghost' loading={isAuthRequestPending} classes='font-medium underline ml-auto mr-[-40px]' onClick={handleSubmit}>
 						Sign Up
 					</Button>
 				</div>
+				{authError && <p className='mt-2 text-red-400'>{authError}</p>}
 			</form>
 		</main>
 	)
