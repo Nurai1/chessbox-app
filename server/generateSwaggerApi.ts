@@ -61,7 +61,14 @@ const doc = {
       name: 'Competitions',
     },
   ],
-  securityDefinitions: {}, // by default: empty object
+  securityDefinitions: {
+    apiKeyAuth: {
+      type: 'apiKey',
+      in: 'header', // can be 'header', 'query' or 'cookie'
+      name: 'x-access-token', // name of the header, query parameter or cookie
+      description: 'Access Token for Discovery UI',
+    },
+  },
   '@definitions': {
     Competition: swaggerCompetition,
     User: swaggerUser,

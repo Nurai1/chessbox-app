@@ -195,6 +195,84 @@ export interface paths {
       };
     };
   };
+  "/api/user/getCurrentUser": {
+    get: {
+      responses: {
+        /** @description OK */
+        200: {
+          content: {
+            "application/json": components["schemas"]["User"];
+            "application/xml": components["schemas"]["User"];
+          };
+        };
+        /** @description Client error. */
+        400: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Unauthorized error. */
+        401: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Permissions error. */
+        403: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Not Found error. */
+        404: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Internal server error. */
+        500: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+  };
   "/api/user/{id}": {
     get: {
       parameters: {
@@ -277,6 +355,7 @@ export interface paths {
         };
       };
     };
+    /** @description Для внутренних нужд разработчиков, не использовать в коде. */
     delete: {
       parameters: {
         path: {
@@ -550,6 +629,7 @@ export interface paths {
     };
   };
   "/api/user": {
+    /** @description Для внутренних нужд разработчиков, не использовать в коде. */
     post: {
       requestBody: {
         content: {
@@ -631,6 +711,90 @@ export interface paths {
         };
       };
     };
+    /** @description Для внутренних нужд разработчиков, не использовать в коде. */
+    patch: {
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      responses: {
+        /** @description OK */
+        200: {
+          content: {
+            "application/json": components["schemas"]["User"];
+            "application/xml": components["schemas"]["User"];
+          };
+        };
+        /** @description Client error. */
+        400: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Unauthorized error. */
+        401: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Permissions error. */
+        403: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Not Found error. */
+        404: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Internal server error. */
+        500: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+  };
+  "/api/user/currentUser": {
     patch: {
       requestBody: {
         content: {
@@ -795,6 +959,7 @@ export interface paths {
         };
       };
     };
+    /** @description Удалять смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде. */
     delete: {
       parameters: {
         path: {
@@ -876,6 +1041,7 @@ export interface paths {
         };
       };
     };
+    /** @description Редактировать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде. */
     patch: {
       parameters: {
         path: {
@@ -1042,6 +1208,7 @@ export interface paths {
     };
   };
   "/api/competition": {
+    /** @description Cоздавать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде. */
     post: {
       requestBody: {
         content: {

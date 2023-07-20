@@ -121,18 +121,34 @@ userRouter.post(
 );
 
 userRouter.get(
+  '/user/getCurrentUser',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/User' }
+    } */
+
+  UserController.allowIfLoggedin,
+  controllerErrorHandler(UserController.getCurrentUser)
+);
+
+userRouter.get(
   '/user/:id',
   /* #swagger.responses[200] = {
             description: '',
             schema: { $ref: '#/definitions/User' }
     } */
 
-  // UserController.allowIfLoggedin,
   controllerErrorHandler(UserController.getUser)
 );
 
 userRouter.get(
   '/users',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
   /*  #swagger.parameters['search'] = {
           in: 'query',
           schema: { type: "string" }
@@ -174,24 +190,26 @@ userRouter.get(
             description: '',
             schema: { items: [{ $ref: '#/definitions/User' }], total: 0 }
     } */
-
-  UserController.allowIfLoggedin,
-  // UserController.grantAccessACTIONS.readAny, RESOURCES.USER),
   controllerErrorHandler(UserController.getUsers)
 );
 
 userRouter.get(
   '/user/:id/nearestPair',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
   /* #swagger.responses[200] = {
             description: 'Each attrubute can be null. If pair is null, then the user is waiting in the "Next Round Participants"',
             schema: { pair: { $ref: '#/definitions/Pair' }, roundDivider: 8 }
     } */
-
+  UserController.allowIfLoggedin,
+  UserController.grantAccess(ACTIONS.readOwn, RESOURCES.COMPETITION),
   controllerErrorHandler(UserController.getUserCurrentPair)
 );
 
 userRouter.post(
   '/user',
+  // #swagger.description = 'Для внутренних нужд разработчиков, не использовать в коде.'
   /*	#swagger.requestBody = {
           required: true,
           content: {
@@ -205,14 +223,11 @@ userRouter.post(
             description: '',
             schema: { $ref: '#/definitions/User' }
     } */
-
-  // UserController.allowIfLoggedin,
-  // UserController.grantAccessACTIONS.createAny, RESOURCES.USER),
   controllerErrorHandler(UserController.createUser)
 );
 
 userRouter.patch(
-  '/user',
+  '/user/currentUser',
   /*	#swagger.requestBody = {
           required: true,
           content: {
@@ -226,21 +241,37 @@ userRouter.patch(
             description: '',
             schema: { $ref: '#/definitions/User' }
     } */
+  UserController.allowIfLoggedin,
+  UserController.grantAccess(ACTIONS.updateOwn, RESOURCES.USER),
+  controllerErrorHandler(UserController.updateCurrentUser)
+);
 
-  // UserController.allowIfLoggedin,
-  // UserController.grantAccessACTIONS.updateAny, RESOURCES.USER),
+userRouter.patch(
+  '/user',
+  // #swagger.description = 'Для внутренних нужд разработчиков, не использовать в коде.'
+  /*	#swagger.requestBody = {
+          required: true,
+          content: {
+              "application/json": {
+                  schema: { $ref: "#/definitions/User" }
+              },
+          }
+      } 
+    */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/User' }
+    } */
   controllerErrorHandler(UserController.updateUser)
 );
 
 userRouter.delete(
   '/user/:id',
+  // #swagger.description = 'Для внутренних нужд разработчиков, не использовать в коде.'
   /* #swagger.responses[200] = {
             description: '',
             schema: { $ref: '#/definitions/User' }
     } */
-
-  // UserController.allowIfLoggedin,
-  // UserController.grantAccessACTIONS.deleteAny, RESOURCES.USER),
   controllerErrorHandler(UserController.deleteUser)
 );
 

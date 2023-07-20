@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import { User } from '../models/index';
 import ac from '../roles';
 import { RESOURCES, ACTIONS } from '../constants';
-import { ICompetition, IUser } from '../types/index';
+import { ICompetition } from '../types/index';
 import { errorUniqueCheck } from '../utils/errors';
 import {
   CreateUserParser,
@@ -91,9 +91,19 @@ export const login = async (
   });
 };
 
-interface IGrantAcessReq extends Request {
-  user: IUser;
-}
+export const getCurrentUser = async (req: Request, res: Response) => {
+  const accessToken = req.headers['x-access-token'];
+
+  const { userId } = jwt.decode(accessToken as string) as jwt.JwtPayload;
+
+  const user = await User.findById(userId);
+  if (!user)
+    return res
+      .status(404)
+      .send({ error: "User saved in token doesn't exist anymore." });
+
+  res.send(user);
+};
 
 export const grantAccess =
   (action: keyof typeof ACTIONS, resource: keyof typeof RESOURCES) =>
@@ -270,6 +280,47 @@ export const deleteUser = async (
   if (!user) return res.status(404).send({ error: "User wasn't found" });
 
   res.send(user);
+};
+
+export const updateCurrentUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.body) return res.sendStatus(400);
+  const result = req.body;
+
+  const accessToken = req.headers['x-access-token'];
+
+  const { userId } = jwt.decode(accessToken as string) as jwt.JwtPayload;
+
+  if (req.body.password) {
+    const passwordValidRes = passwordParser.safeParse(req.body.password);
+
+    if (!passwordValidRes.success) {
+      res.status(400).send({
+        error: 'Password does not match requirements.',
+      });
+    }
+  }
+
+  if (req.body.email) {
+    const emailValidRes = emailParser.safeParse(req.body.email);
+
+    if (!emailValidRes.success) {
+      res.status(400).send({
+        error: 'Email does not match requirements.',
+      });
+    }
+  }
+
+  const updatedUser = await User.findOneAndUpdate({ _id: userId }, result, {
+    new: true,
+  });
+
+  if (!updatedUser) return res.status(404).send({ error: "User wasn't found" });
+
+  res.send(updatedUser);
 };
 
 export const updateUser = async (
