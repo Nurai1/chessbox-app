@@ -87,7 +87,7 @@ export const login = async (
 
   res.status(200).json({
     accessToken,
-    userId: user._id,
+    data: user,
   });
 };
 
