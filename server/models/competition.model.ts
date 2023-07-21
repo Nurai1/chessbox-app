@@ -24,12 +24,12 @@ const competitionSchema = new Schema<ICompetition>(
     },
     requirements: {
       ageCategory: {
-        from: { type: Number, required: true },
-        to: { type: Number, required: true },
+        from: { type: Number },
+        to: { type: Number },
       },
       weightCategory: {
-        from: { type: Number, required: true },
-        to: { type: Number, required: true },
+        from: { type: Number },
+        to: { type: Number },
       },
       gender: { type: String },
     },

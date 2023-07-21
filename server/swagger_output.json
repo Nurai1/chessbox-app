@@ -6914,8 +6914,7 @@
         "required": [
           "startDate",
           "registrationEndsAt",
-          "name",
-          "_id"
+          "name"
         ],
         "properties": {
           "startDate": {
@@ -7180,8 +7179,7 @@
           "age",
           "gender",
           "ratingNumber",
-          "weight",
-          "_id"
+          "weight"
         ],
         "properties": {
           "email": {
@@ -7293,8 +7291,7 @@
         "title": "CompetitionGroup",
         "required": [
           "gender",
-          "currentRoundNumber",
-          "_id"
+          "currentRoundNumber"
         ],
         "properties": {
           "ageCategory": {
@@ -7470,18 +7467,14 @@
           "_id": {
             "type": "string"
           }
-        },
-        "required": [
-          "_id"
-        ]
+        }
       },
       "CompetitionBody": {
         "title": "Competition",
         "required": [
           "startDate",
           "registrationEndsAt",
-          "name",
-          "_id"
+          "name"
         ],
         "properties": {
           "startDate": {
@@ -7587,9 +7580,6 @@
                       "judge": {
                         "type": "string",
                         "identificator": true
-                      },
-                      "_id": {
-                        "type": "string"
                       }
                     },
                     "required": []
@@ -7630,16 +7620,10 @@
                       "judge": {
                         "type": "string",
                         "identificator": true
-                      },
-                      "_id": {
-                        "type": "string"
                       }
                     },
                     "required": []
                   }
-                },
-                "_id": {
-                  "type": "string"
                 }
               },
               "required": [
@@ -7728,9 +7712,6 @@
               "type": "string",
               "identificator": true
             }
-          },
-          "_id": {
-            "type": "string"
           }
         }
       },
@@ -7746,8 +7727,7 @@
           "age",
           "gender",
           "ratingNumber",
-          "weight",
-          "_id"
+          "weight"
         ],
         "properties": {
           "email": {
@@ -7849,9 +7829,6 @@
               },
               "required": []
             }
-          },
-          "_id": {
-            "type": "string"
           }
         }
       },
@@ -7859,8 +7836,7 @@
         "title": "CompetitionGroup",
         "required": [
           "gender",
-          "currentRoundNumber",
-          "_id"
+          "currentRoundNumber"
         ],
         "properties": {
           "ageCategory": {
@@ -7943,9 +7919,6 @@
                 "judge": {
                   "type": "string",
                   "identificator": true
-                },
-                "_id": {
-                  "type": "string"
                 }
               },
               "required": []
@@ -7986,16 +7959,10 @@
                 "judge": {
                   "type": "string",
                   "identificator": true
-                },
-                "_id": {
-                  "type": "string"
                 }
               },
               "required": []
             }
-          },
-          "_id": {
-            "type": "string"
           }
         }
       },
@@ -8032,14 +7999,8 @@
           "judge": {
             "type": "string",
             "identificator": true
-          },
-          "_id": {
-            "type": "string"
           }
-        },
-        "required": [
-          "_id"
-        ]
+        }
       }
     },
     "securitySchemes": {
