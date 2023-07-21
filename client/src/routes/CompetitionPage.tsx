@@ -20,7 +20,7 @@ export const CompetitionPage = (): ReactElement => {
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
-	const authorizedUserId = useAppSelector(state => state.user.authorizedUser.id)
+	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
 	const competitionData = competitionDataExisting || competitionDataFetched
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
 	const isParticipant = competitionData?.participants && competitionData.participants.includes(authorizedUserId ?? '')
