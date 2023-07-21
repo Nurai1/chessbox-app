@@ -113,7 +113,9 @@ userRouter.post(
             "application/json": {
               schema: {
                   accessToken: "string",
-                  userId: "string",
+                  data: {  
+                    $ref: '#/definitions/User' 
+                  },
               }
             },
     } */
