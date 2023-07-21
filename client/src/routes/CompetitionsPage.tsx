@@ -30,7 +30,7 @@ export const CompetitionsPage = (): ReactElement => {
 
 	useEffect(() => {
 		if (!allCompetitions.length) dispatch(fetchCompetitions())
-		// eslint-disable-next-line
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch])
 
 	useEffect(() => {
@@ -38,7 +38,7 @@ export const CompetitionsPage = (): ReactElement => {
 			...competitions,
 			competitionsData: competitionsActive
 		})
-		// eslint-disable-next-line
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isLoading])
 
 	return (

@@ -32,14 +32,14 @@ export const CompetitionPage = (): ReactElement => {
 		if (!competitionDataExisting) {
 			dispatch(fetchCompetitionById(competitionId as string))
 		}
-		// eslint-disable-next-line
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	useEffect(() => {
 		if (!participants && isSideMenuOpen) {
 			dispatch(fetchCompetitionParticipants(competitionId as string))
 		}
-		// eslint-disable-next-line
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isSideMenuOpen])
 
 	const handleSideMenuOpen = () => {

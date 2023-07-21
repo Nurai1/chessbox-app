@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Input, Select, Button } from 'src/ui'
 import { validator } from 'src/helpers/validator'
@@ -6,6 +6,7 @@ import { validatorConfigSingUp } from 'src/helpers/validatorConfigSingUp'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { signUpUser } from 'src/store/slices/userSlice'
 import { AppRoute } from 'src/constants/appRoute'
+import { SignUpDataSchema } from 'src/types'
 
 type SignUpFormData = {
 	firstName?: string
@@ -23,46 +24,22 @@ type SignUpFormData = {
 	role?: string
 }
 
-export type SignUpFormServerData = {
-	chessPlatform: {
-		username: string
-	}
-	address: {
-		country: string
-		city: string
-	}
-	fightClub: {
-		name: string
-	}
-	firstName: string
-	lastName: string
-	weight: number
-	gender: string
-	age: number
-	password: string
-	passwordConfirm: string
-	email: string
-	role: string
-}
-
-const requiredFields = [
-	'firstName',
-	'lastName',
-	'weight',
-	'gender',
-	'age',
-	'fightClub',
-	'country',
-	'city',
-	'email',
-	'chessPlatformUserName',
-	'password',
-	'passwordConfirm',
-	'role'
-]
-
 export const SignUpForm = (): ReactElement => {
-	const [formData, setFormData] = useState<SignUpFormData>({ role: 'participant' })
+	const [formData, setFormData] = useState<SignUpFormData>({
+		firstName: '',
+		lastName: '',
+		weight: '',
+		gender: '',
+		age: '',
+		fightClub: '',
+		country: '',
+		city: '',
+		email: '',
+		chessPlatformUserName: '',
+		password: '',
+		passwordConfirm: '',
+		role: 'participant'
+	})
 	const [showPassword, setShowPassword] = useState(false)
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
@@ -76,10 +53,6 @@ export const SignUpForm = (): ReactElement => {
 			[name as string]: value as string
 		})
 	}
-
-	useEffect(() => {
-		setValidateErrors(validator(formData, validatorConfigSingUp))
-	}, [formData])
 
 	const adaptDataToServer = () => {
 		return Object.keys(formData).reduce((acc, item) => {
@@ -117,31 +90,15 @@ export const SignUpForm = (): ReactElement => {
 			}
 
 			return acc
-		}, {} as SignUpFormServerData)
-	}
-
-	const fillEmptyInputs = () => {
-		return requiredFields.reduce((acc, fieldName) => {
-			if (!formData[fieldName as keyof SignUpFormData]) {
-				return {
-					...acc,
-					[fieldName]: ''
-				}
-			}
-			return {
-				...acc,
-				[fieldName]: formData[fieldName as keyof SignUpFormData]
-			}
-		}, {})
+		}, {} as SignUpDataSchema)
 	}
 
 	const handleSubmit = () => {
-		if (Object.keys(formData).length !== requiredFields.length) {
-			setFormData(fillEmptyInputs())
-			return
-		}
+		const errors = validator(formData, validatorConfigSingUp)
 
-		if (Object.keys(validateErrors).length === 0) {
+		if (Object.keys(errors).length) {
+			setValidateErrors(errors)
+		} else {
 			dispatch(signUpUser(adaptDataToServer()))
 		}
 	}
