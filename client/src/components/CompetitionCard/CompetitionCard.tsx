@@ -21,7 +21,7 @@ type CompetitionPropsType = {
 export const CompetitionCard: FC<CompetitionPropsType> = ({
 	competition: { startDate, registrationEndsAt, endDate, name, price, description, participants, _id }
 }) => {
-	const authorizedUserId = useAppSelector(state => state.user.authorizedUser.id)
+	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
 	const handleClick = () => {}
 	const dateStart = getFormattedDate(startDate, 'MMM D, HH:mm')
 	const isRegistrationClosed = isPast(registrationEndsAt)
@@ -181,7 +181,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 				xl:text-4xl xl:font-bold
 				2xl:mb-[22px]'
 				>
-					<Link to={_id} className='transition hover:opacity-70'>
+					<Link to={_id as string} className='transition hover:opacity-70'>
 						{name}
 					</Link>
 				</h2>
