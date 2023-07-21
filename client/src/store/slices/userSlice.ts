@@ -2,9 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getUserByIdApi } from 'src/api/requests/users'
 import { signIn } from 'src/api/requests/signIn'
 import { signUp } from 'src/api/requests/signUp'
-import { UserSchema } from 'src/types'
-import { SignInFormServerData } from 'src/components/SignInForm/SignInForm'
-import { SignUpFormServerData } from 'src/components/SignUpForm/SignUpForm'
+import { UserSchema, SignInDataSchema, SignUpDataSchema } from 'src/types'
 import { AuthorizationStatus } from 'src/constants/authorizationStatus'
 import { saveToken } from 'src/helpers/tokenLocalStorage'
 
@@ -15,14 +13,14 @@ export const fetchUserById = createAsyncThunk('user/fetchById', async (id: strin
 	return response.data
 })
 
-export const signInUser = createAsyncThunk('user/signIn', async (userData: SignInFormServerData, thunkApi) => {
+export const signInUser = createAsyncThunk('user/signIn', async (userData: SignInDataSchema, thunkApi) => {
 	const response = await signIn(userData)
 	if (response.error) return thunkApi.rejectWithValue(response.error.error)
 
 	return response.data
 })
 
-export const signUpUser = createAsyncThunk('user/signUp', async (userData: SignUpFormServerData, thunkApi) => {
+export const signUpUser = createAsyncThunk('user/signUp', async (userData: SignUpDataSchema, thunkApi) => {
 	const response = await signUp(userData)
 	if (response.error) return thunkApi.rejectWithValue(response.error.error)
 

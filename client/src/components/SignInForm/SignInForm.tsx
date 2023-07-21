@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { Input, Button } from 'src/ui'
 import { validator } from 'src/helpers/validator'
@@ -6,21 +6,18 @@ import { validatorConfigSingIn } from 'src/helpers/validatorConfigSingIn'
 import { signInUser } from 'src/store/slices/userSlice'
 import { Link } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
+import { SignInDataSchema } from 'src/types'
 
 type SingInFormData = {
 	email?: string
 	password?: string
 }
 
-export type SignInFormServerData = {
-	email: string
-	password: string
-}
-
-const requiredFields = ['email', 'password']
-
 export const SignInForm = (): ReactElement => {
-	const [formData, setFormData] = useState<SingInFormData>({})
+	const [formData, setFormData] = useState<SingInFormData>({
+		email: '',
+		password: ''
+	})
 	const [showPassword, setShowPassword] = useState(false)
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
@@ -34,33 +31,13 @@ export const SignInForm = (): ReactElement => {
 		})
 	}
 
-	useEffect(() => {
-		setValidateErrors(validator(formData, validatorConfigSingIn))
-	}, [formData])
-
-	const fillEmptyInputs = () => {
-		return requiredFields.reduce((acc, fieldName) => {
-			if (!formData[fieldName as keyof SingInFormData]) {
-				return {
-					...acc,
-					[fieldName]: ''
-				}
-			}
-			return {
-				...acc,
-				[fieldName]: formData[fieldName as keyof SingInFormData]
-			}
-		}, {})
-	}
-
 	const handleSubmit = () => {
-		if (Object.keys(formData).length !== requiredFields.length) {
-			setFormData(fillEmptyInputs())
-			return
-		}
+		const errors = validator(formData, validatorConfigSingIn)
 
-		if (Object.keys(validateErrors).length === 0) {
-			dispatch(signInUser(formData as SignInFormServerData))
+		if (Object.keys(errors).length) {
+			setValidateErrors(errors)
+		} else {
+			dispatch(signInUser(formData as SignInDataSchema))
 		}
 	}
 

@@ -1,7 +1,7 @@
 import { post } from 'src/api/api'
-import { SignUpFormServerData } from 'src/components/SignUpForm/SignUpForm'
+import { SignUpDataSchema } from 'src/types'
 
-export const signUp = async (signUpUserData: SignUpFormServerData) => {
+export const signUp = async (signUpUserData: SignUpDataSchema) => {
 	const result = await post('/api/signup', {
 		body: signUpUserData
 	})

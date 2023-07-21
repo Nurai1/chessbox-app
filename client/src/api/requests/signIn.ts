@@ -1,7 +1,7 @@
 import { post } from 'src/api/api'
-import { SignInFormServerData } from 'src/components/SignInForm/SignInForm'
+import { SignInDataSchema } from 'src/types'
 
-export const signIn = async (signInUserData: SignInFormServerData) => {
+export const signIn = async (signInUserData: SignInDataSchema) => {
 	const result = await post('/api/login', {
 		body: signInUserData
 	})
