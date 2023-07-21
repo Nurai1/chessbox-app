@@ -390,7 +390,9 @@
             "application/json": {
               "schema": {
                 "accessToken": "string",
-                "userId": "string"
+                "data": {
+                  "$ref": "#/components/schemas/User"
+                }
               }
             }
           },
