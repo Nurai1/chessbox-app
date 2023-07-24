@@ -1,5 +1,6 @@
 import { ReactComponent as BigSearchLoopIcon } from 'src/assets/big-search-loop.svg'
 import { ReactComponent as SearchLoopIcon } from 'src/assets/search-loop.svg'
+import { ReactComponent as Eye } from 'src/assets/eye.svg'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Label } from 'src/ui'
@@ -10,7 +11,7 @@ export type InputPropsType = {
 	onFocus?: () => void
 	value?: string
 	name?: string
-	type?: string
+	type?: 'text' | 'number' | 'password'
 	placeholder?: string
 	isTextarea?: boolean
 	isRequired?: boolean
@@ -20,7 +21,8 @@ export type InputPropsType = {
 	disabled?: boolean
 	isControlledValue?: boolean
 	classes?: string
-	needLabel?: boolean
+	onShowPassword?: () => void
+	showPasswordIcon?: boolean
 }
 
 export const Input: FC<InputPropsType> = ({
@@ -39,13 +41,14 @@ export const Input: FC<InputPropsType> = ({
 	disabled,
 	isControlledValue = true,
 	classes,
-	needLabel
+	onShowPassword,
+	showPasswordIcon
 }) => {
 	const generalClasses = 'w-full rounded-lg border-gray-200 text-input font-light z-10'
 
 	return (
 		<div className='relative flex w-full flex-wrap'>
-			{needLabel && <Label label={label} showOptional={!isRequired && !isSearch} />}
+			{label && <Label label={label} htmlFor={name} />}
 			{isTextarea ? (
 				<div className='relative flex w-full'>
 					<textarea
@@ -64,6 +67,7 @@ export const Input: FC<InputPropsType> = ({
 							validationErrorText && 'border-red-400 ring-4 ring-red-200',
 							classes
 						)}
+						id={name}
 					/>
 				</div>
 			) : (
@@ -88,8 +92,20 @@ export const Input: FC<InputPropsType> = ({
 							classes
 						)}
 						type={type}
+						id={name}
 					/>
 					{isSearch && loopPosition === 'right' && <BigSearchLoopIcon className='absolute right-5 z-20' />}
+					{showPasswordIcon && (
+						<span
+							className={twMerge(
+								'absolute right-5 z-20',
+								type === 'text' &&
+									'before:absolute before:top-[11px] before:block before:h-[1px] before:w-full before:rotate-45 before:bg-[#999999]'
+							)}
+						>
+							<Eye onClick={onShowPassword} className='cursor-pointer transition hover:opacity-70' />
+						</span>
+					)}
 				</div>
 			)}
 			{validationErrorText && (

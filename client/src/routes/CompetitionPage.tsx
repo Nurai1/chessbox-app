@@ -10,7 +10,6 @@ import { fetchCompetitionById, fetchCompetitionParticipants } from '../store/sli
 import { Loader, Tag, Timer, Button, Modal, TableBody } from '../ui'
 import { getFormattedDate, isPast } from '../helpers/datetime'
 import { AppRoute } from '../constants/appRoute'
-import { authorizedUserId } from '../mock/authorizedUserId'
 import { tableSchemaParticipants } from '../helpers/tableSchemaParticipants'
 
 export const CompetitionPage = (): ReactElement => {
@@ -21,9 +20,10 @@ export const CompetitionPage = (): ReactElement => {
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
+	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
 	const competitionData = competitionDataExisting || competitionDataFetched
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
-	const isParticipant = competitionData?.participants && competitionData.participants.includes(authorizedUserId)
+	const isParticipant = competitionData?.participants && competitionData.participants.includes(authorizedUserId ?? '')
 	const isRegistrationClosed = competitionData && isPast(competitionData.registrationEndsAt)
 	const isOver = competitionData && Boolean(competitionData.endDate)
 	const participantsTable = participants && tableSchemaParticipants(participants)
@@ -32,14 +32,14 @@ export const CompetitionPage = (): ReactElement => {
 		if (!competitionDataExisting) {
 			dispatch(fetchCompetitionById(competitionId as string))
 		}
-		// eslint-disable-next-line
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	useEffect(() => {
 		if (!participants && isSideMenuOpen) {
 			dispatch(fetchCompetitionParticipants(competitionId as string))
 		}
-		// eslint-disable-next-line
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isSideMenuOpen])
 
 	const handleSideMenuOpen = () => {

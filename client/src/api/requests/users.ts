@@ -41,3 +41,9 @@ export const getUserByIdApi = async (id: string) => {
 
 	return result
 }
+
+export const getCurrentUser = async () => {
+	const result = await get('/api/user/getCurrentUser', {})
+
+	return result
+}
