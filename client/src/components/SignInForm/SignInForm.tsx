@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { Input, Button } from 'src/ui'
+import { Input, Button, Alert } from 'src/ui'
 import { validator } from 'src/helpers/validator'
 import { validatorConfigSingIn } from 'src/helpers/validatorConfigSingIn'
 import { signInUser } from 'src/store/slices/userSlice'
@@ -51,7 +51,7 @@ export const SignInForm = (): ReactElement => {
 						value={formData?.email}
 						label='Email'
 						name='email'
-						placeholder='Inter Email'
+						placeholder='Enter Email'
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.email}
 					/>
@@ -67,22 +67,23 @@ export const SignInForm = (): ReactElement => {
 						onShowPassword={() => setShowPassword(!showPassword)}
 						showPasswordIcon
 					/>
-					<div className='mr-[-40px] flex justify-end'>
-						<Button type='ghost' loading={isAuthRequestPending} classes='font-medium underline' onClick={handleSubmit}>
-							Sign In
-						</Button>
-						<Button type='ghost' classes='font-medium underline ' onClick={() => ''}>
-							Forgot Password
-						</Button>
-					</div>
+					<Button loading={isAuthRequestPending} classes='font-medium w-full' onClick={handleSubmit}>
+						Sign In
+					</Button>
 				</div>
-				<p className='mt-2 text-sm font-thin'>
-					Already have account?{' '}
+				<div className='mt-2 flex justify-between text-sm font-thin'>
 					<Link to={`/${AppRoute.SignUp}`} className='underline transition hover:opacity-70'>
 						Sign Up
 					</Link>
-				</p>
-				{authError && <p className='mt-2 text-red-400'>{authError}</p>}
+					<button
+						type='button'
+						className='h-auto p-0 text-sm font-thin underline transition hover:opacity-70'
+						onClick={() => ''}
+					>
+						Forgot Password
+					</button>
+				</div>
+				{authError && <Alert subtitle={authError} />}
 			</form>
 		</main>
 	)

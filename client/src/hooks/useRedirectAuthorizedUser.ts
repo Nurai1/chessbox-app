@@ -11,6 +11,5 @@ export const useRedirectAuthorizedUser = (path: string) => {
 		if (authStatus === AuthorizationStatus.Auth) {
 			navigate(path)
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [authStatus])
+	}, [authStatus, navigate, path])
 }

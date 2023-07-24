@@ -1,6 +1,6 @@
 import { ReactElement, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Input, Select, Button } from 'src/ui'
+import { Input, Select, Button, Alert } from 'src/ui'
 import { validator } from 'src/helpers/validator'
 import { validatorConfigSingUp } from 'src/helpers/validatorConfigSingUp'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
@@ -37,8 +37,7 @@ export const SignUpForm = (): ReactElement => {
 		email: '',
 		chessPlatformUserName: '',
 		password: '',
-		passwordConfirm: '',
-		role: 'participant'
+		passwordConfirm: ''
 	})
 	const [showPassword, setShowPassword] = useState(false)
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -190,7 +189,7 @@ export const SignUpForm = (): ReactElement => {
 						value={formData?.email}
 						label='Email'
 						name='email'
-						placeholder='Inter Email'
+						placeholder='Enter Email'
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.email}
 					/>
@@ -199,7 +198,7 @@ export const SignUpForm = (): ReactElement => {
 						value={formData?.chessPlatformUserName}
 						label='`Lichess` Username'
 						name='chessPlatformUserName'
-						placeholder='Inter `Lichess` Username'
+						placeholder='Enter `Lichess` Username'
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.chessPlatformUserName}
 					/>
@@ -227,22 +226,17 @@ export const SignUpForm = (): ReactElement => {
 						onShowPassword={() => setShowConfirmPassword(!showConfirmPassword)}
 						showPasswordIcon
 					/>
-					<Button
-						type='ghost'
-						loading={isAuthRequestPending}
-						classes='font-medium underline ml-auto mr-[-40px]'
-						onClick={handleSubmit}
-					>
+					<Button loading={isAuthRequestPending} classes='font-medium w-full' onClick={handleSubmit}>
 						Sign Up
 					</Button>
 				</div>
-				<p className='mt-2  text-sm font-thin'>
-					Already have account?{' '}
+				<p className='mt-2 text-sm font-thin'>
+					Already have an account?{' '}
 					<Link to={`/${AppRoute.SignIn}`} className='underline transition hover:opacity-70'>
 						Sign In
 					</Link>
 				</p>
-				{authError && <p className='mt-2 text-red-400'>{authError}</p>}
+				{authError && <Alert subtitle={authError} />}
 			</form>
 		</main>
 	)
