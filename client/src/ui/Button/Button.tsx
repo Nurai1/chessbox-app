@@ -16,7 +16,7 @@ const button = tv({
 		shape: {
 			primary: 'bg-black text-white border-2 border-black hover:bg-gray-700',
 			outlined: 'text-black border-2 border-black hover:text-white hover:bg-black ',
-			ghost: 'text-black border-2 border-transparent hover:bg-gray-200'
+			ghost: 'text-black border-2 border-transparent hover:opacity-70'
 		},
 		loader: {
 			primary: 'border-gray-300 border-t-black',

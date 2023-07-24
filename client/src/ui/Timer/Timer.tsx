@@ -28,7 +28,7 @@ const Timer: FC<TimerPropsType> = memo(({ time, classes, containerClasses, count
 			setEndTime(t => calcTime(t))
 		}, 60000)
 		return () => clearInterval(timer)
-		// eslint-disable-next-line
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [time])
 
 	return (
