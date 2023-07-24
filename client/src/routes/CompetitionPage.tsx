@@ -5,13 +5,14 @@ import { ReactComponent as Persons } from 'src/assets/persons.svg'
 import { ReactComponent as ArrowLeft } from 'src/assets/arrow-left.svg'
 import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
 import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
-import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { fetchCompetitionById, fetchCompetitionParticipants } from '../store/slices/competitionSlice'
-import { Loader, Tag, Timer, Button, Modal, TableBody } from '../ui'
-import { getFormattedDate, isPast } from '../helpers/datetime'
-import { AppRoute } from '../constants/appRoute'
-import { authorizedUserId } from '../mock/authorizedUserId'
-import { tableSchemaParticipants } from '../helpers/tableSchemaParticipants'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { fetchCompetitionById, fetchCompetitionParticipants } from 'src/store/slices/competitionSlice'
+import { Loader, Tag, Timer, Button, Modal, TableBody, TableWrapper } from 'src/ui'
+import { getFormattedDate, isPast } from 'src/helpers/datetime'
+import { AppRoute } from 'src/constants/appRoute'
+import { authorizedUserId } from 'src/mock/authorizedUserId'
+import { tableSchemaParticipants } from 'src/helpers/tableSchemaParticipants'
+import { tableSchemaPairs } from 'src/helpers/tableSchemaPairs'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
@@ -34,6 +35,12 @@ export const CompetitionPage = (): ReactElement => {
 		}
 		// eslint-disable-next-line
 	}, [])
+
+	useEffect(() => {
+		if (isRegistrationClosed) {
+			dispatch(fetchCompetitionParticipants(competitionId as string))
+		}
+	}, [isRegistrationClosed])
 
 	useEffect(() => {
 		if (!participants && isSideMenuOpen) {
@@ -80,7 +87,8 @@ export const CompetitionPage = (): ReactElement => {
 
 	const participant = () =>
 		isParticipant &&
-		!isOver && (
+		!isOver &&
+		!isRegistrationClosed && (
 			<div className='relative mb-[24px] lg:mb-0 lg:h-fit lg:rounded-[12px] lg:border lg:p-[30px_10px_10px_10px] xl:p-[45px_25px_25px_25px]'>
 				<div className='hidden lg:mb-[25px] lg:block xl:mb-[40px]'>
 					<h3 className='hidden lg:mb-[20px] lg:block lg:text-xl lg:font-semibold xl:mb-[30px] xl:text-[32px] xl:leading-[48px]'>
@@ -119,7 +127,7 @@ export const CompetitionPage = (): ReactElement => {
 
 	return (
 		<>
-			<main className='container relative mx-auto grow px-[17px] pt-[30px] md:pt-[38px] xl:pl-[103px] xl:pr-[50px] xl:pt-[55px]'>
+			<main className='pb-[50px] container relative mx-auto grow px-[17px] pt-[30px] md:pt-[38px] xl:pl-[103px] xl:pr-[50px] xl:pt-[55px]'>
 				<Link
 					to={`/${AppRoute.Competitions}`}
 					className='hidden transition hover:opacity-70 xl:absolute xl:left-[38px] xl:top-[77px] xl:block'
@@ -129,73 +137,96 @@ export const CompetitionPage = (): ReactElement => {
 				{!competitionData && !fetchError && <Loader />}
 				{fetchError && <h2>{fetchError}</h2>}
 				{competitionData && (
-					<div className='lg:grid lg:grid-cols-[1fr_190px] lg:gap-[0_15px] xl:grid-cols-[1fr_345px] xl:gap-[0_40px]'>
-						<div>
-							<h1 className='mb-[15px] text-2xl font-semibold lg:mb-[10px] xl:mb-[24px] xl:text-[54px] xl:font-bold xl:leading-[81px]'>
-								{competitionData.name}
-							</h1>
-							<p className='lg-[mb-[10px] mb-[15px] text-sm text-[#6C6A6C] xl:mb-[24px] xl:text-[32px] xl:font-medium xl:leading-[48px]'>
-								{dateStart}
-							</p>
-							<div className='mb-[35px] flex flex-wrap gap-4 xl:mb-[64px]'>
-								{competitionData.price && (
-									<Tag
-										img={<Banknote className='max-5 mr-2' />}
-										text={`Price ${competitionData.price.currentValue} $`}
-									/>
-								)}
-								{competitionData.participants && (
-									<Tag
-										img={<Persons className='max-5 mr-2' />}
-										text={`${competitionData.participants.length} participant${
-											competitionData.participants.length === 1 ? '' : 's'
-										} enrolled`}
-									/>
-								)}
-							</div>
-							{competitionData.groups?.map(({ _id, ageCategory, weightCategory }) => (
-								<div key={_id} className='mb-[24px] flex items-center'>
-									<p className='max-w-[150px] pr-[16px] text-[#6C6A6C] xl:font-bold'>Competition requirements:</p>
-									<div className='min-w-[112px] border-x px-[16px]'>
-										<p className='mb-[8px] text-sm xl:text-base'>Age:</p>
-										<p className='whitespace-nowrap font-bold'>
-											{ageCategory?.from} - {ageCategory?.to}{' '}
-										</p>
-									</div>
-									<div className='min-w-[100px] pl-[16px]'>
-										<p className='mb-[8px] text-sm xl:text-base'>Weight:</p>
-										<p className='whitespace-nowrap font-bold'>
-											{weightCategory?.from} - {weightCategory?.to}
-											<span className='text-[#6C6A6C]'> kg</span>
-										</p>
-									</div>
+					<>
+						<div className='lg:grid lg:grid-cols-[1fr_190px] lg:gap-[0_15px] xl:grid-cols-[1fr_345px] xl:gap-[0_40px]'>
+							<div>
+								<h1 className='mb-[15px] text-2xl font-semibold lg:mb-[10px] xl:mb-[24px] xl:text-[54px] xl:font-bold xl:leading-[81px]'>
+									{competitionData.name}
+								</h1>
+								<p className='lg-[mb-[10px] mb-[15px] text-sm text-[#6C6A6C] xl:mb-[24px] xl:text-[32px] xl:font-medium xl:leading-[48px]'>
+									{dateStart}
+								</p>
+								<div className='mb-[35px] flex flex-wrap gap-4 xl:mb-[64px]'>
+									{competitionData.price && (
+										<Tag
+											img={<Banknote className='max-5 mr-2' />}
+											text={`Price ${competitionData.price.currentValue} $`}
+										/>
+									)}
+									{competitionData.participants && (
+										<Tag
+											img={<Persons className='max-5 mr-2' />}
+											text={`${competitionData.participants.length} participant${
+												competitionData.participants.length === 1 ? '' : 's'
+											} enrolled`}
+										/>
+									)}
 								</div>
-							))}
+								{competitionData.groups?.map(({ _id, ageCategory, weightCategory }) => (
+									<div key={_id} className='mb-[24px] flex items-center'>
+										<p className='max-w-[150px] pr-[16px] text-[#6C6A6C] xl:font-bold'>Competition requirements:</p>
+										<div className='min-w-[112px] border-x px-[16px]'>
+											<p className='mb-[8px] text-sm xl:text-base'>Age:</p>
+											<p className='whitespace-nowrap font-bold'>
+												{ageCategory?.from} - {ageCategory?.to}{' '}
+											</p>
+										</div>
+										<div className='min-w-[100px] pl-[16px]'>
+											<p className='mb-[8px] text-sm xl:text-base'>Weight:</p>
+											<p className='whitespace-nowrap font-bold'>
+												{weightCategory?.from} - {weightCategory?.to}
+												<span className='text-[#6C6A6C]'> kg</span>
+											</p>
+										</div>
+									</div>
+								))}
+							</div>
+							{participate()}
+							{participant()}
+							{isRegistrationClosed && !isParticipant && <h2>Registration Closed</h2>}
+							{isRegistrationClosed && isParticipant && <h2>Time before start {competitionData.startDate}</h2>}
+							<div>
+								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
+								<p className='mb-[24px] text-sm'>{competitionData.description}</p>
+							</div>
 						</div>
-						{participate()}
-						{participant()}
-
-						<div>
-							<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
-							<p className='mb-[24px] text-sm'>{competitionData.description}</p>
-						</div>
-					</div>
+						{isRegistrationClosed && (
+							<>
+								<h2 className='text-xl font-medium mb-[20px] md:mb-[34px] xl:text-4xl xl:font-bold'>Competition schedule</h2>
+								<TableWrapper>
+									{competitionData.groups?.map(({_id, gender, ageCategory, weightCategory, passedPairs}) => (
+										<>
+											<h3
+												key={_id}
+												className='font-bold mb-[17px] md:mb-[32px] xl:text-2xl'
+											>
+												<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
+											</h3>
+											{passedPairs && participants && <TableBody rows={tableSchemaPairs(passedPairs, participants)}/>}
+										</>
+									))}
+								</TableWrapper>
+							</>
+						)}
+					</>
 				)}
 			</main>
-			<Modal
-				isOpen={isSideMenuOpen}
-				onClose={handleSideMenuOpen}
-				title='Participants'
-				modalType='sideMenu'
-				bottomGradient
-				content={
-					<>
-						{!participants && <Loader classes='h-full' />}
-						{participants?.length === 0 && <p>No participants yet</p>}
-						{participantsTable && <TableBody rows={participantsTable} />}
-					</>
-				}
-			/>
+			{!isRegistrationClosed && (
+				<Modal
+					isOpen={isSideMenuOpen}
+					onClose={handleSideMenuOpen}
+					title='Participants'
+					modalType='sideMenu'
+					bottomGradient
+					content={
+						<>
+							{!participants && <Loader classes='h-full' />}
+							{participants?.length === 0 && <p>No participants yet</p>}
+							{participantsTable && <TableBody rows={participantsTable} />}
+						</>
+					}
+				/>
+			)}
 		</>
 	)
 }
