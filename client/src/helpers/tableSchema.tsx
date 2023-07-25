@@ -74,7 +74,7 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
 							</p>
 						</div>
 					),
-					classes: 'min-h-[90px] md:min-h-[134px] lg:min-h-[140px] xl:min-h-[115px] !grow-[2] xl:!grow-[1]'
+					classes: 'min-h-[90px] items-center !grow-[2] md:!py-[10px] xl:!grow-[1]'
 				},
 				{
 					node: (

@@ -28,14 +28,14 @@ const Template: ComponentStory<FC<GeneralSelectProps & SingleSelectProps>> = arg
 export const Default = Template.bind({})
 Default.args = {
 	label: 'Select label',
-	isRequired: true,
+	// isRequired: true,
 	menuOptions: options
 }
 
 export const WithPlaceholder = Template.bind({})
 WithPlaceholder.args = {
 	label: 'Select label',
-	isRequired: false,
+	// isRequired: false,
 	placeholder: 'Please select',
 	menuOptions: options
 }

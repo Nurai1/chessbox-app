@@ -1,14 +1,12 @@
 export const ROLES = {
   PARTICIPANT: 'participant',
   JUDGE: 'judge',
-  CHIEF_JUDGE: 'chief_judge',
-  ADMIN: 'admin',
+  MAIN_JUDGE: 'main_judge',
 } as const;
 
 export const RESOURCES = {
   USER: 'USER',
   COMPETITION: 'COMPETITION',
-  PAIR: 'PAIR',
 } as const;
 
 export const ACTIONS = {
