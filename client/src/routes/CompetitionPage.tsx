@@ -7,12 +7,11 @@ import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
 import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchCompetitionById, fetchCompetitionParticipants } from 'src/store/slices/competitionSlice'
-import { Loader, Tag, Timer, Button, Modal, TableBody, TableWrapper } from 'src/ui'
+import { Loader, Tag, Timer, Button, Modal, TableBody } from 'src/ui'
 import { getFormattedDate, isPast } from 'src/helpers/datetime'
 import { AppRoute } from 'src/constants/appRoute'
-import { authorizedUserId } from 'src/mock/authorizedUserId'
-import { tableSchemaParticipants } from 'src/helpers/tableSchemaParticipants'
 import { tableSchemaPairs } from 'src/helpers/tableSchemaPairs'
+import { tableSchemaParticipants } from '../helpers/tableSchemaParticipants'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
@@ -22,9 +21,10 @@ export const CompetitionPage = (): ReactElement => {
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
+	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
 	const competitionData = competitionDataExisting || competitionDataFetched
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
-	const isParticipant = competitionData?.participants && competitionData.participants.includes(authorizedUserId)
+	const isParticipant = competitionData?.participants && competitionData.participants.includes(authorizedUserId ?? '')
 	const isRegistrationClosed = competitionData && isPast(competitionData.registrationEndsAt)
 	const isOver = competitionData && Boolean(competitionData.endDate)
 	const participantsTable = participants && tableSchemaParticipants(participants)
@@ -33,7 +33,7 @@ export const CompetitionPage = (): ReactElement => {
 		if (!competitionDataExisting) {
 			dispatch(fetchCompetitionById(competitionId as string))
 		}
-		// eslint-disable-next-line
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	useEffect(() => {
@@ -46,7 +46,7 @@ export const CompetitionPage = (): ReactElement => {
 		if (!participants && isSideMenuOpen) {
 			dispatch(fetchCompetitionParticipants(competitionId as string))
 		}
-		// eslint-disable-next-line
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isSideMenuOpen])
 
 	const handleSideMenuOpen = () => {
@@ -193,19 +193,19 @@ export const CompetitionPage = (): ReactElement => {
 						{isRegistrationClosed && (
 							<>
 								<h2 className='text-xl font-medium mb-[20px] md:mb-[34px] xl:text-4xl xl:font-bold'>Competition schedule</h2>
-								<TableWrapper>
+								<div className='flex grow flex-col lg:rounded-3xl lg:border lg:border-[#DADADA] lg:px-[40px] lg:pt-[33px] xl:pt-[63px] xl:px[50px]'>
 									{competitionData.groups?.map(({_id, gender, ageCategory, weightCategory, passedPairs}) => (
 										<>
 											<h3
 												key={_id}
-												className='font-bold mb-[17px] md:mb-[32px] xl:text-2xl'
+												className='font-bold mb-[17px] md:mb-[32px] [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px] xl:text-2xl'
 											>
 												<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
 											</h3>
 											{passedPairs && participants && <TableBody rows={tableSchemaPairs(passedPairs, participants)}/>}
 										</>
 									))}
-								</TableWrapper>
+								</div>
 							</>
 						)}
 					</>

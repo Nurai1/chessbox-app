@@ -21,14 +21,16 @@ export const CompetitionsPage = (): ReactElement => {
 		activeIndex: 0,
 		competitionsData: []
 	})
+	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
 
 	const allCompetitions = useAppSelector(selectCompetitions)
 	const competitionsActive = useAppSelector(activeCompetitionsSelector)
-	const currentUserCompetitions = useAppSelector(currentUserCompetitionsSelector)
+	const currentUserCompetitions = useAppSelector(currentUserCompetitionsSelector(authorizedUserId))
 	const expiredCompetitions = useAppSelector(expiredCompetitionsSelector)
 
 	useEffect(() => {
 		if (!allCompetitions.length) dispatch(fetchCompetitions())
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch])
 
 	useEffect(() => {
@@ -36,7 +38,7 @@ export const CompetitionsPage = (): ReactElement => {
 			...competitions,
 			competitionsData: competitionsActive
 		})
-		// eslint-disable-next-line
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isLoading])
 
 	return (
