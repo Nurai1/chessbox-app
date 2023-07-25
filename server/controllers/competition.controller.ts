@@ -561,3 +561,18 @@ export const getCompetitionParticipants = async (
 
   res.send(competition?.participants);
 };
+
+export const getCompetitionJudges = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+
+  const competition = await Competition.findOne({ _id: id }).populate('judges');
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  res.send(competition?.judges);
+};
