@@ -316,6 +316,15 @@ competitionRouter.get(
   controllerErrorHandler(CompetitionController.getCompetitionParticipants)
 );
 
+competitionRouter.get(
+  '/competition/:id/judges',
+  /* #swagger.responses[200] = {
+            description: 'Competition\'s Judges',
+            schema: [{ $ref: '#/definitions/User' }]
+    } */
+  controllerErrorHandler(CompetitionController.getCompetitionJudges)
+);
+
 routerMockForSwaggerGenerator.use(
   '/api',
   competitionRouter
