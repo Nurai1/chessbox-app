@@ -145,6 +145,25 @@ export const updateCompetition = async (
   res.send(competition);
 };
 
+export const updateCompetitionZoomLink = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.body.zoomLink) return res.sendStatus(400);
+  const { id } = req.params;
+
+  const competition = await Competition.findOneAndUpdate(
+    { _id: id },
+    { zoomLink: req.body.zoomLink },
+    { new: true }
+  );
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  res.send(competition);
+};
+
 export const createCompetitionGroup = async (
   req: Request<{ id: string }, any, ICompetitionGroup>,
   res: Response,
@@ -351,10 +370,16 @@ export const setCompetitionGroupsOrders = async (
   const newGroups = competition?.groups.map((g) => ({
     ...g,
     order: orders.find((order) => order.groupId === g._id?.toString())?.order,
-    currentRoundPairs: g.currentRoundPairs.map((pair) => ({
-      ...pair,
-      order: ++currentPairOrder,
-    })),
+    currentRoundPairs: g.currentRoundPairs
+      .map((pair) => ({
+        ...pair,
+        order: ++currentPairOrder,
+      }))
+      .sort(
+        (a, b) =>
+          // always true on that stage
+          a.order - b.order
+      ),
   }));
 
   competition.groups = newGroups;
@@ -526,7 +551,17 @@ export const launchNextGroupRound = async (
     }
 
     competitionGroup.nextRoundParticipants = [];
-    competitionGroup.currentRoundPairs = nextRoundPairs;
+    let currentPairOrder = 0;
+    competitionGroup.currentRoundPairs = nextRoundPairs
+      .map((pair) => ({
+        ...pair,
+        order: ++currentPairOrder,
+      }))
+      .sort(
+        (a, b) =>
+          // always true on that stage
+          a.order - b.order
+      );
 
     competition.groups = competition?.groups.map((group) => {
       if (group._id?.toString() === groupId) {
@@ -560,4 +595,19 @@ export const getCompetitionParticipants = async (
     return res.status(404).send({ error: "Competition wasn't found" });
 
   res.send(competition?.participants);
+};
+
+export const getCompetitionJudges = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+
+  const competition = await Competition.findOne({ _id: id }).populate('judges');
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  res.send(competition?.judges);
 };
