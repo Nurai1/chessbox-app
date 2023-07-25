@@ -207,9 +207,7 @@ export const getUsers = async (
         { fullName: { $regex: search } },
       ],
     },
-  ].filter((val) => {
-    return !!val;
-  }) as Record<string, any>[];
+  ].filter((val) => !!val) as Record<string, any>[];
 
   const filter =
     allFilters.length > 0
@@ -219,12 +217,12 @@ export const getUsers = async (
       : {};
 
   let usersQuery = User.find(filter).populate('competition');
-  let usersCount = await User.count(filter);
+  const usersCount = await User.count(filter);
 
   const lim = Number(limit);
   const skip = Number(offset);
 
-  if ((limit && isNaN(lim)) || (offset && isNaN(skip))) {
+  if ((limit && Number.isNaN(lim)) || (offset && Number.isNaN(skip))) {
     res.status(400).send({
       error: {
         type: 'Validation error',
@@ -396,7 +394,7 @@ export const getUserCurrentPair = async (
   }
 
   res.send({
-    pair: pair,
+    pair,
     roundDivider: currentUserGroup?.nextRoundParticipants.length
       ? null
       : currentUserGroup?.currentRoundPairs?.length,

@@ -22,6 +22,7 @@ const competitionSchema = new Schema<ICompetition>(
         },
       ],
     },
+    zoomLink: String,
     requirements: {
       ageCategory: {
         from: { type: Number },
