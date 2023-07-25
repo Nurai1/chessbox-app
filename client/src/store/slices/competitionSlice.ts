@@ -1,6 +1,10 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { CompetitionSchema, UserSchema } from 'src/types'
-import { getCompetitionByIdApi, getCompetitionParticipantsApi } from 'src/api/requests/competitions'
+import {
+	getCompetitionByIdApi,
+	getCompetitionParticipantsApi,
+	getCompetitionJudgesApi
+} from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
 	const response = await getCompetitionByIdApi(id)
@@ -19,9 +23,17 @@ export const fetchCompetitionParticipants = createAsyncThunk(
 	}
 )
 
+export const fetchCompetitionJudges = createAsyncThunk('competition/Judges', async (id: string, thunkApi) => {
+	const response = await getCompetitionJudgesApi(id)
+	if (response.error) return thunkApi.rejectWithValue(response.error.error)
+
+	return { competitionId: id, judges: response.data }
+})
+
 export interface CompetitionState {
 	data: CompetitionSchema | null
 	participants: Record<string, UserSchema[] | null>
+	judges: Record<string, UserSchema[] | null>
 	loading: boolean
 	error?: string
 }
@@ -29,6 +41,7 @@ export interface CompetitionState {
 const initialState: CompetitionState = {
 	data: null,
 	participants: {},
+	judges: {},
 	loading: true
 }
 
@@ -59,6 +72,20 @@ export const competitionSlice = createSlice({
 			state.loading = true
 		},
 		[fetchCompetitionParticipants.rejected.type]: (state, action: PayloadAction<string>) => {
+			state.loading = false
+			state.error = action.payload
+		},
+		[fetchCompetitionJudges.fulfilled.type]: (
+			state,
+			action: PayloadAction<{ competitionId: string; judges: UserSchema[] }>
+		) => {
+			state.loading = false
+			state.judges[action.payload.competitionId] = action.payload.judges
+		},
+		[fetchCompetitionJudges.pending.type]: state => {
+			state.loading = true
+		},
+		[fetchCompetitionJudges.rejected.type]: (state, action: PayloadAction<string>) => {
 			state.loading = false
 			state.error = action.payload
 		}
