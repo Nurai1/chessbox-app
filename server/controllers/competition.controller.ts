@@ -351,10 +351,16 @@ export const setCompetitionGroupsOrders = async (
   const newGroups = competition?.groups.map((g) => ({
     ...g,
     order: orders.find((order) => order.groupId === g._id?.toString())?.order,
-    currentRoundPairs: g.currentRoundPairs.map((pair) => ({
-      ...pair,
-      order: ++currentPairOrder,
-    })),
+    currentRoundPairs: g.currentRoundPairs
+      .map((pair) => ({
+        ...pair,
+        order: ++currentPairOrder,
+      }))
+      .sort(
+        (a, b) =>
+          // always true on that stage
+          a.order - b.order
+      ),
   }));
 
   competition.groups = newGroups;
@@ -526,7 +532,17 @@ export const launchNextGroupRound = async (
     }
 
     competitionGroup.nextRoundParticipants = [];
-    competitionGroup.currentRoundPairs = nextRoundPairs;
+    let currentPairOrder = 0;
+    competitionGroup.currentRoundPairs = nextRoundPairs
+      .map((pair) => ({
+        ...pair,
+        order: ++currentPairOrder,
+      }))
+      .sort(
+        (a, b) =>
+          // always true on that stage
+          a.order - b.order
+      );
 
     competition.groups = competition?.groups.map((group) => {
       if (group._id?.toString() === groupId) {
