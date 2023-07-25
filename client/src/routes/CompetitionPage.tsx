@@ -6,7 +6,11 @@ import { ReactComponent as ArrowLeft } from 'src/assets/arrow-left.svg'
 import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
 import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { fetchCompetitionById, fetchCompetitionParticipants } from 'src/store/slices/competitionSlice'
+import {
+	fetchCompetitionById,
+	fetchCompetitionParticipants,
+	fetchCompetitionJudges
+} from 'src/store/slices/competitionSlice'
 import { Loader, Tag, Timer, Button, Modal, TableBody } from 'src/ui'
 import { getFormattedDate, isPast } from 'src/helpers/datetime'
 import { AppRoute } from 'src/constants/appRoute'
@@ -21,6 +25,7 @@ export const CompetitionPage = (): ReactElement => {
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
+	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
 	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
 	const competitionData = competitionDataExisting || competitionDataFetched
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
@@ -39,7 +44,9 @@ export const CompetitionPage = (): ReactElement => {
 	useEffect(() => {
 		if (isRegistrationClosed) {
 			dispatch(fetchCompetitionParticipants(competitionId as string))
+			dispatch(fetchCompetitionJudges(competitionId as string))
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isRegistrationClosed])
 
 	useEffect(() => {
@@ -127,7 +134,7 @@ export const CompetitionPage = (): ReactElement => {
 
 	return (
 		<>
-			<main className='pb-[50px] container relative mx-auto grow px-[17px] pt-[30px] md:pt-[38px] xl:pl-[103px] xl:pr-[50px] xl:pt-[55px]'>
+			<main className='container relative mx-auto grow px-[17px] pb-[50px] pt-[30px] md:pt-[38px] xl:pl-[103px] xl:pr-[50px] xl:pt-[55px]'>
 				<Link
 					to={`/${AppRoute.Competitions}`}
 					className='hidden transition hover:opacity-70 xl:absolute xl:left-[38px] xl:top-[77px] xl:block'
@@ -192,17 +199,24 @@ export const CompetitionPage = (): ReactElement => {
 						</div>
 						{isRegistrationClosed && (
 							<>
-								<h2 className='text-xl font-medium mb-[20px] md:mb-[34px] xl:text-4xl xl:font-bold'>Competition schedule</h2>
-								<div className='flex grow flex-col lg:rounded-3xl lg:border lg:border-[#DADADA] lg:px-[40px] lg:pt-[33px] xl:pt-[63px] xl:px[50px]'>
-									{competitionData.groups?.map(({_id, gender, ageCategory, weightCategory, passedPairs}) => (
+								<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
+									Competition schedule
+								</h2>
+								<div className='xl:px[50px] flex grow flex-col lg:rounded-3xl lg:border lg:border-[#DADADA] lg:px-[40px] lg:pt-[33px] xl:pt-[63px]'>
+									{competitionData.groups?.map(({ _id, gender, ageCategory, weightCategory, passedPairs }) => (
 										<>
 											<h3
 												key={_id}
-												className='font-bold mb-[17px] md:mb-[32px] [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px] xl:text-2xl'
+												className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'
 											>
-												<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
+												<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
+												{weightCategory?.from}-{weightCategory?.to}kg
 											</h3>
-											{passedPairs && participants && <TableBody rows={tableSchemaPairs(passedPairs, participants)}/>}
+											{passedPairs && participants && judges ? (
+												<TableBody rows={tableSchemaPairs(passedPairs, participants, judges)} />
+											) : (
+												<Loader />
+											)}
 										</>
 									))}
 								</div>
