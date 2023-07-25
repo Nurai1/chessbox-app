@@ -1799,6 +1799,95 @@ export interface paths {
 			}
 		}
 	}
+	'/api/competition/{id}/zoomLink': {
+		/** @description Редактировать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде. */
+		patch: {
+			parameters: {
+				path: {
+					id: string
+				}
+			}
+			requestBody: {
+				content: {
+					'application/json': unknown
+				}
+			}
+			responses: {
+				/** @description OK */
+				200: {
+					content: {
+						'application/json': components['schemas']['Competition']
+						'application/xml': components['schemas']['Competition']
+					}
+				}
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+	}
 	'/api/competition/{id}/group': {
 		post: {
 			parameters: {
@@ -2289,6 +2378,7 @@ export interface components {
 					newValue: number
 				}[]
 			}
+			zoomLink?: string
 			requirements?: {
 				ageCategory?: {
 					from?: number
@@ -2452,6 +2542,7 @@ export interface components {
 					newValue: number
 				}[]
 			}
+			zoomLink?: string
 			requirements?: {
 				ageCategory?: {
 					from?: number

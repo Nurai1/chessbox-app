@@ -145,6 +145,25 @@ export const updateCompetition = async (
   res.send(competition);
 };
 
+export const updateCompetitionZoomLink = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.body.zoomLink) return res.sendStatus(400);
+  const { id } = req.params;
+
+  const competition = await Competition.findOneAndUpdate(
+    { _id: id },
+    { zoomLink: req.body.zoomLink },
+    { new: true }
+  );
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  res.send(competition);
+};
+
 export const createCompetitionGroup = async (
   req: Request<{ id: string }, any, ICompetitionGroup>,
   res: Response,

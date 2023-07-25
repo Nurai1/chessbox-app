@@ -237,6 +237,27 @@ competitionRouter.patch(
   controllerErrorHandler(CompetitionController.startCompetition)
 );
 
+competitionRouter.patch(
+  '/competition/:id/zoomLink',
+  // #swagger.description = 'Редактировать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.'
+  /*	#swagger.requestBody = {
+          required: true,
+          content: {
+              "application/json": {
+                  schema: {
+                    zoomLink: { type: "string" },
+                  }
+              },
+          }
+      } 
+    */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+  controllerErrorHandler(CompetitionController.updateCompetitionZoomLink)
+);
+
 competitionRouter.delete(
   '/competition/:id',
   // #swagger.description = 'Удалять смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.'

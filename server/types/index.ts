@@ -69,6 +69,7 @@ export interface ICompetition {
       newValue: number;
     }[];
   };
+  zoomLink?: string;
   requirements?: {
     ageCategory?: Category;
     weightCategory?: Category;
