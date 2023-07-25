@@ -1,5 +1,5 @@
-import { ReactComponent as CheckMarkIcon } from 'assets/check-mark.svg'
-import { ReactComponent as ExclamationTriangleIcon } from 'assets/exclamation-triangle-fill.svg'
+import { ReactComponent as CheckMarkIcon } from 'src/assets/check-mark-rounded.svg'
+import { ReactComponent as ExclamationTriangleIcon } from 'src/assets/exclamation-triangle-fill.svg'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
