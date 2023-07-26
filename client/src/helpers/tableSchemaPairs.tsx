@@ -1,7 +1,7 @@
 import { PairSchema, UserSchema } from 'src/types'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 
-type TablePairType = {
+export type PairType = {
 	blackParticipantData?: UserSchema
 	whiteParticipantData?: UserSchema
 	judgeData?: UserSchema
@@ -22,7 +22,7 @@ export const tableSchemaPairs = (tableData: PairSchema[], participants: UserSche
 				judgeData
 			}
 		]
-	}, [] as TablePairType[])
+	}, [] as PairType[])
 
 	const statusStyle =
 		'uppercase text-sm md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3 xl:row-auto xl:col-start-3 xl:col-end-4 xl:text-base xl:font-bold'
@@ -39,10 +39,15 @@ export const tableSchemaPairs = (tableData: PairSchema[], participants: UserSche
 						<div className='grid w-full grid-cols-[1fr_80px] gap-[14px] lg:grid-cols-[1fr_110px] lg:gap-[28px] xl:grid-cols-[25%_50%_10%] xl:gap-[5%]'>
 							<div className='md:col-start-1 md:col-end-3 xl:col-auto'>
 								<p className='gri mb-[6px] text-base text-black xl:font-bold'>Starts time</p>
-								<div className='flex gap-[8px]'>
+								<a
+									href={`https://wa.me/${pair.judgeData?.socialNetworks?.whatsup}`}
+									target='_blank'
+									rel='noreferrer'
+									className='inline-flex gap-[8px] text-xs transition hover:opacity-70 xl:text-base'
+								>
 									<WhatsappIcon className='xl:h-[24px] xl:min-w-[24px]' />
-									<p className='text-xs xl:text-base'>Judge: {pair.judgeData?.fullName}</p>
-								</div>
+									Judge: {pair.judgeData?.fullName}
+								</a>
 							</div>
 							{pair.calledForFight && <span className={`text-[#FB9F16] ${statusStyle}`}>IN PROGRESS</span>}
 							{pair.winner && <span className={`text-[#6DDA64] ${statusStyle}`}>FINISHED</span>}
