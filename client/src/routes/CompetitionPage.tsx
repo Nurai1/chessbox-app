@@ -232,14 +232,18 @@ export const CompetitionPage = (): ReactElement => {
 						</div>
 						{isRegistrationClosed && (
 							<>
-								<h2 className='mb-[10px] text-xl font-medium md:mb-[15px] lg:mb-[34px] xl:text-4xl xl:font-bold'>
-									Your match:
-								</h2>
-								<PairInfo
-									pairData={getAuthorizedUserCompetition()}
-									zoomLink={competitionData.zoomLink}
-									classes='mb-[53px] 2xl:mb-[100px]'
-								/>
+								{isParticipant && (
+									<>
+										<h2 className='mb-[10px] text-xl font-medium md:mb-[15px] lg:mb-[34px] xl:text-4xl xl:font-bold'>
+											Your match:
+										</h2>
+										<PairInfo
+											pairData={getAuthorizedUserCompetition()}
+											zoomLink={competitionData.zoomLink}
+											classes='mb-[53px] 2xl:mb-[100px]'
+										/>
+									</>
+								)}
 								<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
 									Competition schedule
 								</h2>
