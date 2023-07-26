@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect } from 'react'
+import { ReactElement, useState, useEffect, Fragment } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
 import { ReactComponent as Persons } from 'src/assets/persons.svg'
@@ -12,10 +12,12 @@ import {
 	fetchCompetitionJudges
 } from 'src/store/slices/competitionSlice'
 import { Loader, Tag, Timer, Button, Modal, TableBody } from 'src/ui'
+import { PairInfo } from 'src/components'
 import { getFormattedDate, isPast } from 'src/helpers/datetime'
 import { AppRoute } from 'src/constants/appRoute'
-import { tableSchemaPairs } from 'src/helpers/tableSchemaPairs'
-import { tableSchemaParticipants } from '../helpers/tableSchemaParticipants'
+import { tableSchemaPairs, PairType } from 'src/helpers/tableSchemaPairs'
+import { tableSchemaParticipants } from 'src/helpers/tableSchemaParticipants'
+import { UserSchema } from 'src/types'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
@@ -58,6 +60,37 @@ export const CompetitionPage = (): ReactElement => {
 
 	const handleSideMenuOpen = () => {
 		setIsSideMenuOpen(!isSideMenuOpen)
+	}
+
+	const getAuthorizedUserCompetition = (): PairType | undefined => {
+		if (authorizedUserId && competitionData?.groups) {
+			const group = competitionData?.groups.find(groupData =>
+				groupData?.allParticipants?.includes(authorizedUserId as string)
+			)
+			const pair =
+				group?.passedPairs &&
+				group.passedPairs.find(pairData => {
+					if (pairData.blackParticipant === authorizedUserId) {
+						return true
+					}
+					if (pairData.whiteParticipant === authorizedUserId) {
+						return true
+					}
+					return false
+				})
+
+			const blackParticipantData = participants && participants.find(({ _id }) => pair?.blackParticipant === _id)
+			const whiteParticipantData = participants && participants.find(({ _id }) => pair?.whiteParticipant === _id)
+			const judgeData = judges && judges.find(({ _id }) => pair?.judge === _id)
+
+			return {
+				...pair,
+				blackParticipantData: blackParticipantData as UserSchema,
+				whiteParticipantData: whiteParticipantData as UserSchema,
+				judgeData: judgeData as UserSchema
+			}
+		}
+		return undefined
 	}
 
 	const participate = () =>
@@ -145,7 +178,7 @@ export const CompetitionPage = (): ReactElement => {
 				{fetchError && <h2>{fetchError}</h2>}
 				{competitionData && (
 					<>
-						<div className='lg:grid lg:grid-cols-[1fr_190px] lg:gap-[0_15px] xl:grid-cols-[1fr_345px] xl:gap-[0_40px]'>
+						<div className='mb-[45px] lg:mb-[50px] lg:grid lg:grid-cols-[1fr_190px] lg:gap-[0_15px] xl:mb-[140px] xl:grid-cols-[1fr_345px] xl:gap-[0_40px]'>
 							<div>
 								<h1 className='mb-[15px] text-2xl font-semibold lg:mb-[10px] xl:mb-[24px] xl:text-[54px] xl:font-bold xl:leading-[81px]'>
 									{competitionData.name}
@@ -199,16 +232,21 @@ export const CompetitionPage = (): ReactElement => {
 						</div>
 						{isRegistrationClosed && (
 							<>
+								<h2 className='mb-[10px] text-xl font-medium md:mb-[15px] lg:mb-[34px] xl:text-4xl xl:font-bold'>
+									Your match:
+								</h2>
+								<PairInfo
+									pairData={getAuthorizedUserCompetition()}
+									zoomLink={competitionData.zoomLink}
+									classes='mb-[53px] 2xl:mb-[100px]'
+								/>
 								<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
 									Competition schedule
 								</h2>
 								<div className='xl:px[50px] flex grow flex-col lg:rounded-3xl lg:border lg:border-[#DADADA] lg:px-[40px] lg:pt-[33px] xl:pt-[63px]'>
 									{competitionData.groups?.map(({ _id, gender, ageCategory, weightCategory, passedPairs }) => (
-										<>
-											<h3
-												key={_id}
-												className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'
-											>
+										<Fragment key={_id}>
+											<h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
 												<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
 												{weightCategory?.from}-{weightCategory?.to}kg
 											</h3>
@@ -217,7 +255,7 @@ export const CompetitionPage = (): ReactElement => {
 											) : (
 												<Loader />
 											)}
-										</>
+										</Fragment>
 									))}
 								</div>
 							</>
