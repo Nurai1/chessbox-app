@@ -151,11 +151,11 @@ export const SignUpForm = (): ReactElement => {
 					<Input
 						onChange={onChange}
 						value={formData?.age?.toString()}
-						label='Age'
+						label='Birthday'
 						name='age'
-						placeholder='Age'
+						placeholder='Birthday'
 						classes='h-[48px]'
-						type='number'
+						type='text'
 						validationErrorText={validateErrors?.age}
 					/>
 					<Input

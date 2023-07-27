@@ -29,9 +29,9 @@ export const validatorConfigSingUp = {
 		isRequired: {
 			errorMessage: 'Age is required'
 		},
-		isNumber: {
-			errorMessage: 'Age must be a number'
-		},
+		// isNumber: {
+		// 	errorMessage: 'Age must be a number'
+		// },
 		maxAge: {
 			errorMessage: '99 max value'
 		}
