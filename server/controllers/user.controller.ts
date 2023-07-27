@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 
 import { User } from '../models/index';
 import ac from '../roles';
@@ -13,6 +15,10 @@ import {
   passwordParser,
 } from '../utils/validation';
 
+dotenv.config();
+
+const { CLIENT_URL } = process.env;
+
 async function hashPassword(password: string) {
   return bcrypt.hash(password, 10);
 }
@@ -20,6 +26,82 @@ async function hashPassword(password: string) {
 async function validatePassword(plainPassword: string, hashedPassword: string) {
   return bcrypt.compare(plainPassword, hashedPassword);
 }
+
+export const changePassword = async (req: Request, res: Response) => {
+  const { email, passwordResetCode, newPassword } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user)
+    return res.status(404).send({ error: "User wasn't found by email" });
+
+  if (user.passwordResetCode === null) {
+    return res
+      .status(400)
+      .send({ error: 'Password Reset Link was timed out.' });
+  }
+
+  if (user.passwordResetCode !== passwordResetCode) {
+    return res
+      .status(400)
+      .send({ error: 'Password Reset Code does not match.' });
+  }
+
+  const newHashedPassword = await hashPassword(newPassword);
+  await User.findOneAndUpdate(
+    { email },
+    { hashedPassword: newHashedPassword },
+    { new: true }
+  );
+
+  res.sendStatus(200);
+};
+
+export const forgotPassword = async (req: Request, res: Response) => {
+  const { email } = req.body;
+
+  const transporter = nodemailer.createTransport({
+    service: 'Yandex',
+    auth: {
+      user: 'kroshkaothleba@yandex.ru',
+      pass: 'Zaq!polk',
+    },
+  });
+
+  const passwordResetCode = Math.floor(Math.random() * 9000 + 1000);
+
+  const user = await User.findOneAndUpdate(
+    { email },
+    { passwordResetCode },
+    { new: true }
+  );
+  if (!user)
+    return res.status(404).send({ error: "User wasn't found by email" });
+
+  const mailOptions = {
+    from: 'kroshkaothleba@yandex.ru',
+    to: email,
+    subject: 'Chessboxing Online. Password Reset',
+    text: `Follow this link to reset your password: \n${CLIENT_URL}/?email=${encodeURIComponent(
+      email
+    )}&passwordResetCode=${passwordResetCode}#/change-password`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    res.status(500).send({ error: 'Email service does not send email.' });
+  }
+
+  setTimeout(async () => {
+    await User.findOneAndUpdate(
+      { email },
+      { passwordResetCode: null },
+      { new: true }
+    );
+  }, 300000);
+
+  res.sendStatus(200);
+};
 
 export const signup = async (
   req: Request,
@@ -75,7 +157,8 @@ export const login = async (
   if (!user) return next(new Error('Email does not exist'));
 
   const validPassword = await validatePassword(password, user.hashedPassword);
-  if (!validPassword) return next(new Error('Password is not correct'));
+  if (!validPassword)
+    return res.status(400).send({ error: 'Password is not correct' });
 
   const accessToken = jwt.sign(
     { userId: user._id },

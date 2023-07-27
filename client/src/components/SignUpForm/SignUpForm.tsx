@@ -98,6 +98,7 @@ export const SignUpForm = (): ReactElement => {
 		if (Object.keys(errors).length) {
 			setValidateErrors(errors)
 		} else {
+			setValidateErrors({})
 			dispatch(signUpUser(adaptDataToServer()))
 		}
 	}
@@ -236,7 +237,11 @@ export const SignUpForm = (): ReactElement => {
 						Sign In
 					</Link>
 				</p>
-				{authError && <Alert subtitle={authError} />}
+				{authError && (
+					<div className='mt-2'>
+						<Alert subtitle={authError} />
+					</div>
+				)}
 			</form>
 		</main>
 	)

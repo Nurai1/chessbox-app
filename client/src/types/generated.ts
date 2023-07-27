@@ -194,6 +194,164 @@ export interface paths {
 			}
 		}
 	}
+	'/api/user/changePassword': {
+		patch: {
+			requestBody: {
+				content: {
+					'application/json': {
+						email: string
+						newPassword: string
+						passwordResetCode: number
+					}
+				}
+			}
+			responses: {
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+	}
+	'/api/user/forgotPassword': {
+		post: {
+			requestBody: {
+				content: {
+					'application/json': {
+						email: string
+					}
+				}
+			}
+			responses: {
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+	}
 	'/api/user/getCurrentUser': {
 		get: {
 			responses: {
@@ -1809,7 +1967,9 @@ export interface paths {
 			}
 			requestBody: {
 				content: {
-					'application/json': unknown
+					'application/json': {
+						zoomLink: string
+					}
 				}
 			}
 			responses: {
@@ -2426,6 +2586,7 @@ export interface components {
 			ratingNumber: number
 			weight: number
 			competition?: string
+			passwordResetCode?: number
 			currentGroupId?: string
 			competitionsHistory?: {
 				competitionId?: string
@@ -2589,6 +2750,7 @@ export interface components {
 			ratingNumber: number
 			weight: number
 			competition?: string
+			passwordResetCode?: number
 			currentGroupId?: string
 			competitionsHistory?: {
 				competitionId?: string
