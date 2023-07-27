@@ -230,6 +230,9 @@ userRouter.post(
 
 userRouter.patch(
   '/user/currentUser',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
   /*	#swagger.requestBody = {
           required: true,
           content: {

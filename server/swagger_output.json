@@ -2828,6 +2828,11 @@
             }
           }
         },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
