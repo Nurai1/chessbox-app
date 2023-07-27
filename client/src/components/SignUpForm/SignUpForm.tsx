@@ -7,25 +7,10 @@ import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { signUpUser } from 'src/store/slices/userSlice'
 import { AppRoute } from 'src/constants/appRoute'
 import { SignUpDataSchema } from 'src/types'
-
-type SignUpFormData = {
-	firstName?: string
-	lastName?: string
-	weight?: string
-	gender?: string
-	age?: string
-	fightClub?: string
-	country?: string
-	city?: string
-	email?: string
-	chessPlatformUserName?: string
-	password?: string
-	passwordConfirm?: string
-	role?: string
-}
+import { FormData } from 'src/types/formData'
 
 export const SignUpForm = (): ReactElement => {
-	const [formData, setFormData] = useState<SignUpFormData>({
+	const [formData, setFormData] = useState<FormData>({
 		firstName: '',
 		lastName: '',
 		weight: '',
@@ -84,7 +69,7 @@ export const SignUpForm = (): ReactElement => {
 				default:
 					return {
 						...acc,
-						[item]: formData[item as keyof SignUpFormData]
+						[item]: formData[item as keyof FormData]
 					}
 			}
 
@@ -132,7 +117,7 @@ export const SignUpForm = (): ReactElement => {
 						name='weight'
 						placeholder='Weight'
 						classes='h-[48px]'
-						type='text'
+						type='number'
 						validationErrorText={validateErrors?.weight}
 					/>
 					<Select

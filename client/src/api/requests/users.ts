@@ -1,4 +1,5 @@
-import { get } from 'src/api/api'
+import { get, patch } from 'src/api/api'
+import { UserSchema } from 'src/types'
 
 export const getUsersApi = async (query: {
 	limit?: number
@@ -44,6 +45,14 @@ export const getUserByIdApi = async (id: string) => {
 
 export const getCurrentUser = async () => {
 	const result = await get('/api/user/getCurrentUser', {})
+
+	return result
+}
+
+export const editCurrentUser = async (userData: UserSchema) => {
+	const result = await patch('/api/user/currentUser', {
+		body: userData
+	})
 
 	return result
 }
