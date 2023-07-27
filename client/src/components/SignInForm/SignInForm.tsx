@@ -7,14 +7,10 @@ import { signInUser } from 'src/store/slices/userSlice'
 import { Link } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
 import { SignInDataSchema } from 'src/types'
-
-type SingInFormData = {
-	email?: string
-	password?: string
-}
+import { FormData } from 'src/types/formData'
 
 export const SignInForm = (): ReactElement => {
-	const [formData, setFormData] = useState<SingInFormData>({
+	const [formData, setFormData] = useState<FormData>({
 		email: '',
 		password: ''
 	})
@@ -75,13 +71,10 @@ export const SignInForm = (): ReactElement => {
 					<Link to={`/${AppRoute.SignUp}`} className='underline transition hover:opacity-70'>
 						Sign Up
 					</Link>
-					<button
-						type='button'
-						className='h-auto p-0 text-sm font-thin underline transition hover:opacity-70'
-						onClick={() => ''}
-					>
+					{/* поставить нормальную ссылку */}
+					<Link to='/temp' className='h-auto p-0 text-sm font-thin underline transition hover:opacity-70'>
 						Forgot Password
-					</button>
+					</Link>
 				</div>
 				{authError && <Alert subtitle={authError} />}
 			</form>

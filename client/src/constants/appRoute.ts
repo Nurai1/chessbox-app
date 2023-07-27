@@ -6,5 +6,6 @@ export const AppRoute = {
 	Rating: 'rating',
 	SignUp: 'signup',
 	SignIn: 'signin',
+	EditProfile: 'edit-profile',
 	NotFound: '*'
 }

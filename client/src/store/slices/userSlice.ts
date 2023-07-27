@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getUserByIdApi, getCurrentUser } from 'src/api/requests/users'
+import { getUserByIdApi, getCurrentUser, editCurrentUser } from 'src/api/requests/users'
 import { signIn } from 'src/api/requests/signIn'
 import { signUp } from 'src/api/requests/signUp'
 import { UserSchema, SignInDataSchema, SignUpDataSchema } from 'src/types'
@@ -34,14 +34,24 @@ export const checkAuth = createAsyncThunk('user/checkAuth', async (_, thunkApi) 
 	return response.data
 })
 
+export const editUser = createAsyncThunk('user/editUser', async (userData: UserSchema, thunkApi) => {
+	const response = await editCurrentUser(userData)
+	if (response.error) return thunkApi.rejectWithValue(response.error.error)
+
+	return response.data
+})
+
 export interface UserState {
 	data: UserSchema | null
-	error?: string
 	loading: boolean
 	authLoading: boolean
 	authorizationStatus: AuthorizationStatus.Auth | AuthorizationStatus.NoAuth | AuthorizationStatus.Unknown
+	editLoading: boolean
 	authError?: string
 	authorizedUser?: UserSchema
+	error?: string
+	editError?: string
+	editSuccess?: boolean
 }
 
 type SuccessAuth = {
@@ -53,6 +63,7 @@ const initialState: UserState = {
 	data: null,
 	loading: true,
 	authLoading: false,
+	editLoading: false,
 	authorizationStatus: AuthorizationStatus.Unknown
 }
 
@@ -102,10 +113,10 @@ export const currentUserSlice = createSlice({
 			state.authError = action.payload
 			state.authorizationStatus = AuthorizationStatus.NoAuth
 		},
-		[checkAuth.fulfilled.type]: (state, action: PayloadAction<SuccessAuth>) => {
+		[checkAuth.fulfilled.type]: (state, action: PayloadAction<UserSchema>) => {
 			state.authLoading = false
 			state.authorizationStatus = AuthorizationStatus.Auth
-			state.authorizedUser = action.payload.data
+			state.authorizedUser = action.payload
 		},
 		[checkAuth.pending.type]: state => {
 			state.authLoading = true
@@ -116,6 +127,18 @@ export const currentUserSlice = createSlice({
 			if (action.payload === 401) {
 				dropToken()
 			}
+		},
+		[editUser.fulfilled.type]: (state, action: PayloadAction<UserSchema>) => {
+			state.editLoading = false
+			state.authorizedUser = action.payload
+			state.editSuccess = true
+		},
+		[editUser.pending.type]: state => {
+			state.editLoading = true
+		},
+		[editUser.rejected.type]: (state, action: PayloadAction<string>) => {
+			state.editLoading = false
+			state.editError = action.payload
 		}
 	}
 })
