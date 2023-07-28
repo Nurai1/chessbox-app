@@ -31,6 +31,7 @@
 		"react-virtualized-auto-sizer": "^1.0.20",
 		"react-window": "^1.8.9",
 		"react-window-infinite-loader": "^1.0.9",
+		"remeda": "^1.24.0",
 		"tailwind-merge": "^1.9.1",
 		"tailwind-variants": "^0.0.30",
 		"type-fest": "^3.5.0",

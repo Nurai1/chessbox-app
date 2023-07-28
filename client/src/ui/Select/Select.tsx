@@ -136,7 +136,9 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 					</button>
 				)}
 				{validationErrorText && (
-					<span className='mt-[10px] inline-block text-xs leading-none text-red-400'>{validationErrorText}</span>
+					<span className='absolute bottom-[-18px] left-0 text-xs leading-none text-red-400'>
+						{validationErrorText}
+					</span>
 				)}
 				<div
 					className={twMerge(

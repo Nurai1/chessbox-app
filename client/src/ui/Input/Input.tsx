@@ -109,7 +109,7 @@ export const Input: FC<InputPropsType> = ({
 				</div>
 			)}
 			{validationErrorText && (
-				<span className='absolute bottom-[-17px] text-xs leading-none text-red-400'>{validationErrorText}</span>
+				<span className='absolute bottom-[-18px] text-xs leading-none text-red-400'>{validationErrorText}</span>
 			)}
 		</div>
 	)

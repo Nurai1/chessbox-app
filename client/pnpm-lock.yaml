@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 dependencies:
   '@reduxjs/toolkit':
     specifier: ^1.9.5
@@ -38,6 +34,9 @@ dependencies:
   react-window-infinite-loader:
     specifier: ^1.0.9
     version: 1.0.9(react-dom@18.2.0)(react@18.2.0)
+  remeda:
+    specifier: ^1.24.0
+    version: 1.24.0
   tailwind-merge:
     specifier: ^1.9.1
     version: 1.9.1
@@ -12661,6 +12660,11 @@ packages:
       mdast-squeeze-paragraphs: 4.0.0
     dev: true
 
+  /remeda@1.24.0:
+    resolution:
+      { integrity: sha512-tjLxwU4yLtvX8yHlePnE7CdQXRe2pKatlVY+AunqAQV5t9FNw1yuiIAqKpu6zevd+No5LQHEJ/HK3r3ZFK7KXg== }
+    dev: false
+
   /remove-trailing-separator@1.1.0:
     resolution:
       { integrity: sha512-/hS+Y0u3aOfIETiaiirUFwDBDzmXPvO+jAfKTitUngIPzdKc6Z0LoFjM/CK5PL4C+eKwHohlHAb6H0VFfmmUsw== }
@@ -15147,3 +15151,7 @@ packages:
     resolution:
       { integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw== }
     dev: true
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
