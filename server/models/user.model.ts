@@ -57,6 +57,7 @@ const userSchema = new Schema<IUser>(
       // info for swagger
       identificator: true,
     },
+    passwordResetCode: { type: Number },
     currentGroupId: String,
     competitionsHistory: [
       {

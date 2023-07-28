@@ -1,8 +1,14 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getUserByIdApi, getCurrentUser, editCurrentUser } from 'src/api/requests/users'
-import { signIn } from 'src/api/requests/signIn'
+import { changePasswordRequest, forgotPasswordRequest, signIn } from 'src/api/requests/signIn'
 import { signUp } from 'src/api/requests/signUp'
-import { UserSchema, SignInDataSchema, SignUpDataSchema } from 'src/types'
+import {
+	UserSchema,
+	SignInDataSchema,
+	SignUpDataSchema,
+	ChangePasswordDataSchema,
+	ForgotPasswordDataSchema
+} from 'src/types'
 import { AuthorizationStatus } from 'src/constants/authorizationStatus'
 import { saveToken, dropToken } from 'src/helpers/tokenLocalStorage'
 
@@ -40,6 +46,25 @@ export const editUser = createAsyncThunk('user/editUser', async (userData: UserS
 
 	return response.data
 })
+export const changePassword = createAsyncThunk(
+	'user/changePassword',
+	async (body: ChangePasswordDataSchema, thunkApi) => {
+		const response = await changePasswordRequest(body)
+		if (response.error) return thunkApi.rejectWithValue(response.response.status)
+
+		return response.data
+	}
+)
+
+export const forgotPassword = createAsyncThunk(
+	'user/forgotPassword',
+	async (body: ForgotPasswordDataSchema, thunkApi) => {
+		const response = await forgotPasswordRequest(body)
+		if (response.error) return thunkApi.rejectWithValue(response.response.status)
+
+		return response.data
+	}
+)
 
 export interface UserState {
 	data: UserSchema | null
@@ -48,10 +73,12 @@ export interface UserState {
 	authorizationStatus: AuthorizationStatus.Auth | AuthorizationStatus.NoAuth | AuthorizationStatus.Unknown
 	editLoading: boolean
 	authError?: string
-	authorizedUser?: UserSchema
+	authorizedUser?: UserSchema | null
 	error?: string
 	editError?: string
 	editSuccess?: boolean
+	passwordChanged?: boolean
+	isPasswordLinkSent?: boolean
 }
 
 type SuccessAuth = {
@@ -64,7 +91,9 @@ const initialState: UserState = {
 	loading: true,
 	authLoading: false,
 	editLoading: false,
-	authorizationStatus: AuthorizationStatus.Unknown
+	authorizationStatus: AuthorizationStatus.Unknown,
+	passwordChanged: undefined,
+	isPasswordLinkSent: undefined
 }
 
 export const currentUserSlice = createSlice({
@@ -72,6 +101,33 @@ export const currentUserSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: {
+		[forgotPassword.pending.type]: state => {
+			state.authLoading = true
+		},
+		[forgotPassword.fulfilled.type]: state => {
+			state.authLoading = false
+			state.authorizationStatus = AuthorizationStatus.NoAuth
+			state.authorizedUser = null
+			state.isPasswordLinkSent = true
+		},
+		[forgotPassword.rejected.type]: (state, action: PayloadAction<string>) => {
+			state.authError = action.payload
+			state.isPasswordLinkSent = false
+		},
+		[changePassword.pending.type]: state => {
+			state.authLoading = true
+		},
+		[changePassword.fulfilled.type]: state => {
+			state.authLoading = false
+			state.authorizationStatus = AuthorizationStatus.NoAuth
+			state.authorizedUser = null
+			state.passwordChanged = true
+		},
+		[changePassword.rejected.type]: (state, action: PayloadAction<string>) => {
+			state.authLoading = false
+			state.authError = action.payload
+			state.passwordChanged = true
+		},
 		[fetchUserById.fulfilled.type]: (state, action: PayloadAction<UserSchema>) => {
 			state.loading = false
 			state.data = action.payload ?? null

@@ -83,6 +83,7 @@ export const SignUpForm = (): ReactElement => {
 		if (Object.keys(errors).length) {
 			setValidateErrors(errors)
 		} else {
+			setValidateErrors({})
 			dispatch(signUpUser(adaptDataToServer()))
 		}
 	}
@@ -91,7 +92,7 @@ export const SignUpForm = (): ReactElement => {
 		<main className='lex grow flex-col bg-[#FDFDFD] py-[20px]'>
 			<form className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
 				<h1 className='mb-[8px] text-center text-2xl font-medium'>Sign Up</h1>
-				<div className='grid gap-[16px]'>
+				<div className='grid gap-[18px]'>
 					<Input
 						onChange={onChange}
 						value={formData?.firstName}
@@ -211,7 +212,7 @@ export const SignUpForm = (): ReactElement => {
 						onShowPassword={() => setShowConfirmPassword(!showConfirmPassword)}
 						showPasswordIcon
 					/>
-					<Button loading={isAuthRequestPending} classes='font-medium w-full' onClick={handleSubmit}>
+					<Button loading={isAuthRequestPending} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
 						Sign Up
 					</Button>
 				</div>
@@ -221,7 +222,11 @@ export const SignUpForm = (): ReactElement => {
 						Sign In
 					</Link>
 				</p>
-				{authError && <Alert subtitle={authError} />}
+				{authError && (
+					<div className='mt-2'>
+						<Alert subtitle={authError} />
+					</div>
+				)}
 			</form>
 		</main>
 	)
