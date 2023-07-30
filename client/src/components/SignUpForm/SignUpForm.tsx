@@ -7,25 +7,10 @@ import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { signUpUser } from 'src/store/slices/userSlice'
 import { AppRoute } from 'src/constants/appRoute'
 import { SignUpDataSchema } from 'src/types'
-
-type SignUpFormData = {
-	firstName?: string
-	lastName?: string
-	weight?: string
-	gender?: string
-	age?: string
-	fightClub?: string
-	country?: string
-	city?: string
-	email?: string
-	chessPlatformUserName?: string
-	password?: string
-	passwordConfirm?: string
-	role?: string
-}
+import { FormData } from 'src/types/formData'
 
 export const SignUpForm = (): ReactElement => {
-	const [formData, setFormData] = useState<SignUpFormData>({
+	const [formData, setFormData] = useState<FormData>({
 		firstName: '',
 		lastName: '',
 		weight: '',
@@ -84,7 +69,7 @@ export const SignUpForm = (): ReactElement => {
 				default:
 					return {
 						...acc,
-						[item]: formData[item as keyof SignUpFormData]
+						[item]: formData[item as keyof FormData]
 					}
 			}
 
@@ -107,7 +92,7 @@ export const SignUpForm = (): ReactElement => {
 		<main className='lex grow flex-col bg-[#FDFDFD] py-[20px]'>
 			<form className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
 				<h1 className='mb-[8px] text-center text-2xl font-medium'>Sign Up</h1>
-				<div className='grid gap-[16px]'>
+				<div className='grid gap-[18px]'>
 					<Input
 						onChange={onChange}
 						value={formData?.firstName}
@@ -133,7 +118,7 @@ export const SignUpForm = (): ReactElement => {
 						name='weight'
 						placeholder='Weight'
 						classes='h-[48px]'
-						type='text'
+						type='number'
 						validationErrorText={validateErrors?.weight}
 					/>
 					<Select
@@ -227,7 +212,7 @@ export const SignUpForm = (): ReactElement => {
 						onShowPassword={() => setShowConfirmPassword(!showConfirmPassword)}
 						showPasswordIcon
 					/>
-					<Button loading={isAuthRequestPending} classes='font-medium w-full' onClick={handleSubmit}>
+					<Button loading={isAuthRequestPending} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
 						Sign Up
 					</Button>
 				</div>
