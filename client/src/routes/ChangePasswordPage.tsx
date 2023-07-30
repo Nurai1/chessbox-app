@@ -18,7 +18,7 @@ export const ChangePasswordPage = (): ReactElement => {
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
 	const isAuthRequestPending = useAppSelector(state => state.user.authLoading)
-	const authError = useAppSelector(state => state.user.authError)
+	const passwordError = useAppSelector(state => state.user.passwordError)
 	const passwordChanged = useAppSelector(state => state.user.passwordChanged)
 
 	const onChange = (value?: string, name?: string) => {
@@ -48,7 +48,7 @@ export const ChangePasswordPage = (): ReactElement => {
 		<main className='flex grow flex-col bg-[#FDFDFD] py-[20px]'>
 			<form className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
 				<h1 className='mb-[8px] text-center text-2xl font-medium'>Change Password</h1>
-				<div className='flex flex-col items-center gap-[16px]'>
+				<div className='flex flex-col items-center gap-[18px]'>
 					<span className='font-medium'>Account Email: {decodeURIComponent(urlParams.get('email') as string)}</span>
 					<Input
 						onChange={onChange}
@@ -74,7 +74,7 @@ export const ChangePasswordPage = (): ReactElement => {
 						onShowPassword={() => setShowPassword(!showPassword)}
 						showPasswordIcon
 					/>
-					<Button loading={isAuthRequestPending} classes='font-medium w-full' onClick={handleSubmit}>
+					<Button loading={isAuthRequestPending} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
 						Change Password
 					</Button>
 				</div>
@@ -88,9 +88,9 @@ export const ChangePasswordPage = (): ReactElement => {
 						<Alert type='success' subtitle='Your password has been changed.' />
 					</div>
 				)}
-				{authError && (
+				{passwordError && (
 					<div className='mt-2'>
-						<Alert subtitle={authError} />
+						<Alert subtitle={passwordError} />
 					</div>
 				)}
 			</form>

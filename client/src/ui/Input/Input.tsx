@@ -108,7 +108,9 @@ export const Input: FC<InputPropsType> = ({
 					)}
 				</div>
 			)}
-			{validationErrorText && <span className='mt-2 text-xs leading-none text-red-400'>{validationErrorText}</span>}
+			{validationErrorText && (
+				<span className='absolute bottom-[-18px] text-xs leading-none text-red-400'>{validationErrorText}</span>
+			)}
 		</div>
 	)
 }

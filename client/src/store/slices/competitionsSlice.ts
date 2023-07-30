@@ -1,10 +1,11 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { CompetitionSchema } from 'src/types'
+import { CompetitionSchema, ErrorPayload } from 'src/types'
 import { getCompetitionsApi } from 'src/api/requests/competitions'
 
 export const fetchCompetitions = createAsyncThunk('competitions/fetchAll', async (_, thunkApi) => {
 	const response = await getCompetitionsApi()
-	if (response.error) return thunkApi.rejectWithValue(response.error.error)
+	if (response.error)
+		return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
 
 	return response.data
 })
@@ -32,9 +33,9 @@ export const competitionsSlice = createSlice({
 		[fetchCompetitions.pending.type]: state => {
 			state.loading = true
 		},
-		[fetchCompetitions.rejected.type]: (state, action: PayloadAction<string>) => {
+		[fetchCompetitions.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.loading = false
-			state.error = action.payload
+			state.error = action.payload.errorMessage
 		}
 	}
 })

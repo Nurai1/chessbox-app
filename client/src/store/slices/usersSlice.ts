@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { getUsersApi } from 'src/api/requests/users'
-import { UserSchema } from 'src/types'
+import { ErrorPayload, UserSchema } from 'src/types'
 import { UserFilterType } from 'src/components/UserFilter'
 
 export const fetchUsers = createAsyncThunk(
@@ -20,7 +20,8 @@ export const fetchUsers = createAsyncThunk(
 		thunkApi
 	) => {
 		const response = await getUsersApi(query)
-		if (response.error) return thunkApi.rejectWithValue(response.error.error)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
 
 		return response.data
 	}
@@ -74,9 +75,9 @@ export const usersSlice = createSlice({
 			state.loading = true
 			state.loaded = false
 		},
-		[fetchUsers.rejected.type]: (state, action: PayloadAction<string>) => {
+		[fetchUsers.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.loading = false
-			state.error = action.payload
+			state.error = action.payload.errorMessage
 		}
 	}
 })
