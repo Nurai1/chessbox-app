@@ -6,18 +6,30 @@ import { ReactComponent as ArrowLeft } from 'src/assets/arrow-left.svg'
 import { validator } from 'src/helpers/validator'
 import { validatorConfigEditUser } from 'src/helpers/validatorConfigEditUser'
 import { UserSchema } from 'src/types'
-import { editUser } from 'src/store/slices/userSlice'
+import { editUser, forgotPassword } from 'src/store/slices/userSlice'
 import { FormData } from 'src/types/formData'
 import { AppRoute } from 'src/constants/appRoute'
 
 export const EditProfilePage = (): ReactElement => {
-	const [formData, setFormData] = useState<FormData>({})
 	const [isFormEmpty, setIsFormEmpty] = useState(false)
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
 	const editRequestPending = useAppSelector(state => state.user.editLoading)
+	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
 	const editSuccess = useAppSelector(state => state.user.editSuccess)
 	const editError = useAppSelector(state => state.user.editError)
+	const isPasswordLinkSent = useAppSelector(state => state.user.isPasswordLinkSent)
+	const authLoading = useAppSelector(state => state.user.authLoading)
+
+	const [formData, setFormData] = useState<FormData>({
+		firstName: authorizedUser?.firstName,
+		lastName: authorizedUser?.lastName,
+		weight: authorizedUser?.weight?.toString(),
+		fightClub: authorizedUser?.fightClub?.name,
+		country: authorizedUser?.address?.country,
+		city: authorizedUser?.address?.city,
+		chessPlatformUserName: authorizedUser?.chessPlatform?.username
+	})
 
 	const onChange = (value?: string, name?: string) => {
 		setFormData({
@@ -157,17 +169,29 @@ export const EditProfilePage = (): ReactElement => {
 						classes='h-[48px]'
 					/>
 					<div className='mt-[22px] flex flex-col-reverse flex-wrap justify-between gap-[16px] sm:flex-row sm:items-center'>
-						<Link to={`/${AppRoute.ChangePassword}`} className='font-medium underline transition hover:opacity-70'>
+						<button
+							type='button'
+							className='flex items-center font-medium underline transition hover:opacity-70'
+							onClick={() => {
+								if (authorizedUser?.email) dispatch(forgotPassword({ email: authorizedUser?.email }))
+							}}
+						>
 							Change Password
-						</Link>
+							{authLoading && (
+								<span className=' ml-2 inline-block h-5 w-5 animate-spin rounded-full border-[4px] border-black border-b-transparent' />
+							)}
+						</button>
 						<Button loading={editRequestPending} classes='w-full font-medium sm:w-[160px]' onClick={handleSubmit}>
 							Save
 						</Button>
 					</div>
 				</div>
-				{editError && <Alert subtitle={editError} classes='mt-[15px]' />}
-				{isFormEmpty && <Alert subtitle="Can't send empty form" classes='mt-[15px]' />}
-				{editSuccess && !isFormEmpty && <Alert subtitle='Profile updated' type='success' classes='mt-[15px]' />}
+				{editError && <Alert subtitle={editError} classes='mt-4' />}
+				{isFormEmpty && <Alert subtitle="Can't send empty form" classes='mt-4' />}
+				{isPasswordLinkSent && (
+					<Alert type='success' subtitle='Link to your email for changing password was sent.' classes='mt-4' />
+				)}
+				{editSuccess && !isFormEmpty && <Alert subtitle='Profile updated' type='success' classes='mt-4' />}
 			</form>
 		</main>
 	)

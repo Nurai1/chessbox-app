@@ -14,7 +14,7 @@ export const ForgotPasswordPage = (): ReactElement => {
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
 	const isAuthRequestPending = useAppSelector(state => state.user.authLoading)
-	const authError = useAppSelector(state => state.user.authError)
+	const passwordError = useAppSelector(state => state.user.passwordError)
 	const isPasswordLinkSent = useAppSelector(state => state.user.isPasswordLinkSent)
 
 	const onChange = (value?: string, name?: string) => {
@@ -67,9 +67,9 @@ export const ForgotPasswordPage = (): ReactElement => {
 						<Alert type='success' subtitle='Link to change password was sent to your email.' />
 					</div>
 				)}
-				{authError && (
+				{passwordError && (
 					<div className='mt-2'>
-						<Alert subtitle={authError} />
+						<Alert subtitle={passwordError} />
 					</div>
 				)}
 			</form>

@@ -18,7 +18,7 @@ export const ChangePasswordPage = (): ReactElement => {
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
 	const isAuthRequestPending = useAppSelector(state => state.user.authLoading)
-	const authError = useAppSelector(state => state.user.authError)
+	const passwordError = useAppSelector(state => state.user.passwordError)
 	const passwordChanged = useAppSelector(state => state.user.passwordChanged)
 
 	const onChange = (value?: string, name?: string) => {
@@ -88,9 +88,9 @@ export const ChangePasswordPage = (): ReactElement => {
 						<Alert type='success' subtitle='Your password has been changed.' />
 					</div>
 				)}
-				{authError && (
+				{passwordError && (
 					<div className='mt-2'>
-						<Alert subtitle={authError} />
+						<Alert subtitle={passwordError} />
 					</div>
 				)}
 			</form>

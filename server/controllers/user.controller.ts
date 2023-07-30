@@ -129,7 +129,7 @@ export const signup = async (
   });
 
   const accessToken = jwt.sign(
-    { userId: newUser._id },
+    { userId: newUser._id, hashedPassword },
     process.env.JWT_SECRET_KEY || '',
     { expiresIn: '7d' }
   );
@@ -161,7 +161,7 @@ export const login = async (
     return res.status(400).send({ error: 'Password is not correct' });
 
   const accessToken = jwt.sign(
-    { userId: user._id },
+    { userId: user._id, hashedPassword: user.hashedPassword },
     process.env.JWT_SECRET_KEY || '',
     {
       expiresIn: '7d',
@@ -215,11 +215,22 @@ export const allowIfLoggedin = async (
 ) => {
   try {
     const user = res.locals.loggedInUser;
+    const accessToken = req.headers['x-access-token'];
 
     if (!user)
       return res.status(401).json({
         error: 'You need to be logged in to access this route',
       });
+
+    const { hashedPassword } = jwt.decode(
+      accessToken as string
+    ) as jwt.JwtPayload;
+
+    if (user.hashedPassword !== hashedPassword) {
+      return res.status(401).json({
+        error: 'You password is old. Please, login again.',
+      });
+    }
 
     next();
   } catch (error) {
