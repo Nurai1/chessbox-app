@@ -127,6 +127,7 @@ export const currentUserSlice = createSlice({
 		[forgotPassword.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.passwordError = action.payload.errorMessage
 			state.isPasswordLinkSent = false
+			state.authLoading = false
 		},
 		[changePassword.pending.type]: state => {
 			state.authLoading = true

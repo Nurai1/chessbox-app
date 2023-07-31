@@ -189,7 +189,11 @@ export const EditProfilePage = (): ReactElement => {
 				{editError && <Alert subtitle={editError} classes='mt-4' />}
 				{isFormEmpty && <Alert subtitle="Can't send empty form" classes='mt-4' />}
 				{isPasswordLinkSent && (
-					<Alert type='success' subtitle='Link to your email for changing password was sent.' classes='mt-4' />
+					<Alert
+						type='success'
+						subtitle='Link to your email for changing password was sent. Link active 5 minutes.'
+						classes='mt-4'
+					/>
 				)}
 				{editSuccess && !isFormEmpty && <Alert subtitle='Profile updated' type='success' classes='mt-4' />}
 			</form>
