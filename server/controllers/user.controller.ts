@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
+import dayjs from 'dayjs';
+import { getUTCFormattedDate } from '../utils/datetime';
 import { User } from '../models/index';
 import ac from '../roles';
 import { RESOURCES, ACTIONS } from '../constants';
@@ -280,13 +282,22 @@ export const getUsers = async (
     }
     return null;
   };
+  const currentYear = dayjs().year();
+  const currentYearDate = dayjs(0).set('year', currentYear);
+
+  const ageFromDate = getUTCFormattedDate(
+    currentYearDate.subtract(Number(ageFrom), 'year')
+  );
+  const ageToDate = getUTCFormattedDate(
+    currentYearDate.subtract(Number(ageTo), 'year')
+  );
 
   const allFilters = [
     ageTo && {
-      age: { $lte: Number(ageTo) },
+      birthDate: { $gte: new Date(ageToDate) },
     },
     ageFrom && {
-      age: { $gte: Number(ageFrom) },
+      birthDate: { $lte: new Date(ageFromDate) },
     },
     weightTo && {
       weight: { $lte: Number(weightTo) },

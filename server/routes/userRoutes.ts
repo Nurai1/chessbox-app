@@ -31,8 +31,8 @@ userRouter.post(
                         weight: {
                           type: "number",
                         },
-                        age: {
-                          type: "number",
+                        birthDate: {
+                          type: "string",
                         },
                         gender: {
                           type: "string"
@@ -68,7 +68,7 @@ userRouter.post(
                           required: ["name"]
                         }
                       },
-                      required: ["firstName", "lastName", "weight", "age", "gender", "address", "chessPlatform", "fightClub", "email", "password"]
+                      required: ["firstName", "lastName", "weight", "birthDate", "gender", "address", "chessPlatform", "fightClub", "email", "password"]
                   }
               }
           }

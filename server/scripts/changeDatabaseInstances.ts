@@ -4,15 +4,16 @@ import { IUser } from 'types';
 const ENDPOINT_PATH = '/user';
 
 const updateInstance = async (user: IUser) => {
-  const res = await fetch('http://localhost:3001/api' + ENDPOINT_PATH, {
+  // @ts-ignore
+  const { birthDate } = user;
+  const res = await fetch(`http://localhost:3001/api${ENDPOINT_PATH}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       _id: user._id,
-      // @ts-ignore
-      weight: 60,
+      birthDate: new Date(birthDate),
     }),
   });
   const updated = await res.json();
@@ -21,15 +22,18 @@ const updateInstance = async (user: IUser) => {
 };
 
 export const changeDatabaseInstances = async () => {
-  const res = await fetch('http://localhost:3001/api' + ENDPOINT_PATH + 's');
+  const res = await fetch(`http://localhost:3001/api${ENDPOINT_PATH}s`);
   const instances = await res.json();
 
   console.log('instances: ', instances);
 
   try {
-    for (const instance of instances) {
-      await updateInstance(instance);
-    }
+    const promises = instances.items.map((instance: IUser) =>
+      updateInstance(instance)
+    );
+
+    await Promise.all(promises);
+
     console.info('Update Successful');
   } catch (err) {
     console.error('Error due to update: ', err);
