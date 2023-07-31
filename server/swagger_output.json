@@ -315,8 +315,8 @@
                   "weight": {
                     "type": "number"
                   },
-                  "age": {
-                    "type": "number"
+                  "birthDate": {
+                    "type": "string"
                   },
                   "gender": {
                     "type": "string"
@@ -363,7 +363,7 @@
                   "firstName",
                   "lastName",
                   "weight",
-                  "age",
+                  "birthDate",
                   "gender",
                   "address",
                   "chessPlatform",
@@ -8252,7 +8252,7 @@
           "lastName",
           "fullName",
           "role",
-          "age",
+          "birthDate",
           "gender",
           "ratingNumber",
           "weight"
@@ -8309,8 +8309,9 @@
               "admin"
             ]
           },
-          "age": {
-            "type": "number"
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
           },
           "socialNetworks": {
             "type": "object",
@@ -8806,7 +8807,7 @@
           "lastName",
           "fullName",
           "role",
-          "age",
+          "birthDate",
           "gender",
           "ratingNumber",
           "weight"
@@ -8863,8 +8864,9 @@
               "admin"
             ]
           },
-          "age": {
-            "type": "number"
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
           },
           "socialNetworks": {
             "type": "object",
