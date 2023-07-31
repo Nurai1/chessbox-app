@@ -64,10 +64,10 @@ export const ForgotPasswordPage = (): ReactElement => {
 				</div>
 				{isPasswordLinkSent && (
 					<div className='mt-2'>
-						<Alert type='success' subtitle='Link to change password was sent to your email.' />
+						<Alert type='success' subtitle='Link to change password was sent to your email. Link active 5 minutes.' />
 					</div>
 				)}
-				{passwordError && (
+				{passwordError && !isPasswordLinkSent && (
 					<div className='mt-2'>
 						<Alert subtitle={passwordError} />
 					</div>
