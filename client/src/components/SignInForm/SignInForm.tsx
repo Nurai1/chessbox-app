@@ -7,14 +7,10 @@ import { signInUser } from 'src/store/slices/userSlice'
 import { Link } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
 import { SignInDataSchema } from 'src/types'
-
-type SingInFormData = {
-	email?: string
-	password?: string
-}
+import { FormData } from 'src/types/formData'
 
 export const SignInForm = (): ReactElement => {
-	const [formData, setFormData] = useState<SingInFormData>({
+	const [formData, setFormData] = useState<FormData>({
 		email: '',
 		password: ''
 	})
@@ -37,6 +33,7 @@ export const SignInForm = (): ReactElement => {
 		if (Object.keys(errors).length) {
 			setValidateErrors(errors)
 		} else {
+			setValidateErrors({})
 			dispatch(signInUser(formData as SignInDataSchema))
 		}
 	}
@@ -45,7 +42,7 @@ export const SignInForm = (): ReactElement => {
 		<main className='flex grow flex-col bg-[#FDFDFD] py-[20px]'>
 			<form className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
 				<h1 className='mb-[8px] text-center text-2xl font-medium'>Sign In</h1>
-				<div className='grid gap-[16px]'>
+				<div className='grid w-full gap-[18px]'>
 					<Input
 						onChange={onChange}
 						value={formData?.email}
@@ -67,7 +64,7 @@ export const SignInForm = (): ReactElement => {
 						onShowPassword={() => setShowPassword(!showPassword)}
 						showPasswordIcon
 					/>
-					<Button loading={isAuthRequestPending} classes='font-medium w-full' onClick={handleSubmit}>
+					<Button loading={isAuthRequestPending} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
 						Sign In
 					</Button>
 				</div>
@@ -75,15 +72,18 @@ export const SignInForm = (): ReactElement => {
 					<Link to={`/${AppRoute.SignUp}`} className='underline transition hover:opacity-70'>
 						Sign Up
 					</Link>
-					<button
-						type='button'
+					<Link
+						to={`/${AppRoute.ForgotPassword}`}
 						className='h-auto p-0 text-sm font-thin underline transition hover:opacity-70'
-						onClick={() => ''}
 					>
 						Forgot Password
-					</button>
+					</Link>
 				</div>
-				{authError && <Alert subtitle={authError} />}
+				{authError && (
+					<div className='mt-2'>
+						<Alert subtitle={authError} />
+					</div>
+				)}
 			</form>
 		</main>
 	)

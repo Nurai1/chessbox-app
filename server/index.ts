@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerFile from './swagger_output.json';
 import { User } from './models/index';
@@ -23,7 +24,8 @@ const HOST = ENVIRONMENT === 'development' ? 'localhost' : '0.0.0.0';
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+if (ENVIRONMENT === 'development')
+  app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(
   cors({
@@ -49,13 +51,13 @@ mongoose.connect(remoteMongoUri ?? '', (err) => {
 
 const { connection } = mongoose;
 connection.once('open', () => {
-  const mongo_env = remoteMongoUri?.slice(
-    remoteMongoUri?.lastIndexOf('mongodb.net/') + 'mongodb.net/'.length,
-    remoteMongoUri?.lastIndexOf('?retryWrites=true&w=majority')
+  const mongoEnv = remoteMongoUri?.slice(
+    remoteMongoUri.lastIndexOf('mongodb.net/') + 'mongodb.net/'.length,
+    remoteMongoUri.lastIndexOf('?retryWrites=true&w=majority')
   );
   console.log(
     'MongoDB database connection established successfully on mongo env: ',
-    mongo_env
+    mongoEnv
   );
 });
 
@@ -94,7 +96,8 @@ app.use('/api', competitionRouter);
 
 app.use('/api', userRouter);
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+app.use((err: any, req: Request, res: Response) => {
+  console.error('ERROR STACK:');
   console.error(err.stack);
   res.status(500).send({ error: err.message });
 });

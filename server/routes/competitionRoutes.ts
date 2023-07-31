@@ -244,8 +244,14 @@ competitionRouter.patch(
           required: true,
           content: {
               "application/json": {
-                  schema: {
-                    zoomLink: { type: "string" },
+                    schema: {
+                      type: "object",
+                      properties: {
+                        zoomLink: {  
+                          type: "string",
+                        },
+                      },
+                      required: ["zoomLink"]
                   }
               },
           }

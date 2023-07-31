@@ -122,6 +122,56 @@ userRouter.post(
   controllerErrorHandler(UserController.login)
 );
 
+userRouter.patch(
+  '/user/changePassword',
+  /*	#swagger.requestBody = {
+          required: true,
+          content: {
+              "application/json": {
+                  schema: {
+                      type: "object",
+                      properties: {
+                        email: {  
+                          type: "string",
+                        },
+                        newPassword: {  
+                          type: "string",
+                        },
+                        passwordResetCode: {  
+                          type: "number",
+                        },
+                      },
+                      required: ["email", "newPassword", "passwordResetCode"]
+                  }
+              },
+          }
+      } 
+    */
+  controllerErrorHandler(UserController.changePassword)
+);
+
+userRouter.post(
+  '/user/forgotPassword',
+  /*	#swagger.requestBody = {
+          required: true,
+          content: {
+              "application/json": {
+                  schema: {
+                      type: "object",
+                      properties: {
+                        email: {  
+                          type: "string",
+                        },
+                      },
+                      required: ["email"]
+                  }
+              },
+          }
+      } 
+    */
+  controllerErrorHandler(UserController.forgotPassword)
+);
+
 userRouter.get(
   '/user/getCurrentUser',
   /* #swagger.security = [{
@@ -230,6 +280,9 @@ userRouter.post(
 
 userRouter.patch(
   '/user/currentUser',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
   /*	#swagger.requestBody = {
           required: true,
           content: {

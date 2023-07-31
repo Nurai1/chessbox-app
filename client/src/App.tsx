@@ -8,6 +8,10 @@ import { CompetitionPage } from 'src/routes/CompetitionPage'
 import { RatingPage } from 'src/routes/RatingPage'
 import { SignUpPage } from 'src/routes/SignUpPage'
 import { SignInPage } from 'src/routes/SignInPage'
+import { EditProfilePage } from 'src/routes/EditProfilePage'
+import { ForgotPasswordPage } from 'src/routes/ForgotPasswordPage'
+import { ChangePasswordPage } from 'src/routes/ChangePasswordPage'
+import { PrivateRoute } from 'src/components/PrivateRoute'
 import { useAppDispatch } from 'src/hooks/redux'
 import { checkAuth } from 'src/store/slices/userSlice'
 
@@ -31,6 +35,16 @@ const App = () => {
 					<Route element={<RatingPage />} path={AppRoute.Rating} />
 					<Route element={<SignUpPage />} path={AppRoute.SignUp} />
 					<Route element={<SignInPage />} path={AppRoute.SignIn} />
+					<Route
+						path={AppRoute.EditProfile}
+						element={
+							<PrivateRoute>
+								<EditProfilePage />
+							</PrivateRoute>
+						}
+					/>
+					<Route element={<ForgotPasswordPage />} path={AppRoute.ForgotPassword} />
+					<Route element={<ChangePasswordPage />} path={AppRoute.ChangePassword} />
 					<Route element={<Route404 />} path={AppRoute.NotFound} />
 				</Routes>
 			</HashRouter>
