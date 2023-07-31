@@ -8,6 +8,7 @@ type ButtonPropsType = {
 	type?: 'error' | 'success'
 	title?: string
 	subtitle?: string
+	classes?: string
 }
 
 export const TYPE_TO_ICON_MAP = {
@@ -32,10 +33,10 @@ const alert = tv({
 	}
 })
 
-export const Alert: FC<ButtonPropsType> = ({ subtitle, title, type = 'error' }) => {
+export const Alert: FC<ButtonPropsType> = ({ subtitle, title, type = 'error', classes }) => {
 	const Icon = TYPE_TO_ICON_MAP[type]
 	return (
-		<div className={twMerge('mt-auto flex w-full gap-5 rounded-md p-4', alert({ bg: type }))}>
+		<div className={twMerge('mt-auto flex w-full gap-5 rounded-md p-4', alert({ bg: type }), classes)}>
 			<div className='mt-[3px]'>{Icon}</div>
 			<div className='text-left'>
 				<div className={twMerge('text-lg font-semibold leading-none', alert({ title: type }))}>{title}</div>

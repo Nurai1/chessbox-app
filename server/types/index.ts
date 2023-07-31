@@ -34,6 +34,7 @@ export interface IUser {
   fightClub: { name: string };
   ratingNumber: number;
   competition: PopulatedDoc<ICompetition & Document>;
+  passwordResetCode: number | null;
   currentGroupId?: string;
   competitionsHistory: {
     competitionId: string;
