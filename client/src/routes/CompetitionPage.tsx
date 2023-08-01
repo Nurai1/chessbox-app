@@ -192,7 +192,11 @@ export const CompetitionPage = (): ReactElement => {
 					<>
 						{!participants && <Loader classes='h-full' />}
 						{participants?.length === 0 && <p>No participants yet</p>}
-						{participantsTable && <TableBody rows={participantsTable} />}
+						{participantsTable && (
+							<div className='p-6 md:py-6 md:px-[1.875rem]'>
+								<TableBody rows={participantsTable} />
+							</div>
+						)}
 					</>
 				}
 			/>

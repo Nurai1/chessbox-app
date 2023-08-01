@@ -1,8 +1,8 @@
 import { ReactElement, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Input, Select, Button, Alert } from 'src/ui'
-import { validator } from 'src/helpers/validator'
-import { validatorConfigSingUp } from 'src/helpers/validatorConfigSingUp'
+import { validator } from 'src/helpers/validation/validator'
+import { validatorConfigSingUp } from 'src/helpers/validation/validatorConfigSingUp'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { signUpUser } from 'src/store/slices/userSlice'
 import { AppRoute } from 'src/constants/appRoute'
@@ -15,7 +15,7 @@ export const SignUpForm = (): ReactElement => {
 		lastName: '',
 		weight: '',
 		gender: '',
-		age: '',
+		birthDate: '',
 		fightClub: '',
 		country: '',
 		city: '',
@@ -58,11 +58,15 @@ export const SignUpForm = (): ReactElement => {
 						name: formData[item] ?? ''
 					}
 					break
-				case 'age':
 				case 'weight':
 					return {
 						...acc,
 						[item]: Number(formData[item])
+					}
+				case 'birthDate':
+					return {
+						...acc,
+						[item]: `${formData[item]}Z`
 					}
 				case 'passwordConfirm':
 					break
@@ -135,13 +139,12 @@ export const SignUpForm = (): ReactElement => {
 					/>
 					<Input
 						onChange={onChange}
-						value={formData?.age?.toString()}
-						label='Age'
-						name='age'
-						placeholder='Age'
+						value={formData?.birthDate?.toString()}
+						label='Birthday'
+						name='birthDate'
+						placeholder='DD.MM.YYYY'
 						classes='h-[48px]'
-						type='number'
-						validationErrorText={validateErrors?.age}
+						validationErrorText={validateErrors?.birthDate}
 					/>
 					<Input
 						onChange={onChange}

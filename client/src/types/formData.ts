@@ -3,7 +3,7 @@ export type FormData = {
 	lastName?: string
 	weight?: string
 	gender?: string
-	age?: string
+	birthDate?: string
 	fightClub?: string
 	country?: string
 	city?: string
