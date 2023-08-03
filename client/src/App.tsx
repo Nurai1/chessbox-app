@@ -36,6 +36,7 @@ const App = () => {
 							<Route
 								path={AppRoute.JudgeChoice}
 								element={
+								// Todo. Allow access only for role 'main_judge'
 									<PrivateRoute>
 										<JudgeChoice />
 									</PrivateRoute>
