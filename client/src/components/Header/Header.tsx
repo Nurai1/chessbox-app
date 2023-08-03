@@ -1,8 +1,9 @@
 import { ReactElement, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, NavLink } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { useWindowSize } from 'usehooks-ts'
 import { Burger, Modal } from 'src/ui'
+import { ReactComponent as Logo } from 'src/assets/logo.svg'
 import { UserMenu } from 'src/components/UserMenu'
 import { logout } from 'src/store/slices/userSlice'
 import { BreakPoint } from 'src/constants/breakPoints'
@@ -27,34 +28,66 @@ export const Header = (): ReactElement => {
 		}
 	}
 
+	const activeLink = ({ isActive }: { isActive: boolean }) => (isActive ? { textDecoration: 'underline' } : {})
+
 	return (
 		<>
 			<header className='border-b border-zinc-300'>
-				<div className='container m-auto flex min-h-[3.75rem] items-center justify-between px-6 py-2 md:py-6 md:px-[1.875rem]'>
+				<div className='container m-auto flex h-[3.75rem] items-center justify-between px-6 py-1 md:h-20 md:px-[1.875rem]'>
 					{pathname === AppRoute.Root ? (
-						<span className='text-2xl'>Logo</span>
+						<Logo />
 					) : (
 						<Link to={AppRoute.Root} className='transition hover:opacity-70'>
-							Logo
+							<Logo className='w-[3.25rem]' />
 						</Link>
 					)}
 
 					{screenWidth < BreakPoint.Xl && <Burger onClick={handleMenuOpen} />}
-
-					{screenWidth >= BreakPoint.Xl && authorizationStatus === AuthorizationStatus.NoAuth && (
-						<Link to={AppRoute.SignIn} className='font-bold transition hover:opacity-70'>
-							Sign In
-						</Link>
-					)}
-
-					{screenWidth >= BreakPoint.Xl && authorizationStatus === AuthorizationStatus.Auth && (
+					{screenWidth >= BreakPoint.Xl && (
 						<div>
-							<Link to={AppRoute.EditProfile} className='mr-6 font-bold transition hover:opacity-70'>
-								Profile
-							</Link>
-							<button onClick={handleLogOut} type='button' className='font-bold transition hover:opacity-70'>
-								Sign Out
-							</button>
+							{authorizationStatus === AuthorizationStatus.NoAuth && (
+								<>
+									<NavLink
+										to={AppRoute.Rating}
+										className='mr-6 font-bold transition hover:opacity-70'
+										style={activeLink}
+									>
+										Rating
+									</NavLink>
+									<Link to={AppRoute.SignIn} className='font-bold transition hover:opacity-70'>
+										Sign In
+									</Link>
+								</>
+							)}
+
+							{authorizationStatus === AuthorizationStatus.Auth && (
+								<>
+									<NavLink
+										to={AppRoute.EditProfile}
+										className='mr-6 font-bold transition hover:opacity-70'
+										style={activeLink}
+									>
+										Profile
+									</NavLink>
+									<NavLink
+										to={AppRoute.Competitions}
+										className='mr-6 font-bold transition hover:opacity-70'
+										style={activeLink}
+									>
+										Competitions
+									</NavLink>
+									<NavLink
+										to={AppRoute.Rating}
+										className='mr-6 font-bold transition hover:opacity-70'
+										style={activeLink}
+									>
+										Rating
+									</NavLink>
+									<button onClick={handleLogOut} type='button' className='font-bold transition hover:opacity-70'>
+										Sign Out
+									</button>
+								</>
+							)}
 						</div>
 					)}
 				</div>
