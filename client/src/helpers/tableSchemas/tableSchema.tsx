@@ -1,7 +1,7 @@
 import { ReactComponent as MedalGold } from 'src/assets/medal-gold.svg'
 import { ReactComponent as MedalSilver } from 'src/assets/medal-silver.svg'
 import { ReactComponent as MedalBronze } from 'src/assets/medal-bronze.svg'
-import { UserSchema } from '../types'
+import { UserSchema } from 'src/types'
 
 export const ratingTableSchema = (tableData: UserSchema[]) => {
 	const renderMedal = (index: number) => {

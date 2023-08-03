@@ -1,4 +1,4 @@
-import { UserSchema } from '../types'
+import { UserSchema } from 'src/types'
 
 export const tableSchemaParticipants = (tableData: UserSchema[]) => {
 	return tableData.map(user => {

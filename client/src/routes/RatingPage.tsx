@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchUsers, clearUsers } from 'src/store/slices/usersSlice'
-import { ratingTableSchema } from '../helpers/tableSchema'
+import { ratingTableSchema } from 'src/helpers/tableSchemas/tableSchema'
 import { UsersTableWithTitle, UsersSearch } from '../components'
 import { TableWrapper, Loader } from '../ui'
 

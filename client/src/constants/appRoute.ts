@@ -9,5 +9,6 @@ export const AppRoute = {
 	EditProfile: 'edit-profile',
 	ForgotPassword: 'forgot-password',
 	ChangePassword: 'change-password',
+	JudgeChoice: 'judge-choice',
 	NotFound: '*'
 }
