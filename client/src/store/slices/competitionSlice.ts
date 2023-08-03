@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { CompetitionSchema, ErrorPayload, UserSchema } from 'src/types'
-import { getCompetitionByIdApi, getCompetitionParticipantsApi } from 'src/api/requests/competitions'
+import { CompetitionSchema, ErrorPayload, UserSchema, SetCompetitionJudgesSchema } from 'src/types'
+import { getCompetitionByIdApi, getCompetitionParticipantsApi, getCompetitionJudgesApi, setCompetitionJudgesApi } from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
 	const response = await getCompetitionByIdApi(id)
@@ -21,16 +21,43 @@ export const fetchCompetitionParticipants = createAsyncThunk(
 	}
 )
 
+export const fetchCompetitionJudges = createAsyncThunk(
+	'competition/Judges',
+	async (id: string, thunkApi) => {
+		const response = await getCompetitionJudgesApi(id)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return { competitionId: id, judges: response.data }
+	}
+)
+
+export const setCompetitionJudges = createAsyncThunk(
+	'competition/setCompetitionJudges',
+	async (data: SetCompetitionJudgesSchema, thunkApi) => {
+		const response = await setCompetitionJudgesApi(data)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
+
 export interface CompetitionState {
 	data: CompetitionSchema | null
 	participants: Record<string, UserSchema[] | null>
+	judges: Record<string, UserSchema[] | null>
 	loading: boolean
 	error?: string
+	setCompetitionJudgesSuccess?: boolean
+	setCompetitionJudgesError?: string
 }
 
 const initialState: CompetitionState = {
 	data: null,
 	participants: {},
+	judges: {},
 	loading: true
 }
 
@@ -63,6 +90,31 @@ export const competitionSlice = createSlice({
 		[fetchCompetitionParticipants.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.loading = false
 			state.error = action.payload.errorMessage
+		},
+		[fetchCompetitionJudges.fulfilled.type]: (
+			state,
+			action: PayloadAction<{ competitionId: string; judges: UserSchema[] }>
+		) => {
+			state.loading = false
+			state.judges[action.payload.competitionId] = action.payload.judges
+		},
+		[fetchCompetitionJudges.pending.type]: state => {
+			state.loading = true
+		},
+		[fetchCompetitionJudges.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.loading = false
+			state.error = action.payload.errorMessage
+		},
+		[setCompetitionJudges.fulfilled.type]: (state) => {
+			state.loading = false
+			state.setCompetitionJudgesSuccess = true
+		},
+		[setCompetitionJudges.pending.type]: state => {
+			state.loading = true
+		},
+		[setCompetitionJudges.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.loading = false
+			state.setCompetitionJudgesError = action.payload.errorMessage
 		}
 	}
 })
