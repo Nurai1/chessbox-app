@@ -32,8 +32,15 @@ const App = () => {
 					<Route path={AppRoute.Competitions}>
 						<Route index element={<CompetitionsPage />} />
 						<Route path={AppRoute.Competition}>
-							<Route index element={<CompetitionPage />}  />
-							<Route element={<JudgeChoice />} path={AppRoute.JudgeChoice} />
+							<Route index element={<CompetitionPage />} />
+							<Route
+								path={AppRoute.JudgeChoice}
+								element={
+									<PrivateRoute>
+										<JudgeChoice />
+									</PrivateRoute>
+								}
+							/>
 						</Route>
 					</Route>
 					<Route element={<RatingPage />} path={AppRoute.Rating} />
