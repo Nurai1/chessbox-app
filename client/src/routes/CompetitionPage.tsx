@@ -134,7 +134,7 @@ export const CompetitionPage = (): ReactElement => {
 							<h1 className='mb-[15px] text-2xl font-semibold lg:mb-[10px] xl:mb-[24px] xl:text-[54px] xl:font-bold xl:leading-[81px]'>
 								{competitionData.name}
 							</h1>
-							<p className='lg-[mb-[10px] mb-[15px] text-sm text-[#6C6A6C] xl:mb-[24px] xl:text-[32px] xl:font-medium xl:leading-[48px]'>
+							<p className='mb-[15px] text-sm text-[#6C6A6C] xl:mb-[24px] xl:text-[32px] xl:font-medium xl:leading-[48px]'>
 								{dateStart}
 							</p>
 							<div className='mb-[35px] flex flex-wrap gap-4 xl:mb-[64px]'>

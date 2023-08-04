@@ -3,9 +3,9 @@ import { twMerge } from 'tailwind-merge'
 import { ReactComponent as CheckMark } from 'src/assets/check-mark.svg'
 
 type CheckboxPropsType = {
-	title: string
 	name: string
 	onChange: (value?: boolean, name?: string) => void
+	title?: string
 	checked?: boolean
 	disabled?: boolean
 	classes?: string
