@@ -1,8 +1,8 @@
 import { ReactElement, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Input, Select, Button, Alert } from 'src/ui'
-import { validator } from 'src/helpers/validator'
-import { validatorConfigSingUp } from 'src/helpers/validatorConfigSingUp'
+import { validator } from 'src/helpers/validation/validator'
+import { validatorConfigSingUp } from 'src/helpers/validation/validatorConfigSingUp'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { signUpUser } from 'src/store/slices/userSlice'
 import { AppRoute } from 'src/constants/appRoute'
@@ -132,6 +132,7 @@ export const SignUpForm = (): ReactElement => {
 						placeholder='Select gender'
 						name='gender'
 						validationErrorText={validateErrors?.gender}
+						dropdownPlaceholder='Select gender'
 					/>
 					<Input
 						onChange={onChange}

@@ -3,7 +3,7 @@ import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
 import { ReactComponent as Persons } from 'src/assets/persons.svg'
 import { Button, HorizontalTabs, TableBody, TableWrapper, Tag, Timer, Loader, Checkbox } from '../ui'
 import { UsersTableWithTitle, CompetitionCard } from '../components'
-import { ratingTableSchema } from '../helpers/tableSchema'
+import { ratingTableSchema } from 'src/helpers/tableSchemas/tableSchema'
 import { usersMock, competitionsMock } from '../mock'
 
 const usersTable = ratingTableSchema(usersMock)
