@@ -86,3 +86,7 @@ export const calcTime = (params: { minutes: number; hours: number; days: number 
 }
 
 export const isPast = (time: string) => new Date(time).getTime() < new Date().getTime()
+
+export const getAge = (time: string) => {
+	return new Date().getFullYear() - new Date(time).getFullYear()
+}
