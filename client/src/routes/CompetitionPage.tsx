@@ -10,7 +10,7 @@ import { fetchCompetitionById, fetchCompetitionParticipants } from '../store/sli
 import { Loader, Tag, Timer, Button, Modal, TableBody } from '../ui'
 import { getFormattedDate, isPast } from '../helpers/datetime'
 import { AppRoute } from '../constants/appRoute'
-import { tableSchemaParticipants } from '../helpers/tableSchemaParticipants'
+import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()

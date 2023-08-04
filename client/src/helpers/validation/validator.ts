@@ -1,5 +1,5 @@
 /* eslint-disable guard-for-in, no-restricted-syntax */
-import { EMAIL_REGEX, PASSWORD_REGEX, DIGIT_REGEX } from 'src/helpers/formValidators'
+import { EMAIL_REGEX, PASSWORD_REGEX, DIGIT_REGEX } from 'src/helpers/validation/formValidators'
 
 type ValidationConfigType = Record<string, Record<string, Record<string, string>>>
 

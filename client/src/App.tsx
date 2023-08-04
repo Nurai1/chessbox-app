@@ -12,6 +12,7 @@ import { EditProfilePage } from 'src/routes/EditProfilePage'
 import { ForgotPasswordPage } from 'src/routes/ForgotPasswordPage'
 import { ChangePasswordPage } from 'src/routes/ChangePasswordPage'
 import { PrivateRoute } from 'src/components/PrivateRoute'
+import { JudgeAssignPage } from 'src/routes/JudgeAssignPage'
 import { useAppDispatch } from 'src/hooks/redux'
 import { checkAuth } from 'src/store/slices/userSlice'
 
@@ -30,7 +31,10 @@ const App = () => {
 					<Route element={<UILibrary />} path={AppRoute.UILibrary} />
 					<Route path={AppRoute.Competitions}>
 						<Route index element={<CompetitionsPage />} />
-						<Route element={<CompetitionPage />} path={AppRoute.Competition} />
+						<Route path={AppRoute.Competition}>
+							<Route index element={<CompetitionPage />} />
+							<Route element={<JudgeAssignPage />} path={AppRoute.JudgeAssign} />
+						</Route>
 					</Route>
 					<Route element={<RatingPage />} path={AppRoute.Rating} />
 					<Route element={<SignUpPage />} path={AppRoute.SignUp} />
