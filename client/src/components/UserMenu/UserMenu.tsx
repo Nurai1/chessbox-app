@@ -68,6 +68,16 @@ export const UserMenu: FC<UserMenuPropsType> = ({ onLinkClick, onLogoutClick }) 
 					</li>
 					<li className='py-2.5'>
 						<NavLink
+							to={AppRoute.Competitions}
+							className='py-1 transition hover:opacity-70'
+							style={activeLink}
+							onClick={onLinkClick}
+						>
+							Competitions
+						</NavLink>
+					</li>
+					<li className='py-2.5'>
+						<NavLink
 							to={AppRoute.Rating}
 							className='py-1 transition hover:opacity-70'
 							style={activeLink}
