@@ -14,6 +14,7 @@ import { ChangePasswordPage } from 'src/routes/ChangePasswordPage'
 import { PrivateRoute } from 'src/components/PrivateRoute'
 import { useAppDispatch } from 'src/hooks/redux'
 import { checkAuth } from 'src/store/slices/userSlice'
+import { MainLayout } from 'src/layouts'
 
 const App = () => {
 	const dispatch = useAppDispatch()
@@ -23,10 +24,10 @@ const App = () => {
 	}, [])
 
 	return (
-		<div className='relative flex h-screen min-h-screen flex-col overflow-x-hidden'>
-			<HashRouter>
-				<Routes>
-					<Route path={AppRoute.Root} element={<Navigate to={AppRoute.Competitions} replace />} />
+		<HashRouter>
+			<Routes>
+				<Route path={AppRoute.Root} element={<MainLayout />}>
+					<Route index element={<Navigate to={AppRoute.Competitions} replace />} />
 					<Route element={<UILibrary />} path={AppRoute.UILibrary} />
 					<Route path={AppRoute.Competitions}>
 						<Route index element={<CompetitionsPage />} />
@@ -46,9 +47,9 @@ const App = () => {
 					<Route element={<ForgotPasswordPage />} path={AppRoute.ForgotPassword} />
 					<Route element={<ChangePasswordPage />} path={AppRoute.ChangePassword} />
 					<Route element={<Route404 />} path={AppRoute.NotFound} />
-				</Routes>
-			</HashRouter>
-		</div>
+				</Route>
+			</Routes>
+		</HashRouter>
 	)
 }
 
