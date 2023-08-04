@@ -48,6 +48,13 @@ export const Header = (): ReactElement => {
 							{authorizationStatus === AuthorizationStatus.NoAuth && (
 								<>
 									<NavLink
+										to={AppRoute.Competitions}
+										className='mr-6 font-bold transition hover:opacity-70'
+										style={activeLink}
+									>
+										Competitions
+									</NavLink>
+									<NavLink
 										to={AppRoute.Rating}
 										className='mr-6 font-bold transition hover:opacity-70'
 										style={activeLink}
