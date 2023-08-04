@@ -1,8 +1,8 @@
 import { ReactElement, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
-import { validator } from 'src/helpers/validator'
-import { validatorConfigChangePassword } from 'src/helpers/validatorConfigChangePassword'
+import { validator } from 'src/helpers/validation/validator'
+import { validatorConfigChangePassword } from 'src/helpers/validation/validatorConfigChangePassword'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { changePassword } from 'src/store/slices/userSlice'
 import { Alert, Button, Input } from 'src/ui'
@@ -83,7 +83,7 @@ export const ChangePasswordPage = (): ReactElement => {
 						Sign In
 					</Link>
 				</div>
-				{passwordChanged && (
+				{passwordChanged && !passwordError && (
 					<div className='mt-2'>
 						<Alert type='success' subtitle='Your password has been changed.' />
 					</div>
