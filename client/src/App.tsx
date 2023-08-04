@@ -11,6 +11,7 @@ import { SignInPage } from 'src/routes/SignInPage'
 import { EditProfilePage } from 'src/routes/EditProfilePage'
 import { ForgotPasswordPage } from 'src/routes/ForgotPasswordPage'
 import { ChangePasswordPage } from 'src/routes/ChangePasswordPage'
+import { JudgeChoice } from 'src/routes/JudgeChoice'
 import { PrivateRoute } from 'src/components/PrivateRoute'
 import { JudgeAssignPage } from 'src/routes/JudgeAssignPage'
 import { useAppDispatch } from 'src/hooks/redux'
@@ -34,6 +35,15 @@ const App = () => {
 						<Route path={AppRoute.Competition}>
 							<Route index element={<CompetitionPage />} />
 							<Route element={<JudgeAssignPage />} path={AppRoute.JudgeAssign} />
+							<Route
+								path={AppRoute.JudgeChoice}
+								element={
+								// Todo. Allow access only for role 'main_judge'
+									<PrivateRoute>
+										<JudgeChoice />
+									</PrivateRoute>
+								}
+							/>
 						</Route>
 					</Route>
 					<Route element={<RatingPage />} path={AppRoute.Rating} />
