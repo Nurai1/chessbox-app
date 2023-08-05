@@ -99,6 +99,15 @@ export const SignUpForm = (): ReactElement => {
 				<div className='grid gap-[18px]'>
 					<Input
 						onChange={onChange}
+						value={formData?.email}
+						label='Email'
+						name='email'
+						placeholder='Enter Email'
+						classes='h-[48px]'
+						validationErrorText={validateErrors?.email}
+					/>
+					<Input
+						onChange={onChange}
 						value={formData?.firstName}
 						label='First Name'
 						name='firstName'
@@ -172,15 +181,6 @@ export const SignUpForm = (): ReactElement => {
 						placeholder='Enter City'
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.city}
-					/>
-					<Input
-						onChange={onChange}
-						value={formData?.email}
-						label='Email'
-						name='email'
-						placeholder='Enter Email'
-						classes='h-[48px]'
-						validationErrorText={validateErrors?.email}
 					/>
 					<Input
 						onChange={onChange}
