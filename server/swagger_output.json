@@ -315,8 +315,8 @@
                   "weight": {
                     "type": "number"
                   },
-                  "age": {
-                    "type": "number"
+                  "birthDate": {
+                    "type": "string"
                   },
                   "gender": {
                     "type": "string"
@@ -363,7 +363,7 @@
                   "firstName",
                   "lastName",
                   "weight",
-                  "age",
+                  "birthDate",
                   "gender",
                   "address",
                   "chessPlatform",
@@ -2286,6 +2286,250 @@
         ]
       }
     },
+    "/api/allJudges": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/user/{id}/nearestPair": {
       "get": {
         "tags": [
@@ -3403,6 +3647,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -3417,6 +3665,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -3431,6 +3683,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -3661,6 +3917,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -3675,6 +3935,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -3689,6 +3953,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -3929,6 +4197,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -3943,6 +4215,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -3957,6 +4233,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -4192,6 +4472,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -4206,6 +4490,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -4220,6 +4508,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -4443,6 +4735,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -4457,6 +4753,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -4471,6 +4771,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -4692,6 +4996,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -4706,6 +5014,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -4720,6 +5032,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -4968,6 +5284,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -4982,6 +5302,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -4996,6 +5320,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -5246,6 +5574,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -5260,6 +5592,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -5274,6 +5610,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -5528,6 +5868,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -5542,6 +5886,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -5556,6 +5904,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -5776,6 +6128,325 @@
         }
       }
     },
+    "/api/competition/setJudgesToPairs": {
+      "patch": {
+        "tags": [
+          "Competitions"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competition"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competition"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "judgesByGroups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "pairs": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "judgeId": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "judgeId"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "pairs"
+                      ]
+                    }
+                  },
+                  "competitionId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "competitionId"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/competition/{id}/setCompetitionGroupsOrders": {
       "patch": {
         "tags": [
@@ -5818,6 +6489,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -5832,6 +6507,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -5846,6 +6525,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -6104,6 +6787,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -6118,6 +6805,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -6132,6 +6823,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -6369,6 +7064,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -6383,6 +7082,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -6397,6 +7100,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -6647,6 +7354,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -6661,6 +7372,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -6675,6 +7390,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -6934,6 +7653,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -6948,6 +7671,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -6962,6 +7689,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -7194,6 +7925,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -7208,6 +7943,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -7222,6 +7961,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -7489,6 +8232,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -7503,6 +8250,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -7517,6 +8268,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -7761,6 +8516,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -7775,6 +8534,10 @@
                     "error": {
                       "type": "string",
                       "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
                     }
                   },
                   "xml": {
@@ -7789,6 +8552,10 @@
                 "error": {
                   "type": "string",
                   "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "xml": {
@@ -8252,7 +9019,7 @@
           "lastName",
           "fullName",
           "role",
-          "age",
+          "birthDate",
           "gender",
           "ratingNumber",
           "weight"
@@ -8309,8 +9076,9 @@
               "admin"
             ]
           },
-          "age": {
-            "type": "number"
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
           },
           "socialNetworks": {
             "type": "object",
@@ -8806,7 +9574,7 @@
           "lastName",
           "fullName",
           "role",
-          "age",
+          "birthDate",
           "gender",
           "ratingNumber",
           "weight"
@@ -8863,8 +9631,9 @@
               "admin"
             ]
           },
-          "age": {
-            "type": "number"
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
           },
           "socialNetworks": {
             "type": "object",

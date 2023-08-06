@@ -28,7 +28,7 @@ export interface IUser {
   socialNetworks?: {
     whatsUp?: string;
   };
-  age: number;
+  birthDate: Date;
   gender: GenderType;
   address: Address;
   fightClub: { name: string };

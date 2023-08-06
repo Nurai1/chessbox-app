@@ -1,5 +1,6 @@
 import { PairSchema, UserSchema } from 'src/types'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
+import { getAge } from './datetime'
 
 export type PairType = {
 	blackParticipantData?: UserSchema
@@ -56,7 +57,7 @@ export const tableSchemaPairs = (tableData: PairSchema[], participants: UserSche
 								<div className='w-[45%]'>
 									<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
 									<p className='text-xs xl:text-base'>
-										{pair.blackParticipantData?.age} age, {pair.blackParticipantData?.weight} kg
+										{getAge(pair.blackParticipantData?.birthDate)} age, {pair.blackParticipantData?.weight} kg
 									</p>
 								</div>
 								<span className='mx-[2%] w-[6%] text-sm text-black xl:text-base'>VS</span>
@@ -64,7 +65,7 @@ export const tableSchemaPairs = (tableData: PairSchema[], participants: UserSche
 									<div className='ml-auto w-fit'>
 										<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
 										<p className=' text-xs xl:text-base'>
-											{pair.whiteParticipantData?.age} age, {pair.whiteParticipantData?.weight} kg
+											{getAge(pair.whiteParticipantData?.birthDate)} age, {pair.whiteParticipantData?.weight} kg
 										</p>
 									</div>
 								</div>

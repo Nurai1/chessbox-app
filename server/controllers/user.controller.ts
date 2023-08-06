@@ -4,9 +4,11 @@ import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
+import dayjs from 'dayjs';
+import { getUTCFormattedDate } from '../utils/datetime';
 import { User } from '../models/index';
 import ac from '../roles';
-import { RESOURCES, ACTIONS } from '../constants';
+import { RESOURCES, ACTIONS, ROLES } from '../constants';
 import { ICompetition } from '../types/index';
 import { errorUniqueCheck } from '../utils/errors';
 import {
@@ -238,6 +240,12 @@ export const allowIfLoggedin = async (
   }
 };
 
+export const getAllJudges = async (req: Request, res: Response) => {
+  const judges = await User.find({ role: ROLES.JUDGE });
+
+  res.send(judges);
+};
+
 export const getUsers = async (
   req: Request<
     any,
@@ -280,13 +288,22 @@ export const getUsers = async (
     }
     return null;
   };
+  const currentYear = dayjs().year();
+  const currentYearDate = dayjs(0).set('year', currentYear);
+
+  const ageFromDate = getUTCFormattedDate(
+    currentYearDate.subtract(Number(ageFrom), 'year')
+  );
+  const ageToDate = getUTCFormattedDate(
+    currentYearDate.subtract(Number(ageTo), 'year')
+  );
 
   const allFilters = [
     ageTo && {
-      age: { $lte: Number(ageTo) },
+      birthDate: { $gte: new Date(ageToDate) },
     },
     ageFrom && {
-      age: { $gte: Number(ageFrom) },
+      birthDate: { $lte: new Date(ageFromDate) },
     },
     weightTo && {
       weight: { $lte: Number(weightTo) },
@@ -310,7 +327,7 @@ export const getUsers = async (
         }
       : {};
 
-  let usersQuery = User.find(filter).populate('competition');
+  let usersQuery = User.find(filter);
   const usersCount = await User.count(filter);
 
   const lim = Number(limit);

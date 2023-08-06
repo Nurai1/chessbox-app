@@ -5,6 +5,7 @@ import { ReactComponent as RookWhite } from 'src/assets/rook-white.svg'
 import { ReactComponent as RookBlack } from 'src/assets/rook-black.svg'
 import { ReactComponent as Dumbbell } from 'src/assets/dumbbell.svg'
 import { PairType } from 'src/helpers/tableSchemaPairs'
+import { getAge } from 'src/helpers/datetime'
 
 type MatchInfoPropsType = {
 	pairData?: PairType
@@ -65,7 +66,7 @@ export const PairInfo: FC<MatchInfoPropsType> = ({ pairData, zoomLink, classes }
 					</a>
 					<p className='flex w-fit items-center gap-[11px] text-xs text-[#6C6A6C] xl:text-2xl xl:font-semibold'>
 						<Dumbbell className='xl:h-[34px] xl:min-w-[34px]' />
-						{pairData?.whiteParticipantData?.age} age, {pairData?.whiteParticipantData?.weight} kg
+						{getAge(pairData?.whiteParticipantData?.birthDate)} age, {pairData?.whiteParticipantData?.weight} kg
 					</p>
 				</div>
 				<span className='mx-[2%] w-[6%] font-bold xl:text-4xl'>VS</span>
@@ -87,7 +88,7 @@ export const PairInfo: FC<MatchInfoPropsType> = ({ pairData, zoomLink, classes }
 						</a>
 						<p className='flex w-fit items-center gap-[11px] text-xs text-[#6C6A6C] xl:text-2xl xl:font-semibold'>
 							<Dumbbell className='xl:h-[34px] xl:min-w-[34px]' />
-							{pairData?.blackParticipantData?.age} age, {pairData?.blackParticipantData?.weight} kg
+							{getAge(pairData?.blackParticipantData?.birthDate)} age, {pairData?.blackParticipantData?.weight} kg
 						</p>
 					</div>
 				</div>

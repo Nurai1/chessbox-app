@@ -267,22 +267,24 @@ export const CompetitionPage = (): ReactElement => {
 					</>
 				)}
 			</main>
-			{!isRegistrationClosed && (
-				<Modal
-					isOpen={isSideMenuOpen}
-					onClose={handleSideMenuOpen}
-					title='Participants'
-					modalType='sideMenu'
-					bottomGradient
-					content={
-						<>
-							{!participants && <Loader classes='h-full' />}
-							{participants?.length === 0 && <p>No participants yet</p>}
-							{participantsTable && <TableBody rows={participantsTable} />}
-						</>
-					}
-				/>
-			)}
+			<Modal
+				isOpen={isSideMenuOpen}
+				onClose={handleSideMenuOpen}
+				title='Participants'
+				modalType='sideMenu'
+				bottomGradient
+				content={
+					<>
+						{!participants && <Loader classes='h-full' />}
+						{participants?.length === 0 && <p>No participants yet</p>}
+						{participantsTable && (
+							<div className='p-6 md:py-6 md:px-[1.875rem]'>
+								<TableBody rows={participantsTable} />
+							</div>
+						)}
+					</>
+				}
+			/>
 		</>
 	)
 }
