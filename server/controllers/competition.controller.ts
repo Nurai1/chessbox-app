@@ -73,6 +73,90 @@ export const setJudgesToCompetition = async (
   res.send(competition);
 };
 
+export const setJudgesToPairs = async (
+  req: Request<
+    any,
+    any,
+    {
+      judgesByGroups: {
+        id: string;
+        pairs: { id: string; judgeId: string }[];
+      }[];
+      competitionId: string;
+    }
+  >,
+  res: Response
+) => {
+  if (!req.body) return res.sendStatus(400);
+
+  const {
+    body: { judgesByGroups, competitionId },
+  } = req;
+
+  const competition = await Competition.findById(competitionId).populate(
+    'judges'
+  );
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+  const judgesByIds = competition.judges.reduce(
+    (acc, judge) => ({ ...acc, [judge._id?.toString()]: judge }),
+    {}
+  );
+
+  const newGroups = competition.groups?.map((group) => {
+    const judgesGroup = judgesByGroups.find(
+      (g) => g.id === group._id?.toString()
+    );
+
+    if (!judgesGroup) {
+      res.status(400).send({
+        error: 'Not all groups provided in body.',
+        data: { groupId: group._id?.toString() },
+      });
+    }
+
+    // eslint-disable-next-line no-param-reassign
+    group.currentRoundPairs = group.currentRoundPairs?.map((pair) => {
+      const judgesPair = judgesGroup?.pairs.find(
+        (p) => p.id === pair._id?.toString()
+      );
+
+      if (!judgesPair) {
+        res.status(400).send({
+          error: 'Not all pairs provided in body.',
+          data: {
+            groupId: group._id?.toString(),
+            pairId: pair._id?.toString(),
+          },
+        });
+      }
+
+      if (judgesPair) {
+        if (!judgesByIds[judgesPair.judgeId]) {
+          res.status(400).send({
+            error: 'Judge provided do not connect to competition.',
+            data: {
+              groupId: group._id?.toString(),
+              pairId: pair._id?.toString(),
+              judgeId: judgesPair.judgeId,
+            },
+          });
+        }
+
+        // eslint-disable-next-line no-param-reassign
+        pair.judge = judgesByIds[judgesPair.judgeId];
+      }
+      return pair;
+    });
+    return group;
+  });
+
+  competition.groups = newGroups;
+
+  await competition.save();
+  res.send(competition);
+};
+
 export const startCompetition = async (
   req: Request<{ id: string }>,
   res: Response,
