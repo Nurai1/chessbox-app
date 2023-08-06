@@ -694,6 +694,82 @@ export interface paths {
 			}
 		}
 	}
+	'/api/allJudges': {
+		get: {
+			parameters: {
+				header?: {
+					'x-access-token'?: string
+				}
+			}
+			responses: {
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+	}
 	'/api/user/{id}/nearestPair': {
 		get: {
 			parameters: {

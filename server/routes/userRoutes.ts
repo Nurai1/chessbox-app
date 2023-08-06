@@ -1,5 +1,6 @@
 import express from 'express';
 
+import { allowIfLoggedin, grantAccess } from '../controllers/user.controller';
 import { UserController } from '../controllers/index';
 import { controllerErrorHandler } from '../utils/controllerErrorHandler';
 import { RESOURCES, ACTIONS } from '../constants';
@@ -243,6 +244,13 @@ userRouter.get(
             schema: { items: [{ $ref: '#/definitions/User' }], total: 0 }
     } */
   controllerErrorHandler(UserController.getUsers)
+);
+
+userRouter.get(
+  '/allJudges',
+  allowIfLoggedin,
+  grantAccess(ACTIONS.readAny, RESOURCES.USER),
+  controllerErrorHandler(UserController.getAllJudges)
 );
 
 userRouter.get(
