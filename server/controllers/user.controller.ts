@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { getUTCFormattedDate } from '../utils/datetime';
 import { User } from '../models/index';
 import ac from '../roles';
-import { RESOURCES, ACTIONS } from '../constants';
+import { RESOURCES, ACTIONS, ROLES } from '../constants';
 import { ICompetition } from '../types/index';
 import { errorUniqueCheck } from '../utils/errors';
 import {
@@ -240,6 +240,12 @@ export const allowIfLoggedin = async (
   }
 };
 
+export const getAllJudges = async (req: Request, res: Response) => {
+  const judges = await User.find({ role: ROLES.JUDGE });
+
+  res.send(judges);
+};
+
 export const getUsers = async (
   req: Request<
     any,
@@ -321,7 +327,7 @@ export const getUsers = async (
         }
       : {};
 
-  let usersQuery = User.find(filter).populate('competition');
+  let usersQuery = User.find(filter);
   const usersCount = await User.count(filter);
 
   const lim = Number(limit);
