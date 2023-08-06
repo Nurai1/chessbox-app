@@ -1,3 +1,4 @@
+import { getAge } from 'src/helpers/datetime'
 import { UserSchema } from 'src/types'
 
 export const tableSchemaParticipants = (tableData: UserSchema[]) => {
@@ -12,7 +13,7 @@ export const tableSchemaParticipants = (tableData: UserSchema[]) => {
 								{user.address?.country}
 								{user.address?.country ? ',' : ''} {user.address?.city}
 							</p>
-							<p className='text-[#6C6A6C]'>{`${user.age} age, ${user.weight} kg`}</p>
+							<p className='text-[#6C6A6C]'>{`${getAge(user.birthDate)} age, ${user.weight} kg`}</p>
 						</div>
 					),
 					classes: '!grow-[2] md:!grow !py-[13px]'

@@ -1,8 +1,8 @@
 import { ReactElement, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
-import { validator } from 'src/helpers/validator'
-import { validatorConfigForgotPassword } from 'src/helpers/validatorConfigForgotPassword'
+import { validator } from 'src/helpers/validation/validator'
+import { validatorConfigForgotPassword } from 'src/helpers/validation/validatorConfigForgotPassword'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { forgotPassword } from 'src/store/slices/userSlice'
 import { Alert, Button, Input } from 'src/ui'
@@ -64,10 +64,10 @@ export const ForgotPasswordPage = (): ReactElement => {
 				</div>
 				{isPasswordLinkSent && (
 					<div className='mt-2'>
-						<Alert type='success' subtitle='Link to change password was sent to your email.' />
+						<Alert type='success' subtitle='Link to change password was sent to your email. Link active 5 minutes.' />
 					</div>
 				)}
-				{passwordError && (
+				{passwordError && !isPasswordLinkSent && (
 					<div className='mt-2'>
 						<Alert subtitle={passwordError} />
 					</div>

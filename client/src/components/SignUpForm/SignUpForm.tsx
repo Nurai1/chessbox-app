@@ -1,8 +1,8 @@
 import { ReactElement, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Input, Select, Button, Alert } from 'src/ui'
-import { validator } from 'src/helpers/validator'
-import { validatorConfigSingUp } from 'src/helpers/validatorConfigSingUp'
+import { validator } from 'src/helpers/validation/validator'
+import { validatorConfigSingUp } from 'src/helpers/validation/validatorConfigSingUp'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { signUpUser } from 'src/store/slices/userSlice'
 import { AppRoute } from 'src/constants/appRoute'
@@ -15,7 +15,7 @@ export const SignUpForm = (): ReactElement => {
 		lastName: '',
 		weight: '',
 		gender: '',
-		age: '',
+		birthDate: '',
 		fightClub: '',
 		country: '',
 		city: '',
@@ -58,11 +58,15 @@ export const SignUpForm = (): ReactElement => {
 						name: formData[item] ?? ''
 					}
 					break
-				case 'age':
 				case 'weight':
 					return {
 						...acc,
 						[item]: Number(formData[item])
+					}
+				case 'birthDate':
+					return {
+						...acc,
+						[item]: `${formData[item]}Z`
 					}
 				case 'passwordConfirm':
 					break
@@ -93,6 +97,15 @@ export const SignUpForm = (): ReactElement => {
 			<form className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
 				<h1 className='mb-[8px] text-center text-2xl font-medium'>Sign Up</h1>
 				<div className='grid gap-[18px]'>
+					<Input
+						onChange={onChange}
+						value={formData?.email}
+						label='Email'
+						name='email'
+						placeholder='Enter Email'
+						classes='h-[48px]'
+						validationErrorText={validateErrors?.email}
+					/>
 					<Input
 						onChange={onChange}
 						value={formData?.firstName}
@@ -135,13 +148,12 @@ export const SignUpForm = (): ReactElement => {
 					/>
 					<Input
 						onChange={onChange}
-						value={formData?.age?.toString()}
-						label='Age'
-						name='age'
-						placeholder='Age'
+						value={formData?.birthDate?.toString()}
+						label='Birthday'
+						name='birthDate'
+						placeholder='DD.MM.YYYY'
 						classes='h-[48px]'
-						type='number'
-						validationErrorText={validateErrors?.age}
+						validationErrorText={validateErrors?.birthDate}
 					/>
 					<Input
 						onChange={onChange}
@@ -169,15 +181,6 @@ export const SignUpForm = (): ReactElement => {
 						placeholder='Enter City'
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.city}
-					/>
-					<Input
-						onChange={onChange}
-						value={formData?.email}
-						label='Email'
-						name='email'
-						placeholder='Enter Email'
-						classes='h-[48px]'
-						validationErrorText={validateErrors?.email}
 					/>
 					<Input
 						onChange={onChange}

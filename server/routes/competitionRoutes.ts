@@ -169,6 +169,50 @@ competitionRouter.patch(
 );
 
 competitionRouter.patch(
+  '/competition/setJudgesToPairs',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
+  /*	#swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                      type: "object",
+                      properties: {
+                        judgesByGroups: { type: "array", items: {
+                            type: "object",
+                            properties: {
+                              id: { type: "string" },
+                              pairs: { type: "array", items: {
+                                type: "object",
+                                properties: {
+                                  id: { type: "string" },
+                                  judgeId: { type: "string" },
+                                },
+                                required: ["id", "judgeId"]
+                              } },
+                            },
+                            required: ["id", "pairs"]
+                        } },
+                        competitionId: { type: "string" },
+                      },
+                      required: ["competitionId"]
+                    }  
+                },
+            }
+        } 
+    */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.setJudgesToPairs)
+);
+
+competitionRouter.patch(
   '/competition/:id',
   // #swagger.description = 'Редактировать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.'
   /*	#swagger.requestBody = {
@@ -366,7 +410,8 @@ routerMockForSwaggerGenerator.use(
             description: 'Client error.',
             schema: {
               error: "string",
-            }
+              data: {}
+            },
     } */
   /* #swagger.responses[401] = {
           description: 'Unauthorized error.',

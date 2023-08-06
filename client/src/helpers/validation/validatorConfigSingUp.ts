@@ -6,7 +6,7 @@ export const validatorConfigSingUp = {
 	},
 	lastName: {
 		isRequired: {
-			errorMessage: 'Second name is required'
+			errorMessage: 'Last name is required'
 		}
 	},
 	weight: {
@@ -25,15 +25,18 @@ export const validatorConfigSingUp = {
 			errorMessage: 'Gender is required'
 		}
 	},
-	age: {
+	birthDate: {
 		isRequired: {
-			errorMessage: 'Age is required'
+			errorMessage: 'Birthday is required'
 		},
-		isNumber: {
-			errorMessage: 'Age must be a number'
+		isDateValid: {
+			errorMessage: 'Enter correct date in DD.MM.YYYY. For example 10.07.1999'
+		},
+		isFuture: {
+			errorMessage: "Birthday can't be future"
 		},
 		maxAge: {
-			errorMessage: '99 max value'
+			errorMessage: '99 max age'
 		}
 	},
 	fightClub: {
