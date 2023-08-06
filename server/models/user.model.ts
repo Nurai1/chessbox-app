@@ -44,7 +44,7 @@ const userSchema = new Schema<IUser>(
       required: true,
       enum: ['participant', 'judge', 'chief_judge', 'admin'],
     },
-    age: { type: Number, required: true },
+    birthDate: { type: Date, required: true },
     socialNetworks: {
       whatsup: String,
     },

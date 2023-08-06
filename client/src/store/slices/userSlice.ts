@@ -3,7 +3,7 @@ import { changePasswordRequest, forgotPasswordRequest, signIn } from 'src/api/re
 import { signUp } from 'src/api/requests/signUp'
 import { editCurrentUser, getCurrentUser, getUserByIdApi } from 'src/api/requests/users'
 import { AuthorizationStatus } from 'src/constants/authorizationStatus'
-import { saveToken } from 'src/helpers/tokenLocalStorage'
+import { saveToken, dropToken } from 'src/helpers/tokenLocalStorage'
 import {
 	ChangePasswordDataSchema,
 	ErrorPayload,
@@ -113,6 +113,11 @@ export const currentUserSlice = createSlice({
 		resetAuthStatus: state => {
 			state.authLoading = false
 			state.authorizationStatus = AuthorizationStatus.NoAuth
+		},
+		logout: state => {
+			state.authorizationStatus = AuthorizationStatus.NoAuth
+			state.authorizedUser = null
+			dropToken()
 		}
 	},
 	extraReducers: {
@@ -127,6 +132,7 @@ export const currentUserSlice = createSlice({
 		[forgotPassword.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.passwordError = action.payload.errorMessage
 			state.isPasswordLinkSent = false
+			state.authLoading = false
 		},
 		[changePassword.pending.type]: state => {
 			state.authLoading = true
@@ -206,6 +212,6 @@ export const currentUserSlice = createSlice({
 	}
 })
 
-export const { resetAuthStatus } = currentUserSlice.actions
+export const { resetAuthStatus, logout } = currentUserSlice.actions
 
 export default currentUserSlice.reducer

@@ -1,5 +1,6 @@
 import express from 'express';
 
+import { allowIfLoggedin, grantAccess } from '../controllers/user.controller';
 import { UserController } from '../controllers/index';
 import { controllerErrorHandler } from '../utils/controllerErrorHandler';
 import { RESOURCES, ACTIONS } from '../constants';
@@ -31,8 +32,8 @@ userRouter.post(
                         weight: {
                           type: "number",
                         },
-                        age: {
-                          type: "number",
+                        birthDate: {
+                          type: "string",
                         },
                         gender: {
                           type: "string"
@@ -68,7 +69,7 @@ userRouter.post(
                           required: ["name"]
                         }
                       },
-                      required: ["firstName", "lastName", "weight", "age", "gender", "address", "chessPlatform", "fightClub", "email", "password"]
+                      required: ["firstName", "lastName", "weight", "birthDate", "gender", "address", "chessPlatform", "fightClub", "email", "password"]
                   }
               }
           }
@@ -243,6 +244,13 @@ userRouter.get(
             schema: { items: [{ $ref: '#/definitions/User' }], total: 0 }
     } */
   controllerErrorHandler(UserController.getUsers)
+);
+
+userRouter.get(
+  '/allJudges',
+  allowIfLoggedin,
+  grantAccess(ACTIONS.readAny, RESOURCES.USER),
+  controllerErrorHandler(UserController.getAllJudges)
 );
 
 userRouter.get(

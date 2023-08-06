@@ -8,7 +8,7 @@ export const Modal: FC<{
 	isOpen: boolean
 	onClose: () => void
 	content: ReactElement
-	title: ReactNode
+	title?: ReactNode
 	submitButton?: ReactElement
 	clearButton?: ReactElement
 	modalType?: 'regular' | 'sideMenu'
@@ -76,16 +76,16 @@ export const Modal: FC<{
 					ref={modalRef}
 					className={twMerge(
 						isOpen ? 'right-0' : 'right-[-100%]',
-						'inset absolute h-full w-full transition-all duration-500 lg:w-[516px] xl:w-[587px]'
+						'inset absolute z-30 h-full w-full transition-all duration-500 lg:w-[516px] xl:w-[587px]'
 					)}
 				>
 					<div
 						className={twMerge(
-							'flex h-full max-h-screen flex-col bg-white p-[24px_30px] lg:rounded-l-[24px] lg:border lg:shadow-[0px_16px_60px_0px_rgba(0,0,0,0.25)] xl:p-[24px_32px]',
+							'flex h-full max-h-screen flex-col bg-white lg:rounded-l-[24px] lg:border lg:shadow-[0px_16px_60px_0px_rgba(0,0,0,0.25)]',
 							bottomGradient && bottomGradientClass
 						)}
 					>
-						<div className='mb-[16px] flex justify-between lg:mb-[24px]'>
+						<div className='flex-center min-h-[3.75rem] px-6 py-2 md:py-6 md:px-[1.875rem]'>
 							<h2 className='text-2xl font-bold xl:text-4xl'>{title}</h2>
 							<button
 								type='button'
@@ -96,7 +96,7 @@ export const Modal: FC<{
 								<XmarkIconBig onClick={onClose} className='w-[20px] transition hover:opacity-70' />
 							</button>
 						</div>
-						<div className='grow overflow-y-auto scroll-custom'>{isOpen ? content : null}</div>
+						<div className='scroll-custom grow overflow-y-auto'>{isOpen ? content : null}</div>
 					</div>
 				</div>
 			)}

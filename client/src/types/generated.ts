@@ -14,7 +14,7 @@ export interface paths {
 						firstName: string
 						lastName: string
 						weight: number
-						age: number
+						birthDate: string
 						gender: string
 						chessPlatform: {
 							username: string
@@ -694,6 +694,82 @@ export interface paths {
 			}
 		}
 	}
+	'/api/allJudges': {
+		get: {
+			parameters: {
+				header?: {
+					'x-access-token'?: string
+				}
+			}
+			responses: {
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+	}
 	'/api/user/{id}/nearestPair': {
 		get: {
 			parameters: {
@@ -1055,10 +1131,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -1137,10 +1215,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -1224,10 +1304,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -1302,10 +1384,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -1386,10 +1470,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -1470,10 +1556,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -1551,10 +1639,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -1638,10 +1728,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -1724,10 +1816,106 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+	}
+	'/api/competition/setJudgesToPairs': {
+		patch: {
+			requestBody: {
+				content: {
+					'application/json': {
+						judgesByGroups?: {
+							id: string
+							pairs: {
+								id: string
+								judgeId: string
+							}[]
+						}[]
+						competitionId: string
+					}
+				}
+			}
+			responses: {
+				/** @description OK */
+				200: {
+					content: {
+						'application/json': components['schemas']['Competition']
+						'application/xml': components['schemas']['Competition']
+					}
+				}
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+							data?: Record<string, never>
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -1817,10 +2005,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -1895,10 +2085,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -1986,10 +2178,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -2074,10 +2268,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -2157,10 +2353,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -2247,10 +2445,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -2330,10 +2530,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -2413,10 +2615,12 @@ export interface paths {
 						'application/json': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 						'application/xml': {
 							/** @example string */
 							error?: string
+							data?: Record<string, never>
 						}
 					}
 				}
@@ -2577,7 +2781,8 @@ export interface components {
 			}
 			/** @enum {string} */
 			role: 'participant' | 'judge' | 'chief_judge' | 'admin'
-			age: number
+			/** Format: date-time */
+			birthDate: string
 			socialNetworks?: {
 				whatsup?: string
 			}
@@ -2741,7 +2946,8 @@ export interface components {
 			}
 			/** @enum {string} */
 			role: 'participant' | 'judge' | 'chief_judge' | 'admin'
-			age: number
+			/** Format: date-time */
+			birthDate: string
 			socialNetworks?: {
 				whatsup?: string
 			}

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { User } from '../models';
 import dotenv from 'dotenv';
+import { User } from '../models';
 
 dotenv.config({ path: '../.env' });
 
@@ -13,12 +13,6 @@ mongoose.connect(remoteMongoUri ?? '', (err) => {
   if (err) {
     console.log(err);
   }
-});
-
-const { connection } = mongoose;
-connection.once('open', () => {
-  console.log('MongoDB database connection established successfully');
-  deleteSchemaOldProps();
 });
 
 export const deleteSchemaOldProps = async () => {
@@ -35,3 +29,9 @@ export const deleteSchemaOldProps = async () => {
     console.error(e);
   }
 };
+
+const { connection } = mongoose;
+connection.once('open', () => {
+  console.log('MongoDB database connection established successfully');
+  deleteSchemaOldProps();
+});
