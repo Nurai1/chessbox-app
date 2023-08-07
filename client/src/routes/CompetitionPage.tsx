@@ -5,11 +5,11 @@ import { ReactComponent as Persons } from 'src/assets/persons.svg'
 import { ReactComponent as ArrowLeft } from 'src/assets/arrow-left.svg'
 import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
 import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
-import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { fetchCompetitionById, fetchCompetitionParticipants } from '../store/slices/competitionSlice'
-import { Loader, Tag, Timer, Button, Modal, TableBody } from '../ui'
-import { getFormattedDate, isPast } from '../helpers/datetime'
-import { AppRoute } from '../constants/appRoute'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { fetchCompetitionById, fetchCompetitionParticipants } from 'src/store/slices/competitionSlice'
+import { Loader, Tag, Timer, Button, Modal, TableBody } from 'src/ui'
+import { getFormattedDate, isPast } from 'src/helpers/datetime'
+import { AppRoute } from 'src/constants/appRoute'
 import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
 
 export const CompetitionPage = (): ReactElement => {
@@ -192,7 +192,11 @@ export const CompetitionPage = (): ReactElement => {
 					<>
 						{!participants && <Loader classes='h-full' />}
 						{participants?.length === 0 && <p>No participants yet</p>}
-						{participantsTable && <TableBody rows={participantsTable} />}
+						{participantsTable && (
+							<div className='p-6 md:py-6 md:px-[1.875rem]'>
+								<TableBody rows={participantsTable} />
+							</div>
+						)}
 					</>
 				}
 			/>

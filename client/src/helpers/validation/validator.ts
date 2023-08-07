@@ -1,5 +1,6 @@
 /* eslint-disable guard-for-in, no-restricted-syntax */
-import { EMAIL_REGEX, PASSWORD_REGEX, DIGIT_REGEX } from 'src/helpers/validation/formValidators'
+import { EMAIL_REGEX, PASSWORD_REGEX, DIGIT_REGEX, DATE_REGEX } from 'src/helpers/validation/formValidators'
+import { isFuture, max99years } from '../datetime'
 
 type ValidationConfigType = Record<string, Record<string, Record<string, string>>>
 
@@ -38,7 +39,7 @@ export const validator = (fieldData: Record<string, string>, validationConfig: V
 				}
 				break
 			case 'isNumber':
-				if (!DIGIT_REGEX.test(validationData)) {
+				if (!DIGIT_REGEX.test(validationData.trim())) {
 					return config.errorMessage
 				}
 				break
@@ -48,7 +49,17 @@ export const validator = (fieldData: Record<string, string>, validationConfig: V
 				}
 				break
 			case 'maxAge':
-				if (Number(validationData) > 99) {
+				if (max99years(validationData)) {
+					return config.errorMessage
+				}
+				break
+			case 'isDateValid':
+				if (!DATE_REGEX.test(validationData.trim())) {
+					return config.errorMessage
+				}
+				break
+			case 'isFuture':
+				if (isFuture(validationData.trim())) {
 					return config.errorMessage
 				}
 				break
