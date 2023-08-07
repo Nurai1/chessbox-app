@@ -2,6 +2,7 @@ import { ReactComponent as MedalGold } from 'src/assets/medal-gold.svg'
 import { ReactComponent as MedalSilver } from 'src/assets/medal-silver.svg'
 import { ReactComponent as MedalBronze } from 'src/assets/medal-bronze.svg'
 import { UserSchema } from 'src/types'
+import { getAge } from 'src/helpers/datetime'
 
 export const ratingTableSchema = (tableData: UserSchema[]) => {
 	const renderMedal = (index: number) => {
@@ -69,8 +70,8 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
 								className='text-[#6C6A6C]
                             md:text-base'
 							>
-								{user.age ? `age ${user.age}` : ''}
-								{user.weight ? `, ${user.weight} kg` : ''}
+								{`age ${getAge(user.birthDate)}`}
+								{`, ${user.weight} kg`}
 							</p>
 						</div>
 					),

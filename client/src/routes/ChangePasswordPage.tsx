@@ -83,7 +83,7 @@ export const ChangePasswordPage = (): ReactElement => {
 						Sign In
 					</Link>
 				</div>
-				{passwordChanged && (
+				{passwordChanged && !passwordError && (
 					<div className='mt-2'>
 						<Alert type='success' subtitle='Your password has been changed.' />
 					</div>

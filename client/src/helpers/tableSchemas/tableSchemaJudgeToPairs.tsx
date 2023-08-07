@@ -7,7 +7,7 @@ export type PairType = {
     judgeData?: UserSchema
 } & PairSchema
 
-export const tableSchemaJudgeToPairs = (tableData: PairSchema[], participants: UserSchema[], judges: UserSchema[]) => {
+export const tableSchemaJudgeToPairs = (tableData: PairSchema[], participants: UserSchema[]) => {
     const participantsData = tableData.reduce((acc, pair) => {
         const blackParticipantData = participants.find(({ _id }) => pair.blackParticipant === _id)
         const whiteParticipantData = participants.find(({ _id }) => pair.whiteParticipant === _id)
