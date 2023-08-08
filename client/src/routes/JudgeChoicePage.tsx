@@ -10,7 +10,7 @@ import { tableSchemaJudges } from 'src/helpers/tableSchemas/tableSchemaJudges'
 
 const MAX_JUDGES = 2
 
-export const JudgeChoice = (): ReactElement => {
+export const JudgeChoicePage = (): ReactElement => {
     const { competitionId } = useParams()
     const dispatch = useAppDispatch()
     const [selectedJudges, setSelectedJudges] = useState<string[]>([])

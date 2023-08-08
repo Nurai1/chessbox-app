@@ -1,6 +1,18 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { CompetitionSchema, ErrorPayload, UserSchema, SetCompetitionJudgesSchema } from 'src/types'
-import { getCompetitionByIdApi, getCompetitionParticipantsApi, getCompetitionJudgesApi, setCompetitionJudgesApi } from 'src/api/requests/competitions'
+import {
+	CompetitionSchema,
+	ErrorPayload,
+	UserSchema,
+	SetCompetitionJudgesSchema,
+	SetJudgesToPairsSchema
+} from 'src/types'
+import {
+	getCompetitionByIdApi,
+	getCompetitionParticipantsApi,
+	getCompetitionJudgesApi,
+	setCompetitionJudgesApi,
+	setJudgesToPairsApi
+} from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
 	const response = await getCompetitionByIdApi(id)
@@ -43,6 +55,16 @@ export const setCompetitionJudges = createAsyncThunk(
 	}
 )
 
+export const setPairJudges = createAsyncThunk(
+	'competition/setPairJudges',
+	async (data: SetJudgesToPairsSchema, thunkApi) => {
+		const response = await setJudgesToPairsApi(data)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
 
 export interface CompetitionState {
 	data: CompetitionSchema | null
@@ -52,6 +74,8 @@ export interface CompetitionState {
 	error?: string
 	setCompetitionJudgesSuccess?: boolean
 	setCompetitionJudgesError?: string
+	setPairJudgeSuccess?: boolean
+	setPairJudgeError?: string
 }
 
 const initialState: CompetitionState = {
@@ -64,7 +88,11 @@ const initialState: CompetitionState = {
 export const competitionSlice = createSlice({
 	name: 'competition',
 	initialState,
-	reducers: {},
+	reducers: {
+		setPairJudgeSuccessDefault: (state) => {
+			state.setPairJudgeSuccess = undefined
+		},
+	},
 	extraReducers: {
 		[fetchCompetitionById.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.loading = false
@@ -115,10 +143,21 @@ export const competitionSlice = createSlice({
 		[setCompetitionJudges.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.loading = false
 			state.setCompetitionJudgesError = action.payload.errorMessage
+		},
+		[setPairJudges.fulfilled.type]: (state) => {
+			state.loading = false
+			state.setPairJudgeSuccess = true
+		},
+		[setPairJudges.pending.type]: state => {
+			state.loading = true
+		},
+		[setPairJudges.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.loading = false
+			state.setPairJudgeError = action.payload.errorMessage
 		}
 	}
 })
 
-// export const {} = competitionSlice.actions
+export const { setPairJudgeSuccessDefault } = competitionSlice.actions
 
 export default competitionSlice.reducer

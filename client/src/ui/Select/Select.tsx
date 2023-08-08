@@ -127,7 +127,7 @@ export const Select: FC<SelectPropsType> = memo(function Select({
                             type="text"
                             name={name}
                             className={twMerge(
-                                'relative z-10 box-border h-[48px] w-full cursor-pointer rounded-md border border-gray-200 bg-white pl-5 pr-14 text-input font-normal placeholder:text-[#B3B3B3] focus:ring-0 focus:border focus:border-black',
+                                'relative z-10 box-border h-9 w-full cursor-pointer rounded-md border border-gray-200 bg-white pl-5 pr-14 text-input font-normal placeholder:text-[#B3B3B3] focus:ring-0 focus:border focus:border-black xl:h-12',
                                 validationErrorText && 'border-red-400 ring-4 ring-red-200',
                                 selectClasses,
                                 disabled && 'text-gray-400'

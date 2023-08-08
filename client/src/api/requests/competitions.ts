@@ -1,5 +1,5 @@
 import { get, patch } from 'src/api/api'
-import { SetCompetitionJudgesSchema } from 'src/types'
+import { SetCompetitionJudgesSchema, SetJudgesToPairsSchema } from 'src/types'
 
 export const getCompetitionsApi = async () => {
 	const result = await get('/api/competitions', {})
@@ -45,6 +45,14 @@ export const getCompetitionJudgesApi = async (id: string) => {
 
 export const setCompetitionJudgesApi = async (data: SetCompetitionJudgesSchema) => {
 	const result = await patch('/api/competition/setJudgesToCompetition', {
+		body: data
+	})
+
+	return result
+}
+
+export const setJudgesToPairsApi = async (data: SetJudgesToPairsSchema) => {
+	const result = await patch('/api/competition/setJudgesToPairs', {
 		body: data
 	})
 
