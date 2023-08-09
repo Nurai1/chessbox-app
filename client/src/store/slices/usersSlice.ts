@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getUsersApi, getAllJudges, getUserByIdApi } from 'src/api/requests/users'
+import { getUsersApi, getAllJudges } from 'src/api/requests/users'
 import { ErrorPayload, UserSchema } from 'src/types'
 import { UserFilterType } from 'src/components/UserFilter'
 
