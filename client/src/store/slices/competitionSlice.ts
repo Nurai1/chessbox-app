@@ -43,7 +43,6 @@ export const setCompetitionJudges = createAsyncThunk(
 	}
 )
 
-
 export interface CompetitionState {
 	data: CompetitionSchema | null
 	participants: Record<string, UserSchema[] | null>
@@ -64,7 +63,11 @@ const initialState: CompetitionState = {
 export const competitionSlice = createSlice({
 	name: 'competition',
 	initialState,
-	reducers: {},
+	reducers: {
+		resetCompetitionJudgesSuccess: state => {
+			state.setCompetitionJudgesSuccess = undefined
+		},
+	},
 	extraReducers: {
 		[fetchCompetitionById.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.loading = false
@@ -119,6 +122,6 @@ export const competitionSlice = createSlice({
 	}
 })
 
-// export const {} = competitionSlice.actions
+export const { resetCompetitionJudgesSuccess } = competitionSlice.actions
 
 export default competitionSlice.reducer

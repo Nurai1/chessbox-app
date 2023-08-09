@@ -1,10 +1,12 @@
 import { ReactElement, useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
-import { ReactComponent as Persons } from 'src/assets/persons.svg'
-import { ReactComponent as ArrowLeft } from 'src/assets/arrow-left.svg'
-import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
-import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
+import { ReactComponent as BanknoteIcon } from 'src/assets/banknote.svg'
+import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
+import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
+import { ReactComponent as ArrowRightIcon } from 'src/assets/arrow-right-long.svg'
+import { ReactComponent as ThreeStarsIcon } from 'src/assets/three-stars.svg'
+import { ReactComponent as TwoStarsIcon } from 'src/assets/two-stars.svg'
+import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
 import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { fetchCompetitionById, fetchCompetitionParticipants } from '../store/slices/competitionSlice'
@@ -88,15 +90,15 @@ export const CompetitionPage = (): ReactElement => {
 						participant!
 					</h3>
 					<p className='hidden text-sm lg:block xl:text-base'>Additional information will be published later</p>
-					<ThreeStars
+					<ThreeStarsIcon
 						className='absolute top-[15px] left-[92px] w-[24px]
 					xl:top-[34px] xl:left-[150px] xl:w-[44px]'
 					/>
-					<ThreeStars
+					<ThreeStarsIcon
 						className='2xl:h-[37px absolute top-[24px] left-[143px] w-[24px]
 					xl:top-[50px] xl:left-[260px] xl:w-[44px]'
 					/>
-					<TwoStars
+					<TwoStarsIcon
 						className='absolute top-[70px] left-[130px] w-[23px]
 					xl:top-[120px] xl:left-[240px] xl:w-[40px]'
 					/>
@@ -124,7 +126,7 @@ export const CompetitionPage = (): ReactElement => {
 					to={`/${AppRoute.Competitions}`}
 					className='hidden transition hover:opacity-70 xl:absolute xl:left-[38px] xl:top-[77px] xl:block'
 				>
-					<ArrowLeft />
+					<ArrowLeftIcon />
 				</Link>
 				{!competitionData && !fetchError && <Loader />}
 				{fetchError && <h2>{fetchError}</h2>}
@@ -140,13 +142,13 @@ export const CompetitionPage = (): ReactElement => {
 							<div className='mb-[35px] flex flex-wrap gap-4 xl:mb-[64px]'>
 								{competitionData.price && (
 									<Tag
-										img={<Banknote className='max-5 mr-2' />}
+										img={<BanknoteIcon className='max-5 mr-2' />}
 										text={`Price ${competitionData.price.currentValue} $`}
 									/>
 								)}
 								{competitionData.participants && (
 									<Tag
-										img={<Persons className='max-5 mr-2' />}
+										img={<PersonsIcon className='max-5 mr-2' />}
 										text={`${competitionData.participants.length} participant${
 											competitionData.participants.length === 1 ? '' : 's'
 										} enrolled`}
@@ -178,6 +180,7 @@ export const CompetitionPage = (): ReactElement => {
 						<div>
 							<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
 							<p className='mb-[24px] text-sm'>{competitionData.description}</p>
+							<h3>Set up the competition</h3>
 						</div>
 					</div>
 				)}

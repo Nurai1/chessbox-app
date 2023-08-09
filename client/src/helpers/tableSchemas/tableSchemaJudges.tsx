@@ -29,7 +29,10 @@ export const tableSchemaJudges = ({ judges, onSelect, selectedJudges, disableChe
                     node: (
                         <div>
                             <a className="flex-center gap-4 font-medium text-black text-sm hover:opacity-70 transition md:text-base xl:text-xl"
-                               href={`https://wa.me/${judge.socialNetworks?.whatsup}`}>
+                               href={`https://wa.me/${judge.socialNetworks?.whatsup}`}
+                               target='_blank'
+                               rel="noreferrer"
+                            >
                                 <WhatsappIcon className="w-4 xl:w-6"/>
                                 {judge.socialNetworks?.whatsup}
                             </a>

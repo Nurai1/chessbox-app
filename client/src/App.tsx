@@ -12,6 +12,7 @@ import { EditProfilePage } from 'src/routes/EditProfilePage'
 import { ForgotPasswordPage } from 'src/routes/ForgotPasswordPage'
 import { ChangePasswordPage } from 'src/routes/ChangePasswordPage'
 import { JudgeChoice } from 'src/routes/JudgeChoice'
+import { CreateGroupPage } from 'src/routes/CreateGroupPage'
 import { PrivateRoute } from 'src/components/PrivateRoute'
 import { useAppDispatch } from 'src/hooks/redux'
 import { checkAuth } from 'src/store/slices/userSlice'
@@ -40,6 +41,15 @@ const App = () => {
 									// Todo. Allow access only for role 'main_judge'
 									<PrivateRoute>
 										<JudgeChoice />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path={AppRoute.CreateGroup}
+								element={
+									// Todo. Allow access only for role 'main_judge'
+									<PrivateRoute>
+										<CreateGroupPage />
 									</PrivateRoute>
 								}
 							/>
