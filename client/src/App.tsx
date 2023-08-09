@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
+import { Role } from 'src/constants/role'
 import { Route404 } from 'src/routes/404'
 import { UILibrary } from 'src/routes/UILibrary'
 import { CompetitionsPage } from 'src/routes/CompetitionsPage'
@@ -38,8 +39,7 @@ const App = () => {
 							<Route
 								path={AppRoute.JudgeChoice}
 								element={
-									// Todo. Allow access only for role 'main_judge'
-									<PrivateRoute>
+									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
 										<JudgeChoice />
 									</PrivateRoute>
 								}
@@ -47,8 +47,7 @@ const App = () => {
 							<Route
 								path={AppRoute.CreateGroup}
 								element={
-									// Todo. Allow access only for role 'main_judge'
-									<PrivateRoute>
+									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
 										<CreateGroupPage />
 									</PrivateRoute>
 								}

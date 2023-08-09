@@ -22,10 +22,11 @@ export const CompetitionPage = (): ReactElement => {
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
-	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
+	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
 	const competitionData = competitionDataExisting || competitionDataFetched
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
-	const isParticipant = competitionData?.participants && competitionData.participants.includes(authorizedUserId ?? '')
+	const isParticipant =
+		competitionData?.participants && competitionData.participants.includes(authorizedUser?._id ?? '')
 	const isRegistrationClosed = competitionData && isPast(competitionData.registrationEndsAt)
 	const isOver = competitionData && Boolean(competitionData.endDate)
 	const participantsTable = participants && tableSchemaParticipants(participants)
@@ -121,7 +122,7 @@ export const CompetitionPage = (): ReactElement => {
 
 	return (
 		<>
-			<main className='container relative mx-auto grow px-[17px] pt-[30px] md:pt-[38px] xl:pl-[103px] xl:pr-[50px] xl:pt-[55px]'>
+			<main className='container relative mx-auto grow px-4 py-8 md:py-9 xl:py-14 xl:pl-[6.5rem] xl:pr-[3.125rem]'>
 				<Link
 					to={`/${AppRoute.Competitions}`}
 					className='hidden transition hover:opacity-70 xl:absolute xl:left-[38px] xl:top-[77px] xl:block'
@@ -176,11 +177,27 @@ export const CompetitionPage = (): ReactElement => {
 						</div>
 						{participate()}
 						{participant()}
+						{isRegistrationClosed && isParticipant && <p>timer without button</p>}
+						{isRegistrationClosed && !isParticipant && <p>Registration closed</p>}
 
 						<div>
 							<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
-							<p className='mb-[24px] text-sm'>{competitionData.description}</p>
-							<h3>Set up the competition</h3>
+							<p className='mb-9'>{competitionData.description}</p>
+							{authorizedUser?.role === 'chief_judge' && (
+								<>
+									<Link
+										to={AppRoute.JudgeChoice}
+										className='mb-2.5 flex items-center gap-5 text-lg font-bold transition hover:opacity-70 xl:text-4xl xl:leading-normal'
+									>
+										Set up the competition
+										<ArrowRightIcon className='w-8 xl:w-[3.125rem]' />
+									</Link>
+									<div className='flex max-w-[40rem] items-center gap-3.5'>
+										<WarningIcon />
+										<p>You need to assign judges, create groups, connect judges to pairs and assign orders to groups</p>
+									</div>
+								</>
+							)}
 						</div>
 					</div>
 				)}
