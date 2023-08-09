@@ -696,12 +696,14 @@ export interface paths {
 	}
 	'/api/allJudges': {
 		get: {
-			parameters: {
-				header?: {
-					'x-access-token'?: string
-				}
-			}
 			responses: {
+				/** @description OK */
+				200: {
+					content: {
+						'application/json': components['schemas']['User'][]
+						'application/xml': components['schemas']['User'][]
+					}
+				}
 				/** @description Client error. */
 				400: {
 					content: {
