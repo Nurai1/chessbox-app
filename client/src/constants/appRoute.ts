@@ -11,5 +11,6 @@ export const AppRoute = {
 	ChangePassword: 'change-password',
 	JudgeAssign: 'judge-assign',
 	JudgeChoice: 'judge-choice',
+	CreateGroup: 'create-group',
 	NotFound: '*'
 }

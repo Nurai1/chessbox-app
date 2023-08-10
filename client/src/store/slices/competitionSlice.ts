@@ -92,6 +92,9 @@ export const competitionSlice = createSlice({
 		setPairJudgeSuccessDefault: (state) => {
 			state.setPairJudgeSuccess = undefined
 		},
+		resetCompetitionJudgesSuccess: state => {
+			state.setCompetitionJudgesSuccess = undefined
+		},
 	},
 	extraReducers: {
 		[fetchCompetitionById.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
@@ -158,6 +161,6 @@ export const competitionSlice = createSlice({
 	}
 })
 
-export const { setPairJudgeSuccessDefault } = competitionSlice.actions
+export const { setPairJudgeSuccessDefault, resetCompetitionJudgesSuccess } = competitionSlice.actions
 
 export default competitionSlice.reducer

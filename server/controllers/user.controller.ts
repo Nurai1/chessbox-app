@@ -9,7 +9,7 @@ import { getUTCFormattedDate } from '../utils/datetime';
 import { User } from '../models/index';
 import ac from '../roles';
 import { RESOURCES, ACTIONS, ROLES } from '../constants';
-import { ICompetition } from '../types/index';
+import { ICompetition, IUser } from '../types/index';
 import { errorUniqueCheck } from '../utils/errors';
 import {
   CreateUserParser,
@@ -364,11 +364,13 @@ export const getUser = async (
 };
 
 export const createUser = async (
-  req: Request,
+  req: Request<any, any, IUser>,
   res: Response,
   next: NextFunction
 ) => {
   if (!req.body) return res.sendStatus(400);
+  const { search } = req.query;
+  console.log(search);
 
   const user = new User(req.body);
 

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
+import { Role } from 'src/constants/role'
 import { Route404 } from 'src/routes/404'
 import { UILibrary } from 'src/routes/UILibrary'
 import { CompetitionsPage } from 'src/routes/CompetitionsPage'
@@ -12,6 +13,7 @@ import { EditProfilePage } from 'src/routes/EditProfilePage'
 import { ForgotPasswordPage } from 'src/routes/ForgotPasswordPage'
 import { ChangePasswordPage } from 'src/routes/ChangePasswordPage'
 import { JudgeChoicePage } from 'src/routes/JudgeChoicePage'
+import { CreateGroupPage } from 'src/routes/CreateGroupPage'
 import { PrivateRoute } from 'src/components/PrivateRoute'
 import { JudgeAssignPage } from 'src/routes/JudgeAssignPage'
 import { useAppDispatch } from 'src/hooks/redux'
@@ -39,9 +41,16 @@ const App = () => {
 							<Route
 								path={AppRoute.JudgeChoice}
 								element={
-								// Todo. Allow access only for role 'main_judge'
-									<PrivateRoute>
+									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
 										<JudgeChoicePage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path={AppRoute.CreateGroup}
+								element={
+									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+										<CreateGroupPage />
 									</PrivateRoute>
 								}
 							/>

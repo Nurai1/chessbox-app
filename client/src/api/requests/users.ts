@@ -56,3 +56,9 @@ export const editCurrentUser = async (userData: UserSchema) => {
 
 	return result
 }
+
+export const getAllJudges = async () => {
+	const result = await get('/api/allJudges', {})
+
+	return result
+}
