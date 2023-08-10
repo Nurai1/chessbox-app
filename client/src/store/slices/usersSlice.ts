@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getUsersApi } from 'src/api/requests/users'
+import { getUsersApi, getAllJudges } from 'src/api/requests/users'
 import { ErrorPayload, UserSchema } from 'src/types'
 import { UserFilterType } from 'src/components/UserFilter'
 
@@ -27,6 +27,14 @@ export const fetchUsers = createAsyncThunk(
 	}
 )
 
+export const fetchAllJudges = createAsyncThunk('user/getAllJudges', async (_, thunkApi) => {
+	const response = await getAllJudges()
+	if (response.error)
+		return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+	return response.data
+})
+
 interface ResponseData {
 	items: UserSchema[]
 	total: number
@@ -38,6 +46,7 @@ export interface UsersState {
 	loaded: boolean
 	filterState: UserFilterType
 	error?: string
+	allJudges?: UserSchema[]
 }
 
 const initialState: UsersState = {
@@ -76,6 +85,17 @@ export const usersSlice = createSlice({
 			state.loaded = false
 		},
 		[fetchUsers.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.loading = false
+			state.error = action.payload.errorMessage
+		},
+		[fetchAllJudges.fulfilled.type]: (state, action: PayloadAction<UserSchema[]>) => {
+			state.loading = false
+			state.allJudges = action.payload
+		},
+		[fetchAllJudges.pending.type]: state => {
+			state.loading = true
+		},
+		[fetchAllJudges.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.loading = false
 			state.error = action.payload.errorMessage
 		}

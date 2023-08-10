@@ -1,16 +1,18 @@
 import { ReactElement, useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
-import { ReactComponent as Persons } from 'src/assets/persons.svg'
-import { ReactComponent as ArrowLeft } from 'src/assets/arrow-left.svg'
-import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
-import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
+import { ReactComponent as BanknoteIcon } from 'src/assets/banknote.svg'
+import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
+import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
+import { ReactComponent as ArrowRightIcon } from 'src/assets/arrow-right-long.svg'
+import { ReactComponent as ThreeStarsIcon } from 'src/assets/three-stars.svg'
+import { ReactComponent as TwoStarsIcon } from 'src/assets/two-stars.svg'
+import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchCompetitionById, fetchCompetitionParticipants } from 'src/store/slices/competitionSlice'
 import { Loader, Tag, Timer, Button, Modal, TableBody } from 'src/ui'
 import { getFormattedDate, isPast } from 'src/helpers/datetime'
-import { AppRoute } from 'src/constants/appRoute'
 import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
+import { AppRoute } from '../constants/appRoute'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
@@ -20,10 +22,11 @@ export const CompetitionPage = (): ReactElement => {
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
-	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
+	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
 	const competitionData = competitionDataExisting || competitionDataFetched
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
-	const isParticipant = competitionData?.participants && competitionData.participants.includes(authorizedUserId ?? '')
+	const isParticipant =
+		competitionData?.participants && competitionData.participants.includes(authorizedUser?._id ?? '')
 	const isRegistrationClosed = competitionData && isPast(competitionData.registrationEndsAt)
 	const isOver = competitionData && Boolean(competitionData.endDate)
 	const participantsTable = participants && tableSchemaParticipants(participants)
@@ -88,15 +91,15 @@ export const CompetitionPage = (): ReactElement => {
 						participant!
 					</h3>
 					<p className='hidden text-sm lg:block xl:text-base'>Additional information will be published later</p>
-					<ThreeStars
+					<ThreeStarsIcon
 						className='absolute top-[15px] left-[92px] w-[24px]
 					xl:top-[34px] xl:left-[150px] xl:w-[44px]'
 					/>
-					<ThreeStars
+					<ThreeStarsIcon
 						className='2xl:h-[37px absolute top-[24px] left-[143px] w-[24px]
 					xl:top-[50px] xl:left-[260px] xl:w-[44px]'
 					/>
-					<TwoStars
+					<TwoStarsIcon
 						className='absolute top-[70px] left-[130px] w-[23px]
 					xl:top-[120px] xl:left-[240px] xl:w-[40px]'
 					/>
@@ -119,12 +122,12 @@ export const CompetitionPage = (): ReactElement => {
 
 	return (
 		<>
-			<main className='container relative mx-auto grow px-[17px] pt-[30px] md:pt-[38px] xl:pl-[103px] xl:pr-[50px] xl:pt-[55px]'>
+			<main className='container relative mx-auto grow px-4 py-8 md:py-9 xl:py-14 xl:pl-[6.5rem] xl:pr-[3.125rem]'>
 				<Link
 					to={`/${AppRoute.Competitions}`}
 					className='hidden transition hover:opacity-70 xl:absolute xl:left-[38px] xl:top-[77px] xl:block'
 				>
-					<ArrowLeft />
+					<ArrowLeftIcon />
 				</Link>
 				{!competitionData && !fetchError && <Loader />}
 				{fetchError && <h2>{fetchError}</h2>}
@@ -140,13 +143,13 @@ export const CompetitionPage = (): ReactElement => {
 							<div className='mb-[35px] flex flex-wrap gap-4 xl:mb-[64px]'>
 								{competitionData.price && (
 									<Tag
-										img={<Banknote className='max-5 mr-2' />}
+										img={<BanknoteIcon className='max-5 mr-2' />}
 										text={`Price ${competitionData.price.currentValue} $`}
 									/>
 								)}
 								{competitionData.participants && (
 									<Tag
-										img={<Persons className='max-5 mr-2' />}
+										img={<PersonsIcon className='max-5 mr-2' />}
 										text={`${competitionData.participants.length} participant${
 											competitionData.participants.length === 1 ? '' : 's'
 										} enrolled`}
@@ -174,10 +177,27 @@ export const CompetitionPage = (): ReactElement => {
 						</div>
 						{participate()}
 						{participant()}
+						{isRegistrationClosed && isParticipant && <p>timer without button</p>}
+						{isRegistrationClosed && !isParticipant && <p>Registration closed</p>}
 
 						<div>
 							<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
-							<p className='mb-[24px] text-sm'>{competitionData.description}</p>
+							<p className='mb-9'>{competitionData.description}</p>
+							{authorizedUser?.role === 'chief_judge' && (
+								<>
+									<Link
+										to={AppRoute.JudgeChoice}
+										className='mb-2.5 flex items-center gap-5 text-lg font-bold transition hover:opacity-70 xl:text-4xl xl:leading-normal'
+									>
+										Set up the competition
+										<ArrowRightIcon className='w-8 xl:w-[3.125rem]' />
+									</Link>
+									<div className='flex max-w-[40rem] items-center gap-3.5'>
+										<WarningIcon />
+										<p>You need to assign judges, create groups, connect judges to pairs and assign orders to groups</p>
+									</div>
+								</>
+							)}
 						</div>
 					</div>
 				)}

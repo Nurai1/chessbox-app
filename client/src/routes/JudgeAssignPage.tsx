@@ -35,8 +35,8 @@ export const JudgeAssignPage = (): ReactElement => {
     const competitionData = competitionDataFromCompetitionsList || competitionDataFromCompetition
     const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
     const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
-    const isSubmiting = useAppSelector(s => s.competition.loading)
-    const submitSuccess = useAppSelector(s => s.competition.setPairJudgeSuccess)
+    const pending = useAppSelector(s => s.competition.loading)
+    const judgeAssignSuccess = useAppSelector(s => s.competition.setPairJudgeSuccess)
     const submitError = useAppSelector(s => s.competition.setPairJudgeError)
 
     useEffect(() => {
@@ -57,12 +57,16 @@ export const JudgeAssignPage = (): ReactElement => {
     useEffect(() => {
         const selectedJudgesData = {
             judgesByGroups: competitionData?.groups?.map(({_id, currentRoundPairs}) => {
+
                 return {
                 id: _id,
-                pairs: currentRoundPairs?.map((pair, i) => ({
+                pairs: currentRoundPairs?.map((pair, i) => {
+                   // console.log(competitionData.judges[i % 2 === 0 ? 0 : 1])
+                   //  console.log(pair.judge)
+                    return {
                     id: pair._id,
                     judgeId: pair.judge ? pair.judge : competitionData.judges && competitionData.judges[i % 2 === 0 ? 0 : 1]
-                }))
+                }})
             }}),
             competitionId: competitionId as string
         }
@@ -72,12 +76,12 @@ export const JudgeAssignPage = (): ReactElement => {
     },[competitionData])
 
     useEffect(() => {
-        if (submitSuccess) {
+        if (judgeAssignSuccess) {
             // Todo: add redirect to groups and pairs list page
             // navigate()
             // dispatch(setPairJudgeSuccessDefault())
         }
-    },[submitSuccess])
+    },[judgeAssignSuccess])
 
     const handleJudgeSelect = (updatedJudgeData: SelectedJudge) => {
         const newSelectJudge = selectedJudges?.judgesByGroups?.map(group => {
@@ -165,7 +169,7 @@ export const JudgeAssignPage = (): ReactElement => {
             <BottomFixedContainer classes='xl:pl-[7.5rem] xl:pr-[7.5rem]'>
                 <div className='flex flex-wrap gap-2.5'>
                     <Button type='outlined' onClick={() => navigate(-1)}>Previous step</Button>
-                    <Button classes='min-w-[11rem] xl:min-w-[15.625rem]' onClick={handleDoneClick} loading={isSubmiting}>Done</Button>
+                    <Button classes='min-w-[11rem] xl:min-w-[15.625rem]' onClick={handleDoneClick} loading={pending}>Done</Button>
                     {submitError && <Alert type='error' subtitle={submitError}/>}
                 </div>
             </BottomFixedContainer>
