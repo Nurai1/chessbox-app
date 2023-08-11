@@ -20,8 +20,6 @@ export type PairType = {
 } & PairSchema
 
 export const tableSchemaJudgeToPairs = ({ tableData, participants, judges, groupId, selectedJudges, onSelect }:TableSchemaJudgeToPairsType) => {
-    console.log(judges)
-    console.log(tableData)
 
     const participantsData = tableData.reduce((acc, pair) => {
         const blackParticipantData = participants.find(({ _id }) => pair.blackParticipant === _id)
@@ -101,7 +99,6 @@ export const tableSchemaJudgeToPairs = ({ tableData, participants, judges, group
                                     />
                                 </div>
                             </div>
-                            <span>{selectedJudges?.pairs[i].judgeId}</span>
                         </div>
                     )
                 }
