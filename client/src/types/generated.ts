@@ -1799,7 +1799,7 @@ export interface paths {
 			requestBody: {
 				content: {
 					'application/json': {
-						judgesIds: components['schemas']['User'][]
+						judgesIds: string[]
 						competitionId: string
 					}
 				}
