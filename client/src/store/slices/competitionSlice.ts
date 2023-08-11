@@ -76,6 +76,7 @@ export interface CompetitionState {
 	setCompetitionJudgesError?: string
 	setPairJudgeSuccess?: boolean
 	setPairJudgeError?: string
+	judgeAssignPending?: boolean
 }
 
 const initialState: CompetitionState = {
@@ -137,25 +138,25 @@ export const competitionSlice = createSlice({
 			state.error = action.payload.errorMessage
 		},
 		[setCompetitionJudges.fulfilled.type]: (state) => {
-			state.loading = false
+			state.judgeAssignPending = false
 			state.setCompetitionJudgesSuccess = true
 		},
 		[setCompetitionJudges.pending.type]: state => {
-			state.loading = true
+			state.judgeAssignPending = true
 		},
 		[setCompetitionJudges.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
-			state.loading = false
+			state.judgeAssignPending = false
 			state.setCompetitionJudgesError = action.payload.errorMessage
 		},
 		[setPairJudges.fulfilled.type]: (state) => {
-			state.loading = false
+			state.judgeAssignPending = false
 			state.setPairJudgeSuccess = true
 		},
 		[setPairJudges.pending.type]: state => {
-			state.loading = true
+			state.judgeAssignPending = true
 		},
 		[setPairJudges.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
-			state.loading = false
+			state.judgeAssignPending = false
 			state.setPairJudgeError = action.payload.errorMessage
 		}
 	}

@@ -25,8 +25,8 @@ export const JudgeChoicePage = (): ReactElement => {
 	)
 	const competitionDataFromCompetition = useAppSelector(s => s.competition.data)
 	const judges = useAppSelector(s => s.users.allJudges)
-	const isSubmiting = useAppSelector(s => s.competition.loading)
-	const submitSuccess = useAppSelector(s => s.competition.setCompetitionJudgesSuccess)
+	const pending = useAppSelector(s => s.competition.judgeAssignPending)
+	const assignSuccess = useAppSelector(s => s.competition.setCompetitionJudgesSuccess)
 	const submitError = useAppSelector(s => s.competition.setCompetitionJudgesError)
 	const competitionData = competitionDataFromCompetitionsList || competitionDataFromCompetition
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
@@ -43,12 +43,12 @@ export const JudgeChoicePage = (): ReactElement => {
 	}, [])
 
 	useEffect(() => {
-		if (submitSuccess) {
+		if (assignSuccess) {
 			navigate(`../${AppRoute.CreateGroup}`)
 			dispatch(resetCompetitionJudgesSuccess())
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [submitSuccess])
+	}, [assignSuccess])
 
 	const handleSelectJudge = (value?: boolean, name?: string) => {
 		if (selectedJudges.includes(name as string)) {
@@ -95,7 +95,6 @@ export const JudgeChoicePage = (): ReactElement => {
 			) : (
 				<Loader />
 			)}
-
 			<h2 className='mb-2 text-2xl font-semibold leading-normal xl:text-[3.125rem] xl:font-bold'>Judges</h2>
 			{judgesTable && (
 				<div className='border-b border-zinc-300 pb-6  xl:pb-12'>
@@ -104,7 +103,7 @@ export const JudgeChoicePage = (): ReactElement => {
 						onClick={handleSubmit}
 						classes='w-full mt-4 md:w-[223px] xl:mt-11'
 						disabled={!maxJudgesReached}
-						loading={isSubmiting}
+						loading={pending}
 					>
 						Continue
 					</Button>

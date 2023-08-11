@@ -4,7 +4,7 @@ import { AppRoute } from 'src/constants/appRoute'
 import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
 import { ReactComponent as WhatsAppIcon } from 'src/assets/whatsapp.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { Loader, TableBody, TableWrapper, Button, BottomFixedContainer, Alert } from 'src/ui'
+import { Loader, TableBody, TableWrapper, Button, BottomFixedContainer, Alert, Accordion } from 'src/ui'
 import { getFormattedDate } from 'src/helpers/datetime'
 import {
     fetchCompetitionById,
@@ -35,7 +35,7 @@ export const JudgeAssignPage = (): ReactElement => {
     const competitionData = competitionDataFromCompetitionsList || competitionDataFromCompetition
     const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
     const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
-    const pending = useAppSelector(s => s.competition.loading)
+    const pending = useAppSelector(s => s.competition.judgeAssignPending)
     const judgeAssignSuccess = useAppSelector(s => s.competition.setPairJudgeSuccess)
     const submitError = useAppSelector(s => s.competition.setPairJudgeError)
 
@@ -56,18 +56,13 @@ export const JudgeAssignPage = (): ReactElement => {
 
     useEffect(() => {
         const selectedJudgesData = {
-            judgesByGroups: competitionData?.groups?.map(({_id, currentRoundPairs}) => {
-
-                return {
+            judgesByGroups: competitionData?.groups?.map(({_id, currentRoundPairs}) => ({
                 id: _id,
-                pairs: currentRoundPairs?.map((pair, i) => {
-                   // console.log(competitionData.judges[i % 2 === 0 ? 0 : 1])
-                   //  console.log(pair.judge)
-                    return {
+                pairs: currentRoundPairs?.map((pair, i) => ({
                     id: pair._id,
                     judgeId: pair.judge ? pair.judge : competitionData.judges && competitionData.judges[i % 2 === 0 ? 0 : 1]
-                }})
-            }}),
+                }))
+            })),
             competitionId: competitionId as string
         }
 
@@ -102,10 +97,10 @@ export const JudgeAssignPage = (): ReactElement => {
     }
 
     return (
-        <main className="container mx-auto grow px-[17px] pt-5 xl:pl-[7.5rem] xl:pr-[7.5rem]">
+        <main className="container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:pb-28 md:py-9 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]">
             <div className='mb-8 xl:flex xl:justify-between xl:gap-6 xl:mb-12'>
                 {competitionData
-                    ? <div className='mb-6 xl:mb-[4.375rem] xl:max-w-[34.375rem]'>
+                    ? <div className='mb-6 xl:mb-0 xl:max-w-[34.375rem]'>
                         <h1 className="mb-1.5 text-lg font-medium xl:text-xl">{competitionData.name}</h1>
                         <p className="text-[#6C6A6C] mb-6 xl:mb-11">
                             {dateStart}
@@ -142,14 +137,15 @@ export const JudgeAssignPage = (): ReactElement => {
                 </div>
             </div>
             {competitionData && (
-                <TableWrapper>
+                <TableWrapper classes='py-4 xl:py-7'>
                     {competitionData.groups?.map(({ _id: groupId, gender, ageCategory, weightCategory, currentRoundPairs }, i) => (
-                        <Fragment key={groupId}>
-                            <h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
-                                <span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
-                                {weightCategory?.from}-{weightCategory?.to}kg
-                                {currentRoundPairs?.length && <span className='text-zinc-400'> {currentRoundPairs?.length} {`pair${currentRoundPairs?.length === 1 ? '' : 's'}`}</span>}
-                            </h3>
+                        <Accordion key={groupId} classes='last:pb-0' isDragable title={
+                            <h3 className='font-bold xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
+                            <span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
+                            {weightCategory?.from}-{weightCategory?.to}kg
+                            {currentRoundPairs?.length && <span className='text-zinc-400'> {currentRoundPairs?.length} {`pair${currentRoundPairs?.length === 1 ? '' : 's'}`}</span>}
+                        </h3>
+                        }>
                             {currentRoundPairs && participants && judges ? (
                                 <TableBody rows={tableSchemaJudgeToPairs({
                                     tableData: currentRoundPairs,
@@ -162,14 +158,14 @@ export const JudgeAssignPage = (): ReactElement => {
                             ) : (
                                 <Loader />
                             )}
-                        </Fragment>
+                        </Accordion>
                     ))}
                 </TableWrapper>
             )}
             <BottomFixedContainer classes='xl:pl-[7.5rem] xl:pr-[7.5rem]'>
                 <div className='flex flex-wrap gap-2.5'>
-                    <Button type='outlined' onClick={() => navigate(-1)}>Previous step</Button>
-                    <Button classes='min-w-[11rem] xl:min-w-[15.625rem]' onClick={handleDoneClick} loading={pending}>Done</Button>
+                    <Button type='outlined' onClick={() => navigate(`../${AppRoute.CreateGroup}`)}>Previous step</Button>
+                    <Button classes='min-w-[8rem] xl:min-w-[15.625rem]' onClick={handleDoneClick} loading={pending}>Done</Button>
                     {submitError && <Alert type='error' subtitle={submitError}/>}
                 </div>
             </BottomFixedContainer>
