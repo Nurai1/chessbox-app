@@ -4,7 +4,8 @@ import {
 	ErrorPayload,
 	UserSchema,
 	SetCompetitionJudgesSchema,
-	SetJudgesToPairsSchema
+	SetJudgesToPairsSchema,
+	CompetitionSchemaJudge
 } from 'src/types'
 import {
 	getCompetitionByIdApi,
@@ -90,11 +91,14 @@ export const competitionSlice = createSlice({
 	name: 'competition',
 	initialState,
 	reducers: {
-		updateCompetition: (state, action: PayloadAction<string[]>) => {
+		setJudges: (state, action: PayloadAction<string[]>) => {
 			if (state.data) {
 				state.data.judges = action.payload
 			}
 			state.setCompetitionJudgesSuccess = undefined
+		},
+		resetPairJudgeSuccessStatus: (state) => {
+			state.setPairJudgeSuccess = undefined
 		}
 	},
 	extraReducers: {
@@ -137,11 +141,11 @@ export const competitionSlice = createSlice({
 			state.loading = false
 			state.error = action.payload.errorMessage
 		},
-		[setCompetitionJudges.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+		[setCompetitionJudges.fulfilled.type]: (state, action: PayloadAction<CompetitionSchemaJudge>) => {
 			state.judgeAssignPending = false
 			state.setCompetitionJudgesSuccess = true
 			state.judges = {
-				[action.payload._id]: action.payload.judges
+				[action.payload._id as string]: action.payload.judges
 			}
 		},
 		[setCompetitionJudges.pending.type]: state => {
@@ -165,6 +169,6 @@ export const competitionSlice = createSlice({
 	}
 })
 
-export const { updateCompetition } = competitionSlice.actions
+export const { setJudges, resetPairJudgeSuccessStatus } = competitionSlice.actions
 
 export default competitionSlice.reducer

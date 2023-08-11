@@ -11,7 +11,7 @@ import {
     fetchCompetitionJudges,
     fetchCompetitionParticipants,
     setPairJudges,
-    setPairJudgeSuccessDefault
+    resetPairJudgeSuccessStatus
 } from 'src/store/slices/competitionSlice'
 import { tableSchemaJudgeToPairs } from 'src/helpers/tableSchemas/tableSchemaJudgeToPairs'
 import { SetJudgesToPairsSchema } from 'src/types'
@@ -54,13 +54,30 @@ export const JudgeAssignPage = (): ReactElement => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    // const getChoosenId = (i: number) => {
+    //     const allReadyChoosenJudge = judges.find(({ _id}) => _id === selectedJudges?.pairs[i].judgeId)?._id
+    //
+    //     if (allReadyChoosenJudge) {
+    //         return allReadyChoosenJudge
+    //     }
+    //     return judges[i % 2 === 0 ? 0 : 1]._id
+    // }
+
+    const getChoosenJudgeId = (pairJudge: string, i: number) => {
+        const existingJudgeMatchChoosen = judges?.find(({ _id}) => _id === pairJudge)
+        if (existingJudgeMatchChoosen) {
+            return existingJudgeMatchChoosen._id
+        }
+        return judges && judges[i % 2 === 0 ? 0 : 1]._id
+    }
+
     useEffect(() => {
         const selectedJudgesData = {
             judgesByGroups: competitionData?.groups?.map(({_id, currentRoundPairs}) => ({
                 id: _id,
                 pairs: currentRoundPairs?.map((pair, i) => ({
                     id: pair._id,
-                    judgeId: pair.judge ? pair.judge : competitionData.judges && competitionData.judges[i % 2 === 0 ? 0 : 1]
+                    judgeId: getChoosenJudgeId(pair.judge as string, i)
                 }))
             })),
             competitionId: competitionId as string
@@ -70,11 +87,12 @@ export const JudgeAssignPage = (): ReactElement => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[competitionData])
 
+
+
     useEffect(() => {
         if (judgeAssignSuccess) {
-            // Todo: add redirect to groups and pairs list page
-            // navigate()
-            // dispatch(setPairJudgeSuccessDefault())
+            navigate(`/${AppRoute.Competitions}/${competitionId}`)
+            dispatch(resetPairJudgeSuccessStatus())
         }
     },[judgeAssignSuccess])
 

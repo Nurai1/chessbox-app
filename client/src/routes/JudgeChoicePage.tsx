@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import {
 	fetchCompetitionById,
 	setCompetitionJudges,
-	updateCompetition
+	setJudges
 } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsList } from 'src/store/slices/competitionsSlice'
 import { fetchAllJudges } from 'src/store/slices/usersSlice'
@@ -46,7 +46,7 @@ export const JudgeChoicePage = (): ReactElement => {
 	useEffect(() => {
 		if (assignSuccess) {
 			navigate(`../${AppRoute.CreateGroup}`)
-			dispatch(updateCompetition(selectedJudges))
+			dispatch(setJudges(selectedJudges))
 			dispatch(updateCompetitionsList({selectedJudges, competitionId: competitionId as string}))
 
 		}
