@@ -6135,7 +6135,7 @@
                   "judgesIds": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "$ref": "#/components/schemas/User"
                     }
                   },
                   "competitionId": {

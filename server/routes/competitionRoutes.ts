@@ -150,7 +150,7 @@ competitionRouter.patch(
                     schema: {
                       type: "object",
                       properties: {
-                        judgesIds: { type: "array", items: { type: "string" } },
+                        judgesIds: [{ $ref: '#/definitions/User' }],
                         competitionId: { type: "string" },
                       },
                       required: ["judgesIds", "competitionId"]
