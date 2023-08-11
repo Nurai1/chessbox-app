@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState, Fragment } from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
 import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'

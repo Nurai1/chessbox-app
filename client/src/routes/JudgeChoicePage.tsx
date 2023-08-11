@@ -7,8 +7,9 @@ import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import {
 	fetchCompetitionById,
 	setCompetitionJudges,
-	resetCompetitionJudgesSuccess
+	updateCompetition
 } from 'src/store/slices/competitionSlice'
+import { updateCompetitionsList } from 'src/store/slices/competitionsSlice'
 import { fetchAllJudges } from 'src/store/slices/usersSlice'
 import { getFormattedDate } from 'src/helpers/datetime'
 import { tableSchemaJudges } from 'src/helpers/tableSchemas/tableSchemaJudges'
@@ -45,7 +46,9 @@ export const JudgeChoicePage = (): ReactElement => {
 	useEffect(() => {
 		if (assignSuccess) {
 			navigate(`../${AppRoute.CreateGroup}`)
-			dispatch(resetCompetitionJudgesSuccess())
+			dispatch(updateCompetition(selectedJudges))
+			dispatch(updateCompetitionsList({selectedJudges, competitionId: competitionId as string}))
+
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [assignSuccess])
