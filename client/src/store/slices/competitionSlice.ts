@@ -90,12 +90,12 @@ export const competitionSlice = createSlice({
 	name: 'competition',
 	initialState,
 	reducers: {
-		setPairJudgeSuccessDefault: (state) => {
-			state.setPairJudgeSuccess = undefined
-		},
-		resetCompetitionJudgesSuccess: state => {
+		updateCompetition: (state, action: PayloadAction<string[]>) => {
+			if (state.data) {
+				state.data.judges = action.payload
+			}
 			state.setCompetitionJudgesSuccess = undefined
-		},
+		}
 	},
 	extraReducers: {
 		[fetchCompetitionById.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
@@ -137,9 +137,12 @@ export const competitionSlice = createSlice({
 			state.loading = false
 			state.error = action.payload.errorMessage
 		},
-		[setCompetitionJudges.fulfilled.type]: (state) => {
+		[setCompetitionJudges.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.judgeAssignPending = false
 			state.setCompetitionJudgesSuccess = true
+			state.judges = {
+				[action.payload._id]: action.payload.judges
+			}
 		},
 		[setCompetitionJudges.pending.type]: state => {
 			state.judgeAssignPending = true
@@ -162,6 +165,6 @@ export const competitionSlice = createSlice({
 	}
 })
 
-export const { setPairJudgeSuccessDefault, resetCompetitionJudgesSuccess } = competitionSlice.actions
+export const { updateCompetition } = competitionSlice.actions
 
 export default competitionSlice.reducer
