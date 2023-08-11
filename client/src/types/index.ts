@@ -14,3 +14,6 @@ export type SetCompetitionJudgesSchema = paths['/api/competition/setJudgesToComp
 export type SetJudgesToPairsSchema = paths['/api/competition/setJudgesToPairs']['patch']['requestBody']['content']['application/json']
 
 export type ErrorPayload = { errorMessage: string; response: Response }
+export type CompetitionSchemaJudge = Omit<CompetitionSchema, 'judges'> & {
+	judges: UserSchema[];
+}

@@ -57,6 +57,7 @@ export const tableSchemaJudgeToPairs = ({ tableData, participants, judges, group
                 })
             }
         }
+
         return {
             cells: [
                 {
