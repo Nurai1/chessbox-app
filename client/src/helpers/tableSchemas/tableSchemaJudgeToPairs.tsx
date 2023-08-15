@@ -95,7 +95,7 @@ export const tableSchemaJudgeToPairs = ({ tableData, participants, judges, group
                                             ))}
                                         dropdownPlaceholder='Select judge'
                                         placeholder='Select judge'
-                                        chosenId={selectedJudges?.pairs[i].judgeId}
+                                        // chosenId={selectedJudges?.pairs[i].judgeId}
                                         selectClasses='text-sm xl:text-base'
                                     />
                                 </div>
