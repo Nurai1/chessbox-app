@@ -25,7 +25,7 @@ const localConfig: AppConfig = {
 const devConfig: AppConfig = {
 	type: 'dev',
 	publicUrl: '',
-	serviceApiUrl: 'https://eclectium0iuzdi5t-chessbox.functions.fnc.pl-waw.scw.cloud/api'
+	serviceApiUrl: 'https://eclectium0iuzdi5t-chessbox.functions.fnc.pl-waw.scw.cloud'
 }
 const prodConfig: AppConfig = {
 	type: 'prod',
