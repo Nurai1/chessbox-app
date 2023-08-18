@@ -13,8 +13,8 @@ const tag = tv({
 	base: 'inline-flex items-center gap-[9px] rounded-2xl py-1 px-4 whitespace-nowrap text-sm xl:text-base',
 	variants: {
 		tagType: {
-			primary: 'bg-[#F2F2F2] text-[#6C6A6C]',
-			search: 'bg-black text-[#FDFDFD] gap-[13px]'
+			primary: 'bg-light-grey text-grey',
+			search: 'bg-black text-pale-white gap-[13px]'
 		}
 	}
 })

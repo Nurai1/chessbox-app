@@ -52,7 +52,7 @@ export const CompetitionPage = (): ReactElement => {
 		!isOver && (
 			<div className='mb-[24px] lg:mb-0'>
 				<div className='mb-[24px] flex items-baseline lg:flex-col lg:gap-[20px]'>
-					<h3 className='mr-[8px] text-sm text-[#6C6A6C] lg:text-base xl:text-[32px] xl:font-semibold xl:leading-[48px]'>
+					<h3 className='mr-[8px] text-sm text-grey lg:text-base xl:text-[32px] xl:font-semibold xl:leading-[48px]'>
 						Registration ends in:
 					</h3>
 					{competitionData && (
@@ -131,12 +131,10 @@ export const CompetitionPage = (): ReactElement => {
 				{competitionData && (
 					<div className='lg:grid lg:grid-cols-[1fr_190px] lg:gap-[0_15px] xl:grid-cols-[1fr_345px] xl:gap-[0_40px]'>
 						<div>
-							<h1 className='mb-[15px] text-2xl font-semibold lg:mb-[10px] xl:mb-[24px] xl:text-[54px] xl:font-bold xl:leading-[81px]'>
+							<h1 className='mb-[15px] text-heading-4 lg:mb-[10px] xl:mb-[24px] xl:text-heading-1'>
 								{competitionData.name}
 							</h1>
-							<p className='lg-[mb-[10px] mb-[15px] text-sm text-[#6C6A6C] xl:mb-[24px] xl:text-[32px] xl:font-medium xl:leading-[48px]'>
-								{dateStart}
-							</p>
+							<p className='mb-[15px] text-sm text-grey xl:mb-[24px] xl:text-heading-3'>{dateStart}</p>
 							<div className='mb-[35px] flex flex-wrap gap-4 xl:mb-[64px]'>
 								{competitionData.price && (
 									<Tag
@@ -155,7 +153,7 @@ export const CompetitionPage = (): ReactElement => {
 							</div>
 							{competitionData.groups?.map(({ _id, ageCategory, weightCategory }) => (
 								<div key={_id} className='mb-[24px] flex items-center'>
-									<p className='max-w-[150px] pr-[16px] text-[#6C6A6C] xl:font-bold'>Competition requirements:</p>
+									<p className='max-w-[150px] pr-[16px] text-grey xl:font-bold'>Competition requirements:</p>
 									<div className='min-w-[112px] border-x px-[16px]'>
 										<p className='mb-[8px] text-sm xl:text-base'>Age:</p>
 										<p className='whitespace-nowrap font-bold'>
@@ -166,7 +164,7 @@ export const CompetitionPage = (): ReactElement => {
 										<p className='mb-[8px] text-sm xl:text-base'>Weight:</p>
 										<p className='whitespace-nowrap font-bold'>
 											{weightCategory?.from} - {weightCategory?.to}
-											<span className='text-[#6C6A6C]'> kg</span>
+											<span className='text-grey'> kg</span>
 										</p>
 									</div>
 								</div>
@@ -176,8 +174,8 @@ export const CompetitionPage = (): ReactElement => {
 						{participant()}
 
 						<div>
-							<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
-							<p className='mb-[24px] text-sm'>{competitionData.description}</p>
+							<p className='mb-[8px] text-grey xl:font-bold'>Description:</p>
+							<p className='mb-[24px] 2xl:text-body-1'>{competitionData.description}</p>
 						</div>
 					</div>
 				)}
@@ -191,7 +189,7 @@ export const CompetitionPage = (): ReactElement => {
 				content={
 					<>
 						{!participants && <Loader classes='h-full' />}
-						{participants?.length === 0 && <p>No participants yet</p>}
+						{participants?.length === 0 && <p className='p-6 md:py-6 md:px-[1.875rem]'>No participants yet</p>}
 						{participantsTable && (
 							<div className='p-6 md:py-6 md:px-[1.875rem]'>
 								<TableBody rows={participantsTable} />
