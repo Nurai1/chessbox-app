@@ -5,7 +5,7 @@ export const getEnv = (): EnvType => {
 	if (/.*localhost.*/.test(currentHost)) {
 		return 'local'
 	}
-	if (/.*-dev.*/.test(currentHost)) {
+	if (/.dev/.test(currentHost)) {
 		return 'dev'
 	}
 	return 'prod'
@@ -21,7 +21,6 @@ const localConfig: AppConfig = {
 	type: 'local',
 	publicUrl: 'http://localhost:5173',
 	serviceApiUrl: 'http://localhost:3001'
-	// serviceApiUrl: 'https://eclectium0iuzdi5t-chessbox.functions.fnc.pl-waw.scw.cloud/api'
 }
 const devConfig: AppConfig = {
 	type: 'dev',
