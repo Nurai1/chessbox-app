@@ -19,13 +19,14 @@ export interface AppConfig {
 
 const localConfig: AppConfig = {
 	type: 'local',
-	publicUrl: 'http://localhost:3000',
-	serviceApiUrl: 'https://eclectium0iuzdi5t-chessbox.functions.fnc.pl-waw.scw.cloud/api'
+	publicUrl: 'http://localhost:5173',
+	serviceApiUrl: 'http://localhost:3001'
+	// serviceApiUrl: 'https://eclectium0iuzdi5t-chessbox.functions.fnc.pl-waw.scw.cloud/api'
 }
 const devConfig: AppConfig = {
 	type: 'dev',
 	publicUrl: '',
-	serviceApiUrl: ''
+	serviceApiUrl: 'https://eclectium0iuzdi5t-chessbox.functions.fnc.pl-waw.scw.cloud/api'
 }
 const prodConfig: AppConfig = {
 	type: 'prod',
