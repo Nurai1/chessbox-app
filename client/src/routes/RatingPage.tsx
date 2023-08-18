@@ -46,9 +46,7 @@ export const RatingPage = (): ReactElement => {
 
 	return (
 		<main className='container m-auto flex grow flex-col px-[17px] pt-[15px] md:px-7 md:pt-[25px] lg:px-10 lg:pt-[33px] 2xl:px-[40px]'>
-			<h1 className='2xl:[mb-40px] mb-[13px] text-[24px] font-semibold xl:mb-[17px] xl:text-[54px] xl:font-bold'>
-				Rating
-			</h1>
+			<h1 className='2xl:[mb-40px] mb-[13px] text-heading-4 xl:mb-[17px] xl:text-heading-1'>Rating</h1>
 
 			<TableWrapper>
 				<UsersSearch classes='mb-[35px] md:mb-[30px]' />

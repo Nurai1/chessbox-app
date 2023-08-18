@@ -45,9 +45,9 @@ export const ChangePasswordPage = (): ReactElement => {
 	}
 
 	return (
-		<main className='flex grow flex-col bg-[#FDFDFD] py-[20px]'>
+		<main className='flex grow flex-col bg-pale-white py-[20px]'>
 			<form className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
-				<h1 className='mb-[8px] text-center text-2xl font-medium'>Change Password</h1>
+				<h1 className='mb-[8px] text-center text-heading-4'>Change Password</h1>
 				<div className='flex flex-col items-center gap-[18px]'>
 					<span className='font-medium'>Account Email: {decodeURIComponent(urlParams.get('email') as string)}</span>
 					<Input

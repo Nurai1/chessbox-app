@@ -9,11 +9,11 @@ export const tableSchemaParticipants = (tableData: UserSchema[]) => {
 					node: (
 						<div className='text-sm xl:text-base'>
 							<p className='mb-[6px] text-black'>{user.fullName}</p>
-							<p className='mb-[4px] text-[#6C6A6C] md:hidden'>
+							<p className='mb-[4px] text-grey md:hidden'>
 								{user.address?.country}
 								{user.address?.country ? ',' : ''} {user.address?.city}
 							</p>
-							<p className='text-[#6C6A6C]'>{`${getAge(user.birthDate)} age, ${user.weight} kg`}</p>
+							<p className='text-grey'>{`${getAge(user.birthDate)} age, ${user.weight} kg`}</p>
 						</div>
 					),
 					classes: '!grow-[2] md:!grow !py-[13px]'
