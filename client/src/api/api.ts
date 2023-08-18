@@ -1,9 +1,10 @@
 import createClient from 'openapi-fetch'
 import { paths } from 'src/types/generated'
 import { getToken } from 'src/helpers/tokenLocalStorage'
+import configEnv from 'src/configEnv'
 
 export const { get, post, patch } = createClient<paths>({
-	baseUrl: 'http://localhost:3001',
+	baseUrl: configEnv.serviceApiUrl,
 	headers: {
 		'x-access-token': getToken()
 	}
