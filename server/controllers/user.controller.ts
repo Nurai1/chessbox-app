@@ -5,10 +5,11 @@ import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 
 import dayjs from 'dayjs';
-import { getUTCFormattedDate } from '../utils/datetime';
-import { Competition, User } from '../models/index';
+import { ACTIONS, RESOURCES, ROLES } from '../constants';
+import { User } from '../models/index';
 import ac from '../roles';
-import { RESOURCES, ACTIONS, ROLES } from '../constants';
+import { IUser } from '../types/index';
+import { getUTCFormattedDate } from '../utils/datetime';
 import { errorUniqueCheck } from '../utils/errors';
 import {
   CreateUserParser,
@@ -363,7 +364,7 @@ export const getUser = async (
 };
 
 export const createUser = async (
-  req: Request,
+  req: Request<any, any, IUser>,
   res: Response,
   next: NextFunction
 ) => {
@@ -470,53 +471,4 @@ export const updateUser = async (
   if (!user) return res.status(404).send({ error: "User wasn't found" });
 
   res.send(user);
-};
-
-export const getUserCurrentPair = async (
-  req: Request<{ id?: string; competitionId?: string }>,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id: userId, competitionId } = req.params;
-  if (!userId) return res.status(400).send({ error: 'No user id was sent.' });
-
-  const competition = await Competition.findOne({
-    _id: competitionId,
-  }).populate('participants');
-  if (!competition)
-    return res.status(404).send({ error: "Competition wasn't found" });
-
-  const user = await User.findOne({ _id: userId });
-  if (!user) return res.status(404).send({ error: "User wasn't found" });
-  console.log('user', user);
-  console.log(JSON.stringify(competition?.groups, null, 2));
-
-  const currentUserGroup = competition?.groups?.find(
-    (g) => g._id?.toString() === user?.currentGroupId
-  );
-
-  if (
-    currentUserGroup?.nextRoundParticipants?.find(
-      (participant) => participant._id?.toString() === userId
-    )
-  ) {
-    res.send({ pair: null, roundDivider: null });
-  }
-
-  const pair = currentUserGroup?.currentRoundPairs?.find(
-    (p) =>
-      p.blackParticipant?.toString() === userId ||
-      p.whiteParticipant?.toString() === userId
-  );
-
-  if (!pair) {
-    return res.status(404).send({ error: "Pair wasn't found" });
-  }
-
-  res.send({
-    pair,
-    roundDivider: currentUserGroup?.nextRoundParticipants.length
-      ? null
-      : currentUserGroup?.currentRoundPairs?.length,
-  });
 };
