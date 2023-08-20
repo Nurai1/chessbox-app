@@ -51,12 +51,6 @@ const userSchema = new Schema<IUser>(
     gender: { type: String, required: true, enum: ['woman', 'man'] },
     ratingNumber: { type: Number, required: true },
     weight: { type: Number, required: true },
-    competition: {
-      type: Schema.Types.ObjectId,
-      ref: 'Competition',
-      // info for swagger
-      identificator: true,
-    },
     passwordResetCode: { type: Number },
     currentGroupId: String,
     competitionsHistory: [

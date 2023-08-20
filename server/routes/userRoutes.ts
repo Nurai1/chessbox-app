@@ -254,7 +254,7 @@ userRouter.get(
 );
 
 userRouter.get(
-  '/user/:id/nearestPair',
+  '/user/:id/nearestPair/:competitionId',
   /* #swagger.security = [{
       "apiKeyAuth": []
   }] */

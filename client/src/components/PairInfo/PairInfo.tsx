@@ -5,15 +5,16 @@ import { ReactComponent as RookWhite } from 'src/assets/rook-white.svg'
 import { ReactComponent as RookBlack } from 'src/assets/rook-black.svg'
 import { ReactComponent as Dumbbell } from 'src/assets/dumbbell.svg'
 import { PairType } from 'src/helpers/tableSchemaPairs'
-import { getAge } from 'src/helpers/datetime'
+import { getAge, localTZName } from 'src/helpers/datetime'
 
 type MatchInfoPropsType = {
 	pairData?: PairType
 	zoomLink?: string
 	classes?: string
+	startTime?: string
 }
 
-export const PairInfo: FC<MatchInfoPropsType> = ({ pairData, zoomLink, classes }) => {
+export const PairInfo: FC<MatchInfoPropsType> = ({ pairData, zoomLink, startTime, classes }) => {
 	return (
 		<div
 			className={twMerge(
@@ -23,10 +24,10 @@ export const PairInfo: FC<MatchInfoPropsType> = ({ pairData, zoomLink, classes }
 		>
 			<div className='mb-[17px] lg:ml-auto lg:mb-0 lg:w-[30%]'>
 				<div className='mb-[5px]'>
-					<span className='font-bold xl:text-4xl'>Starts time</span>
+					<span className='font-bold xl:text-4xl'>{startTime}</span>
 					<span className='font-bold lg:mt-[6px] lg:block lg:text-xs lg:font-normal lg:text-[#6C6A6C] xl:text-2xl xl:font-semibold'>
 						{' '}
-						(Timezone)
+						({localTZName})
 					</span>
 				</div>
 				<a

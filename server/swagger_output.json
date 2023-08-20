@@ -2530,7 +2530,7 @@
         }
       }
     },
-    "/api/user/{id}/nearestPair": {
+    "/api/user/{id}/nearestPair/{competitionId}": {
       "get": {
         "tags": [
           "Users"
@@ -2539,6 +2539,14 @@
         "parameters": [
           {
             "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "competitionId",
             "in": "path",
             "required": true,
             "schema": {
@@ -9101,10 +9109,6 @@
           "weight": {
             "type": "number"
           },
-          "competition": {
-            "type": "string",
-            "identificator": true
-          },
           "passwordResetCode": {
             "type": "number"
           },
@@ -9655,10 +9659,6 @@
           },
           "weight": {
             "type": "number"
-          },
-          "competition": {
-            "type": "string",
-            "identificator": true
           },
           "passwordResetCode": {
             "type": "number"
