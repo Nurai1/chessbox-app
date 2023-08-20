@@ -770,11 +770,12 @@ export interface paths {
 			}
 		}
 	}
-	'/api/user/{id}/nearestPair': {
+	'/api/user/{id}/nearestPair/{competitionId}': {
 		get: {
 			parameters: {
 				path: {
 					id: string
+					competitionId: string
 				}
 			}
 			responses: {
@@ -2790,7 +2791,6 @@ export interface components {
 			gender: 'woman' | 'man'
 			ratingNumber: number
 			weight: number
-			competition?: string
 			passwordResetCode?: number
 			currentGroupId?: string
 			competitionsHistory?: {
@@ -2955,7 +2955,6 @@ export interface components {
 			gender: 'woman' | 'man'
 			ratingNumber: number
 			weight: number
-			competition?: string
 			passwordResetCode?: number
 			currentGroupId?: string
 			competitionsHistory?: {

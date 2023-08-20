@@ -1,15 +1,14 @@
-import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
+import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
 
 import dayjs from 'dayjs';
 import { getUTCFormattedDate } from '../utils/datetime';
-import { User } from '../models/index';
+import { Competition, User } from '../models/index';
 import ac from '../roles';
 import { RESOURCES, ACTIONS, ROLES } from '../constants';
-import { ICompetition } from '../types/index';
 import { errorUniqueCheck } from '../utils/errors';
 import {
   CreateUserParser,
@@ -423,9 +422,13 @@ export const updateCurrentUser = async (
     }
   }
 
-  const updatedUser = await User.findOneAndUpdate({ _id: userId }, result, {
-    new: true,
-  });
+  const updatedUser = await User.findOneAndUpdate(
+    { _id: userId },
+    { ...result, fullName: `${result.firstName} ${result.lastName}` },
+    {
+      new: true,
+    }
+  );
 
   if (!updatedUser) return res.status(404).send({ error: "User wasn't found" });
 
@@ -470,17 +473,23 @@ export const updateUser = async (
 };
 
 export const getUserCurrentPair = async (
-  req: Request<{ id?: string }>,
+  req: Request<{ id?: string; competitionId?: string }>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id: userId } = req.params;
+  const { id: userId, competitionId } = req.params;
   if (!userId) return res.status(400).send({ error: 'No user id was sent.' });
 
-  const user = await User.findOne({ _id: userId }).populate('competition');
-  if (!user) return res.status(404).send({ error: "User wasn't found" });
+  const competition = await Competition.findOne({
+    _id: competitionId,
+  }).populate('participants');
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
 
-  const competition = user?.competition as ICompetition;
+  const user = await User.findOne({ _id: userId });
+  if (!user) return res.status(404).send({ error: "User wasn't found" });
+  console.log('user', user);
+  console.log(JSON.stringify(competition?.groups, null, 2));
 
   const currentUserGroup = competition?.groups?.find(
     (g) => g._id?.toString() === user?.currentGroupId

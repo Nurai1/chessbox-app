@@ -1,0 +1,1125 @@
+[
+  {
+    "chessPlatform": {
+      "username": "testplatform1"
+    },
+    "address": {
+      "country": "Russia",
+      "city": "Moscow"
+    },
+    "fightClub": {
+      "name": "testClub1"
+    },
+    "email": "test1@mail.ru",
+    "hashedPassword": "$2a$10$NdY2uzSLY9zfexuSu5DkuujzRC6JQ6NUIipp8lvONF4qLEOerTLIG",
+    "firstName": "UpdateAgain",
+    "lastName": "updateLastName",
+    "fullName": "testName1 testLastName1",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 1000,
+    "weight": 70,
+    "competitionsHistory": [],
+    "birthDate": "2003-07-31T07:33:59.000Z",
+    "passwordResetCode": null
+  },
+  {
+    "chessPlatform": {
+      "username": "testplatform2"
+    },
+    "address": {
+      "country": "Russia",
+      "city": "Moscow"
+    },
+    "fightClub": {
+      "name": "testClub2"
+    },
+    "socialNetworks": {
+      "whatsup": "+79603818888"
+    },
+    "email": "test2@mail.ru",
+    "hashedPassword": "$2a$10$83YO1EfNW4abmFG20EDtXOUBLYETPe7pAlExuPmHj4cJV/MtKxp1q",
+    "firstName": "testName2",
+    "lastName": "testLastName2",
+    "fullName": "testName2 testLastName2",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 1000,
+    "weight": 60,
+    "competitionsHistory": [],
+    "birthDate": "1993-07-31T08:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "sfsd"
+    },
+    "address": {
+      "country": "dfdsfsdds",
+      "city": "gjjghjghjgh"
+    },
+    "fightClub": {
+      "name": "fsdfsd"
+    },
+    "email": "osnovalg@mail.ru",
+    "hashedPassword": "$2a$10$fRAb6urrMnsVA.HYQjBe8e6tHASzzRWs83Re45A7V0pbwT05EUYKS",
+    "firstName": "addsaf",
+    "lastName": "sdfsdf",
+    "fullName": "addsaf sdfsdf",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 1000,
+    "weight": 12,
+    "competitionsHistory": [],
+    "birthDate": "1992-07-31T08:33:59.000Z",
+    "passwordResetCode": null
+  },
+  {
+    "chessPlatform": {
+      "username": "saiapow.ainur+test1@gmail.com"
+    },
+    "address": {
+      "country": "Georgia",
+      "city": "Tbilisi"
+    },
+    "fightClub": {
+      "name": "club12"
+    },
+    "socialNetworks": {
+      "whatsup": "+79603818888"
+    },
+    "email": "saiapow.ainur+test1@gmail.com",
+    "hashedPassword": "$2a$10$0R/IDbLnLrCleTpc0rb2i.f6F7o1izTWUXDern3A/00AFWGxH/iFO",
+    "firstName": "Ainur",
+    "lastName": "Test123",
+    "fullName": "Ainur Test123",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 1000,
+    "weight": 75,
+    "competitionsHistory": [],
+    "passwordResetCode": 2875,
+    "birthDate": "1998-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "updatesTestPlatform3"
+    },
+    "address": {
+      "country": "Russia",
+      "city": "Ufa"
+    },
+    "fightClub": {
+      "name": "testClub3"
+    },
+    "email": "test3@mail.ru",
+    "hashedPassword": "$2a$10$un1ufM18XWar44x4mYpXKOM0otzwyHN0kX22138xDt7N5/htpRqlu",
+    "firstName": "testName3",
+    "lastName": "testLastName3",
+    "fullName": "testName3 testLastName3",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 1000,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1978-07-31T08:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "lichess4edited"
+    },
+    "address": {
+      "country": "Russiaedited",
+      "city": "Tambovedited"
+    },
+    "fightClub": {
+      "name": "testClub4edited"
+    },
+    "email": "bufflg@mail.ru",
+    "hashedPassword": "$2a$10$iHlotCsOPq.XuZ6Ft.VUjuO5lMIxczQ7r76FOUFTIFZEHQW2cP6ZG",
+    "firstName": "test4edited",
+    "lastName": "testLast4edited",
+    "fullName": "test4 testLast4",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 1000,
+    "weight": 69,
+    "competitionsHistory": [],
+    "passwordResetCode": null,
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Vasya123"
+    },
+    "address": {
+      "country": "Russia",
+      "city": "Moscow"
+    },
+    "fightClub": {
+      "name": "testClub4"
+    },
+    "email": "test4@mail.ru",
+    "hashedPassword": "$2a$10$uO7My6Cg/lA3doYrEY/yu.rX7FhhRUfRHOvG5RUsxusi31O6i9Bpy",
+    "firstName": "Уася",
+    "lastName": "Грибоедов",
+    "fullName": "Уася Грибоедов",
+    "role": "participant",
+    "birthDate": "1955-02-08T00:00:00.000Z",
+    "gender": "man",
+    "ratingNumber": 1000,
+    "weight": 78,
+    "competitionsHistory": []
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy41"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj41@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds4040fsdf",
+    "firstName": "Morf41",
+    "lastName": "Morfoniy41",
+    "fullName": "MorfoniyMorf41",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 41,
+    "weight": 51,
+    "competitionsHistory": [],
+    "birthDate": "2001-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy40"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj40@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds4040fsdf",
+    "firstName": "Morf40",
+    "lastName": "Morfoniy40",
+    "fullName": "MorfoniyMorf40",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 40,
+    "weight": 55,
+    "competitionsHistory": [],
+    "birthDate": "2002-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy39"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj39@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds3939fsdf",
+    "firstName": "Morf39",
+    "lastName": "Morfoniy39",
+    "fullName": "MorfoniyMorf39",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 39,
+    "weight": 55,
+    "competitionsHistory": [],
+    "birthDate": "2002-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy38"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj38@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds3838fsdf",
+    "firstName": "Morf38",
+    "lastName": "Morfoniy38",
+    "fullName": "MorfoniyMorf38",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 38,
+    "weight": 55,
+    "competitionsHistory": [],
+    "birthDate": "2002-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy36"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj36@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds3636fsdf",
+    "firstName": "Morf36",
+    "lastName": "Morfoniy36",
+    "fullName": "MorfoniyMorf36",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 36,
+    "weight": 55,
+    "competitionsHistory": [],
+    "birthDate": "2002-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy35"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj35@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds3535fsdf",
+    "firstName": "Morf35",
+    "lastName": "Morfoniy35",
+    "fullName": "MorfoniyMorf35",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 35,
+    "weight": 55,
+    "competitionsHistory": [],
+    "birthDate": "2002-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy34"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj34@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds3434fsdf",
+    "firstName": "Morf34",
+    "lastName": "Morfoniy34",
+    "fullName": "MorfoniyMorf34",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 34,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy33"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj33@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds3333fsdf",
+    "firstName": "Morf33",
+    "lastName": "Morfoniy33",
+    "fullName": "MorfoniyMorf33",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 33,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy32"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj32@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds3232fsdf",
+    "firstName": "Morf32",
+    "lastName": "Morfoniy32",
+    "fullName": "MorfoniyMorf32",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 32,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy30"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "socialNetworks": {
+      "whatsup": "+79603818888"
+    },
+    "email": "jhsa1da3kj30@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds3032fsdf",
+    "firstName": "Morf30",
+    "lastName": "Morfoniy30",
+    "fullName": "MorfoniyMorf30",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 30,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy29"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "socialNetworks": {
+      "whatsup": "+79603818888"
+    },
+    "email": "jhsa1da3kj29@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds2932fsdf",
+    "firstName": "Morf29",
+    "lastName": "Morfoniy29",
+    "fullName": "MorfoniyMorf29",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 29,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy28"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj28@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds2832fsdf",
+    "firstName": "Morf28",
+    "lastName": "Morfoniy28",
+    "fullName": "MorfoniyMorf28",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 28,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy26"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj26@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds2632fsdf",
+    "firstName": "Morf",
+    "lastName": "Morfoniy",
+    "fullName": "MorfoniyMorf",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 26,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy25"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj25@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds2532fsdf",
+    "firstName": "Morf",
+    "lastName": "Morfoniy",
+    "fullName": "MorfoniyMorf",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 25,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy24"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj24@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds2432fsdf",
+    "firstName": "Morf",
+    "lastName": "Morfoniy",
+    "fullName": "MorfoniyMorf",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 24,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy23"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj23@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds2332fsdf",
+    "firstName": "Morf",
+    "lastName": "Morfoniy",
+    "fullName": "MorfoniyMorf",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 23,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy22"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj22@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds2232fsdf",
+    "firstName": "Morf",
+    "lastName": "Morfoniy",
+    "fullName": "MorfoniyMorf",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 22,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "MetalBoy21"
+    },
+    "address": {
+      "country": "France",
+      "city": "Chishmy"
+    },
+    "fightClub": {
+      "name": "gross"
+    },
+    "email": "jhsa1da3kj21@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds2132fsdf",
+    "firstName": "Morf",
+    "lastName": "Morfoniy",
+    "fullName": "MorfoniyMorf",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 21,
+    "weight": 65,
+    "competitionsHistory": [],
+    "birthDate": "1988-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail20"
+    },
+    "address": {
+      "country": "Norway",
+      "city": "Ishimbay"
+    },
+    "fightClub": {
+      "name": "faceCorrectionClub"
+    },
+    "email": "jhsa1da3kj20@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds2032fsdf",
+    "firstName": "MichailNogebat20",
+    "lastName": "Michailych20",
+    "fullName": "MichailMichailych20",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 20,
+    "weight": 75,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail19"
+    },
+    "address": {
+      "country": "Norway",
+      "city": "Ishimbay"
+    },
+    "fightClub": {
+      "name": "faceCorrectionClub"
+    },
+    "email": "jhsa1da3kj19@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1932fsdf",
+    "firstName": "MichailNogebat19",
+    "lastName": "Michailych19",
+    "fullName": "MichailMichailych19",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 19,
+    "weight": 75,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail2"
+    },
+    "address": {
+      "country": "Russia2",
+      "city": "Ufa2"
+    },
+    "fightClub": {
+      "name": "club2"
+    },
+    "email": "jhsa1das3kj@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1232fsdf",
+    "firstName": "MichailNogebat2",
+    "lastName": "Michailych2",
+    "fullName": "MichailMichailych2",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 18,
+    "weight": 69,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail3"
+    },
+    "address": {
+      "country": "Russia3",
+      "city": "Ufa3"
+    },
+    "fightClub": {
+      "name": "club3"
+    },
+    "email": "jhsa1da3kj@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1232fsdf",
+    "firstName": "MichailNogebat3",
+    "lastName": "Michailych3",
+    "fullName": "MichailMichailych3",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 18,
+    "weight": 69,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail4"
+    },
+    "address": {
+      "country": "Russia4",
+      "city": "Ufa4"
+    },
+    "fightClub": {
+      "name": "club4"
+    },
+    "email": "jhsa1da3kj4@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1232fsdf",
+    "firstName": "MichailNogebat4",
+    "lastName": "Michailych4",
+    "fullName": "MichailMichailych4",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 18,
+    "weight": 69,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail5"
+    },
+    "address": {
+      "country": "Russia5",
+      "city": "Ufa5"
+    },
+    "fightClub": {
+      "name": "club5"
+    },
+    "email": "jhsa1da3kj5@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1232fsdf",
+    "firstName": "MichailNogebat5",
+    "lastName": "Michailych5",
+    "fullName": "MichailMichailych5",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 18,
+    "weight": 69,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail6"
+    },
+    "address": {
+      "country": "Russia6",
+      "city": "Ufa6"
+    },
+    "fightClub": {
+      "name": "club5"
+    },
+    "email": "jhsa1da3kj6@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1232fsdf",
+    "firstName": "MichailNogebat6",
+    "lastName": "Michailych6",
+    "fullName": "MichailMichailych6",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 18,
+    "weight": 69,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail7"
+    },
+    "address": {
+      "country": "Russia7",
+      "city": "Ufa7"
+    },
+    "fightClub": {
+      "name": "club5"
+    },
+    "email": "jhsa1da3kj7@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1232fsdf",
+    "firstName": "MichailNogebat7",
+    "lastName": "Michailych7",
+    "fullName": "MichailMichailych7",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 18,
+    "weight": 69,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail8"
+    },
+    "address": {
+      "country": "Russia8",
+      "city": "Ufa8"
+    },
+    "fightClub": {
+      "name": "club5"
+    },
+    "email": "jhsa1da3kj8@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1232fsdf",
+    "firstName": "MichailNogebat8",
+    "lastName": "Michailych8",
+    "fullName": "MichailMichailych8",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 18,
+    "weight": 69,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail9"
+    },
+    "address": {
+      "country": "Russia8",
+      "city": "Ufa8"
+    },
+    "fightClub": {
+      "name": "club5"
+    },
+    "email": "jhsa1da3kj9@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1232fsdf",
+    "firstName": "MichailNogebat9",
+    "lastName": "Michailych9",
+    "fullName": "MichailMichailych9",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 18,
+    "weight": 69,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail10"
+    },
+    "address": {
+      "country": "Norway",
+      "city": "Ishimbay"
+    },
+    "fightClub": {
+      "name": "faceCorrectionClub"
+    },
+    "email": "jhsa1da3kj10@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1232fsdf",
+    "firstName": "MichailNogebat10",
+    "lastName": "Michailych10",
+    "fullName": "MichailMichailych10",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 18,
+    "weight": 85,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail18"
+    },
+    "address": {
+      "country": "Norway",
+      "city": "Ishimbay"
+    },
+    "fightClub": {
+      "name": "faceCorrectionClub"
+    },
+    "email": "jhsa1da3kj18@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1832fsdf",
+    "firstName": "MichailNogebat18",
+    "lastName": "Michailych18",
+    "fullName": "MichailMichailych18",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 18,
+    "weight": 75,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail1"
+    },
+    "address": {
+      "country": "Russia",
+      "city": "Ufa"
+    },
+    "fightClub": {
+      "name": "clubBeast"
+    },
+    "email": "jhsadas3kj@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1232fsdf",
+    "firstName": "MichailNogebat",
+    "lastName": "Michailych",
+    "fullName": "MichailMichailych1232",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 17,
+    "weight": 69,
+    "competitionsHistory": [],
+    "birthDate": "1983-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail17"
+    },
+    "address": {
+      "country": "Norway",
+      "city": "Ishimbay"
+    },
+    "fightClub": {
+      "name": "faceCorrectionClub"
+    },
+    "email": "jhsa1da3kj17@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1732fsdf",
+    "firstName": "MichailNogebat17",
+    "lastName": "Michailych17",
+    "fullName": "MichailMichailych17",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 17,
+    "weight": 75,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail"
+    },
+    "address": {
+      "country": "Bangladesh",
+      "city": "Ufa"
+    },
+    "fightClub": {
+      "name": "club"
+    },
+    "email": "jh3kj@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfdsfsdf",
+    "firstName": "Michail",
+    "lastName": "Michailych",
+    "fullName": "MichailMichailych",
+    "role": "participant",
+    "gender": "woman",
+    "ratingNumber": 16,
+    "weight": 67,
+    "competitionsHistory": [],
+    "birthDate": "1978-07-31T08:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail16"
+    },
+    "address": {
+      "country": "Norway",
+      "city": "Ishimbay"
+    },
+    "fightClub": {
+      "name": "faceCorrectionClub"
+    },
+    "email": "jhsa1da3kj16@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1632fsdf",
+    "firstName": "MichailNogebat16",
+    "lastName": "Michailych16",
+    "fullName": "MichailMichailych16",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 16,
+    "weight": 75,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail15"
+    },
+    "address": {
+      "country": "Norway",
+      "city": "Ishimbay"
+    },
+    "fightClub": {
+      "name": "faceCorrectionClub"
+    },
+    "email": "jhsa1da3kj15@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1532fsdf",
+    "firstName": "MichailNogebat15",
+    "lastName": "Michailych15",
+    "fullName": "MichailMichailych15",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 15,
+    "weight": 75,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail14"
+    },
+    "address": {
+      "country": "Norway",
+      "city": "Ishimbay"
+    },
+    "fightClub": {
+      "name": "faceCorrectionClub"
+    },
+    "email": "jhsa1da3kj14@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1432fsdf",
+    "firstName": "MichailNogebat14",
+    "lastName": "Michailych14",
+    "fullName": "MichailMichailych14",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 14,
+    "weight": 85,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail13"
+    },
+    "address": {
+      "country": "Norway",
+      "city": "Ishimbay"
+    },
+    "fightClub": {
+      "name": "faceCorrectionClub"
+    },
+    "socialNetworks": {
+      "whatsup": "+79603818888"
+    },
+    "email": "jhsa1da3kj13@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1332fsdf",
+    "firstName": "MichailNogebat13",
+    "lastName": "Michailych13",
+    "fullName": "MichailMichailych13",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 13,
+    "weight": 85,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail12"
+    },
+    "address": {
+      "country": "Norway",
+      "city": "Ishimbay"
+    },
+    "fightClub": {
+      "name": "faceCorrectionClub"
+    },
+    "email": "jhsa1da3kj12@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1232fsdf",
+    "firstName": "MichailNogebat12",
+    "lastName": "Michailych12",
+    "fullName": "MichailMichailych12",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 12,
+    "weight": 85,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "Michail11"
+    },
+    "address": {
+      "country": "Norway",
+      "city": "Ishimbay"
+    },
+    "fightClub": {
+      "name": "faceCorrectionClub"
+    },
+    "email": "jhsa1da3kj11@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1232fsdf",
+    "firstName": "MichailNogebat11",
+    "lastName": "Michailych11",
+    "fullName": "MichailMichailych11",
+    "role": "participant",
+    "gender": "man",
+    "ratingNumber": 11,
+    "weight": 85,
+    "competitionsHistory": [],
+    "birthDate": "1981-07-31T07:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "VasyaNagibator"
+    },
+    "address": {
+      "country": "China",
+      "city": "Guangzhow"
+    },
+    "fightClub": {
+      "name": "face"
+    },
+    "email": "sds@mail.ry",
+    "hashedPassword": "fdgdfgdfg43534534",
+    "firstName": "Vasya",
+    "lastName": "Poopkin",
+    "fullName": "VasyaPoopkin",
+    "gender": "man",
+    "ratingNumber": 10,
+    "weight": 100,
+    "competitionsHistory": [],
+    "role": "participant",
+    "birthDate": "1924-07-31T09:33:59.000Z"
+  },
+  {
+    "chessPlatform": {
+      "username": "DefaultJudge"
+    },
+    "address": {
+      "country": "Great Britain",
+      "city": "London"
+    },
+    "fightClub": {
+      "name": "Fighters"
+    },
+    "email": "judgeexample@mail.ru",
+    "hashedPassword": "sfsdfsdfdsfds1832fsdf",
+    "firstName": "Michail",
+    "lastName": "Petrov",
+    "fullName": "Michail Petrov",
+    "birthDate": "1981-07-31T07:33:59.000Z",
+    "gender": "man",
+    "role": "judge",
+    "ratingNumber": 0,
+    "weight": 75,
+    "competitionsHistory": []
+  }
+]
