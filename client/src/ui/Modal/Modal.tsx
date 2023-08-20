@@ -96,7 +96,7 @@ export const Modal: FC<{
 								<XmarkIconBig onClick={onClose} className='w-[20px] transition hover:opacity-70' />
 							</button>
 						</div>
-						<div className='grow overflow-y-auto'>{isOpen ? content : null}</div>
+						<div className='scroll-custom grow overflow-y-auto'>{isOpen ? content : null}</div>
 					</div>
 				</div>
 			)}

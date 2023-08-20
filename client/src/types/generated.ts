@@ -772,97 +772,6 @@ export interface paths {
 			}
 		}
 	}
-	'/api/user/{id}/nearestPair': {
-		get: {
-			parameters: {
-				path: {
-					id: string
-				}
-			}
-			responses: {
-				/** @description Each attrubute can be null. If pair is null, then the user is waiting in the "Next Round Participants" */
-				200: {
-					content: {
-						'application/json': {
-							pair?: components['schemas']['Pair']
-							/** @example 8 */
-							roundDivider?: number
-						}
-						'application/xml': {
-							pair?: components['schemas']['Pair']
-							/** @example 8 */
-							roundDivider?: number
-						}
-					}
-				}
-				/** @description Client error. */
-				400: {
-					content: {
-						'application/json': {
-							/** @example string */
-							error?: string
-						}
-						'application/xml': {
-							/** @example string */
-							error?: string
-						}
-					}
-				}
-				/** @description Unauthorized error. */
-				401: {
-					content: {
-						'application/json': {
-							/** @example string */
-							error?: string
-						}
-						'application/xml': {
-							/** @example string */
-							error?: string
-						}
-					}
-				}
-				/** @description Permissions error. */
-				403: {
-					content: {
-						'application/json': {
-							/** @example string */
-							error?: string
-						}
-						'application/xml': {
-							/** @example string */
-							error?: string
-						}
-					}
-				}
-				/** @description Not Found error. */
-				404: {
-					content: {
-						'application/json': {
-							/** @example string */
-							error?: string
-						}
-						'application/xml': {
-							/** @example string */
-							error?: string
-						}
-					}
-				}
-				/** @description Internal server error. */
-				500: {
-					content: {
-						'application/json': {
-							/** @example string */
-							error?: string
-						}
-						'application/xml': {
-							/** @example string */
-							error?: string
-						}
-					}
-				}
-			}
-		}
-	}
 	'/api/user': {
 		/** @description Для внутренних нужд разработчиков, не использовать в коде. */
 		post: {
@@ -2792,7 +2701,6 @@ export interface components {
 			gender: 'woman' | 'man'
 			ratingNumber: number
 			weight: number
-			competition?: string
 			passwordResetCode?: number
 			currentGroupId?: string
 			competitionsHistory?: {
@@ -2957,7 +2865,6 @@ export interface components {
 			gender: 'woman' | 'man'
 			ratingNumber: number
 			weight: number
-			competition?: string
 			passwordResetCode?: number
 			currentGroupId?: string
 			competitionsHistory?: {
