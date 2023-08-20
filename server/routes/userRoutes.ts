@@ -1,9 +1,9 @@
 import express from 'express';
 
-import { allowIfLoggedin, grantAccess } from '../controllers/user.controller';
+import { ACTIONS, RESOURCES } from '../constants';
 import { UserController } from '../controllers/index';
+import { createUser } from '../controllers/user.controller';
 import { controllerErrorHandler } from '../utils/controllerErrorHandler';
-import { RESOURCES, ACTIONS } from '../constants';
 import { routerMockForSwaggerGenerator } from '../utils/routerMockForSwaggerGenerator';
 
 export const userRouter = express.Router();
@@ -248,23 +248,15 @@ userRouter.get(
 
 userRouter.get(
   '/allJudges',
-  allowIfLoggedin,
-  grantAccess(ACTIONS.readAny, RESOURCES.USER),
-  controllerErrorHandler(UserController.getAllJudges)
-);
-
-userRouter.get(
-  '/user/:id/nearestPair/:competitionId',
   /* #swagger.security = [{
       "apiKeyAuth": []
   }] */
   /* #swagger.responses[200] = {
-            description: 'Each attrubute can be null. If pair is null, then the user is waiting in the "Next Round Participants"',
-            schema: { pair: { $ref: '#/definitions/Pair' }, roundDivider: 8 }
+            schema: [{ $ref: '#/definitions/User' }]
     } */
   UserController.allowIfLoggedin,
-  UserController.grantAccess(ACTIONS.readOwn, RESOURCES.COMPETITION),
-  controllerErrorHandler(UserController.getUserCurrentPair)
+  UserController.grantAccess(ACTIONS.readAny, RESOURCES.USER),
+  controllerErrorHandler(UserController.getAllJudges)
 );
 
 userRouter.post(
@@ -283,7 +275,7 @@ userRouter.post(
             description: '',
             schema: { $ref: '#/definitions/User' }
     } */
-  controllerErrorHandler(UserController.createUser)
+  controllerErrorHandler(createUser)
 );
 
 userRouter.patch(

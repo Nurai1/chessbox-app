@@ -16,7 +16,6 @@ import {
 	fetchCompetitionJudges,
 	fetchCompetitionParticipants
 } from 'src/store/slices/competitionSlice'
-import { fetchCurrentPairByCompetitionId } from 'src/store/slices/pairSlice'
 import { Button, Loader, Modal, TableBody, Tag, Timer } from 'src/ui'
 
 const getGroupPairsLen = ({
@@ -70,11 +69,6 @@ export const CompetitionPage = (): ReactElement => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
-
-	useEffect(() => {
-		if (authorizedUserId && competitionId && isParticipant)
-			dispatch(fetchCurrentPairByCompetitionId({ competitionId: competitionId as string, id: authorizedUserId }))
-	}, [authorizedUserId, competitionId, dispatch, isParticipant])
 
 	useEffect(() => {
 		if (isRegistrationClosed) {

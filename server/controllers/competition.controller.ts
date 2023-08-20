@@ -70,6 +70,8 @@ export const setJudgesToCompetition = async (
   );
 
   await competition.save();
+  competition.judges = judgesIds;
+
   res.send(competition);
 };
 

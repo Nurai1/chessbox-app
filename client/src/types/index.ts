@@ -6,8 +6,6 @@ export type CompetitionGroupSchema = components['schemas']['CompetitionGroup']
 export type PairSchema = components['schemas']['Pair']
 export type SignUpDataSchema = paths['/api/signup']['post']['requestBody']['content']['application/json']
 export type SignInDataSchema = paths['/api/login']['post']['requestBody']['content']['application/json']
-export type NearestPairResponse =
-	paths['/api/user/{id}/nearestPair/{competitionId}']['get']['responses']['200']['content']['application/json']
 export type ChangePasswordDataSchema =
 	paths['/api/user/changePassword']['patch']['requestBody']['content']['application/json']
 export type ForgotPasswordDataSchema =
