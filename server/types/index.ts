@@ -33,7 +33,6 @@ export interface IUser {
   address: Address;
   fightClub: { name: string };
   ratingNumber: number;
-  competition: PopulatedDoc<ICompetition & Document>;
   passwordResetCode: number | null;
   currentGroupId?: string;
   competitionsHistory: {
