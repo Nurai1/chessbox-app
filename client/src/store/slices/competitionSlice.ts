@@ -144,9 +144,14 @@ export const competitionSlice = createSlice({
 		[setCompetitionJudges.fulfilled.type]: (state, action: PayloadAction<CompetitionSchemaJudge>) => {
 			state.judgeAssignPending = false
 			state.setCompetitionJudgesSuccess = true
+			console.log(action.payload)
 			state.judges = {
 				[action.payload._id as string]: action.payload.judges
 			}
+		},
+		[fetchCompetitionJudges.rejected.type]: (state, action: PayloadAction<string>) => {
+			state.loading = false
+			state.error = action.payload
 		},
 		[setCompetitionJudges.pending.type]: state => {
 			state.judgeAssignPending = true

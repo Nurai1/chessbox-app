@@ -4,12 +4,14 @@ import * as isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import * as isYesterday from 'dayjs/plugin/isYesterday'
 import * as relativeTime from 'dayjs/plugin/relativeTime'
 import * as utc from 'dayjs/plugin/utc'
+import * as timezone from 'dayjs/plugin/timezone'
 
 dayjs.extend(relativeTime)
 dayjs.extend(isYesterday)
 dayjs.extend(isSameOrBefore)
 dayjs.extend(utc)
 dayjs.extend(customParseFormat)
+dayjs.extend(timezone)
 
 export const getDateAgoFormat = (datetime: string) => {
 	const datetimeDayjs = dayjs(datetime)
@@ -27,6 +29,7 @@ export const getDateAgoFormat = (datetime: string) => {
 }
 
 export const getFormattedDate = (date: string, format = 'MMM D, YYYY') => dayjs(date).format(format)
+export const localTZName = dayjs.tz.guess().split('/').join(' - ')
 
 export const getISODateTimeStringFromFormat = (date: string, format = 'MM/DD/YYYY') => {
 	return dayjs(date, format).utc().hour(0).format()
@@ -100,6 +103,6 @@ export const max99years = (time: string) => {
 	return false
 }
 
-export const getAge = (time: string) => {
-	return new Date().getFullYear() - new Date(time).getFullYear()
+export const getAge = (time?: string) => {
+	return time && new Date().getFullYear() - new Date(time).getFullYear()
 }

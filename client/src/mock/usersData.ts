@@ -14,7 +14,7 @@ export const usersMock: UserSchema[] = [
 			username: 'participant1'
 		},
 		ratingNumber: 1006,
-		birthDate: '649416938000',
+		birthDate: '1992-07-31T08:33:59.000Z',
 		gender: 'woman',
 		currentGroupId: '641a261ad4b68529d0b287fd',
 		competitionsHistory: []
@@ -30,7 +30,7 @@ export const usersMock: UserSchema[] = [
 		chessPlatform: {
 			username: 'participant2'
 		},
-		birthDate: '649416938000',
+		birthDate: '1993-07-31T08:33:59.000Z',
 		ratingNumber: 989,
 		competitionsHistory: [],
 		gender: 'man',
@@ -49,7 +49,7 @@ export const usersMock: UserSchema[] = [
 		},
 		ratingNumber: 1000,
 		competitionsHistory: [],
-		birthDate: '649416938000',
+		birthDate: '1999-04-24T08:33:59.000Z',
 		gender: 'man',
 		weight: 60
 	},

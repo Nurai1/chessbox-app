@@ -1,12 +1,14 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import swaggerAutogenInit from 'swagger-autogen';
+import mongoose from 'mongoose';
 import {
   Competition,
   User,
   competitionGroupSchema,
   pairSchema,
 } from './models';
-import mongoose from 'mongoose';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 const m2s = require('mongoose-to-swagger');
 
 const swaggerAutogen = swaggerAutogenInit({ openapi: '3.0.0' });

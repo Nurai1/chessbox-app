@@ -11,21 +11,21 @@ type AccordionPropsType =
             classes?: string
             isOpenDefault?: boolean
             isDraggable?: false
-            id: never
-            index: never
-            sortItems: never
-            closeAccordion: never
+            id?: never
+            index?: never
+            sortItems?: never
+            closeAccordion?: never
         }
     |   {
             children: ReactElement
             title: ReactElement
             classes?: string
             isOpenDefault?: boolean
-            isDraggable?: true
-            id: string
+            isDraggable: true
+            id?: string
             index: number
-            sortItems: (dragIndex: number, hoverIndex: number) => void
-            closeAccordion: (value: boolean) => void
+            sortItems?: (dragIndex: number, hoverIndex: number) => void
+            closeAccordion?: (value: boolean) => void
         }
 
 type DragItem = {
@@ -92,8 +92,8 @@ export const Accordion: FC<AccordionPropsType>  = ({
             // item: monitor.getItem()
         }),
         end: (item, monitor) => {
-            if (monitor.didDrop() && allowDrag) {
-                sortItems(item.index, hoverIndex)
+            if (monitor.didDrop() && allowDrag && sortItems) {
+                sortItems(item.index as number, hoverIndex)
             } else {
                 setIsHovering(false)
             }
