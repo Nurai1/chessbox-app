@@ -93,7 +93,7 @@ export const TableBody: FC<TablePropsType> = ({
 														<div
 															key={cellIndex}
 															className={twMerge(
-																'inline-flex min-w-0 border-t px-2.5 py-[14px] text-sm font-normal text-[#6C6A6C] first:pl-0 last:pr-0 md:py-[22px] md:text-base 2xl:py-[24px]',
+																'inline-flex min-w-0 border-t px-2.5 py-[14px] text-sm font-normal text-grey first:pl-0 last:pr-0 md:py-[22px] md:text-base 2xl:py-[24px]',
 																cell.classes
 															)}
 															style={{
@@ -126,7 +126,7 @@ export const TableBody: FC<TablePropsType> = ({
 									<div
 										key={cellIndex}
 										className={twMerge(
-											'inline-flex min-w-0 border-t px-2.5 py-[14px] text-sm font-normal text-[#6C6A6C] first:pl-0 last:pr-0 md:py-[22px] md:text-base 2xl:py-[24px]',
+											'inline-flex min-w-0 border-t px-2.5 py-[14px] text-sm font-normal text-grey first:pl-0 last:pr-0 md:py-[22px] md:text-base 2xl:py-[24px]',
 											cell.classes
 										)}
 										style={{

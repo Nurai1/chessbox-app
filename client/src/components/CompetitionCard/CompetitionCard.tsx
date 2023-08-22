@@ -50,7 +50,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 				lg:items-start xl:col-start-3 xl:col-end-4 xl:max-w-[250px]'
 			>
 				<h3
-					className='mr-1 text-[#6C6A6C]
+					className='mr-1 text-grey
 					lg:mb-3
 					xl:mb-4 xl:text-2xl xl:font-semibold'
 				>
@@ -155,7 +155,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 				<h3 className='mb-1 text-base font-normal text-black xl:mb-[13px] xl:text-2xl xl:font-semibold'>
 					This competition is&nbsp;over
 				</h3>
-				<span className='text-sm text-[#6C6A6C]'>Your place 15</span>
+				<span className='text-sm text-grey'>Your place 15</span>
 				<Place
 					className='absolute top-[52px] left-[137px] h-[26px] w-[26px]
 					xl:top-[73px] xl:left-[175px]
@@ -175,21 +175,16 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 				className='lg:col-start-1 lg:col-end-3
 			xl:col-start-auto xl:col-end-auto'
 			>
-				<h2
-					className='mb-[17px] text-[20px] font-medium text-black
-				lg:mb-0
-				xl:text-4xl xl:font-bold
-				2xl:mb-[22px]'
-				>
+				<h2 className='mb-[17px] text-heading-6 lg:mb-0 xl:mb-[22px] xl:text-heading-2'>
 					<Link to={_id as string} className='transition hover:opacity-70'>
 						{name}
 					</Link>
 				</h2>
 				{screenWidth < BreakPoint.Lg && (
-					<p className='mb-[17px] text-sm text-[#6C6A6C] xl:text-lg xl:font-medium'>Starts At {dateStart}</p>
+					<p className='mb-[17px] text-sm text-grey xl:text-lg xl:font-medium'>Starts At {dateStart}</p>
 				)}
 				{screenWidth >= BreakPoint.Xl && (
-					<p className='mb-[17px] text-sm text-[#6C6A6C] xl:text-lg xl:font-medium'>Starts At {dateStart}</p>
+					<p className='mb-[17px] text-sm text-grey xl:text-lg xl:font-medium'>Starts At {dateStart}</p>
 				)}
 				{screenWidth >= BreakPoint.Xl && (
 					<div className='mt-4 flex flex-wrap gap-4 '>
@@ -212,7 +207,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 			 xl:col-start-2 xl:col-end-3 xl:row-start-1 xl:row-end-2'
 			>
 				{screenWidth > 743 && screenWidth < BreakPoint.Xl && (
-					<p className='mb-[17px] text-sm text-[#6C6A6C]'>Starts At {dateStart}</p>
+					<p className='mb-[17px] text-sm text-grey'>Starts At {dateStart}</p>
 				)}
 				<p className={`${style['competition-card_text-col-limit']} text-[#3A3A40]`}>{description}</p>
 				{screenWidth < BreakPoint.Xl && (
