@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeList } from 'react-window'
@@ -27,6 +27,8 @@ export type TablePropsType =
 
 type AutoSizerProps = { height: number; width: number }
 
+let isInfinityLoaderMounted = false
+
 export const TableBody: FC<TablePropsType> = ({
 	columns,
 	rows,
@@ -40,6 +42,18 @@ export const TableBody: FC<TablePropsType> = ({
 	// Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
 	const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage
 
+	useEffect(() => {
+		if (isInfinityLoaderMounted) {
+			const scrollList = document.querySelector('.js-infinity-loader')
+			document.addEventListener('wheel', event => {
+				if (!(event.target as HTMLElement).closest('.js-infinity-loader')) {
+					scrollList?.scrollBy(event.deltaX, event.deltaY)
+				}
+			})
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isInfinityLoaderMounted])
+
 	const isItemLoaded = (index: number) => !hasNextPage || index < rows.length
 
 	return (
@@ -49,7 +63,10 @@ export const TableBody: FC<TablePropsType> = ({
 					{(props: AutoSizerProps) => (
 						// типизировал так, потому что интерфейс пропса loadMoreItems не соотвтетсвует интерфесу нашей функции
 						<InfiniteLoader
-							isItemLoaded={isItemLoaded}
+							isItemLoaded={index => {
+								isInfinityLoaderMounted = true
+								return isItemLoaded(index)
+							}}
 							itemCount={itemCount}
 							loadMoreItems={loadMoreItems as (startIndex: number, stopIndex: number) => Promise<void> | void}
 						>
@@ -61,7 +78,7 @@ export const TableBody: FC<TablePropsType> = ({
 									itemSize={105}
 									height={props.height}
 									width={props.width}
-									className={`${styles['table-scroll-custom']}`}
+									className={`${styles['table-scroll-custom']} js-infinity-loader`}
 								>
 									{({ index, style }) =>
 										!isItemLoaded(index) ? (

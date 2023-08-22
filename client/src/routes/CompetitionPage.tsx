@@ -1,32 +1,67 @@
-import { ReactElement, useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { Fragment, ReactElement, useEffect, useRef, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { ReactComponent as ArrowLeft } from 'src/assets/arrow-left.svg'
 import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
 import { ReactComponent as Persons } from 'src/assets/persons.svg'
-import { ReactComponent as ArrowLeft } from 'src/assets/arrow-left.svg'
 import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
 import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
-import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { fetchCompetitionById, fetchCompetitionParticipants } from '../store/slices/competitionSlice'
-import { Loader, Tag, Timer, Button, Modal, TableBody } from '../ui'
-import { getFormattedDate, isPast } from '../helpers/datetime'
-import { AppRoute } from '../constants/appRoute'
-import { tableSchemaParticipants } from '../helpers/tableSchemaParticipants'
+import { PairInfo } from 'src/components'
+import { AppRoute } from 'src/constants/appRoute'
+import { getAge, getFormattedDate, isPast } from 'src/helpers/datetime'
+import { PairType, getTimeTuplePlusMinutes, tableSchemaPairs } from 'src/helpers/tableSchemaPairs'
+import { tableSchemaParticipants } from 'src/helpers/tableSchemaParticipants'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import {
+	fetchCompetitionById,
+	fetchCompetitionJudges,
+	fetchCompetitionParticipants
+} from 'src/store/slices/competitionSlice'
+import { Button, Loader, Modal, TableBody, Tag, Timer } from 'src/ui'
+
+const getGroupPairsLen = ({
+	currentPairsLen,
+	nextRoundParticipantsLen
+}: {
+	currentPairsLen: number
+	nextRoundParticipantsLen: number
+}) => {
+	let allPairsLen = currentPairsLen + nextRoundParticipantsLen / 2 + currentPairsLen / 2
+	let roundPairsLen = nextRoundParticipantsLen / 2 + currentPairsLen / 2
+
+	while (roundPairsLen > 1) {
+		roundPairsLen = Math.floor(roundPairsLen / 2)
+		allPairsLen += roundPairsLen
+	}
+
+	return allPairsLen
+}
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
 	const { competitionId } = useParams()
+
+	const currentUserPairRef = useRef<{ pair?: PairType; withPair?: boolean; startTime: string }>()
 	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
 	const competitionDataExisting = useAppSelector(s => s.competitions.data).find(({ _id }) => _id === competitionId)
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
+
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
+	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
 	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
+	const authLoading = useAppSelector(state => state.user.authLoading)
 	const competitionData = competitionDataExisting || competitionDataFetched
+
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
 	const isParticipant = competitionData?.participants && competitionData.participants.includes(authorizedUserId ?? '')
 	const isRegistrationClosed = competitionData && isPast(competitionData.registrationEndsAt)
 	const isOver = competitionData && Boolean(competitionData.endDate)
 	const participantsTable = participants && tableSchemaParticipants(participants)
+	const requirements = competitionData?.requirements
+	const startPointTimeTuple =
+		competitionData?.startDate && Number(new Date(competitionData?.startDate)) - Date.now() > 0
+			? getFormattedDate(competitionData.startDate, 'HH:mm').split(':')
+			: getFormattedDate(new Date().toISOString(), 'HH:mm').split(':')
 
 	useEffect(() => {
 		if (!competitionDataExisting) {
@@ -34,6 +69,14 @@ export const CompetitionPage = (): ReactElement => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
+
+	useEffect(() => {
+		if (isRegistrationClosed) {
+			dispatch(fetchCompetitionParticipants(competitionId as string))
+			dispatch(fetchCompetitionJudges(competitionId as string))
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isRegistrationClosed])
 
 	useEffect(() => {
 		if (!participants && isSideMenuOpen) {
@@ -80,7 +123,8 @@ export const CompetitionPage = (): ReactElement => {
 
 	const participant = () =>
 		isParticipant &&
-		!isOver && (
+		!isOver &&
+		!isRegistrationClosed && (
 			<div className='relative mb-[24px] lg:mb-0 lg:h-fit lg:rounded-[12px] lg:border lg:p-[30px_10px_10px_10px] xl:p-[45px_25px_25px_25px]'>
 				<div className='hidden lg:mb-[25px] lg:block xl:mb-[40px]'>
 					<h3 className='hidden lg:mb-[20px] lg:block lg:text-xl lg:font-semibold xl:mb-[30px] xl:text-[32px] xl:leading-[48px]'>
@@ -117,67 +161,201 @@ export const CompetitionPage = (): ReactElement => {
 			</div>
 		)
 
+	const groupsAllPairsLen = competitionData?.groups?.map(group =>
+		getGroupPairsLen({
+			currentPairsLen: group.currentRoundPairs?.length ?? 0,
+			nextRoundParticipantsLen: group.nextRoundParticipants?.length ?? 0
+		})
+	)
+
 	return (
 		<>
-			<main className='container relative mx-auto grow px-[17px] pt-[30px] md:pt-[38px] xl:pl-[103px] xl:pr-[50px] xl:pt-[55px]'>
+			<main className='container relative mx-auto grow px-[17px] pb-[50px] pt-[30px] md:pt-[38px] xl:pl-[103px] xl:pr-[50px] xl:pt-[55px]'>
 				<Link
 					to={`/${AppRoute.Competitions}`}
 					className='hidden transition hover:opacity-70 xl:absolute xl:left-[38px] xl:top-[77px] xl:block'
 				>
 					<ArrowLeft />
 				</Link>
-				{!competitionData && !fetchError && <Loader />}
+				{/* authLoading needs here because we save in currentUserPairRef time data on render */}
+				{authLoading && !competitionData && !fetchError && <Loader />}
 				{fetchError && <h2>{fetchError}</h2>}
 				{competitionData && (
-					<div className='lg:grid lg:grid-cols-[1fr_190px] lg:gap-[0_15px] xl:grid-cols-[1fr_345px] xl:gap-[0_40px]'>
-						<div>
-							<h1 className='mb-[15px] text-heading-4 lg:mb-[10px] xl:mb-[24px] xl:text-heading-1'>
-								{competitionData.name}
-							</h1>
-							<p className='mb-[15px] text-sm text-grey xl:mb-[24px] xl:text-heading-3'>{dateStart}</p>
-							<div className='mb-[35px] flex flex-wrap gap-4 xl:mb-[64px]'>
-								{competitionData.price && (
-									<Tag
-										img={<Banknote className='max-5 mr-2' />}
-										text={`Price ${competitionData.price.currentValue} $`}
-									/>
-								)}
-								{competitionData.participants && (
-									<Tag
-										img={<Persons className='max-5 mr-2' />}
-										text={`${competitionData.participants.length} participant${
-											competitionData.participants.length === 1 ? '' : 's'
-										} enrolled`}
-									/>
+					<>
+						<div className='lg:grid lg:grid-cols-[1fr_190px] lg:gap-[0_15px] xl:grid-cols-[1fr_345px] xl:gap-[0_40px]'>
+							<div>
+								<h1 className='mb-[15px] text-heading-4 lg:mb-[10px] xl:mb-[24px] xl:text-heading-1'>
+									{competitionData.name}
+								</h1>
+								<p className='mb-[15px] text-sm text-grey xl:mb-[24px] xl:text-heading-3'>{dateStart}</p>
+								<div className='mb-[35px] flex flex-wrap gap-4 xl:mb-[64px]'>
+									{competitionData.price && (
+										<Tag
+											img={<Banknote className='max-5 mr-2' />}
+											text={`Price ${competitionData.price.currentValue} $`}
+										/>
+									)}
+									{competitionData.participants && (
+										<Tag
+											img={<Persons className='max-5 mr-2' />}
+											text={`${competitionData.participants.length} participant${
+												competitionData.participants.length === 1 ? '' : 's'
+											} enrolled`}
+										/>
+									)}
+								</div>
+								{requirements && (
+									<div className='mb-[24px] flex items-center'>
+										<p className='max-w-[150px] pr-[16px] text-[#6C6A6C] xl:font-bold'>Competition requirements:</p>
+										<div className='min-w-[112px] border-x px-[16px]'>
+											<p className='mb-[8px] text-sm xl:text-base'>Age:</p>
+											<p className='whitespace-nowrap font-bold'>
+												{requirements?.ageCategory?.from} - {requirements?.ageCategory?.to}{' '}
+											</p>
+										</div>
+										<div className='min-w-[100px] pl-[16px]'>
+											<p className='mb-[8px] text-sm xl:text-base'>Weight:</p>
+											<p className='whitespace-nowrap font-bold'>
+												{requirements?.weightCategory?.from} - {requirements?.weightCategory?.to}
+												<span className='text-[#6C6A6C]'> kg</span>
+											</p>
+										</div>
+									</div>
 								)}
 							</div>
-							{competitionData.groups?.map(({ _id, ageCategory, weightCategory }) => (
-								<div key={_id} className='mb-[24px] flex items-center'>
-									<p className='max-w-[150px] pr-[16px] text-grey xl:font-bold'>Competition requirements:</p>
-									<div className='min-w-[112px] border-x px-[16px]'>
-										<p className='mb-[8px] text-sm xl:text-base'>Age:</p>
-										<p className='whitespace-nowrap font-bold'>
-											{ageCategory?.from} - {ageCategory?.to}{' '}
-										</p>
-									</div>
-									<div className='min-w-[100px] pl-[16px]'>
-										<p className='mb-[8px] text-sm xl:text-base'>Weight:</p>
-										<p className='whitespace-nowrap font-bold'>
-											{weightCategory?.from} - {weightCategory?.to}
-											<span className='text-grey'> kg</span>
-										</p>
-									</div>
-								</div>
-							))}
+							{participate()}
+							{participant()}
+							{isRegistrationClosed && !isParticipant && <h2>Registration Closed</h2>}
+							{isRegistrationClosed && isParticipant && <h2>Time before start {competitionData.startDate}</h2>}
+							<div>
+								<p className='mb-[8px] text-grey xl:font-bold'>Description:</p>
+								<p className='mb-[24px] 2xl:text-body-1'>{competitionData.description}</p>
+							</div>
 						</div>
-						{participate()}
-						{participant()}
+						{isRegistrationClosed && (
+							<>
+								{isParticipant && !currentUserPairRef.current?.withPair && (
+									<h2 className='mb-[10px] text-xl font-medium md:mb-[15px] lg:mb-[34px] xl:text-4xl xl:font-bold'>
+										You will be paired with other participant at {currentUserPairRef.current?.startTime}
+									</h2>
+								)}
+								{isParticipant && currentUserPairRef.current?.pair && (
+									<>
+										<h2 className='mb-[10px] text-xl font-medium md:mb-[15px] lg:mb-[34px] xl:text-4xl xl:font-bold'>
+											Your match:
+										</h2>
+										<PairInfo
+											pairData={currentUserPairRef.current?.pair}
+											startTime={currentUserPairRef.current?.startTime}
+											zoomLink={competitionData.zoomLink}
+											classes='mb-[53px] 2xl:mb-[100px]'
+										/>
+									</>
+								)}
+								<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
+									Competition schedule
+								</h2>
+								<div className='xl:px[50px] flex grow flex-col lg:rounded-3xl lg:border lg:border-[#DADADA] lg:px-[40px] lg:pt-[33px] xl:pt-[63px]'>
+									{competitionData.groups?.map(
+										(
+											{ _id, gender, ageCategory, weightCategory, currentRoundPairs, nextRoundParticipants },
+											groupIndex
+										) => {
+											const currentRoundPairsLen = currentRoundPairs?.length ?? 0
+											const competitionJudgesLen = competitionData?.judges?.length ?? 1
 
-						<div>
-							<p className='mb-[8px] text-grey xl:font-bold'>Description:</p>
-							<p className='mb-[24px] 2xl:text-body-1'>{competitionData.description}</p>
-						</div>
-					</div>
+											let pairsBeforeLen = 0
+											for (let i = 0; i < groupIndex; i += 1) {
+												pairsBeforeLen += groupsAllPairsLen?.[i] ?? 0
+											}
+
+											pairsBeforeLen =
+												pairsBeforeLen % competitionJudgesLen === 0
+													? pairsBeforeLen
+													: pairsBeforeLen + (pairsBeforeLen % competitionJudgesLen)
+
+											const nextRoundParticipantsStartTime = getTimeTuplePlusMinutes(
+												startPointTimeTuple,
+												((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen
+											).join(':')
+
+											return (
+												<Fragment key={_id}>
+													<h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
+														{getTimeTuplePlusMinutes(
+															startPointTimeTuple,
+															(pairsBeforeLen * 10) / competitionJudgesLen
+														).join(':')}
+														<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}-
+														{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
+													</h3>
+													{currentRoundPairs && participants && judges ? (
+														<TableBody
+															rows={tableSchemaPairs({
+																tableData: currentRoundPairs,
+																participants,
+																judges,
+																startTimeTuple: getTimeTuplePlusMinutes(
+																	startPointTimeTuple,
+																	(pairsBeforeLen * 10) / competitionJudgesLen
+																),
+																currentUser: { currentUserPairRef, authorizedUserId }
+															})}
+														/>
+													) : (
+														<Loader />
+													)}
+													{nextRoundParticipants?.length && (
+														<h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
+															{getTimeTuplePlusMinutes(
+																startPointTimeTuple,
+																((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen
+															).join(':')}
+															<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}-
+															{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
+														</h3>
+													)}
+													{nextRoundParticipants?.map((participantId, participantIdx) => {
+														const nextRoundParticipant = participants
+															? participants.find(({ _id: pId }) => pId === participantId)
+															: null
+
+														if (participantId === authorizedUserId)
+															currentUserPairRef.current = {
+																withPair: false,
+																startTime: nextRoundParticipantsStartTime
+															}
+
+														return (
+															<div
+																key={nextRoundParticipant?._id}
+																className='flex h-20 w-full items-center py-3 md:pr-6'
+															>
+																<div className='h-full w-[50px] font-bold'>{participantIdx}</div>
+																<div className='flex h-full grow flex-col'>
+																	<div className='mb-[7px] text-sm text-black xl:text-base'>
+																		{nextRoundParticipant?.fullName}
+																	</div>
+																	<div className='text-[#6C6A6C]'>
+																		{getAge(nextRoundParticipant?.birthDate)} age, {nextRoundParticipant?.weight} kg
+																	</div>
+																</div>
+																<div>
+																	<span className='text-sm uppercase text-[#4565D9] md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3 xl:col-start-3 xl:col-end-4 xl:row-auto xl:text-base xl:font-bold'>
+																		WAITING
+																	</span>
+																</div>
+															</div>
+														)
+													})}
+												</Fragment>
+											)
+										}
+									)}
+								</div>
+							</>
+						)}
+					</>
 				)}
 			</main>
 			<Modal

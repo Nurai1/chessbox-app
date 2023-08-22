@@ -29,3 +29,15 @@ export const getCompetitionParticipantsApi = async (id: string) => {
 
 	return result
 }
+
+export const getCompetitionJudgesApi = async (id: string) => {
+	const result = await get('/api/competition/{id}/judges', {
+		params: {
+			path: {
+				id
+			}
+		}
+	})
+
+	return result
+}

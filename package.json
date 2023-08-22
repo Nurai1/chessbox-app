@@ -2,6 +2,7 @@
   "scripts": {
     "server": "cd server && npm start",
     "client": "cd client && pnpm start",
+    "client-build": "cd client && pnpm build",
     "full": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   }
 }
