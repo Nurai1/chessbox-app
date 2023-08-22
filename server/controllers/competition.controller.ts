@@ -341,7 +341,6 @@ export const addNewParticipant = async (
   if (!user) return res.status(404).send({ error: "user wasn't found" });
 
   if (competition && user) {
-    user.competition = competition;
     user.save();
 
     competition.participants = [...competition.participants, user];
@@ -676,6 +675,7 @@ export const getCompetitionParticipants = async (
   const competition = await Competition.findOne({ _id: id }).populate(
     'participants'
   );
+  console.log('competition', competition);
 
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
