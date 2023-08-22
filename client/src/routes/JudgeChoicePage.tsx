@@ -13,6 +13,7 @@ import { updateCompetitionsList } from 'src/store/slices/competitionsSlice'
 import { fetchAllJudges } from 'src/store/slices/usersSlice'
 import { getFormattedDate } from 'src/helpers/datetime'
 import { tableSchemaJudges } from 'src/helpers/tableSchemas/tableSchemaJudges'
+import { UserSchema } from 'src/types'
 
 const MAX_JUDGES = 2
 
@@ -20,7 +21,7 @@ export const JudgeChoicePage = (): ReactElement => {
 	const { competitionId } = useParams()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
-	const [selectedJudges, setSelectedJudges] = useState<string[]>([])
+	const [selectedJudgesId, setSelectedJudgesId] = useState<string[]>([])
 	const competitionDataFromCompetitionsList = useAppSelector(s => s.competitions.data).find(
 		({ _id }) => _id === competitionId
 	)
@@ -31,7 +32,7 @@ export const JudgeChoicePage = (): ReactElement => {
 	const submitError = useAppSelector(s => s.competition.setCompetitionJudgesError)
 	const competitionData = competitionDataFromCompetitionsList || competitionDataFromCompetition
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
-	const maxJudgesReached = selectedJudges.length >= MAX_JUDGES
+	const maxJudgesReached = selectedJudgesId.length >= MAX_JUDGES
 
 	useEffect(() => {
 		if (!competitionData) {
@@ -45,26 +46,32 @@ export const JudgeChoicePage = (): ReactElement => {
 
 	useEffect(() => {
 		if (assignSuccess) {
+			const selectedJudges = selectedJudgesId.map(judgeId => judges?.find(judge => judge._id === judgeId))
 			navigate(`../${AppRoute.CreateGroup}`)
-			dispatch(setJudges(selectedJudges))
-			dispatch(updateCompetitionsList({selectedJudges, competitionId: competitionId as string}))
-
+			dispatch(setJudges({
+				competitionId: competitionId as string,
+				judges: selectedJudges as UserSchema[]
+			}))
+			dispatch(updateCompetitionsList({
+				selectedJudges: selectedJudgesId,
+				competitionId: competitionId as string
+			}))
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [assignSuccess])
 
 	const handleSelectJudge = (value?: boolean, name?: string) => {
-		if (selectedJudges.includes(name as string)) {
-			setSelectedJudges(selectedJudges.filter(judgeId => judgeId !== name))
+		if (selectedJudgesId.includes(name as string)) {
+			setSelectedJudgesId(selectedJudgesId.filter(judgeId => judgeId !== name))
 		} else {
-			setSelectedJudges([...selectedJudges, name as string])
+			setSelectedJudgesId([...selectedJudgesId, name as string])
 		}
 	}
 
 	const handleSubmit = () => {
 		dispatch(
 			setCompetitionJudges({
-				judgesIds: selectedJudges,
+				judgesIds: selectedJudgesId,
 				competitionId: competitionId as string
 			})
 		)
@@ -75,7 +82,7 @@ export const JudgeChoicePage = (): ReactElement => {
 		tableSchemaJudges({
 			judges,
 			onSelect: handleSelectJudge,
-			selectedJudges,
+			selectedJudgesId,
 			disableCheckboxes: maxJudgesReached
 		})
 

@@ -9,6 +9,7 @@ import { UserSchema } from 'src/types'
 import { editUser, forgotPassword } from 'src/store/slices/userSlice'
 import { FormData } from 'src/types/formData'
 import { AppRoute } from 'src/constants/appRoute'
+import { getFormattedDate } from 'src/helpers/datetime'
 
 export const EditProfilePage = (): ReactElement => {
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
@@ -27,7 +28,9 @@ export const EditProfilePage = (): ReactElement => {
 		fightClub: authorizedUser?.fightClub?.name,
 		country: authorizedUser?.address?.country,
 		city: authorizedUser?.address?.city,
-		chessPlatformUserName: authorizedUser?.chessPlatform?.username
+		chessPlatformUserName: authorizedUser?.chessPlatform?.username,
+		birthDate: authorizedUser?.birthDate,
+		email: authorizedUser?.email
 	})
 
 	const onChange = (value?: string, name?: string) => {
@@ -86,18 +89,26 @@ export const EditProfilePage = (): ReactElement => {
 	}
 
 	return (
-		<main className='flex grow flex-col bg-[#FDFDFD]'>
+		<main className='flex grow flex-col bg-pale-white'>
 			<div className='container  relative m-auto flex  grow flex-col'>
 				<Link
 					to={`/${AppRoute.Competitions}`}
 					className='absolute left-[17px] top-[25px] flex items-center gap-[18px] transition hover:opacity-70'
 				>
-					<ArrowLeft className='w-[24px]' />
-					<span className='hidden font-medium underline md:inline xl:text-2xl'>Back</span>
+					<ArrowLeft className='w-6 lg:w-8' />
 				</Link>
 				<form className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
-					<h1 className='mb-[23px] text-center text-2xl font-medium'>Edit Profile</h1>
+					<h1 className='mb-[23px] text-center text-heading-4'>Edit Profile</h1>
 					<div className='grid gap-[18px]'>
+						<Input
+							onChange={onChange}
+							value={formData?.email}
+							label='Email'
+							name='email'
+							placeholder='Enter Email'
+							classes='h-[48px]'
+							disabled
+						/>
 						<Input
 							onChange={onChange}
 							value={formData?.firstName}
@@ -125,6 +136,15 @@ export const EditProfilePage = (): ReactElement => {
 							classes='h-[48px]'
 							type='number'
 							validationErrorText={validateErrors?.weight}
+						/>
+						<Input
+							onChange={onChange}
+							value={formData?.birthDate && getFormattedDate(formData?.birthDate, 'DD.MM.YYYY')}
+							label='Birthday'
+							name='birthDate'
+							placeholder='DD.MM.YYYY'
+							classes='h-[48px]'
+							disabled
 						/>
 						<Input
 							onChange={onChange}
