@@ -67,7 +67,7 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
 							</p>
 							<p className='xl:hidden'>{user.gender}</p>
 							<p
-								className='text-[#6C6A6C]
+								className='text-grey
                             md:text-base'
 							>
 								{`age ${getAge(user.birthDate)}`}

@@ -93,9 +93,9 @@ export const SignUpForm = (): ReactElement => {
 	}
 
 	return (
-		<main className='lex grow flex-col bg-[#FDFDFD] py-[20px]'>
+		<main className='lex grow flex-col bg-pale-white py-[20px]'>
 			<form className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
-				<h1 className='mb-[8px] text-center text-2xl font-medium'>Sign Up</h1>
+				<h1 className='mb-[8px] text-center text-heading-4'>Sign Up</h1>
 				<div className='grid gap-[18px]'>
 					<Input
 						onChange={onChange}

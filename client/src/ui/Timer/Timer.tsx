@@ -50,7 +50,7 @@ const Timer: FC<TimerPropsType> = memo(({ time, classes, containerClasses, count
 				<span className='text-base font-bold lg:hidden'>&nbsp;d</span>
 				<span
 					className='hidden
-				lg:block lg:text-xs lg:font-normal lg:capitalize lg:text-[#6C6A6C] xl:text-sm'
+				lg:block lg:text-xs lg:font-normal lg:capitalize lg:text-grey xl:text-sm'
 				>
 					{endTime?.days === 1 ? 'day' : 'days'}
 				</span>
@@ -72,7 +72,7 @@ const Timer: FC<TimerPropsType> = memo(({ time, classes, containerClasses, count
 				<span className='text-base font-bold lg:hidden'>h</span>
 				<span
 					className='hidden
-				lg:block lg:text-xs lg:font-normal lg:capitalize lg:text-[#6C6A6C] xl:text-sm'
+				lg:block lg:text-xs lg:font-normal lg:capitalize lg:text-grey xl:text-sm'
 				>
 					{endTime?.hours === 1 ? 'hour' : 'hours'}
 				</span>
@@ -94,7 +94,7 @@ const Timer: FC<TimerPropsType> = memo(({ time, classes, containerClasses, count
 				<span className='text-base font-bold lg:hidden'>m</span>
 				<span
 					className='hidden
-				lg:block lg:text-xs lg:font-normal lg:capitalize lg:text-[#6C6A6C] xl:text-sm'
+				lg:block lg:text-xs lg:font-normal lg:capitalize lg:text-grey xl:text-sm'
 				>
 					{endTime?.minutes === 1 ? 'minute' : 'minutes'}
 				</span>

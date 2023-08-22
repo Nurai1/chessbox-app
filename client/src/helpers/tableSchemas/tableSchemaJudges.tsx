@@ -5,13 +5,13 @@ import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 type TableSchemaJudgesType = {
     judges: UserSchema[]
     onSelect: (value?: boolean, name?: string) => void
-    selectedJudges: string[] | []
+    selectedJudgesId: string[] | []
     disableCheckboxes?: boolean
 }
 
-export const tableSchemaJudges = ({ judges, onSelect, selectedJudges, disableCheckboxes }: TableSchemaJudgesType) => {
+export const tableSchemaJudges = ({ judges, onSelect, selectedJudgesId, disableCheckboxes }: TableSchemaJudgesType) => {
     return judges.map(judge => {
-        const checked = (selectedJudges as string[])?.includes(judge._id as string)
+        const checked = (selectedJudgesId as string[])?.includes(judge._id as string)
         return {
             cells: [
                 {
