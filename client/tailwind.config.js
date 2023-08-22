@@ -20,7 +20,14 @@ const config = {
 		},
 		extend: {
 			fontSize: {
-				input: ['15px', '15px']
+				input: ['15px', '15px'],
+				'heading-1': ['3.375rem', { lineHeight: '1.5', fontWeight: 700 }],
+				'heading-2': ['2.25rem', { lineHeight: '1.5', fontWeight: 700 }],
+				'heading-3': ['2rem', { lineHeight: '1.5', fontWeight: 600 }],
+				'heading-4': ['1.5rem', { lineHeight: '1.5', fontWeight: 600 }],
+				'heading-6': ['1.25rem', { lineHeight: '1.5', fontWeight: 600 }],
+				'body-1': ['1.25rem', { lineHeight: '1.5', fontWeight: 500 }],
+				'body-2': ['1rem', { lineHeight: '1.5', fontWeight: 400 }]
 			},
 			height: {
 				input: ['15px']
@@ -43,7 +50,10 @@ const config = {
 				}
 			},
 			colors: {
-				black: '#09090C'
+				black: '#09090C',
+				grey: '#6C6A6C',
+				'light-grey': '#F2F2F2',
+				'pale-white': '#FDFDFD'
 			}
 		}
 	},

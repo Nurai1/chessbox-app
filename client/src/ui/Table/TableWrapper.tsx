@@ -6,7 +6,7 @@ type TableWrapperPropsType = {
 
 export const TableWrapper: FC<TableWrapperPropsType> = ({ children }) => {
 	return (
-		<div className='flex grow flex-col md:rounded-3xl md:border md:border-[#DADADA] md:px-[40px] md:pt-[33px] xl:pt-[63px] xl:px[50px]'>
+		<div className='xl:px[50px] flex grow flex-col md:rounded-3xl md:border md:border-[#DADADA] md:px-[40px] md:pt-[33px] xl:pt-[63px]'>
 			{children}
 		</div>
 	)

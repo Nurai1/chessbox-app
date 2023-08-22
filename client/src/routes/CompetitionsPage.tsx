@@ -43,9 +43,7 @@ export const CompetitionsPage = (): ReactElement => {
 
 	return (
 		<main className='container m-auto grow px-[17px] pt-[15px] md:px-7 md:pt-[25px] lg:px-10 lg:pt-[33px] 2xl:px-[40px]'>
-			<h1 className='2xl:[mb-40px] mb-[13px] text-[24px] font-semibold xl:mb-[17px] xl:text-[54px] xl:font-bold'>
-				Competitions
-			</h1>
+			<h1 className='2xl:[mb-40px] mb-[13px] text-heading-4 xl:mb-[17px] xl:text-heading-1'>Competitions</h1>
 			{isLoading && <Loader classes='h-[80vh]' />}
 			{!isLoading && (
 				<div
