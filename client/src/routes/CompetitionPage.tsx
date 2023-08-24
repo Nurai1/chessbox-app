@@ -17,9 +17,9 @@ import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaPar
 import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
-	fetchCompetitionParticipants
+	fetchCompetitionParticipants,
+	setCompetitionData
 } from 'src/store/slices/competitionSlice'
-
 
 const getGroupPairsLen = ({
 	currentPairsLen,
@@ -42,19 +42,16 @@ const getGroupPairsLen = ({
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
 	const { competitionId } = useParams()
-
 	const currentUserPairRef = useRef<{ pair?: PairType; withPair?: boolean; startTime: string }>()
 	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
 	const competitionDataExisting = useAppSelector(s => s.competitions.data).find(({ _id }) => _id === competitionId)
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
-
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
 	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
 	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
 	const authLoading = useAppSelector(state => state.user.authLoading)
 	const competitionData = competitionDataExisting || competitionDataFetched
-
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
 	const isParticipant =
 		competitionData?.participants && competitionData.participants.includes(authorizedUser?._id ?? '')
@@ -70,13 +67,18 @@ export const CompetitionPage = (): ReactElement => {
 	useEffect(() => {
 		if (!competitionDataExisting) {
 			dispatch(fetchCompetitionById(competitionId as string))
+		} else {
+			dispatch(setCompetitionData(competitionDataExisting))
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	useEffect(() => {
-		if (isRegistrationClosed) {
+		if (isRegistrationClosed && !participants) {
 			dispatch(fetchCompetitionParticipants(competitionId as string))
+		}
+
+		if (isRegistrationClosed && !judges) {
 			dispatch(fetchCompetitionJudges(competitionId as string))
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

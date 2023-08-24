@@ -12,6 +12,8 @@ export type ForgotPasswordDataSchema =
 	paths['/api/user/forgotPassword']['post']['requestBody']['content']['application/json']
 export type SetCompetitionJudgesSchema = paths['/api/competition/setJudgesToCompetition']['patch']['requestBody']['content']['application/json']
 export type SetJudgesToPairsSchema = paths['/api/competition/setJudgesToPairs']['patch']['requestBody']['content']['application/json']
+export type CompetitionGroupsOrdersSchema = paths['/api/competition/{id}/setCompetitionGroupsOrders']['patch']['requestBody']['content']['application/json']
+export type CompetitionGroupsOrders = paths['/api/competition/{id}/setCompetitionGroupsOrders']['patch']['requestBody']['content']['application/json']['orders']
 
 export type ErrorPayload = { errorMessage: string; response: Response }
 export type CompetitionSchemaJudge = Omit<CompetitionSchema, 'judges'> & {

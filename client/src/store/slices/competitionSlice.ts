@@ -5,15 +5,20 @@ import {
 	UserSchema,
 	SetCompetitionJudgesSchema,
 	SetJudgesToPairsSchema,
-	CompetitionSchemaJudge
+	CompetitionGroupsOrdersSchema
 } from 'src/types'
 import {
 	getCompetitionByIdApi,
 	getCompetitionParticipantsApi,
 	getCompetitionJudgesApi,
 	setCompetitionJudgesApi,
-	setJudgesToPairsApi
+	setJudgesToPairsApi,
+	setCompetitionGroupsOrdersApi
 } from 'src/api/requests/competitions'
+
+type SetCompetitionGroupsOrdersSchema = {
+	id: string
+} & CompetitionGroupsOrdersSchema
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
 	const response = await getCompetitionByIdApi(id)
@@ -67,6 +72,17 @@ export const setPairJudges = createAsyncThunk(
 	}
 )
 
+export const setCompetitionGroupsOrders = createAsyncThunk(
+	'competition/setCompetitionGroupsOrders',
+	async ({orders, id}: SetCompetitionGroupsOrdersSchema, thunkApi) => {
+		const response = await setCompetitionGroupsOrdersApi(orders, id)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
 export interface CompetitionState {
 	data: CompetitionSchema | null
 	participants: Record<string, UserSchema[] | null>
@@ -75,9 +91,13 @@ export interface CompetitionState {
 	error?: string
 	setCompetitionJudgesSuccess?: boolean
 	setCompetitionJudgesError?: string
-	setPairJudgeSuccess?: boolean
-	setPairJudgeError?: string
-	judgeAssignPending?: boolean
+	setCompetitionJudgesPending?: boolean
+	setPairJudgesSuccess?: boolean
+	setPairJudgesError?: string
+	setPairJudgesPending?: boolean
+	groupOrderAssignSuccess?: boolean
+	groupOrderAssignError?: string
+	groupOrderAssignPending?: boolean
 }
 
 const initialState: CompetitionState = {
@@ -91,14 +111,18 @@ export const competitionSlice = createSlice({
 	name: 'competition',
 	initialState,
 	reducers: {
-		setJudges: (state, action: PayloadAction<{ competitionId: string; judges: UserSchema[] }>) => {
+		setJudgesToCompetition: (state, action: PayloadAction<{ competitionId: string; judges: UserSchema[] }>) => {
 			if (state) {
 				state.judges[action.payload.competitionId] = action.payload.judges
 			}
 			state.setCompetitionJudgesSuccess = undefined
 		},
-		resetPairJudgeSuccessStatus: (state) => {
-			state.setPairJudgeSuccess = undefined
+		resetPairJudgeAndGroupSuccessStatus: (state) => {
+			state.setPairJudgesSuccess = undefined
+			state.groupOrderAssignSuccess = undefined
+		},
+		setCompetitionData:  (state, action: PayloadAction<CompetitionSchema>) => {
+			state.data = action.payload
 		}
 	},
 	extraReducers: {
@@ -141,38 +165,50 @@ export const competitionSlice = createSlice({
 			state.loading = false
 			state.error = action.payload.errorMessage
 		},
-		[setCompetitionJudges.fulfilled.type]: (state, action: PayloadAction<CompetitionSchemaJudge>) => {
-			state.judgeAssignPending = false
-			state.setCompetitionJudgesSuccess = true
-			// state.judges = {
-			// 	[action.payload._id as string]: action.payload.judges
-			// }
-		},
 		[fetchCompetitionJudges.rejected.type]: (state, action: PayloadAction<string>) => {
 			state.loading = false
 			state.error = action.payload
 		},
+		[setCompetitionJudges.fulfilled.type]: (state) => {
+			state.setCompetitionJudgesPending = false
+			state.setCompetitionJudgesSuccess = true
+		},
 		[setCompetitionJudges.pending.type]: state => {
-			state.judgeAssignPending = true
+			state.setCompetitionJudgesPending = true
 		},
 		[setCompetitionJudges.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
-			state.judgeAssignPending = false
+			state.setCompetitionJudgesPending = false
 			state.setCompetitionJudgesError = action.payload.errorMessage
 		},
 		[setPairJudges.fulfilled.type]: (state) => {
-			state.judgeAssignPending = false
-			state.setPairJudgeSuccess = true
+			state.setPairJudgesPending = false
+			state.setPairJudgesSuccess = true
 		},
 		[setPairJudges.pending.type]: state => {
-			state.judgeAssignPending = true
+			state.setPairJudgesPending = true
 		},
 		[setPairJudges.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
-			state.judgeAssignPending = false
-			state.setPairJudgeError = action.payload.errorMessage
+			state.setPairJudgesPending = false
+			state.setPairJudgesError = action.payload.errorMessage
+		},
+		[setCompetitionGroupsOrders.fulfilled.type]: (state) => {
+			state.groupOrderAssignPending = false
+			state.groupOrderAssignSuccess = true
+		},
+		[setCompetitionGroupsOrders.pending.type]: state => {
+			state.groupOrderAssignPending = true
+		},
+		[setCompetitionGroupsOrders.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.groupOrderAssignPending = false
+			state.groupOrderAssignError = action.payload.errorMessage
 		}
 	}
 })
 
-export const { setJudges, resetPairJudgeSuccessStatus } = competitionSlice.actions
+export const {
+	setJudgesToCompetition,
+	resetPairJudgeAndGroupSuccessStatus,
+	setCompetitionData
+} = competitionSlice.actions
 
 export default competitionSlice.reducer
