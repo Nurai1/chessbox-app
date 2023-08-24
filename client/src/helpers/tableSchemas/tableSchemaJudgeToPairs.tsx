@@ -20,7 +20,6 @@ export type PairType = {
 } & PairSchema
 
 export const tableSchemaJudgeToPairs = ({ tableData, participants, judges, groupId, selectedJudges, onSelect }:TableSchemaJudgeToPairsType) => {
-
     const participantsData = tableData.reduce((acc, pair) => {
         const blackParticipantData = participants.find(({ _id }) => pair.blackParticipant === _id)
         const whiteParticipantData = participants.find(({ _id }) => pair.whiteParticipant === _id)
@@ -34,6 +33,8 @@ export const tableSchemaJudgeToPairs = ({ tableData, participants, judges, group
             }
         ]
     }, [] as PairType[])
+
+    // console.log(selectedJudges)
 
     return participantsData.map((pair, i) => {
         const handleSelectJudge = (judgeId: string , pairData: PairType, ) => {
@@ -95,7 +96,7 @@ export const tableSchemaJudgeToPairs = ({ tableData, participants, judges, group
                                             ))}
                                         dropdownPlaceholder='Select judge'
                                         placeholder='Select judge'
-                                        // chosenId={selectedJudges?.pairs[i].judgeId}
+                                        chosenId={selectedJudges?.pairs[i]?.judgeId}
                                         selectClasses='text-sm xl:text-base'
                                     />
                                 </div>

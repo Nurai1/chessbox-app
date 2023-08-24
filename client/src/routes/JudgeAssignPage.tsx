@@ -11,10 +11,12 @@ import {
 	fetchCompetitionJudges,
 	fetchCompetitionParticipants,
 	setPairJudges,
-	resetPairJudgeSuccessStatus
+	resetPairJudgeAndGroupSuccessStatus,
+	setCompetitionGroupsOrders,
+	setCompetitionData
 } from 'src/store/slices/competitionSlice'
 import { tableSchemaJudgeToPairs } from 'src/helpers/tableSchemas/tableSchemaJudgeToPairs'
-import { SetJudgesToPairsSchema, CompetitionGroupSchema } from 'src/types'
+import { SetJudgesToPairsSchema, CompetitionGroupSchema, CompetitionGroupsOrders, CompetitionSchema } from 'src/types'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { swapArray } from 'src/helpers/swapArray'
@@ -30,19 +32,22 @@ export type SelectedJudge = {
 export const JudgeAssignPage = (): ReactElement => {
     const { competitionId } = useParams()
     const [selectedJudges, setSelectedJudges] = useState<SetJudgesToPairsSchema>()
+	const [isAccordionOpen, setIsAccordionOpen] = useState<boolean | undefined>()
+	const [groups, setGroups] = useState<CompetitionGroupSchema[] | undefined>()
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const competitionDataFromCompetitionsList = useAppSelector(s => s.competitions.data).find(({ _id }) => _id === competitionId)
-    const competitionDataFromCompetition = useAppSelector(s => s.competition.data)
+    const competitionData = useAppSelector(s => s.competition.data)
     const judges = useAppSelector(s => s.competition.judges[competitionId as string])
-    const competitionData = competitionDataFromCompetitionsList || competitionDataFromCompetition
-    const [groups, setGroups] = useState<CompetitionGroupSchema[] | undefined>()
     const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
     const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
-    const pending = useAppSelector(s => s.competition.judgeAssignPending)
-    const judgeAssignSuccess = useAppSelector(s => s.competition.setPairJudgeSuccess)
-    const submitError = useAppSelector(s => s.competition.setPairJudgeError)
-    const [isAccordionOpen, setIsAccordionOpen] = useState<boolean | undefined>()
+    const pairJudgesAssignPending = useAppSelector(s => s.competition.setPairJudgesPending)
+    const pairJudgesAssignSuccess = useAppSelector(s => s.competition.setPairJudgesSuccess)
+    const pairJudgesAssignError = useAppSelector(s => s.competition.setPairJudgesError)
+	const groupOrderAssignPending = useAppSelector(s => s.competition.groupOrderAssignPending)
+    const groupOrderAssignSuccess = useAppSelector(s => s.competition.groupOrderAssignSuccess)
+    const groupOrderAssignError = useAppSelector(s => s.competition.groupOrderAssignError)
+
+	console.log(groups)
 
 	useEffect(() => {
 		if (!competitionData) {
@@ -68,8 +73,12 @@ export const JudgeAssignPage = (): ReactElement => {
 	}
 
 	useEffect(() => {
+		setGroups(competitionData?.groups)
+	}, [competitionData])
+
+	useEffect(() => {
 		const selectedJudgesData = {
-			judgesByGroups: competitionData?.groups?.map(({ _id, currentRoundPairs }) => ({
+			judgesByGroups: groups?.map(({ _id, currentRoundPairs }) => ({
 				id: _id,
 				pairs: currentRoundPairs?.map((pair, i) => ({
 					id: pair._id,
@@ -80,20 +89,15 @@ export const JudgeAssignPage = (): ReactElement => {
 		}
 
 		setSelectedJudges(selectedJudgesData as SetJudgesToPairsSchema)
-		if (competitionData) {
-			setGroups(competitionData?.groups)
-		}
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [competitionData])
+	}, [groups])
 
 	useEffect(() => {
-		if (judgeAssignSuccess) {
+		if (pairJudgesAssignSuccess && groupOrderAssignSuccess) {
 			navigate(`/${AppRoute.Competitions}/${competitionId}`)
-			dispatch(resetPairJudgeSuccessStatus())
+			dispatch(resetPairJudgeAndGroupSuccessStatus())
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [judgeAssignSuccess])
+	}, [pairJudgesAssignSuccess, groupOrderAssignSuccess])
 
 	const handleJudgeSelect = (updatedJudgeData: SelectedJudge) => {
 		const newSelectJudge = selectedJudges?.judgesByGroups?.map(group => {
@@ -103,6 +107,27 @@ export const JudgeAssignPage = (): ReactElement => {
 			return group
 		})
 
+		const groupIndex = groups?.findIndex(group => group._id === updatedJudgeData.id) as number
+
+		if (groups) {
+			const groupsCopy = groups[groupIndex].currentRoundPairs?.slice()
+			const updatedGroupData = groupsCopy?.map((pair, i) => {
+				return {
+					...pair,
+					judge: updatedJudgeData.pairs[i].judgeId
+				}
+			})
+
+			setGroups([
+				...groups.slice(0, groupIndex),
+				{
+					...groups[groupIndex],
+					currentRoundPairs: updatedGroupData
+				},
+				...groups.slice(groupIndex + 1)
+			])
+		}
+
 		setSelectedJudges({
 			competitionId: competitionId as string,
 			judgesByGroups: newSelectJudge
@@ -110,8 +135,35 @@ export const JudgeAssignPage = (): ReactElement => {
 	}
 
     const handleDoneClick = () => {
+		const groupOrder = groups?.reduce((acc, group, i) => {
+			acc.push({
+				groupId: group._id as string,
+				order: i
+			})
+			return acc
+		}, [] as CompetitionGroupsOrders)
+
+		dispatch(setCompetitionData({
+			...competitionData,
+			groups: groups as CompetitionGroupSchema[]
+		} as CompetitionSchema))
+
+		dispatch(setCompetitionGroupsOrders({
+			orders: groupOrder as CompetitionGroupsOrders,
+			id: competitionId as string
+		}))
+
         dispatch(setPairJudges(selectedJudges as SetJudgesToPairsSchema))
     }
+
+	const handleBackClick = () => {
+		dispatch(setCompetitionData({
+			...competitionData,
+			groups: groups as CompetitionGroupSchema[]
+		} as CompetitionSchema))
+
+		navigate(`../${AppRoute.CreateGroup}`)
+	}
 
     const sortItems = (dragIndex: number, hoverIndex: number) => {
 		setGroups(swapArray(groups as CompetitionGroupSchema[], dragIndex, hoverIndex))
@@ -147,7 +199,10 @@ export const JudgeAssignPage = (): ReactElement => {
                         {judges && judges.map(judge => (
                             <div className='flex flex-col' key={judge._id} >
                                 <a className="flex items-center gap-4 font-medium text-black text-sm hover:opacity-70 transition md:text-base xl:text-xl"
-                                   href={`https://wa.me/${judge.socialNetworks?.whatsup}`}>
+                                    href={`https://wa.me/${judge.socialNetworks?.whatsup}`}
+									target='_blank'
+								    rel="noreferrer"
+								>
                                     <WhatsAppIcon className="min-w-[0.875rem] w-3.5 lg:min-w-[1.5rem] lg:w-6"/>
                                     {judge.fullName}
                                 </a>
@@ -196,9 +251,10 @@ export const JudgeAssignPage = (): ReactElement => {
             )}
             <BottomFixedContainer classes='xl:pl-[7.5rem] xl:pr-[7.5rem]'>
                 <div className='flex flex-wrap gap-2.5'>
-                    <Button type='outlined' onClick={() => navigate(`../${AppRoute.CreateGroup}`)}>Previous step</Button>
-                    <Button classes='min-w-[8rem] xl:min-w-[15.625rem]' onClick={handleDoneClick} loading={pending}>Done</Button>
-                    {submitError && <Alert type='error' subtitle={submitError}/>}
+                    <Button type='outlined' onClick={handleBackClick}>Previous step</Button>
+                    <Button classes='min-w-[8rem] xl:min-w-[15.625rem]' onClick={handleDoneClick} loading={pairJudgesAssignPending && groupOrderAssignPending}>Done</Button>
+                    {pairJudgesAssignError && <Alert type='error' subtitle={pairJudgesAssignError}/>}
+                    {groupOrderAssignError && <Alert type='error' subtitle={groupOrderAssignError}/>}
                 </div>
             </BottomFixedContainer>
         </main>

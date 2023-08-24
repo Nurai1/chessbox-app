@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import {
 	fetchCompetitionById,
 	setCompetitionJudges,
-	setJudges
+	setJudgesToCompetition
 } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsList } from 'src/store/slices/competitionsSlice'
 import { fetchAllJudges } from 'src/store/slices/usersSlice'
@@ -22,15 +22,11 @@ export const JudgeChoicePage = (): ReactElement => {
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 	const [selectedJudgesId, setSelectedJudgesId] = useState<string[]>([])
-	const competitionDataFromCompetitionsList = useAppSelector(s => s.competitions.data).find(
-		({ _id }) => _id === competitionId
-	)
-	const competitionDataFromCompetition = useAppSelector(s => s.competition.data)
+	const competitionData = useAppSelector(s => s.competition.data)
 	const judges = useAppSelector(s => s.users.allJudges)
-	const pending = useAppSelector(s => s.competition.judgeAssignPending)
+	const pending = useAppSelector(s => s.competition.setCompetitionJudgesPending)
 	const assignSuccess = useAppSelector(s => s.competition.setCompetitionJudgesSuccess)
 	const submitError = useAppSelector(s => s.competition.setCompetitionJudgesError)
-	const competitionData = competitionDataFromCompetitionsList || competitionDataFromCompetition
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
 	const maxJudgesReached = selectedJudgesId.length >= MAX_JUDGES
 
@@ -48,7 +44,7 @@ export const JudgeChoicePage = (): ReactElement => {
 		if (assignSuccess) {
 			const selectedJudges = selectedJudgesId.map(judgeId => judges?.find(judge => judge._id === judgeId))
 			navigate(`../${AppRoute.CreateGroup}`)
-			dispatch(setJudges({
+			dispatch(setJudgesToCompetition({
 				competitionId: competitionId as string,
 				judges: selectedJudges as UserSchema[]
 			}))
