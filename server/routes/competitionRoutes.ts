@@ -265,7 +265,7 @@ competitionRouter.patch(
     } */
   UserController.allowIfLoggedin,
   UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
-  controllerErrorHandler(CompetitionController.setJudgesToCompetition)
+  controllerErrorHandler(CompetitionController.setCompetitionGroupsOrders)
 );
 
 competitionRouter.patch(
