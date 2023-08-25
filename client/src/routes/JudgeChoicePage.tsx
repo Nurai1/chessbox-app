@@ -4,11 +4,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { Loader, TableBody, Button, Alert } from 'src/ui'
 import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import {
-	fetchCompetitionById,
-	setCompetitionJudges,
-	setJudgesToCompetition
-} from 'src/store/slices/competitionSlice'
+import { fetchCompetitionById, setCompetitionJudges, setJudgesToCompetition } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsList } from 'src/store/slices/competitionsSlice'
 import { fetchAllJudges } from 'src/store/slices/usersSlice'
 import { getFormattedDate } from 'src/helpers/datetime'
@@ -44,14 +40,18 @@ export const JudgeChoicePage = (): ReactElement => {
 		if (assignSuccess) {
 			const selectedJudges = selectedJudgesId.map(judgeId => judges?.find(judge => judge._id === judgeId))
 			navigate(`../${AppRoute.CreateGroup}`)
-			dispatch(setJudgesToCompetition({
-				competitionId: competitionId as string,
-				judges: selectedJudges as UserSchema[]
-			}))
-			dispatch(updateCompetitionsList({
-				selectedJudges: selectedJudgesId,
-				competitionId: competitionId as string
-			}))
+			dispatch(
+				setJudgesToCompetition({
+					competitionId: competitionId as string,
+					judges: selectedJudges as UserSchema[]
+				})
+			)
+			dispatch(
+				updateCompetitionsList({
+					selectedJudges: selectedJudgesId,
+					competitionId: competitionId as string
+				})
+			)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [assignSuccess])
@@ -89,7 +89,7 @@ export const JudgeChoicePage = (): ReactElement => {
 					<h1 className='mb-1.5 text-lg font-medium xl:text-xl'>{competitionData.name}</h1>
 					<p className='mb-6 text-[#6C6A6C] xl:mb-11'>{dateStart}</p>
 					<div className='relative mb-1.5'>
-						<h2 className='text-2xl font-semibold xl:text-4xl xl:font-bold'>Assign judges 1/3</h2>
+						<h2 className='text-2xl font-semibold xl:text-4xl xl:font-bold'>Assign judges 1/4</h2>
 						<Link
 							to={`/${AppRoute.Competitions}/${competitionId}`}
 							className='hidden transition hover:opacity-70 xl:absolute xl:left-[-3.5rem] xl:top-0 xl:block'

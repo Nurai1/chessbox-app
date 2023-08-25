@@ -1,8 +1,8 @@
-export const swapArray = <T>(items:T[], firstIndex: number, secondIndex: number) => {
-    const results= items.slice()
-    const firstItem = items[firstIndex]
-    results[firstIndex] = items[secondIndex]
-    results[secondIndex] = firstItem
+export const swapArray = <T>(items: T[], firstIndex: number, secondIndex: number) => {
+	const results = [...items]
+	results.splice(firstIndex, 1)
 
-    return results
+	results.splice(secondIndex, 0, items[firstIndex])
+
+	return results
 }

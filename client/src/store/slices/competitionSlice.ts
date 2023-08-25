@@ -16,10 +16,6 @@ import {
 	setCompetitionGroupsOrdersApi
 } from 'src/api/requests/competitions'
 
-type SetCompetitionGroupsOrdersSchema = {
-	id: string
-} & CompetitionGroupsOrdersSchema
-
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
 	const response = await getCompetitionByIdApi(id)
 	if (response.error)
@@ -39,16 +35,13 @@ export const fetchCompetitionParticipants = createAsyncThunk(
 	}
 )
 
-export const fetchCompetitionJudges = createAsyncThunk(
-	'competition/Judges',
-	async (id: string, thunkApi) => {
-		const response = await getCompetitionJudgesApi(id)
-		if (response.error)
-			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+export const fetchCompetitionJudges = createAsyncThunk('competition/Judges', async (id: string, thunkApi) => {
+	const response = await getCompetitionJudgesApi(id)
+	if (response.error)
+		return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
 
-		return { competitionId: id, judges: response.data }
-	}
-)
+	return { competitionId: id, judges: response.data }
+})
 
 export const setCompetitionJudges = createAsyncThunk(
 	'competition/setCompetitionJudges',
@@ -74,7 +67,7 @@ export const setPairJudges = createAsyncThunk(
 
 export const setCompetitionGroupsOrders = createAsyncThunk(
 	'competition/setCompetitionGroupsOrders',
-	async ({orders, id}: SetCompetitionGroupsOrdersSchema, thunkApi) => {
+	async ({ orders, id }: { orders: CompetitionGroupsOrdersSchema; id: string }, thunkApi) => {
 		const response = await setCompetitionGroupsOrdersApi(orders, id)
 		if (response.error)
 			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
@@ -117,12 +110,14 @@ export const competitionSlice = createSlice({
 			}
 			state.setCompetitionJudgesSuccess = undefined
 		},
-		resetPairJudgeAndGroupSuccessStatus: (state) => {
-			state.setPairJudgesSuccess = undefined
+		setCompetitionData: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.data = action.payload
+		},
+		resetCompetitionGroupsOrdersStatus: state => {
 			state.groupOrderAssignSuccess = undefined
 		},
-		setCompetitionData:  (state, action: PayloadAction<CompetitionSchema>) => {
-			state.data = action.payload
+		resetPairJudgeAssignStatus: state => {
+			state.groupOrderAssignSuccess = undefined
 		}
 	},
 	extraReducers: {
@@ -169,7 +164,7 @@ export const competitionSlice = createSlice({
 			state.loading = false
 			state.error = action.payload
 		},
-		[setCompetitionJudges.fulfilled.type]: (state) => {
+		[setCompetitionJudges.fulfilled.type]: state => {
 			state.setCompetitionJudgesPending = false
 			state.setCompetitionJudgesSuccess = true
 		},
@@ -180,7 +175,7 @@ export const competitionSlice = createSlice({
 			state.setCompetitionJudgesPending = false
 			state.setCompetitionJudgesError = action.payload.errorMessage
 		},
-		[setPairJudges.fulfilled.type]: (state) => {
+		[setPairJudges.fulfilled.type]: state => {
 			state.setPairJudgesPending = false
 			state.setPairJudgesSuccess = true
 		},
@@ -191,7 +186,7 @@ export const competitionSlice = createSlice({
 			state.setPairJudgesPending = false
 			state.setPairJudgesError = action.payload.errorMessage
 		},
-		[setCompetitionGroupsOrders.fulfilled.type]: (state) => {
+		[setCompetitionGroupsOrders.fulfilled.type]: state => {
 			state.groupOrderAssignPending = false
 			state.groupOrderAssignSuccess = true
 		},
@@ -207,8 +202,9 @@ export const competitionSlice = createSlice({
 
 export const {
 	setJudgesToCompetition,
-	resetPairJudgeAndGroupSuccessStatus,
-	setCompetitionData
+	setCompetitionData,
+	resetCompetitionGroupsOrdersStatus,
+	resetPairJudgeAssignStatus
 } = competitionSlice.actions
 
 export default competitionSlice.reducer
