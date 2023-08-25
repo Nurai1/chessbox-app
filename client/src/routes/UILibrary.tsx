@@ -143,15 +143,27 @@ export const UILibrary: FC = () => {
 			<hr className='my-8' />
 
 			<h2 className='mb-5 text-xl font-semibold'>Аккордеон</h2>
-			<Accordion title={<span>Accordion title</span>}  isDraggable={false}>
-				<p>
-					Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-				</p>
-			</Accordion>
-			<Accordion title={<span>Accordion title</span>} classes='mb-10' isOpenDefault>
-				<p>
-					Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-				</p>
+			<Accordion>
+				<p>Accordion content</p>
+				<ul>
+					<li>
+						This type is meant to model operations like await in async functions, or the .then() method on Promises -
+						specifically, the way that they recursively unwrap Promises.
+					</li>
+					<li>
+						Constructs a type with all properties of Type set to optional. This utility will return a type that
+						represents all subsets of a given type.
+					</li>
+					<li>Constructs a type consisting of all properties of Type set to required. The opposite of Partial.</li>
+					<li>
+						Constructs a type with all properties of Type set to readonly, meaning the properties of the constructed
+						type cannot be reassigned.
+					</li>
+					<li>
+						Constructs an object type whose property keys are Keys and whose property values are Type. This utility can
+						be used to map the properties of a type to another type.
+					</li>
+				</ul>
 			</Accordion>
 		</div>
 	)

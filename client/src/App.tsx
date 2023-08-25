@@ -16,6 +16,7 @@ import { JudgeChoicePage } from 'src/routes/JudgeChoicePage'
 import { CreateGroupPage } from 'src/routes/CreateGroupPage'
 import { PrivateRoute } from 'src/components/PrivateRoute'
 import { JudgeAssignPage } from 'src/routes/JudgeAssignPage'
+import { OrdersToGroupAssignPage } from 'src/routes/OrdersToGroupAssignPage'
 import { useAppDispatch } from 'src/hooks/redux'
 import { checkAuth } from 'src/store/slices/userSlice'
 import { MainLayout } from 'src/layouts'
@@ -37,7 +38,6 @@ const App = () => {
 						<Route index element={<CompetitionsPage />} />
 						<Route path={AppRoute.Competition}>
 							<Route index element={<CompetitionPage />} />
-							<Route element={<JudgeAssignPage />} path={AppRoute.JudgeAssign} />
 							<Route
 								path={AppRoute.JudgeChoice}
 								element={
@@ -51,6 +51,22 @@ const App = () => {
 								element={
 									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
 										<CreateGroupPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path={AppRoute.OrdersGroupAssign}
+								element={
+									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+										<OrdersToGroupAssignPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path={AppRoute.JudgeAssign}
+								element={
+									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+										<JudgeAssignPage />
 									</PrivateRoute>
 								}
 							/>

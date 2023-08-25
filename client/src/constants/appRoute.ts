@@ -12,5 +12,6 @@ export const AppRoute = {
 	JudgeAssign: 'judge-assign',
 	JudgeChoice: 'judge-choice',
 	CreateGroup: 'create-group',
+	OrdersGroupAssign: 'orders-group-assign',
 	NotFound: '*'
 }
