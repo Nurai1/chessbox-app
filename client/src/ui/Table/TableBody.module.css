@@ -1,6 +1,5 @@
 @media (min-width: 744px) {
 	.table-scroll-custom {
-		padding-right: 4px;
 		scrollbar-width: thin;
 		scrollbar-color: #ababab transparent;
 	}

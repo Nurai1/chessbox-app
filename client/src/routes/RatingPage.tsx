@@ -1,9 +1,9 @@
 import { ReactElement, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchUsers, clearUsers } from 'src/store/slices/usersSlice'
-import { ratingTableSchema } from '../helpers/tableSchema'
+import { tableSchemaRating } from 'src/helpers/tableSchemaRating'
 import { UsersTableWithTitle, UsersSearch } from '../components'
-import { TableWrapper, Loader } from '../ui'
+import { Loader } from '../ui'
 
 const USERS_PER_STEP = 5
 
@@ -25,7 +25,7 @@ export const RatingPage = (): ReactElement => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchParams])
 
-	const usersTable = ratingTableSchema(users)
+	const usersTable = tableSchemaRating(users)
 	const hasUsers = users.length > 0
 	const hasMoreUsers = total !== users.length
 	const hasNextPage = users.length < total
@@ -45,11 +45,10 @@ export const RatingPage = (): ReactElement => {
 	}
 
 	return (
-		<main className='container m-auto flex grow flex-col px-[17px] pt-[15px] md:px-7 md:pt-[25px] lg:px-10 lg:pt-[33px] 2xl:px-[40px]'>
-			<h1 className='2xl:[mb-40px] mb-[13px] text-heading-4 xl:mb-[17px] xl:text-heading-1'>Rating</h1>
-
-			<TableWrapper>
-				<UsersSearch classes='mb-[35px] md:mb-[30px]' />
+		<main className='container m-auto flex grow flex-col px-4 pt-4 md:px-7 lg:px-10 2xl:px-[40px]'>
+			<h1 className='mb-3 text-heading-4 xl:mb-5'>Rating</h1>
+			<div className='md:border-pale-grey flex grow flex-col md:rounded-3xl md:border md:px-10 md:pt-5'>
+				<UsersSearch classes='mb-2.5 xl:mb-4' />
 				{isLoading && <Loader classes='h-[80vh]' />}
 				{hasUsers && (
 					<UsersTableWithTitle
@@ -58,11 +57,10 @@ export const RatingPage = (): ReactElement => {
 						isInfiniteLoader
 						isNextPageLoading={isNextPageLoading}
 						loadNextPage={loadNextPage}
-						classes='border-t'
 					/>
 				)}
 				{nothingFound && <h2 className='m-auto text-2xl'>Nothing found</h2>}
-			</TableWrapper>
+			</div>
 		</main>
 	)
 }
