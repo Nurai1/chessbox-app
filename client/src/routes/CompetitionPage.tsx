@@ -326,7 +326,7 @@ export const CompetitionPage = (): ReactElement => {
 													) : (
 														<Loader />
 													)}
-													{nextRoundParticipants?.length && (
+													{!!nextRoundParticipants?.length && (
 														<h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
 															{getTimeTuplePlusMinutes(
 																startPointTimeTuple,

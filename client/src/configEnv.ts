@@ -2,7 +2,7 @@ type EnvType = 'local' | 'dev' | 'prod'
 
 export const getEnv = (): EnvType => {
 	const currentHost = window.location.hostname
-	if (/.*localhost.*/.test(currentHost)) {
+	if (/.*localhost.*/.test(currentHost) || /.*127.0.0.1.*/.test(currentHost)) {
 		return 'local'
 	}
 	if (/.dev/.test(currentHost)) {
