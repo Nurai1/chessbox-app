@@ -271,7 +271,8 @@ export const CompetitionPage = (): ReactElement => {
 
 											const nextRoundParticipantsStartTime = getTimeTuplePlusMinutes(
 												startPointTimeTuple,
-												((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen
+												((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen +
+													(competitionData?.breakTime?.minutes ?? 0)
 											).join(':')
 
 											return (
@@ -279,7 +280,7 @@ export const CompetitionPage = (): ReactElement => {
 													<h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
 														{getTimeTuplePlusMinutes(
 															startPointTimeTuple,
-															(pairsBeforeLen * 10) / competitionJudgesLen
+															(pairsBeforeLen * 10) / competitionJudgesLen + (competitionData?.breakTime?.minutes ?? 0)
 														).join(':')}
 														<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}-
 														{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
@@ -292,9 +293,11 @@ export const CompetitionPage = (): ReactElement => {
 																judges,
 																startTimeTuple: getTimeTuplePlusMinutes(
 																	startPointTimeTuple,
-																	(pairsBeforeLen * 10) / competitionJudgesLen
+																	(pairsBeforeLen * 10) / competitionJudgesLen +
+																		(competitionData?.breakTime?.minutes ?? 0)
 																),
-																currentUser: { currentUserPairRef, authorizedUserId }
+																currentUser: { currentUserPairRef, authorizedUserId },
+																breakTime: competitionData?.breakTime
 															})}
 														/>
 													) : (
@@ -304,7 +307,8 @@ export const CompetitionPage = (): ReactElement => {
 														<h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
 															{getTimeTuplePlusMinutes(
 																startPointTimeTuple,
-																((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen
+																((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen +
+																	(competitionData?.breakTime?.minutes ?? 0)
 															).join(':')}
 															<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}-
 															{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
