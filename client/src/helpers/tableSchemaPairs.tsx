@@ -18,7 +18,6 @@ export type PairType = {
 	blackParticipantData?: UserSchema
 	whiteParticipantData?: UserSchema
 	judgeData?: UserSchema
-	time?: string
 } & PairSchema
 
 export const tableSchemaPairs = ({
@@ -33,7 +32,7 @@ export const tableSchemaPairs = ({
 	judges: UserSchema[]
 	startTimeTuple: string[]
 	currentUser: {
-		currentUserPairRef: MutableRefObject<undefined | { pair?: PairType; withPair?: boolean; startTime: string }>
+		currentUserPairRef: MutableRefObject<undefined | { pair?: PairType; startTime: string }>
 		authorizedUserId?: string
 	}
 }) => {

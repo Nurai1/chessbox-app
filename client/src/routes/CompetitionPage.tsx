@@ -40,7 +40,7 @@ export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
 	const { competitionId } = useParams()
 
-	const currentUserPairRef = useRef<{ pair?: PairType; withPair?: boolean; startTime: string }>()
+	const currentUserPairRef = useRef<{ pair?: PairType; startTime: string }>()
 	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
 	const competitionDataExisting = useAppSelector(s => s.competitions.data).find(({ _id }) => _id === competitionId)
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
@@ -234,11 +234,6 @@ export const CompetitionPage = (): ReactElement => {
 						</div>
 						{isRegistrationClosed && (
 							<>
-								{isParticipant && !currentUserPairRef.current?.withPair && (
-									<h2 className='mb-[10px] text-xl font-medium md:mb-[15px] lg:mb-[34px] xl:text-4xl xl:font-bold'>
-										You will be paired with other participant at {currentUserPairRef.current?.startTime}
-									</h2>
-								)}
 								{isParticipant && currentUserPairRef.current?.pair && (
 									<>
 										<h2 className='mb-[10px] text-xl font-medium md:mb-[15px] lg:mb-[34px] xl:text-4xl xl:font-bold'>
@@ -320,11 +315,15 @@ export const CompetitionPage = (): ReactElement => {
 															? participants.find(({ _id: pId }) => pId === participantId)
 															: null
 
-														if (participantId === authorizedUserId)
+														if (participantId === authorizedUserId) {
 															currentUserPairRef.current = {
-																withPair: false,
-																startTime: nextRoundParticipantsStartTime
+																startTime: nextRoundParticipantsStartTime,
+																pair: {
+																	whiteParticipant: participantId,
+																	whiteParticipantData: nextRoundParticipant ?? undefined
+																}
 															}
+														}
 
 														return (
 															<div
