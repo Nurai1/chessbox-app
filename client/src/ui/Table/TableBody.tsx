@@ -4,6 +4,8 @@ import { twMerge } from 'tailwind-merge'
 import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeList } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { useWindowSize } from 'usehooks-ts'
+import { BreakPoint } from 'src/constants/breakPoints'
 import { Loader } from '../Loader'
 import styles from './TableBody.module.css'
 
@@ -41,6 +43,7 @@ export const TableBody: FC<TablePropsType> = ({
 
 	// Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
 	const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage
+	const { width: screenWidth } = useWindowSize()
 
 	useEffect(() => {
 		if (isInfinityLoaderMounted) {
@@ -75,7 +78,7 @@ export const TableBody: FC<TablePropsType> = ({
 									itemCount={itemCount}
 									onItemsRendered={onItemsRendered}
 									ref={ref}
-									itemSize={105}
+									itemSize={screenWidth >= BreakPoint.Lg ? 64 : 80}
 									height={props.height}
 									width={props.width}
 									className={`${styles['table-scroll-custom']} js-infinity-loader`}

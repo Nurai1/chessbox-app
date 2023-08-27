@@ -9,12 +9,13 @@ type UsersTableWithTitlePropsType = {
 } & TablePropsType
 
 const columnsDefault = [
-	{ title: 'Place', classes: 'max-w-[50px] md:max-w-[70px] lg:max-w-[100px]' },
-	{ title: 'Name', classes: '!grow-[2] xl:!grow-[1]' },
-	{ title: 'Location', classes: 'hidden xl:flex' },
-	{ title: 'Points', classes: '2xl:min-w-[45%] xl:min-w-[40%]' }
+	{ title: 'Place', classes: 'max-w-[3rem] lg:max-w-[5rem] xl:max-w-[6.875rem]' },
+	{ title: 'Name', classes: 'lg:max-w-none xl:max-w-[15rem]' },
+	{ title: 'Age & Weight', classes: 'max-w-[11rem] hidden xl:flex' },
+	{ title: 'Location', classes: 'hidden lg:flex' },
+	{ title: 'Points', classes: '!grow-0 md:min-w-[6.25rem] lg:min-w-[10rem] xl:min-w-[10.4rem]' }
 ]
-
+// sm:min-w-[7.5rem]
 export const UsersTableWithTitle: FC<UsersTableWithTitlePropsType> = ({
 	columns = columnsDefault,
 	rows,
@@ -29,8 +30,7 @@ export const UsersTableWithTitle: FC<UsersTableWithTitlePropsType> = ({
 					className='border-b py-[18px] text-base font-medium
 				text-black md:pb-[26px] md:text-xl
 				md:font-semibold lg:text-2xl
-				2xl:text-[32px]
-				'
+				2xl:text-[32px]'
 				>
 					{title}
 				</h2>

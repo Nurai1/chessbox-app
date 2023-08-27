@@ -2,6 +2,7 @@ import { ReactElement, useState } from 'react'
 import { Link, useLocation, NavLink } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { useWindowSize } from 'usehooks-ts'
+import { twMerge } from 'tailwind-merge'
 import { Burger, Modal } from 'src/ui'
 import { ReactComponent as Logo } from 'src/assets/logo.svg'
 import { UserMenu } from 'src/components/UserMenu'
@@ -14,6 +15,7 @@ export const Header = (): ReactElement => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const dispatch = useAppDispatch()
 	const { pathname } = useLocation()
+	const isRatingPage = pathname.includes(AppRoute.Rating)
 	const { width: screenWidth } = useWindowSize()
 	const authorizationStatus = useAppSelector(state => state.user.authorizationStatus)
 
@@ -33,18 +35,25 @@ export const Header = (): ReactElement => {
 	return (
 		<>
 			<header className='border-b border-zinc-300'>
-				<div className='container m-auto flex h-[3.75rem] items-center justify-between px-6 py-1 md:h-20 md:px-[1.875rem]'>
+				<div
+					className={twMerge(
+						'container m-auto flex h-[3.75rem] items-center justify-between px-6 py-1 md:h-20 md:px-[1.875rem]',
+						isRatingPage && 'h-[2.5rem] md:h-[2.5rem]'
+					)}
+				>
 					{pathname === AppRoute.Root ? (
 						<Logo />
 					) : (
 						<Link to={AppRoute.Root} className='transition hover:opacity-70'>
-							<Logo className='w-[3.25rem]' />
+							<Logo className={isRatingPage ? 'w-[1.5rem]' : 'w-[3.25rem]'} />
 						</Link>
 					)}
 
-					{screenWidth < BreakPoint.Xl && <Burger onClick={handleMenuOpen} />}
+					{screenWidth < BreakPoint.Xl && (
+						<Burger classes={isRatingPage ? 'scale-75 translate-x-3' : ''} onClick={handleMenuOpen} />
+					)}
 					{screenWidth >= BreakPoint.Xl && (
-						<div>
+						<div className={isRatingPage ? 'text-sm' : ''}>
 							{authorizationStatus === AuthorizationStatus.NoAuth && (
 								<>
 									<NavLink

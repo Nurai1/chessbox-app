@@ -1,12 +1,12 @@
 import { useState, FC } from 'react'
 import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
 import { ReactComponent as Persons } from 'src/assets/persons.svg'
-import { Button, HorizontalTabs, TableBody, TableWrapper, Tag, Timer, Loader, Checkbox } from '../ui'
-import { UsersTableWithTitle, CompetitionCard } from '../components'
-import { ratingTableSchema } from '../helpers/tableSchema'
-import { usersMock, competitionsMock } from '../mock'
+import { Button, HorizontalTabs, TableBody, TableWrapper, Tag, Timer, Loader, Checkbox } from 'src/ui'
+import { UsersTableWithTitle, CompetitionCard } from 'src/components'
+import { tableSchemaRating } from 'src/helpers/tableSchemaRating'
+import { usersMock, competitionsMock } from 'src/mock'
 
-const usersTable = ratingTableSchema(usersMock)
+const usersTable = tableSchemaRating(usersMock)
 const tabsContent = ['Active competitions', 'My competitions', 'Archive']
 export const UILibrary: FC = () => {
 	const [activeIndex, setActiveIndex] = useState(0)
