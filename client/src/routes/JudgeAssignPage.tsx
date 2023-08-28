@@ -39,6 +39,10 @@ export const JudgeAssignPage = (): ReactElement => {
 	const pairJudgesAssignSuccess = useAppSelector(s => s.competition.setPairJudgesSuccess)
 	const pairJudgesAssignError = useAppSelector(s => s.competition.setPairJudgesError)
 
+	if (judges?.length === 0) {
+		navigate(`../${AppRoute.JudgeChoice}`)
+	}
+
 	useEffect(() => {
 		if (!competitionData) {
 			dispatch(fetchCompetitionById(competitionId as string))
@@ -77,7 +81,6 @@ export const JudgeAssignPage = (): ReactElement => {
 			})),
 			competitionId: competitionId as string
 		}
-
 		setSelectedJudges(selectedJudgesData as SetJudgesToPairsSchema)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [groups])
@@ -195,6 +198,7 @@ export const JudgeAssignPage = (): ReactElement => {
 						<Accordion
 							key={groupId}
 							classes='last:pb-0'
+							isOpenDefault
 							title={
 								<h3 className='font-bold xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
 									<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
@@ -208,7 +212,7 @@ export const JudgeAssignPage = (): ReactElement => {
 								</h3>
 							}
 						>
-							{currentRoundPairs && participants && judges ? (
+							{currentRoundPairs && participants && judges?.length ? (
 								<TableBody
 									rows={tableSchemaJudgeToPairs({
 										tableData: currentRoundPairs,
