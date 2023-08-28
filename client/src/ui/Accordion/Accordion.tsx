@@ -12,21 +12,15 @@ type AccordionPropsType = {
 export const Accordion: FC<AccordionPropsType> = ({ children, title, classes, isOpenDefault = false }) => {
 	const [isOpen, setIsOpen] = useState(isOpenDefault)
 	const [contentHeight, setContentHeight] = useState<number>()
-	const [overflowStyle, setOverflowStyle] = useState('hidden')
-	const [displayStyle, setDisplayStyle] = useState('none')
 	const accordionContentRef = useRef<HTMLDivElement | null>(null)
 
 	useEffect(() => {
 		if (accordionContentRef.current && isOpen) {
-			setDisplayStyle('block')
 			setTimeout(() => setContentHeight(accordionContentRef.current?.clientHeight))
-			setTimeout(() => setOverflowStyle('visible'), 200)
 		} else {
 			setContentHeight(0)
-			setOverflowStyle('hidden')
-			setTimeout(() => setDisplayStyle('none'), 200)
 		}
-	}, [isOpen])
+	}, [isOpen, children])
 
 	return (
 		<div
@@ -46,12 +40,11 @@ export const Accordion: FC<AccordionPropsType> = ({ children, title, classes, is
 				</button>
 			</div>
 			<div
-				className={twMerge('transition-500 overflow-hidden transition-[max-height]')}
+				className={twMerge('overflow-hidden transition-[max-height]')}
 				style={{
-					maxHeight: `${contentHeight}px`,
-					transitionDuration: '0.2s',
-					overflow: `${overflowStyle}`,
-					display: `${displayStyle}`
+					maxHeight: `${contentHeight}px`
+					// transitionDuration: '0.2s',
+					// overflow: `${overflowStyle}`
 				}}
 			>
 				<div ref={accordionContentRef} className='pt-4 xl:pt-[1.62rem]'>
