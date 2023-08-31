@@ -2,7 +2,17 @@ import { useState, FC } from 'react'
 import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
 import { ReactComponent as Persons } from 'src/assets/persons.svg'
 import { ratingTableSchema } from 'src/helpers/tableSchemas/tableSchema'
-import { Button, HorizontalTabs, TableBody, TableWrapper, Tag, Timer, Loader, Checkbox, Accordion } from '../ui'
+import {
+	Button,
+	HorizontalTabs,
+	TableBody,
+	TableWrapper,
+	Tag,
+	Timer,
+	Loader,
+	CheckboxAndRadioButton,
+	Accordion
+} from '../ui'
 import { UsersTableWithTitle, CompetitionCard } from '../components'
 import { usersMock, competitionsMock } from '../mock'
 
@@ -98,14 +108,15 @@ export const UILibrary: FC = () => {
 			<hr className='my-8' />
 
 			<h2 className='mb-5 text-xl font-semibold'>Чекбокс</h2>
-			<Checkbox
+			<CheckboxAndRadioButton
 				title='Choose something'
+				type='checkbox'
 				name='something'
 				checked={checked}
 				classes='mr-5'
 				onChange={() => setChecked(!checked)}
 			/>
-			<Checkbox title='Disabled' name='disabled' onChange={() => ''} disabled />
+			<CheckboxAndRadioButton type='checkbox' title='Disabled' name='disabled' onChange={() => ''} disabled />
 			<hr className='my-8' />
 
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>
