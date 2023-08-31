@@ -1,0 +1,1 @@
+export { CompetitionRequirements } from './CompetitionRequirements'
