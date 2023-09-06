@@ -1,8 +1,16 @@
 import { ReactElement, useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
+import { SortOrder } from 'src/constants/sortOrder'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { Button, BottomFixedContainer, Loader } from 'src/ui'
+import {
+	Button,
+	BottomFixedContainer,
+	Loader,
+	RoundedBorderWrapper,
+	Accordion,
+	TableBody
+} from 'src/ui'
 import {
 	CompetitionRequirements,
 	GroupParameters,
@@ -12,13 +20,15 @@ import {
 import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
-	fetchCompetitionParticipants
+	fetchCompetitionParticipants,
+	setCompetitionGroups
 } from 'src/store/slices/competitionSlice'
+import { ReactComponent as TrashIcon } from 'src/assets/trash.svg'
 import { CompetitionRequirementsSchema, UserSchema } from 'src/types'
 import { ParticipantsListTable, SortType } from 'src/components/ParticipantsList/ParticipantsList'
+import { tableSchemaGroupParticipants } from 'src/helpers/tableSchemas/tableSchemaGroupParticipants'
 import { getAge } from 'src/helpers/datetime'
 import { sortFunc } from 'src/helpers/sortFunc'
-import { SortOrder } from 'src/ui/Table/TableSortButton'
 
 export const CreateGroupPage = (): ReactElement => {
 	const { competitionId } = useParams()
@@ -27,6 +37,7 @@ export const CreateGroupPage = (): ReactElement => {
 	const competitionData = useAppSelector(s => s.competition.data)
 	const judges = useAppSelector(s => s.competition.judges[competitionId as string])
 	const allParticipants = useAppSelector(s => s.competition.participants[competitionId as string])
+	const [competitionRequirements, setCompetitionRequirements] = useState<CompetitionRequirementsSchema>()
 	const [participants, setParticipants] = useState<ParticipantsListTable>({
 		inGroup: [],
 		outGroup: []
@@ -58,28 +69,50 @@ export const CreateGroupPage = (): ReactElement => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [allParticipants])
 
-	const getGroupParameters = (CompetitionRequirementsData: CompetitionRequirementsSchema) => {
-		if (allParticipants && CompetitionRequirementsData) {
+	const getGroupParameters = (requirementsData: CompetitionRequirementsSchema) => {
+		if (allParticipants && requirementsData) {
 			const usersData: ParticipantsListTable = {
 				inGroup: [],
 				outGroup: []
 			}
 			// returns participants by group parameters filter
 			allParticipants.map((participant: UserSchema) => {
-				if (participant.gender === CompetitionRequirementsData.gender
-					&& getAge(participant.birthDate) as number >= (CompetitionRequirementsData.ageCategory?.from as number)
-					&& getAge(participant.birthDate) as number <= (CompetitionRequirementsData.ageCategory?.to as number)
-					&& participant.weight >= (CompetitionRequirementsData.weightCategory?.from as number)
-					&& participant.weight <= (CompetitionRequirementsData.weightCategory?.to as number)) {
+				if (participant.gender === requirementsData.gender
+					&& getAge(participant.birthDate) as number >= (requirementsData.ageCategory?.from as number)
+					&& getAge(participant.birthDate) as number <= (requirementsData.ageCategory?.to as number)
+					&& participant.weight >= (requirementsData.weightCategory?.from as number)
+					&& participant.weight <= (requirementsData.weightCategory?.to as number)) {
 					usersData.inGroup.push(participant)
-				} else if (participant.gender === CompetitionRequirementsData.gender) {
+				} else if (participant.gender === requirementsData.gender) {
 					usersData.outGroup.push(participant)
 				}
 
 				return usersData
 			})
 			setParticipants(usersData)
+			setCompetitionRequirements(requirementsData)
 		}
+	}
+
+	const addGroup = () => {
+		dispatch(setCompetitionGroups({
+			competition: {
+				...competitionRequirements,
+				allParticipants: participants.inGroup as string[],
+				currentRoundNumber: 0
+			},
+			id: competitionId as string
+		}))
+	}
+
+	const getGroupParticipants = (participantsIds: string[]): UserSchema[] | undefined => {
+		return allParticipants?.reduce((acc, participant) => {
+			if (participantsIds.includes(participant._id as string)) {
+				acc.push(participant)
+			}
+
+			return acc
+		}, [] as UserSchema[])
 	}
 
 	const handleSort = (sortType: string, sortOrder: string) => {
@@ -105,8 +138,7 @@ export const CreateGroupPage = (): ReactElement => {
 
 		setParticipants(sortedParticipants)
 	}
-	const handleDoneClick = () => {
-	}
+	const handleDoneClick = () => {}
 
 	return (
 		<main className="container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]">
@@ -117,9 +149,15 @@ export const CreateGroupPage = (): ReactElement => {
 				judges={judges}
 			/>
 			{competitionData?.requirements && (
-				<div className="grid grid-cols-[16rem_auto] gap-5 rounded-3xl border border-pale-grey pt-6 pl-6 overflow-hidden">
+				<div className="grid grid-cols-[16rem_auto] gap-5 mb-12 rounded-3xl border border-pale-grey pt-6 pl-6 overflow-hidden">
 					<div className="mb-6">
-						<GroupParameters requirements={competitionData.requirements} getGroupParameters={getGroupParameters} classes="mb-[3.125rem]"/>
+						<GroupParameters
+							requirements={competitionData.requirements}
+							getGroupParameters={getGroupParameters}
+							addGroup={addGroup}
+							noParticipants={participants.inGroup.length !== 0}
+							classes="mb-[3.125rem]"
+						/>
 						{competitionData.requirements &&
                             <CompetitionRequirements competitionRequirements={competitionData.requirements}/>}
 					</div>
@@ -131,6 +169,36 @@ export const CreateGroupPage = (): ReactElement => {
 						: <Loader/>
 					}
 				</div>
+			)}
+			<h2 className='mb-8 text-heading-3'>Groups</h2>
+			{competitionData?.groups?.length !== 0 && (
+				<RoundedBorderWrapper classes='py-4 !py-2'>
+					{competitionData?.groups?.map(({_id, gender, ageCategory, weightCategory, allParticipants: allParticipantsGroup}) => (
+						<Accordion
+							key={_id}
+							additionalIcon={<TrashIcon className='ml-5'/>}
+							title={
+								<h3 className='font-bold xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
+									<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
+									{weightCategory?.from}-{weightCategory?.to}kg
+									{allParticipantsGroup?.length && (
+										<span className='text-zinc-400'>
+											{' '}
+											{allParticipantsGroup?.length} {`pair${allParticipantsGroup?.length === 1 ? '' : 's'}`}
+										</span>
+									)}
+								</h3>
+							}
+						>
+							{allParticipants
+								? <TableBody
+									rows={tableSchemaGroupParticipants(getGroupParticipants(allParticipantsGroup as string[]) as UserSchema[])}
+								/>
+								: <Loader/>
+							}
+						</Accordion>
+					)) }
+				</RoundedBorderWrapper>
 			)}
 			<BottomFixedContainer classes="xl:pl-[7.5rem] xl:pr-[7.5rem]">
 				<div className="flex flex-wrap gap-2.5">

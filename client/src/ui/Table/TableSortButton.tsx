@@ -1,16 +1,12 @@
 import { useState, FC, ReactNode } from 'react'
 import { ReactComponent as ArrowDown } from 'src/assets/arrow-down-long.svg'
+import { SortOrder } from 'src/constants/sortOrder'
 
 type TableSortButtonPropsType = {
 	children: ReactNode
 	sortType: string
 	onClick: (sortType: string, sortOrder: string) => void
 	activeClass?: string
-}
-
-export enum SortOrder {
-	ASC = 'asc',
-	DESC = 'desc'
 }
 
 export const TableSortButton: FC<TableSortButtonPropsType> = ({children, sortType, onClick, activeClass}) => {

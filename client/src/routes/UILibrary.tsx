@@ -6,7 +6,7 @@ import {
 	Button,
 	HorizontalTabs,
 	TableBody,
-	TableWrapper,
+	RoundedBorderWrapper,
 	Tag,
 	Timer,
 	Loader,
@@ -120,7 +120,7 @@ export const UILibrary: FC = () => {
 			<hr className='my-8' />
 
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>
-			<TableWrapper>
+			<RoundedBorderWrapper>
 				<h2
 					className='py-[18px] text-base font-medium
 				text-black md:pb-[26px] md:text-xl
@@ -132,12 +132,12 @@ export const UILibrary: FC = () => {
 				<div className='relative w-full'>
 					<TableBody rows={usersTable} />
 				</div>
-			</TableWrapper>
+			</RoundedBorderWrapper>
 			<hr className='my-8' />
 
-			<TableWrapper>
+			<RoundedBorderWrapper>
 				<UsersTableWithTitle rows={usersTable} title='Список пользователей' />
-			</TableWrapper>
+			</RoundedBorderWrapper>
 			<hr className='my-8' />
 
 			<h2 className='mb-5 text-xl font-semibold'>Карточка соревнования</h2>

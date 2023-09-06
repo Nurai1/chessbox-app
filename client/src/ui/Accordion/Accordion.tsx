@@ -7,9 +7,10 @@ type AccordionPropsType = {
 	title?: ReactNode
 	classes?: string
 	isOpenDefault?: boolean
+	additionalIcon?: ReactNode
 }
 
-export const Accordion: FC<AccordionPropsType> = ({ children, title, classes, isOpenDefault = false }) => {
+export const Accordion: FC<AccordionPropsType> = ({ children, title, classes, isOpenDefault = false, additionalIcon }) => {
 	const [isOpen, setIsOpen] = useState(isOpenDefault)
 	const [contentHeight, setContentHeight] = useState<number>()
 	const accordionContentRef = useRef<HTMLDivElement | null>(null)
@@ -31,20 +32,19 @@ export const Accordion: FC<AccordionPropsType> = ({ children, title, classes, is
 		>
 			<div className='flex items-center'>
 				<button
-					className='flex grow items-center justify-between gap-2 transition hover:opacity-70'
+					className='flex grow items-center gap-2 transition hover:opacity-70'
 					onClick={() => setIsOpen(!isOpen)}
 					type='button'
 				>
 					{title}
-					<ArrowDownIcon className={twMerge('transition', isOpen && 'rotate-180')} />
+					<ArrowDownIcon className={twMerge('ml-auto transition', isOpen && 'rotate-180')} />
+					{additionalIcon}
 				</button>
 			</div>
 			<div
 				className={twMerge('overflow-hidden transition-[max-height]')}
 				style={{
 					maxHeight: `${contentHeight}px`
-					// transitionDuration: '0.2s',
-					// overflow: `${overflowStyle}`
 				}}
 			>
 				<div ref={accordionContentRef} className='pt-4 xl:pt-[1.62rem]'>
