@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { Loader, TableBody, TableWrapper, Button, BottomFixedContainer, Alert, Accordion } from 'src/ui'
+import { Loader, TableBody, RoundedBorderWrapper, Button, BottomFixedContainer, Alert, Accordion } from 'src/ui'
 import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
@@ -156,7 +156,7 @@ export const JudgeAssignPage = (): ReactElement => {
 				judges={judges}
 			/>
 			{groups && (
-				<TableWrapper classes='py-4 xl:py-7'>
+				<RoundedBorderWrapper classes='py-4 xl:py-7'>
 					{groups.map(({ _id: groupId, gender, ageCategory, weightCategory, currentRoundPairs }, i) => (
 						<Accordion
 							key={groupId}
@@ -191,7 +191,7 @@ export const JudgeAssignPage = (): ReactElement => {
 							)}
 						</Accordion>
 					))}
-				</TableWrapper>
+				</RoundedBorderWrapper>
 			)}
 			<BottomFixedContainer classes='xl:pl-[7.5rem] xl:pr-[7.5rem]'>
 				<div className='flex flex-wrap gap-2.5'>

@@ -6,7 +6,9 @@ import { CompetitionRequirementsSchema } from 'src/types'
 type GroupParametersPropsType = {
 	requirements: CompetitionRequirementsSchema
 	getGroupParameters: (data: CompetitionRequirementsSchema) => void
+	addGroup: () => void
 	classes?: string
+	noParticipants?: boolean
 }
 
 type Errors = {
@@ -22,7 +24,13 @@ type Errors = {
 	sex: string
 } & Errors
 
-export const GroupParameters: FC<GroupParametersPropsType> = ({ classes, requirements, getGroupParameters }) => {
+export const GroupParameters: FC<GroupParametersPropsType> = ({
+	requirements,
+	getGroupParameters,
+	addGroup,
+	noParticipants = true,
+	classes
+}) => {
 	const [groupData, setGroupData] = useState<GroupParametersForm>({
 		sex: 'man'
 	})
@@ -168,19 +176,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({ classes, require
 			<Button
 				disabled={!Object.values(errors).every(error => error === undefined)}
 				classes='w-full mb-2'
-				onClick={() => {
-					getGroupParameters({
-						ageCategory: {
-							from: Number(groupData.ageFrom),
-							to: Number(groupData.ageTo)
-						},
-						weightCategory: {
-							from: Number(groupData.weightFrom),
-							to: Number(groupData.weightTo)
-						},
-						gender: groupData.sex
-					})
-				}}
+				onClick={addGroup}
 			>
 				Add group
 			</Button>

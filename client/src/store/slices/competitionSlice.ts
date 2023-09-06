@@ -5,7 +5,8 @@ import {
 	UserSchema,
 	SetCompetitionJudgesSchema,
 	SetJudgesToPairsSchema,
-	CompetitionGroupsOrdersSchema
+	CompetitionGroupsOrdersSchema,
+	CompetitionGroupSchema
 } from 'src/types'
 import {
 	getCompetitionByIdApi,
@@ -13,7 +14,8 @@ import {
 	getCompetitionJudgesApi,
 	setCompetitionJudgesApi,
 	setJudgesToPairsApi,
-	setCompetitionGroupsOrdersApi
+	setCompetitionGroupsOrdersApi,
+	setCompetitionGroupsApi
 } from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
@@ -76,6 +78,17 @@ export const setCompetitionGroupsOrders = createAsyncThunk(
 	}
 )
 
+export const setCompetitionGroups = createAsyncThunk(
+	'competition/setCompetitionGroups',
+	async ({ competition, id }: { competition: CompetitionGroupSchema; id: string }, thunkApi) => {
+		const response = await setCompetitionGroupsApi(competition, id)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
 export interface CompetitionState {
 	data: CompetitionSchema | null
 	participants: Record<string, UserSchema[] | null>
@@ -91,6 +104,9 @@ export interface CompetitionState {
 	groupOrderAssignSuccess?: boolean
 	groupOrderAssignError?: string
 	groupOrderAssignPending?: boolean
+	groupAssignSuccess?: boolean
+	groupAssignError?: string
+	groupAssignPending?: boolean
 }
 
 const initialState: CompetitionState = {
@@ -196,6 +212,18 @@ export const competitionSlice = createSlice({
 		[setCompetitionGroupsOrders.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.groupOrderAssignPending = false
 			state.groupOrderAssignError = action.payload.errorMessage
+		},
+		[setCompetitionGroups.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			console.log(action.payload)
+			state.groupAssignPending = false
+			state.groupAssignSuccess = true
+		},
+		[setCompetitionGroups.pending.type]: state => {
+			state.groupAssignPending = true
+		},
+		[setCompetitionGroups.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.groupAssignPending = false
+			state.groupAssignError = action.payload.errorMessage
 		}
 	}
 })

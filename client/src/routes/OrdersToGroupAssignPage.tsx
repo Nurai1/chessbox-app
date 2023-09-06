@@ -9,7 +9,7 @@ import {
 	setCompetitionGroupsOrders,
 	resetCompetitionGroupsOrdersStatus
 } from 'src/store/slices/competitionSlice'
-import { TableWrapper, BottomFixedContainer, Button, Alert, DragSortItem, DragAndDropProvider } from 'src/ui'
+import { RoundedBorderWrapper, BottomFixedContainer, Button, Alert, DragSortItem, DragAndDropProvider } from 'src/ui'
 import { ReactComponent as DragIcon } from 'src/assets/drag-icon.svg'
 import { AppRoute } from 'src/constants/appRoute'
 import { CompetitionGroupSchema, CompetitionGroupsOrders, CompetitionSchema } from 'src/types'
@@ -63,21 +63,17 @@ export const OrdersToGroupAssignPage = (): ReactElement => {
 			return acc
 		}, [] as CompetitionGroupsOrders)
 
-		dispatch(
-			setCompetitionData({
-				...competitionData,
-				groups: groups as CompetitionGroupSchema[]
-			} as CompetitionSchema)
-		)
+		dispatch(setCompetitionData({
+			...competitionData,
+			groups: groups as CompetitionGroupSchema[]
+		} as CompetitionSchema))
 
-		dispatch(
-			setCompetitionGroupsOrders({
-				orders: {
-					orders: groupOrder as CompetitionGroupsOrders
-				},
-				id: competitionId as string
-			})
-		)
+		dispatch(setCompetitionGroupsOrders({
+			orders: {
+				orders: groupOrder as CompetitionGroupsOrders
+			},
+			id: competitionId as string
+		}))
 	}
 
 	const handleBackClick = () => {
@@ -92,15 +88,15 @@ export const OrdersToGroupAssignPage = (): ReactElement => {
 	}
 
 	return (
-		<main className='container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]'>
+		<main className="container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]">
 			<CompetitionCreateHeader
-				title='Assign orders to groups 3/4'
+				title="Assign orders to groups 3/4"
 				backArrowPath={`../${AppRoute.CreateGroup}`}
 				competitionData={competitionData}
 				judges={judges}
 			/>
 			{groups && (
-				<TableWrapper classes='py-4 xl:py-7'>
+				<RoundedBorderWrapper classes="py-4 xl:py-7">
 					<DragAndDropProvider>
 						{groups.map(({ _id: groupId, gender, ageCategory, weightCategory, currentRoundPairs }, i) => (
 							<DragSortItem
@@ -111,12 +107,12 @@ export const OrdersToGroupAssignPage = (): ReactElement => {
 									'flex items-center relative py-4 xl:py-[1.62rem] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-zinc-300'
 								)}
 							>
-								<DragIcon className='mr-5' />
-								<h3 className='font-bold xl:text-2xl'>
-									<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
+								<DragIcon className="mr-5"/>
+								<h3 className="font-bold xl:text-2xl">
+									<span className="capitalize">{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
 									{weightCategory?.from}-{weightCategory?.to}kg
 									{currentRoundPairs?.length && (
-										<span className='text-zinc-400'>
+										<span className="text-zinc-400">
 											{' '}
 											{currentRoundPairs?.length} {`pair${currentRoundPairs?.length === 1 ? '' : 's'}`}
 										</span>
@@ -125,21 +121,21 @@ export const OrdersToGroupAssignPage = (): ReactElement => {
 							</DragSortItem>
 						))}
 					</DragAndDropProvider>
-				</TableWrapper>
+				</RoundedBorderWrapper>
 			)}
-			<BottomFixedContainer classes='xl:pl-[7.5rem] xl:pr-[7.5rem]'>
-				<div className='flex flex-wrap gap-2.5'>
-					<Button type='outlined' onClick={handleBackClick}>
+			<BottomFixedContainer classes="xl:pl-[7.5rem] xl:pr-[7.5rem]">
+				<div className="flex flex-wrap gap-2.5">
+					<Button type="outlined" onClick={handleBackClick}>
 						Previous step
 					</Button>
 					<Button
-						classes='min-w-[8rem] xl:min-w-[15.625rem]'
+						classes="min-w-[8rem] xl:min-w-[15.625rem]"
 						onClick={handleDoneClick}
 						loading={groupOrderAssignPending}
 					>
 						Done
 					</Button>
-					{groupOrderAssignError && <Alert type='error' subtitle={groupOrderAssignError} />}
+					{groupOrderAssignError && <Alert type="error" subtitle={groupOrderAssignError}/>}
 				</div>
 			</BottomFixedContainer>
 		</main>
