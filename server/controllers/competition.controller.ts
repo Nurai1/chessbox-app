@@ -212,6 +212,32 @@ export const deleteCompetition = async (
   res.send(competition);
 };
 
+export const deleteCompetitionGroup = async (
+  req: Request<{ id: string }, any, { groupId: string }>,
+  res: Response
+) => {
+  const { id } = req.params;
+  const { groupId } = req.body;
+
+  const competition = await Competition.findById(id);
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  const { groups } = competition;
+
+  const newGroups = groups?.filter(
+    (group) => group._id?.toString() !== groupId
+  );
+
+  const newCompetition = await Competition.findOneAndUpdate(
+    { _id: id },
+    { groups: newGroups },
+    { new: true }
+  );
+
+  res.send(newCompetition);
+};
+
 export const updateCompetition = async (
   req: Request,
   res: Response,
