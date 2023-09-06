@@ -319,6 +319,30 @@ competitionRouter.delete(
   controllerErrorHandler(CompetitionController.deleteCompetition)
 );
 
+competitionRouter.delete(
+  '/competition/:id/group',
+  /*	#swagger.requestBody = {
+          required: true,
+          content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                groupId: { type: "string" },
+              },
+              required: ["groupId"]
+            },
+          }
+        } 
+      } 
+    */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+  controllerErrorHandler(CompetitionController.deleteCompetition)
+);
+
 competitionRouter.post(
   '/competition/:id/group',
   /* #swagger.security = [{
