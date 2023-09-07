@@ -340,7 +340,7 @@ competitionRouter.delete(
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  controllerErrorHandler(CompetitionController.deleteCompetition)
+  controllerErrorHandler(CompetitionController.deleteCompetitionGroup)
 );
 
 competitionRouter.post(
