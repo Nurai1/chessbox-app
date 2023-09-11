@@ -9,7 +9,8 @@ import {
 	Loader,
 	RoundedBorderWrapper,
 	Accordion,
-	TableBody
+	TableBody,
+	Alert
 } from 'src/ui'
 import {
 	CompetitionRequirements,
@@ -21,14 +22,29 @@ import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
 	fetchCompetitionParticipants,
-	setCompetitionGroups
+	setCompetitionGroups,
+	deleteCompetitionGroup,
+	resetCompetitionGroupsStatus,
+	resetDeleteCompetitionGroupStatus
 } from 'src/store/slices/competitionSlice'
 import { ReactComponent as TrashIcon } from 'src/assets/trash.svg'
-import { CompetitionRequirementsSchema, UserSchema } from 'src/types'
+import { CompetitionRequirementsSchema, UserSchema, ParticipantSchema } from 'src/types'
 import { ParticipantsListTable, SortType } from 'src/components/ParticipantsList/ParticipantsList'
 import { tableSchemaGroupParticipants } from 'src/helpers/tableSchemas/tableSchemaGroupParticipants'
 import { getAge } from 'src/helpers/datetime'
 import { sortFunc } from 'src/helpers/sortFunc'
+import { AlertPropTypes } from 'src/ui/Alert/Alert'
+
+type AlertType = {
+	show: boolean
+} & AlertPropTypes
+
+const overlapError = {
+	hasError: false,
+	stopWatching: false
+}
+
+let showButtonClicked = false
 
 export const CreateGroupPage = (): ReactElement => {
 	const { competitionId } = useParams()
@@ -36,73 +52,137 @@ export const CreateGroupPage = (): ReactElement => {
 	const navigate = useNavigate()
 	const competitionData = useAppSelector(s => s.competition.data)
 	const judges = useAppSelector(s => s.competition.judges[competitionId as string])
-	const allParticipants = useAppSelector(s => s.competition.participants[competitionId as string])
-	const [competitionRequirements, setCompetitionRequirements] = useState<CompetitionRequirementsSchema>()
+	const allParticipantsData = useAppSelector(s => s.competition.participants[competitionId as string])
+	const addGroupPending = useAppSelector(s => s.competition.groupAddPending)
+	const addGroupSuccess = useAppSelector(s => s.competition.groupAddSuccess)
+	const addGroupError = useAppSelector(s => s.competition.groupAddError)
+	const deleteGroupPending = useAppSelector(s => s.competition.groupDeletePending)
+	const deleteGroupSuccess = useAppSelector(s => s.competition.groupDeleteSuccess)
+	const deleteGroupError = useAppSelector(s => s.competition.groupDeleteError)
+	const [groupParameters, setGroupParameters] = useState<CompetitionRequirementsSchema>()
+	const [deletingGroupId, setDeletingGroupId] = useState<string>()
+	const [allParticipants, setAllParticipants] = useState<ParticipantSchema[]>()
 	const [participants, setParticipants] = useState<ParticipantsListTable>({
 		inGroup: [],
 		outGroup: []
 	})
+	const [alertData, setAlertData] = useState<AlertType>({ show: false , type: 'success'})
 
 	if (judges?.length === 0) {
 		navigate(`../${AppRoute.JudgeChoice}`)
 	}
 
-	useEffect(() => {
-		if (!competitionData) {
-			dispatch(fetchCompetitionById(competitionId as string))
-		}
-
-		if (!judges) {
-			dispatch(fetchCompetitionJudges(competitionId as string))
-		}
-		dispatch(fetchCompetitionParticipants(competitionId as string))
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
-
-	useEffect(() => {
-		if (allParticipants) {
-			setParticipants({
-				inGroup: allParticipants,
-				outGroup: []
+	const addGroupInfo = (participantsData: ParticipantSchema[]) => {
+		if (competitionData) {
+			const participantsGroup = [...participantsData]
+			participantsData.forEach((participant, i) => {
+				competitionData.groups?.forEach(group => {
+					if (group.allParticipants?.includes(participant._id as string)) {
+						participantsGroup[i] = {
+							...participant,
+							group: `${group.gender}, ${group.ageCategory?.from}-${group.ageCategory?.to}, ${group.weightCategory?.from}-${group.weightCategory?.to} kg`
+						}
+					}
+				})
 			})
+			setAllParticipants(participantsGroup)
+			return participantsGroup
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [allParticipants])
+		return null
+	}
 
-	const getGroupParameters = (requirementsData: CompetitionRequirementsSchema) => {
-		if (allParticipants && requirementsData) {
-			const usersData: ParticipantsListTable = {
-				inGroup: [],
-				outGroup: []
-			}
-			// returns participants by group parameters filter
-			allParticipants.map((participant: UserSchema) => {
-				if (participant.gender === requirementsData.gender
-					&& getAge(participant.birthDate) as number >= (requirementsData.ageCategory?.from as number)
-					&& getAge(participant.birthDate) as number <= (requirementsData.ageCategory?.to as number)
-					&& participant.weight >= (requirementsData.weightCategory?.from as number)
-					&& participant.weight <= (requirementsData.weightCategory?.to as number)) {
-					usersData.inGroup.push(participant)
-				} else if (participant.gender === requirementsData.gender) {
-					usersData.outGroup.push(participant)
+	const getFilterCondition = (participant: UserSchema, filterParameters: CompetitionRequirementsSchema) => {
+		return participant.gender === filterParameters?.gender
+			&& getAge(participant.birthDate) as number >= (filterParameters.ageCategory?.from as number)
+			&& getAge(participant.birthDate) as number <= (filterParameters.ageCategory?.to as number)
+			&& participant.weight >= (filterParameters.weightCategory?.from as number)
+			&& participant.weight <= (filterParameters.weightCategory?.to as number)
+	}
+
+	const filterUsers = (participantsList: ParticipantSchema[], filterParameters: CompetitionRequirementsSchema
+	) => {
+		if (filterParameters) {
+			return participantsList.reduce((acc:ParticipantsListTable, participant: UserSchema) => {
+				if (getFilterCondition(participant, filterParameters)) {
+					acc.inGroup.push(participant)
+				} else if (participant.gender === filterParameters.gender) {
+					acc.outGroup.push(participant)
+				}
+				return acc
+			}, { inGroup: [], outGroup: [] })
+		}
+		return { inGroup: participantsList, outGroup: [] }
+	}
+
+	const removeUserGroupInfo = (groupId: string) => {
+		if (competitionData?.groups && allParticipants) {
+			const group = competitionData.groups.find(groupData => groupData._id === groupId)
+			const updatedParticipants = allParticipants.reduce((acc: ParticipantSchema[], participant) => {
+				if (group?.allParticipants?.includes(participant._id as string)) {
+					acc.push({
+						...participant,
+						group: ''
+					})
+				} else {
+					acc.push(participant)
+				}
+				return acc
+			}, [])
+
+			return updatedParticipants
+		}
+		return null
+	}
+
+	const setOverlapError = (participantsOverlap: ParticipantSchema[], filterParameters: CompetitionRequirementsSchema) => {
+		if (filterParameters) {
+			const participantsWithOverlap = participantsOverlap.map((participant, i) => {
+				if (getFilterCondition(participant, filterParameters)) {
+					participantsOverlap[i] = {
+						...participant,
+						groupOverlap: true
+					}
+					if (!overlapError.stopWatching) {
+						overlapError.hasError = true
+						overlapError.stopWatching = true
+					}
+					return participant
+				}
+				return participant
+			})
+			return participantsWithOverlap
+		}
+		return null
+	}
+
+	const getParticipantsByParameters = (filterParameters: CompetitionRequirementsSchema) => {
+		if (allParticipants) {
+			const users = filterUsers(allParticipants, filterParameters)
+			overlapError.hasError = false
+			overlapError.stopWatching = false
+			// adds overlap error to participants list
+			competitionData?.groups?.map(group => {
+				const filterParametersOverlap: CompetitionRequirementsSchema = {
+					ageCategory: group.ageCategory,
+					weightCategory: group.weightCategory,
+					gender: group.gender
 				}
 
-				return usersData
+				return setOverlapError(users.inGroup, filterParametersOverlap)
 			})
-			setParticipants(usersData)
-			setCompetitionRequirements(requirementsData)
+			setParticipants(users)
 		}
 	}
 
-	const addGroup = () => {
-		dispatch(setCompetitionGroups({
-			competition: {
-				...competitionRequirements,
-				allParticipants: participants.inGroup as string[],
-				currentRoundNumber: 0
-			},
-			id: competitionId as string
-		}))
+	const getParticipantsByFilter = (filterParameters: CompetitionRequirementsSchema) => {
+		showButtonClicked = true
+		setGroupParameters(filterParameters)
+		getParticipantsByParameters(filterParameters)
+	}
+
+	const handleDeleteGroup = (groupId: string, competitionUniqId: string) => {
+		setDeletingGroupId(groupId)
+		dispatch(deleteCompetitionGroup({groupId: {groupId}, id: competitionUniqId}))
 	}
 
 	const getGroupParticipants = (participantsIds: string[]): UserSchema[] | undefined => {
@@ -110,7 +190,6 @@ export const CreateGroupPage = (): ReactElement => {
 			if (participantsIds.includes(participant._id as string)) {
 				acc.push(participant)
 			}
-
 			return acc
 		}, [] as UserSchema[])
 	}
@@ -120,10 +199,7 @@ export const CreateGroupPage = (): ReactElement => {
 			return sortOrder === SortOrder.ASC ? arg2 - arg1 : arg1 - arg2
 		}
 
-		const sortedParticipants: ParticipantsListTable = {
-			inGroup: [],
-			outGroup: []
-		}
+		const sortedParticipants: ParticipantsListTable = { inGroup: [], outGroup: [] }
 
 		if (sortType === SortType.Name || sortType === SortType.Sex) {
 			sortedParticipants.inGroup = [...participants.inGroup].sort((a, b) => sortFunc(a, b, sortType as keyof UserSchema, sortOrder))
@@ -138,10 +214,87 @@ export const CreateGroupPage = (): ReactElement => {
 
 		setParticipants(sortedParticipants)
 	}
-	const handleDoneClick = () => {}
+
+	const handleAddGroup = () => {
+		if (participants.inGroup.length) {
+			dispatch(setCompetitionGroups({
+				competition: {
+					...groupParameters,
+					gender: groupParameters?.gender as string,
+					allParticipants: participants.inGroup.map(participant => participant._id) as string[],
+					currentRoundNumber: 0 // todo make optional
+				},
+				id: competitionId as string
+			}))
+		}
+	}
+
+	useEffect(() => {
+		if (!competitionData) {
+			dispatch(fetchCompetitionById(competitionId as string))
+		}
+		if (!judges) {
+			dispatch(fetchCompetitionJudges(competitionId as string))
+		}
+		dispatch(fetchCompetitionParticipants(competitionId as string))
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	useEffect(() => {
+		if (allParticipantsData) {
+			setParticipants({
+				inGroup: addGroupInfo(allParticipantsData) as ParticipantSchema[],
+				outGroup: []
+			})
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [allParticipantsData, addGroupSuccess])
+
+	useEffect(() => {
+		// updates participants after group deleted
+		if (groupParameters) {
+			getParticipantsByParameters(groupParameters)
+			const updatedGroupInfoParticipants = removeUserGroupInfo(deletingGroupId as string)
+			setAllParticipants(updatedGroupInfoParticipants as ParticipantSchema[])
+		} else {
+			const updatedGroupInfoParticipants = removeUserGroupInfo(deletingGroupId as string)
+			const participantsGroupSplitted  = filterUsers(updatedGroupInfoParticipants as ParticipantSchema[], groupParameters)
+			setAllParticipants(updatedGroupInfoParticipants as ParticipantSchema[])
+			setParticipants(participantsGroupSplitted)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [deleteGroupSuccess, deletingGroupId])
+
+	useEffect(() => {
+		if (addGroupSuccess) {
+			showButtonClicked = false
+			setAlertData({show: true, title: 'Group added', type: 'success'})
+			setGroupParameters(undefined)
+			dispatch(resetCompetitionGroupsStatus())
+		}
+
+		if (addGroupError) {
+			setAlertData({show: true, title: 'Group add failed', subtitle: addGroupError, type: 'error'})
+			dispatch(resetCompetitionGroupsStatus())
+		}
+
+		if (deleteGroupSuccess) {
+			setAlertData({show: true, title: 'Group deleted', type: 'success'})
+			dispatch(resetDeleteCompetitionGroupStatus())
+		}
+
+		if (deleteGroupError) {
+			setAlertData({show: true, title: 'Group delete failed', subtitle: deleteGroupError, type: 'error'})
+			dispatch(resetDeleteCompetitionGroupStatus())
+		}
+
+		setTimeout(() => setAlertData({show: false, type: alertData.type, subtitle: ''}), 3000)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [addGroupSuccess, addGroupError, deleteGroupSuccess, deleteGroupError])
 
 	return (
 		<main className="container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]">
+			<Alert title={alertData.title} type={alertData.type} classes={`fixed -right-56 w-56 transition-[right] duration-300 ${alertData.show && 'right-8'}`} />
 			<CompetitionCreateHeader
 				title="Create groups 2/4"
 				backArrowPath={`../${AppRoute.JudgeChoice}`}
@@ -153,9 +306,11 @@ export const CreateGroupPage = (): ReactElement => {
 					<div className="mb-6">
 						<GroupParameters
 							requirements={competitionData.requirements}
-							getGroupParameters={getGroupParameters}
-							addGroup={addGroup}
-							noParticipants={participants.inGroup.length !== 0}
+							getGroupParameters={getParticipantsByFilter}
+							addGroup={handleAddGroup}
+							disableAddGroupBtn={participants.inGroup?.length === 0 ||  overlapError.hasError || !showButtonClicked}
+							addGroupRequestPending={addGroupPending}
+							resetFilterTrigger={addGroupSuccess}
 							classes="mb-[3.125rem]"
 						/>
 						{competitionData.requirements &&
@@ -176,18 +331,24 @@ export const CreateGroupPage = (): ReactElement => {
 					{competitionData?.groups?.map(({_id, gender, ageCategory, weightCategory, allParticipants: allParticipantsGroup}) => (
 						<Accordion
 							key={_id}
-							additionalIcon={<TrashIcon className='ml-5'/>}
+							additionalIcon={
+								<button
+									onClick={() => {handleDeleteGroup(_id as string, competitionId as string)}}
+									className={`ml-5  w-[1.9375] h-[1.9375] hover:opacity-70 transition ${deleteGroupPending && 'pointer-events-none'}`}
+									type='button'>
+									{deleteGroupPending && _id === deletingGroupId
+										? <Loader ringClasses='!w-[1.9375rem] !h-[1.9375rem] !border-2'/>
+										: <TrashIcon/>
+									}
+								</button>
+							}
 							title={
 								<h3 className='font-bold xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
 									<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
-									{weightCategory?.from}-{weightCategory?.to}kg
-									{allParticipantsGroup?.length && (
-										<span className='text-zinc-400'>
-											{' '}
-											{allParticipantsGroup?.length} {`pair${allParticipantsGroup?.length === 1 ? '' : 's'}`}
-										</span>
-									)}
+									{weightCategory?.from}-{weightCategory?.to} kg
+									<span className='text-zinc-400'> {allParticipantsGroup?.length}</span>
 								</h3>
+
 							}
 						>
 							{allParticipants
@@ -200,6 +361,7 @@ export const CreateGroupPage = (): ReactElement => {
 					)) }
 				</RoundedBorderWrapper>
 			)}
+			{competitionData?.groups?.length === 0 && <p>No groups created</p>}
 			<BottomFixedContainer classes="xl:pl-[7.5rem] xl:pr-[7.5rem]">
 				<div className="flex flex-wrap gap-2.5">
 					<Button type="outlined" onClick={() => navigate(`../${AppRoute.JudgeChoice}`)}>
@@ -207,12 +369,15 @@ export const CreateGroupPage = (): ReactElement => {
 					</Button>
 					<Button
 						classes="min-w-[8rem] xl:min-w-[15.625rem]"
-						onClick={handleDoneClick}
-						// loading={pairJudgesAssignPending}
+						onClick={() => {
+							if (competitionData?.groups?.length) {
+								navigate(`../${AppRoute.OrdersGroupAssign}`)
+							}
+						}}
+						disabled={competitionData?.groups?.length === 0}
 					>
 						Done
 					</Button>
-					{/* {pairJudgesAssignError && <Alert type='error' subtitle={pairJudgesAssignError} />} */}
 				</div>
 			</BottomFixedContainer>
 		</main>

@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { TableBody, TableHeader, TableSortButton } from 'src/ui'
+import { TableBody, TableHeader } from 'src/ui'
 import { tableSchemaGroupCreateParticipantsBody } from 'src/helpers/tableSchemas/tableSchemaGroupCreateParticipantsBody'
 import { tableHeaderSchemaParticipantsList } from 'src/helpers/tableSchemas/tableHeaderSchemaParticipantsList'
 import { UserSchema } from 'src/types'
@@ -27,7 +27,11 @@ export enum SortType {
 	Weight = 'weight'
 }
 
-export const ParticipantsList: FC<ParticipantsListPropsType> = ({ participants, onSort, classes }) => {
+export const ParticipantsList: FC<ParticipantsListPropsType> = ({
+	participants,
+	onSort,
+	classes
+}) => {
 	const [activeList, setActiveList] = useState(ActiveListStatus.InGroup)
 	const [activeSort, setActiveSort] = useState<string>()
 
@@ -37,8 +41,17 @@ export const ParticipantsList: FC<ParticipantsListPropsType> = ({ participants, 
 	}
 
 	const tableHeaderColumns = tableHeaderSchemaParticipantsList({ activeSort, handleClick })
+	const noParticipants = participants.inGroup.length === 0 && participants.outGroup.length === 0
 	const participantsInGroupTable = tableSchemaGroupCreateParticipantsBody(participants.inGroup)
 	const participantsOutGroupTable = tableSchemaGroupCreateParticipantsBody(participants.outGroup)
+
+	const renderParticipantsTable = () => {
+		return (
+			activeList === 'inGroup'
+				? <TableBody rows={participantsInGroupTable} classes="max-h-[49.8rem]"/>
+				: <TableBody rows={participantsOutGroupTable} classes="max-h-[49.8rem]"/>
+		)
+	}
 
 	return (
 		<div className={classes}>
@@ -59,10 +72,9 @@ export const ParticipantsList: FC<ParticipantsListPropsType> = ({ participants, 
 			<div className="pt-2 pb-5 px-10 -mb-5 -mt-px border border-pale-grey rounded-l-3xl">
 				<TableHeader columns={tableHeaderColumns}/>
 				<div className="h-full overflow-y-auto scroll-custom">
-					{
-						activeList === 'inGroup'
-							? <TableBody rows={participantsInGroupTable} classes="max-h-[49.8rem]"/>
-							: <TableBody rows={participantsOutGroupTable} classes="max-h-[49.8rem]"/>
+					{noParticipants
+						? <p className='text-heading-4 text-center'>No matches</p>
+						: renderParticipantsTable()
 					}
 				</div>
 			</div>

@@ -38,11 +38,12 @@ export const Accordion: FC<AccordionPropsType> = ({ children, title, classes, is
 				>
 					{title}
 					<ArrowDownIcon className={twMerge('ml-auto transition', isOpen && 'rotate-180')} />
-					{additionalIcon}
 				</button>
+				{additionalIcon}
 			</div>
 			<div
-				className={twMerge('overflow-hidden transition-[max-height]')}
+				className={twMerge('overflow-hidden transition-[max-height]',
+					isOpen && 'overflow-visible')}
 				style={{
 					maxHeight: `${contentHeight}px`
 				}}

@@ -19,8 +19,13 @@ export type CompetitionGroupsOrdersSchema =
 	paths['/api/competition/{id}/setCompetitionGroupsOrders']['patch']['requestBody']['content']['application/json']
 export type CompetitionGroupsOrders =
 	paths['/api/competition/{id}/setCompetitionGroupsOrders']['patch']['requestBody']['content']['application/json']['orders']
+export type DeleteCompetitionGroupSchema = paths['/api/competition/{id}/group']['delete']['requestBody']['content']['application/json']
 
 export type ErrorPayload = { errorMessage: string; response: Response }
 export type CompetitionSchemaJudge = Omit<CompetitionSchema, 'judges'> & {
 	judges: UserSchema[]
 }
+export type ParticipantSchema = {
+	group?: string
+	groupOverlap?: boolean
+} & UserSchema

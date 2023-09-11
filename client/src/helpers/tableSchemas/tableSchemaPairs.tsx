@@ -1,6 +1,6 @@
 import { MutableRefObject } from 'react'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
-import { PairSchema, UserSchema } from 'src/types'
+import { CompetitionSchema, PairSchema, UserSchema } from 'src/types'
 import { getAge, localTZName } from 'src/helpers/datetime'
 
 export const getTimeTuplePlusMinutes = (startTimeTuple: string[] | null, minutesPassed: number) => {
@@ -18,7 +18,6 @@ export type PairType = {
 	blackParticipantData?: UserSchema
 	whiteParticipantData?: UserSchema
 	judgeData?: UserSchema
-	time?: string
 } & PairSchema
 
 export const tableSchemaPairs = ({
@@ -26,16 +25,18 @@ export const tableSchemaPairs = ({
 	participants,
 	judges,
 	startTimeTuple,
-	currentUser
+	currentUser,
+	breakTime
 }: {
 	tableData: PairSchema[]
 	participants: UserSchema[]
 	judges: UserSchema[]
 	startTimeTuple: string[]
 	currentUser: {
-		currentUserPairRef: MutableRefObject<undefined | { pair?: PairType; withPair?: boolean; startTime: string }>
+		currentUserPairRef: MutableRefObject<undefined | { pair?: PairType; startTime: string }>
 		authorizedUserId?: string
 	}
+	breakTime?: CompetitionSchema['breakTime']
 }) => {
 	const participantsData = tableData.reduce((acc, pair) => {
 		const blackParticipantData = participants.find(({ _id }) => pair.blackParticipant === _id)
@@ -59,7 +60,8 @@ export const tableSchemaPairs = ({
 	return participantsData.map((pair, i) => {
 		const currentPairTime = getTimeTuplePlusMinutes(
 			startTimeTuple,
-			i % judges.length === 0 ? (i * 10) / judges.length : ((i - (i % judges.length)) * 10) / judges.length
+			(i % judges.length === 0 ? (i * 10) / judges.length : ((i - (i % judges.length)) * 10) / judges.length) +
+				(breakTime?.minutes ?? 0)
 		).join(':')
 
 		if (

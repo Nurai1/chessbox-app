@@ -70,6 +70,9 @@ export interface ICompetition {
     }[];
   };
   zoomLink?: string;
+  breakTime?: {
+    minutes?: number;
+  };
   requirements?: {
     ageCategory?: Category;
     weightCategory?: Category;

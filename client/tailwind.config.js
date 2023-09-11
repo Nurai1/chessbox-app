@@ -56,7 +56,7 @@ const config = {
 				'light-grey': '#F2F2F2',
 				'disabled-grey': '#B3B3B3',
 				'pale-white': '#FDFDFD',
-				red: '#FB1616'
+				'error-red': '#FB1616'
 			}
 		}
 	},
