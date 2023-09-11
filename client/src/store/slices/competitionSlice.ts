@@ -6,7 +6,9 @@ import {
 	SetCompetitionJudgesSchema,
 	SetJudgesToPairsSchema,
 	CompetitionGroupsOrdersSchema,
-	CompetitionGroupSchema
+	CompetitionGroupSchema,
+	ParticipantSchema,
+	DeleteCompetitionGroupSchema
 } from 'src/types'
 import {
 	getCompetitionByIdApi,
@@ -15,7 +17,8 @@ import {
 	setCompetitionJudgesApi,
 	setJudgesToPairsApi,
 	setCompetitionGroupsOrdersApi,
-	setCompetitionGroupsApi
+	setCompetitionGroupsApi,
+	deleteCompetitionGroupApi
 } from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
@@ -89,9 +92,21 @@ export const setCompetitionGroups = createAsyncThunk(
 	}
 )
 
+export const deleteCompetitionGroup = createAsyncThunk(
+	'competition/deleteCompetitionGroup',
+	async ({ groupId, id }: { groupId: DeleteCompetitionGroupSchema; id: string }, thunkApi) => {
+		const response = await deleteCompetitionGroupApi(groupId, id)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
+
 export interface CompetitionState {
 	data: CompetitionSchema | null
-	participants: Record<string, UserSchema[] | null>
+	participants: Record<string, ParticipantSchema[] | null>
 	judges: Record<string, UserSchema[] | null>
 	loading: boolean
 	error?: string
@@ -104,9 +119,12 @@ export interface CompetitionState {
 	groupOrderAssignSuccess?: boolean
 	groupOrderAssignError?: string
 	groupOrderAssignPending?: boolean
-	groupAssignSuccess?: boolean
-	groupAssignError?: string
-	groupAssignPending?: boolean
+	groupAddSuccess?: boolean
+	groupAddError?: string
+	groupAddPending?: boolean
+	groupDeletePending?: boolean
+	groupDeleteSuccess?: boolean
+	groupDeleteError?: string
 }
 
 const initialState: CompetitionState = {
@@ -134,6 +152,12 @@ export const competitionSlice = createSlice({
 		},
 		resetPairJudgeAssignStatus: state => {
 			state.groupOrderAssignSuccess = undefined
+		},
+		resetCompetitionGroupsStatus: state => {
+			state.groupAddSuccess = undefined
+		},
+		resetDeleteCompetitionGroupStatus: state => {
+			state.groupDeleteSuccess = undefined
 		}
 	},
 	extraReducers: {
@@ -214,16 +238,28 @@ export const competitionSlice = createSlice({
 			state.groupOrderAssignError = action.payload.errorMessage
 		},
 		[setCompetitionGroups.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
-			console.log(action.payload)
-			state.groupAssignPending = false
-			state.groupAssignSuccess = true
+			state.data = action.payload
+			state.groupAddPending = false
+			state.groupAddSuccess = true
 		},
 		[setCompetitionGroups.pending.type]: state => {
-			state.groupAssignPending = true
+			state.groupAddPending = true
 		},
 		[setCompetitionGroups.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
-			state.groupAssignPending = false
-			state.groupAssignError = action.payload.errorMessage
+			state.groupAddPending = false
+			state.groupAddError = action.payload.errorMessage
+		},
+		[deleteCompetitionGroup.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>)  => {
+			state.data = action.payload
+			state.groupDeletePending = false
+			state.groupDeleteSuccess = true
+		},
+		[deleteCompetitionGroup.pending.type]: state => {
+			state.groupDeletePending = true
+		},
+		[deleteCompetitionGroup.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.groupDeletePending = false
+			state.groupDeleteError = action.payload.errorMessage
 		}
 	}
 })
@@ -232,7 +268,9 @@ export const {
 	setJudgesToCompetition,
 	setCompetitionData,
 	resetCompetitionGroupsOrdersStatus,
-	resetPairJudgeAssignStatus
+	resetPairJudgeAssignStatus,
+	resetCompetitionGroupsStatus,
+	resetDeleteCompetitionGroupStatus
 } = competitionSlice.actions
 
 export default competitionSlice.reducer

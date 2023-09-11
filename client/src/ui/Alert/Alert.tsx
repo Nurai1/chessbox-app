@@ -5,7 +5,7 @@ import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 
-type ButtonPropsType = {
+export type AlertPropTypes = {
 	type?: 'error' | 'success' | 'info'
 	title?: string
 	subtitle?: string
@@ -38,7 +38,7 @@ const alert = tv({
 	}
 })
 
-export const Alert: FC<ButtonPropsType> = ({ subtitle, title, type = 'error', classes }) => {
+export const Alert: FC<AlertPropTypes> = ({ subtitle, title, type = 'error', classes }) => {
 	const Icon = TYPE_TO_ICON_MAP[type]
 	return (
 		<div className={twMerge('relative mt-auto flex w-full gap-5 rounded-md p-4', alert({ bg: type }), classes)}>

@@ -245,7 +245,7 @@ export const CompetitionPage = (): ReactElement => {
 										Set up the competition
 										<ArrowRightIcon className='w-8 xl:w-[3.125rem]' />
 									</Link>
-									<div className='flex max-w-[40rem] items-center gap-3.5'>
+									<div className='flex max-w-[40rem] items-center gap-3.5 mb-5 md:mb-8'>
 										<WarningIcon />
 										<p>You need to assign judges, create groups, connect judges to pairs and assign orders to groups</p>
 									</div>
@@ -255,11 +255,6 @@ export const CompetitionPage = (): ReactElement => {
 						</div>
 						{isRegistrationClosed && (
 							<>
-								{isParticipant && !currentUserPairRef.current?.withPair && (
-									<h2 className='mb-[10px] text-xl font-medium md:mb-[15px] lg:mb-[34px] xl:text-4xl xl:font-bold'>
-										You will be paired with other participant at {currentUserPairRef.current?.startTime}
-									</h2>
-								)}
 								{isParticipant && currentUserPairRef.current?.pair && (
 									<>
 										<h2 className='mb-[10px] text-xl font-medium md:mb-[15px] lg:mb-[34px] xl:text-4xl xl:font-bold'>
@@ -297,7 +292,8 @@ export const CompetitionPage = (): ReactElement => {
 
 											const nextRoundParticipantsStartTime = getTimeTuplePlusMinutes(
 												startPointTimeTuple,
-												((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen
+												((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen +
+													(competitionData?.breakTime?.minutes ?? 0)
 											).join(':')
 
 											return (
@@ -305,7 +301,7 @@ export const CompetitionPage = (): ReactElement => {
 													<h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
 														{getTimeTuplePlusMinutes(
 															startPointTimeTuple,
-															(pairsBeforeLen * 10) / competitionJudgesLen
+															(pairsBeforeLen * 10) / competitionJudgesLen + (competitionData?.breakTime?.minutes ?? 0)
 														).join(':')}
 														<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}-
 														{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
@@ -318,9 +314,11 @@ export const CompetitionPage = (): ReactElement => {
 																judges,
 																startTimeTuple: getTimeTuplePlusMinutes(
 																	startPointTimeTuple,
-																	(pairsBeforeLen * 10) / competitionJudgesLen
+																	(pairsBeforeLen * 10) / competitionJudgesLen +
+																		(competitionData?.breakTime?.minutes ?? 0)
 																),
-																currentUser: { currentUserPairRef, authorizedUserId: authorizedUser?._id }
+																currentUser: { currentUserPairRef, authorizedUserId: authorizedUser?._id },
+																breakTime: competitionData?.breakTime
 															})}
 														/>
 													) : (
@@ -330,7 +328,8 @@ export const CompetitionPage = (): ReactElement => {
 														<h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
 															{getTimeTuplePlusMinutes(
 																startPointTimeTuple,
-																((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen
+																((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen +
+																	(competitionData?.breakTime?.minutes ?? 0)
 															).join(':')}
 															<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}-
 															{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
@@ -341,11 +340,15 @@ export const CompetitionPage = (): ReactElement => {
 															? participants.find(({ _id: pId }) => pId === participantId)
 															: null
 
-														if (participantId === authorizedUser?._id)
+														if (participantId === authorizedUser?._id) {
 															currentUserPairRef.current = {
-																withPair: false,
-																startTime: nextRoundParticipantsStartTime
+																startTime: nextRoundParticipantsStartTime,
+																pair: {
+																	whiteParticipant: participantId,
+																	whiteParticipantData: nextRoundParticipant ?? undefined
+																}
 															}
+														}
 
 														return (
 															<div

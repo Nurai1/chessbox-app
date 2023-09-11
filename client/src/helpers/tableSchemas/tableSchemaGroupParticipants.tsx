@@ -7,19 +7,19 @@ export const tableSchemaGroupParticipants = (tableData: UserSchema[]) => {
 			cells: [
 				{
 					node: i + 1,
-					classes: 'max-w-[3rem] pr-1'
+					classes: 'flex-center max-w-[3rem] pr-1 text-black'
 				},
 				{
 					node: fullName,
-					classes: 'max-w-[14rem] px-1'
+					classes: 'max-w-[16rem] px-1 text-black'
 				},
 				{
 					node: <p>{getAge(birthDate)} <span>age</span></p> ,
-					classes: 'max-w-[9rem] px-1'
+					classes: 'max-w-[9rem] px-1 text-black'
 				},
 				{
 					node: <p>{weight} <span>kg</span></p> ,
-					classes: 'pl-1'
+					classes: 'pl-1 text-black'
 				}
 			]
 		}

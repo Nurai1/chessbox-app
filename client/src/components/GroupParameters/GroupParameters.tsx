@@ -3,12 +3,18 @@ import { twMerge } from 'tailwind-merge'
 import { CheckboxAndRadioButton, Input, Button } from 'src/ui'
 import { CompetitionRequirementsSchema } from 'src/types'
 
+export type GroupParametersForm = Omit<Errors, 'weightMessage' | 'ageMessage'> & {
+	sex: string
+} & Errors
+
 type GroupParametersPropsType = {
 	requirements: CompetitionRequirementsSchema
 	getGroupParameters: (data: CompetitionRequirementsSchema) => void
 	addGroup: () => void
 	classes?: string
-	noParticipants?: boolean
+	disableAddGroupBtn?: boolean
+	addGroupRequestPending?: boolean
+	resetFilterTrigger?: boolean
 }
 
 type Errors = {
@@ -20,20 +26,18 @@ type Errors = {
 	ageTo?: string
 }
 
- type GroupParametersForm = Omit<Errors, 'weightMessage' | 'ageMessage'> & {
-	sex: string
-} & Errors
+const GROUP_DATA_FIELDS_NUMBER = 5
 
 export const GroupParameters: FC<GroupParametersPropsType> = ({
 	requirements,
 	getGroupParameters,
 	addGroup,
-	noParticipants = true,
-	classes
+	disableAddGroupBtn = true,
+	classes,
+	addGroupRequestPending,
+	resetFilterTrigger
 }) => {
-	const [groupData, setGroupData] = useState<GroupParametersForm>({
-		sex: 'man'
-	})
+	const [groupData, setGroupData] = useState<GroupParametersForm>({ sex: 'man' })
 	const [errors, setErrors] = useState<Errors>({})
 
 	const validate = (
@@ -82,10 +86,9 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 			}))
 		}
 
-		// if (groupData[key2] && groupData[key1] && Number(groupData[key2]) < Number(groupData[key1])) {
-		// 	setErrors((prevState) => ({ ...prevState, [errorTitle]: 'Min value bigger than max value' }))
-		// }
-
+		if (groupData[key2] && groupData[key1] && Number(groupData[key2]) < Number(groupData[key1])) {
+			setErrors((prevState) => ({ ...prevState, [errorTitle]: 'Min value bigger than max value' }))
+		}
 	}
 
 	useEffect(() => {
@@ -109,6 +112,11 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [groupData])
+
+	useEffect(() => {
+		setGroupData({ sex: 'man' })
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [resetFilterTrigger])
 
 	const onChange = (value?: string | boolean, name?: string) => {
 		setGroupData({
@@ -157,7 +165,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 					classes='mr-2'
 				/>
 				<Input name='weightTo' type='number' onChange={onChange} placeholder='Max' value={groupData.weightTo} />
-				{errors.weightMessage && <span className='absolute left-[4.375rem] -bottom-6 text-xs text-red'>{errors.weightMessage}</span>}
+				{errors.weightMessage && <span className='absolute left-[4.375rem] -bottom-6 text-xs text-error-red'>{errors.weightMessage}</span>}
 			</div>
 
 			<div className='flex mb-9 relative'>
@@ -171,12 +179,13 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 					classes='mr-2'
 				/>
 				<Input name='ageTo' type='number' onChange={onChange} value={groupData.ageTo} placeholder='Max' />
-				{errors.ageMessage && <span className='absolute left-[4.375rem] -bottom-6 text-xs text-red'>{errors.ageMessage}</span>}
+				{errors.ageMessage && <span className='absolute left-[4.375rem] -bottom-6 text-xs text-error-red'>{errors.ageMessage}</span>}
 			</div>
 			<Button
-				disabled={!Object.values(errors).every(error => error === undefined)}
+				disabled={disableAddGroupBtn || Object.values(groupData).length !== GROUP_DATA_FIELDS_NUMBER}
 				classes='w-full mb-2'
 				onClick={addGroup}
+				loading={addGroupRequestPending}
 			>
 				Add group
 			</Button>
@@ -205,7 +214,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 			}} type='outlined' classes='w-full'>
 				Clean up
 			</Button>
-			{hasErrors() && <p className="absolute -bottom-9 text-red text-xs">Group parameters overlap with group <br/>
+			{hasErrors() && <p className="absolute -bottom-9 text-error-red text-xs">Group parameters overlap with group <br/>
                 <span className='font-bold'>{errors.weightFrom} {errors.weightTo} {errors.ageFrom} {errors.ageTo}</span>
             </p>}
 		</div>

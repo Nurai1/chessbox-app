@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { Competition, User } from '../models/index';
-import { ICompetitionGroup, IPair } from '../types/index';
+import { ICompetition, ICompetitionGroup, IPair } from '../types/index';
 import { getParticipantsAmountForFirstRound } from '../utils/getParticipantsAmountForFirstRound';
 import { recalculateRating } from '../utils/recalculateRating';
 import { getPairsWithJudges } from '../utils/competition';
@@ -210,6 +210,32 @@ export const deleteCompetition = async (
     return res.status(404).send({ error: "Competition wasn't found" });
 
   res.send(competition);
+};
+
+export const deleteCompetitionGroup = async (
+  req: Request<{ id: string }, any, { groupId: string }>,
+  res: Response
+) => {
+  const { id } = req.params;
+  const { groupId } = req.body;
+
+  const competition = await Competition.findById(id);
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  const { groups } = competition;
+
+  const newGroups = groups?.filter(
+    (group) => group._id?.toString() !== groupId
+  );
+
+  const newCompetition = await Competition.findOneAndUpdate(
+    { _id: id },
+    { groups: newGroups },
+    { new: true }
+  );
+
+  res.send(newCompetition);
 };
 
 export const updateCompetition = async (
@@ -696,4 +722,32 @@ export const getCompetitionJudges = async (
     return res.status(404).send({ error: "Competition wasn't found" });
 
   res.send(competition?.judges);
+};
+
+export const setCompetitionBreakTime = async (
+  req: Request<{ id: string }, any, { breakTime: ICompetition['breakTime'] }>,
+  res: Response
+) => {
+  const { id } = req.params;
+  const { breakTime } = req.body;
+
+  if (!breakTime) {
+    return res.status(400).send({ error: 'No break time provided' });
+  }
+
+  const competition = await Competition.findOneAndUpdate(
+    { _id: id },
+    { breakTime }
+  );
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  const breakTimeInMs = (breakTime?.minutes ?? 0) * 60 * 1000;
+
+  setTimeout(async () => {
+    await Competition.findOneAndUpdate({ _id: id }, { breakTime: null });
+  }, breakTimeInMs);
+
+  return res.sendStatus(200);
 };
