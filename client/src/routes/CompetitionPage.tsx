@@ -113,9 +113,11 @@ export const CompetitionPage = (): ReactElement => {
 					)}
 				</div>
 				<div className='flex flex-col gap-[15px] md:flex-row md:gap-[20px] lg:flex-col lg:gap-[10px]'>
-					<Button onClick={() => ''} classes='md:w-full'>
-						Participate
-					</Button>
+					{authorizedUser?.role !== 'chief_judge' && (
+						<Button onClick={() => ''} classes='md:w-full'>
+							Participate
+						</Button>
+					)}
 					<Button
 						onClick={handleSideMenuOpen}
 						type='outlined'
@@ -234,24 +236,26 @@ export const CompetitionPage = (): ReactElement => {
 							{isRegistrationClosed && !isParticipant && <h2>Registration Closed</h2>}
 							{isRegistrationClosed && isParticipant && <h2>Time before start {competitionData.startDate}</h2>}
 							<div>
-							<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
-							<p className='mb-9'>{competitionData.description}</p>
-							{authorizedUser?.role === 'chief_judge' && (
-								<>
-									<Link
-										to={AppRoute.JudgeChoice}
-										className='mb-2.5 flex items-center gap-5 text-lg font-bold transition hover:opacity-70 xl:text-4xl xl:leading-normal'
-									>
-										Set up the competition
-										<ArrowRightIcon className='w-8 xl:w-[3.125rem]' />
-									</Link>
-									<div className='flex max-w-[40rem] items-center gap-3.5 mb-5 md:mb-8'>
-										<WarningIcon />
-										<p>You need to assign judges, create groups, connect judges to pairs and assign orders to groups</p>
-									</div>
-								</>
-							)}
-						</div>
+								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
+								<p className='mb-9'>{competitionData.description}</p>
+								{authorizedUser?.role === 'chief_judge' && (
+									<>
+										<Link
+											to={AppRoute.JudgeChoice}
+											className='mb-2.5 flex items-center gap-5 text-lg font-bold transition hover:opacity-70 xl:text-4xl xl:leading-normal'
+										>
+											Set up the competition
+											<ArrowRightIcon className='w-8 xl:w-[3.125rem]' />
+										</Link>
+										<div className='mb-5 flex max-w-[40rem] items-center gap-3.5 md:mb-8'>
+											<WarningIcon />
+											<p>
+												You need to assign judges, create groups, connect judges to pairs and assign orders to groups
+											</p>
+										</div>
+									</>
+								)}
+							</div>
 						</div>
 						{isRegistrationClosed && (
 							<>
@@ -361,7 +365,8 @@ export const CompetitionPage = (): ReactElement => {
 																		{nextRoundParticipant?.fullName}
 																	</div>
 																	<div className='text-[#6C6A6C]'>
-																		{getAge(nextRoundParticipant?.birthDate as string)} age, {nextRoundParticipant?.weight} kg
+																		{getAge(nextRoundParticipant?.birthDate as string)} age,{' '}
+																		{nextRoundParticipant?.weight} kg
 																	</div>
 																</div>
 																<div>

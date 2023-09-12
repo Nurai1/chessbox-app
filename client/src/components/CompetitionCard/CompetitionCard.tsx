@@ -12,6 +12,7 @@ import { CompetitionSchema } from 'src/types'
 import { Button, Timer, Tag } from 'src/ui'
 import { getFormattedDate, isPast } from 'src/helpers/datetime'
 import { BreakPoint } from 'src/constants/breakPoints'
+import { Role } from 'src/constants/role'
 import style from './CompetitionCard.module.css'
 
 type CompetitionPropsType = {
@@ -21,19 +22,20 @@ type CompetitionPropsType = {
 export const CompetitionCard: FC<CompetitionPropsType> = ({
 	competition: { startDate, registrationEndsAt, endDate, name, price, description, participants, _id }
 }) => {
-	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
+	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
 	const handleClick = () => {}
 	const dateStart = getFormattedDate(startDate, 'MMM D, HH:mm')
 	const isRegistrationClosed = isPast(registrationEndsAt)
 	const isOver = Boolean(endDate)
-	const isParticipant = participants?.includes(authorizedUserId ?? '')
+	const isParticipant = participants?.includes(authorizedUser?._id ?? '')
 	const { width: screenWidth } = useWindowSize()
 
 	const participateMobile = () =>
 		screenWidth < BreakPoint.Lg &&
 		!isRegistrationClosed &&
 		!isParticipant &&
-		!isOver && (
+		!isOver &&
+		authorizedUser?.role !== Role.ChiefJudge && (
 			<Button onClick={handleClick} classes='w-full mt-[17px] md:mt-[12px]'>
 				Participate
 			</Button>
@@ -57,7 +59,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 					Registration ends in:
 				</h3>
 				<Timer time={registrationEndsAt} classes='lg:mb-[20px] 2xl:mb-[26px]' />
-				{screenWidth >= BreakPoint.Lg && (
+				{screenWidth >= BreakPoint.Lg && authorizedUser?.role !== Role.ChiefJudge && (
 					<Button onClick={handleClick} classes='w-full'>
 						Participate
 					</Button>
@@ -140,7 +142,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 		screenWidth < BreakPoint.Lg &&
 		isOver && (
 			<Button type='outlined' onClick={handleClick} classes='w-full mt-[17px] md:mt-[12px] pointer-events-none'>
-				This competition is over
+				This competition is&nbsp;over
 			</Button>
 		)
 
