@@ -16,8 +16,8 @@ export const JudgeChoicePage = (): ReactElement => {
 	const { competitionId } = useParams()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
-	const [selectedJudgesId, setSelectedJudgesId] = useState<string[]>([])
 	const competitionData = useAppSelector(s => s.competition.data)
+	const [selectedJudgesId, setSelectedJudgesId] = useState<string[]>([])
 	const judges = useAppSelector(s => s.users.allJudges)
 	const pending = useAppSelector(s => s.competition.setCompetitionJudgesPending)
 	const assignSuccess = useAppSelector(s => s.competition.setCompetitionJudgesSuccess)
@@ -33,6 +33,13 @@ export const JudgeChoicePage = (): ReactElement => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
+
+	useEffect(() => {
+		if (competitionData?.judges?.length) {
+			setSelectedJudgesId(competitionData.judges)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [competitionData])
 
 	useEffect(() => {
 		if (assignSuccess) {

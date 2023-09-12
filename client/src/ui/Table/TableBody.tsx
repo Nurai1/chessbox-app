@@ -8,7 +8,7 @@ import { Loader } from '../Loader'
 
 export type TablePropsType =
 	| {
-			columns?: { title: string; width?: number | string; classes?: string }[]
+			columns?: { node: string; width?: number | string; classes?: string }[]
 			rows: { cells: { node: ReactNode; classes?: string }[] }[]
 			isInfiniteLoader?: false
 			hasNextPage?: never
@@ -17,7 +17,7 @@ export type TablePropsType =
 			classes?: string
 	  }
 	| {
-			columns?: { title: string; width?: number | string; classes?: string }[]
+			columns?: { node: string; width?: number | string; classes?: string }[]
 			rows: { cells: { node: ReactNode; classes?: string }[] }[]
 			isInfiniteLoader: true
 			hasNextPage?: boolean

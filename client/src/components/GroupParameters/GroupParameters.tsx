@@ -11,6 +11,7 @@ type GroupParametersPropsType = {
 	requirements: CompetitionRequirementsSchema
 	getGroupParameters: (data: CompetitionRequirementsSchema) => void
 	addGroup: () => void
+	resetFilter: () => void
 	classes?: string
 	disableAddGroupBtn?: boolean
 	addGroupRequestPending?: boolean
@@ -35,7 +36,8 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 	disableAddGroupBtn = true,
 	classes,
 	addGroupRequestPending,
-	resetFilterTrigger
+	resetFilterTrigger,
+	resetFilter
 }) => {
 	const [groupData, setGroupData] = useState<GroupParametersForm>({ sex: 'man' })
 	const [errors, setErrors] = useState<Errors>({})
@@ -49,16 +51,15 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 		maxValue: number
 	) => {
 		if (Number(groupData[key1]) >= minValue) {
-			setErrors((prevState) => ({
-					...prevState,
-					[key1]: undefined,
-					[errorTitle]: undefined
-				}
-			))
+			setErrors(prevState => ({
+				...prevState,
+				[key1]: undefined,
+				[errorTitle]: undefined
+			}))
 		}
 
 		if (Number(groupData[key2]) <= maxValue) {
-			setErrors((prevState) => ({
+			setErrors(prevState => ({
 				...prevState,
 				[key2]: undefined,
 				[errorTitle]: undefined
@@ -66,12 +67,12 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 		}
 
 		if (!groupData[key1] || !groupData[key2]) {
-			setErrors((prevSate) => ({ ...prevSate, [errorTitle]: 'Both fields must be filled' }))
+			setErrors(prevSate => ({ ...prevSate, [errorTitle]: 'Both fields must be filled' }))
 			return
 		}
 
 		if (Number(groupData[key1]) < minValue || Number(groupData[key1]) > maxValue) {
-			setErrors((prevSate) => ({
+			setErrors(prevSate => ({
 				...prevSate,
 				[key1]: `${groupData.sex} < ${groupData[key1]} ${fieldName === 'Age' ? 'age' : 'kg'}`,
 				[errorTitle]: `${fieldName} is out of requirements`
@@ -79,7 +80,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 		}
 
 		if (Number(groupData[key2]) > maxValue || Number(groupData[key2]) < minValue) {
-			setErrors((prevSate) => ({
+			setErrors(prevSate => ({
 				...prevSate,
 				[key2]: `${groupData.sex} > ${groupData[key2]} ${fieldName === 'Age' ? 'age' : 'kg'}`,
 				[errorTitle]: `${fieldName} is out of requirements`
@@ -87,7 +88,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 		}
 
 		if (groupData[key2] && groupData[key1] && Number(groupData[key2]) < Number(groupData[key1])) {
-			setErrors((prevState) => ({ ...prevState, [errorTitle]: 'Min value bigger than max value' }))
+			setErrors(prevState => ({ ...prevState, [errorTitle]: 'Min value bigger than max value' }))
 		}
 	}
 
@@ -133,7 +134,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 	}
 
 	return (
-		<div className={twMerge('max-w-[16rem] relative', classes)}>
+		<div className={twMerge('relative max-w-[16rem]', classes)}>
 			<div className='mb-6 flex h-12 items-center'>
 				<p className='min-w-[4.375rem] font-bold'>Sex:</p>
 				<CheckboxAndRadioButton
@@ -154,7 +155,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 					checked={groupData.sex === 'woman'}
 				/>
 			</div>
-			<div className='flex mb-9 relative'>
+			<div className='relative mb-9 flex'>
 				<p className='m-auto min-w-[4.375rem] font-bold'>Weight:</p>
 				<Input
 					name='weightFrom'
@@ -165,10 +166,12 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 					classes='mr-2'
 				/>
 				<Input name='weightTo' type='number' onChange={onChange} placeholder='Max' value={groupData.weightTo} />
-				{errors.weightMessage && <span className='absolute left-[4.375rem] -bottom-6 text-xs text-error-red'>{errors.weightMessage}</span>}
+				{errors.weightMessage && (
+					<span className='absolute left-[4.375rem] -bottom-6 text-xs text-error-red'>{errors.weightMessage}</span>
+				)}
 			</div>
 
-			<div className='flex mb-9 relative'>
+			<div className='relative mb-9 flex'>
 				<p className='m-auto min-w-[4.375rem] font-bold'>Age:</p>
 				<Input
 					name='ageFrom'
@@ -179,7 +182,9 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 					classes='mr-2'
 				/>
 				<Input name='ageTo' type='number' onChange={onChange} value={groupData.ageTo} placeholder='Max' />
-				{errors.ageMessage && <span className='absolute left-[4.375rem] -bottom-6 text-xs text-error-red'>{errors.ageMessage}</span>}
+				{errors.ageMessage && (
+					<span className='absolute left-[4.375rem] -bottom-6 text-xs text-error-red'>{errors.ageMessage}</span>
+				)}
 			</div>
 			<Button
 				disabled={disableAddGroupBtn || Object.values(groupData).length !== GROUP_DATA_FIELDS_NUMBER}
@@ -205,18 +210,29 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 						},
 						gender: groupData.sex
 					})
-			}}>
+				}}
+			>
 				Show
 			</Button>
-			<Button onClick={() => {
-				setGroupData({sex: 'man'})
-				setErrors({})
-			}} type='outlined' classes='w-full'>
+			<Button
+				onClick={() => {
+					setGroupData({ sex: 'man' })
+					setErrors({})
+					resetFilter()
+				}}
+				type='outlined'
+				classes='w-full'
+			>
 				Clean up
 			</Button>
-			{hasErrors() && <p className="absolute -bottom-9 text-error-red text-xs">Group parameters overlap with group <br/>
-                <span className='font-bold'>{errors.weightFrom} {errors.weightTo} {errors.ageFrom} {errors.ageTo}</span>
-            </p>}
+			{hasErrors() && (
+				<p className='absolute -bottom-9 text-xs text-error-red'>
+					Group parameters overlap with group <br />
+					<span className='font-bold'>
+						{errors.weightFrom} {errors.weightTo} {errors.ageFrom} {errors.ageTo}
+					</span>
+				</p>
+			)}
 		</div>
 	)
 }

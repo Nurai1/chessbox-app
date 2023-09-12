@@ -8,13 +8,13 @@ import { Loader } from 'src/ui'
 
 type PrivateRoutePropsType = {
 	children: ReactElement
+	role: Role.Admin | Role.Judge | Role.ChiefJudge | Role.Participant
 	redirectPath?: string
-	role?: Role.Admin | Role.Judge | Role.ChiefJudge | Role.Participant
 }
 
 const PrivateRoute: FC<PrivateRoutePropsType> = ({
 	children,
-	redirectPath = `/${AppRoute.SignIn}`,
+	redirectPath = `/${AppRoute.NotFound}`,
 	role
 }): ReactElement => {
 	const authorizationStatus = useAppSelector(state => state.user.authorizationStatus)
@@ -32,7 +32,7 @@ const PrivateRoute: FC<PrivateRoutePropsType> = ({
 		return children
 	}
 
-	if (!role) {
+	if (AuthorizationStatus.Auth) {
 		return children
 	}
 

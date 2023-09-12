@@ -78,7 +78,7 @@ const App = () => {
 					<Route
 						path={AppRoute.EditProfile}
 						element={
-							<PrivateRoute>
+							<PrivateRoute role={Role.Admin || Role.Judge || Role.ChiefJudge || Role.Participant}>
 								<EditProfilePage />
 							</PrivateRoute>
 						}
