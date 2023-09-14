@@ -1,5 +1,5 @@
 import { Fragment, ReactElement, useEffect, useRef, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Button, Loader, Modal, TableBody, Tag, Timer } from 'src/ui'
 import { ReactComponent as BanknoteIcon } from 'src/assets/banknote.svg'
 import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
@@ -43,6 +43,7 @@ export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
 	const { competitionId } = useParams()
 	const currentUserPairRef = useRef<{ pair?: PairType; withPair?: boolean; startTime: string }>()
+	const navigate = useNavigate()
 	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
 	const competitionDataExisting = useAppSelector(s => s.competitions.data).find(({ _id }) => _id === competitionId)
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
@@ -95,6 +96,15 @@ export const CompetitionPage = (): ReactElement => {
 		setIsSideMenuOpen(!isSideMenuOpen)
 	}
 
+	const handleParticipateClick = () => {
+		if (!authorizedUser) {
+			navigate(`/${AppRoute.SignIn}`)
+		} else {
+			// eslint-disable-next-line no-console
+			console.log('participate')
+		}
+	}
+
 	const participate = () =>
 		!isRegistrationClosed &&
 		!isParticipant &&
@@ -114,7 +124,7 @@ export const CompetitionPage = (): ReactElement => {
 				</div>
 				<div className='flex flex-col gap-[15px] md:flex-row md:gap-[20px] lg:flex-col lg:gap-[10px]'>
 					{authorizedUser?.role !== 'chief_judge' && (
-						<Button onClick={() => ''} classes='md:w-full'>
+						<Button onClick={handleParticipateClick} classes='md:w-full'>
 							Participate
 						</Button>
 					)}
