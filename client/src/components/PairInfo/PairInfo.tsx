@@ -4,7 +4,7 @@ import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 import { ReactComponent as RookWhite } from 'src/assets/rook-white.svg'
 import { ReactComponent as RookBlack } from 'src/assets/rook-black.svg'
 import { ReactComponent as Dumbbell } from 'src/assets/dumbbell.svg'
-import { PairType } from 'src/helpers/tableSchemaPairs'
+import { PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
 import { getAge, localTZName } from 'src/helpers/datetime'
 
 type MatchInfoPropsType = {

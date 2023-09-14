@@ -89,7 +89,9 @@ export const calcTime = (params: { minutes: number; hours: number; days: number 
 }
 
 export const isPast = (time: string) => new Date(time).getTime() < new Date().getTime()
+
 export const isFuture = (time: string) => new Date(time).getTime() > new Date().getTime()
+
 export const max99years = (time: string) => {
 	const years99 = 3124202400000
 	const is99yearsOver = Date.now() - years99

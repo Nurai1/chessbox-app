@@ -9,5 +9,9 @@ export const AppRoute = {
 	EditProfile: 'edit-profile',
 	ForgotPassword: 'forgot-password',
 	ChangePassword: 'change-password',
+	JudgeChoice: 'judge-choice',
+	CreateGroup: 'create-group',
+	OrdersGroupAssign: 'orders-group-assign',
+	JudgeAssign: 'judge-assign',
 	NotFound: '*'
 }

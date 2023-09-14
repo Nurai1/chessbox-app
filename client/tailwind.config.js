@@ -52,8 +52,11 @@ const config = {
 			colors: {
 				black: '#09090C',
 				grey: '#6C6A6C',
+				'pale-grey': '#DADADA',
 				'light-grey': '#F2F2F2',
-				'pale-white': '#FDFDFD'
+				'disabled-grey': '#B3B3B3',
+				'pale-white': '#FDFDFD',
+				'error-red': '#FB1616'
 			}
 		}
 	},

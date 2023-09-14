@@ -24,7 +24,16 @@ const initialState: CompetitionsState = {
 export const competitionsSlice = createSlice({
 	name: 'competitions',
 	initialState,
-	reducers: {},
+	reducers: {
+		updateCompetitionsList: (state, action: PayloadAction<{ selectedJudges: string[];  competitionId: string}>) => {
+			if (state.data) {
+				const competition = state.data.find(({_id}) => _id === action.payload.competitionId)
+				if (competition) {
+					competition.judges = action.payload.selectedJudges
+				}
+			}
+		}
+	},
 	extraReducers: {
 		[fetchCompetitions.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema[]>) => {
 			state.loading = false
@@ -40,6 +49,6 @@ export const competitionsSlice = createSlice({
 	}
 })
 
-// export const {} = competitionsSlice.actions
+export const { updateCompetitionsList } = competitionsSlice.actions
 
 export default competitionsSlice.reducer

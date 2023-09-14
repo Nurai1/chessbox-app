@@ -5,24 +5,25 @@ import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeList } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { Loader } from '../Loader'
-import styles from './TableBody.module.css'
 
 export type TablePropsType =
 	| {
-			columns?: { title: string; width?: number | string; classes?: string }[]
+			columns?: { node: string; width?: number | string; classes?: string }[]
 			rows: { cells: { node: ReactNode; classes?: string }[] }[]
 			isInfiniteLoader?: false
 			hasNextPage?: never
 			isNextPageLoading?: never
 			loadNextPage?: never
+			classes?: string
 	  }
 	| {
-			columns?: { title: string; width?: number | string; classes?: string }[]
+			columns?: { node: string; width?: number | string; classes?: string }[]
 			rows: { cells: { node: ReactNode; classes?: string }[] }[]
 			isInfiniteLoader: true
 			hasNextPage?: boolean
 			isNextPageLoading?: boolean
 			loadNextPage?: () => void
+			classes?: string
 	  }
 
 type AutoSizerProps = { height: number; width: number }
@@ -35,7 +36,8 @@ export const TableBody: FC<TablePropsType> = ({
 	isInfiniteLoader,
 	hasNextPage,
 	isNextPageLoading,
-	loadNextPage
+	loadNextPage,
+	classes
 }) => {
 	const itemCount = hasNextPage ? rows.length + 1 : rows.length
 
@@ -57,7 +59,7 @@ export const TableBody: FC<TablePropsType> = ({
 	const isItemLoaded = (index: number) => !hasNextPage || index < rows.length
 
 	return (
-		<div className='grow'>
+		<div className={`grow ${classes}`}>
 			{isInfiniteLoader && (
 				<AutoSizer>
 					{(props: AutoSizerProps) => (
@@ -78,7 +80,7 @@ export const TableBody: FC<TablePropsType> = ({
 									itemSize={105}
 									height={props.height}
 									width={props.width}
-									className={`${styles['table-scroll-custom']} js-infinity-loader`}
+									className='scroll-custom js-infinity-loader'
 								>
 									{({ index, style }) =>
 										!isItemLoaded(index) ? (

@@ -1,7 +1,7 @@
 import { MutableRefObject } from 'react'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 import { CompetitionSchema, PairSchema, UserSchema } from 'src/types'
-import { getAge, localTZName } from './datetime'
+import { getAge, localTZName } from 'src/helpers/datetime'
 
 export const getTimeTuplePlusMinutes = (startTimeTuple: string[] | null, minutesPassed: number) => {
 	const [hours, minutes] = startTimeTuple?.map(Number) ?? []
@@ -103,7 +103,7 @@ export const tableSchemaPairs = ({
 								<div className='w-[45%]'>
 									<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
 									<p className='text-xs xl:text-base'>
-										{getAge(pair.blackParticipantData?.birthDate)} age, {pair.blackParticipantData?.weight} kg
+										{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight} kg
 									</p>
 								</div>
 								<span className='mx-[2%] w-[6%] text-sm text-black xl:text-base'>VS</span>
@@ -111,7 +111,7 @@ export const tableSchemaPairs = ({
 									<div className='ml-auto w-fit'>
 										<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
 										<p className=' text-xs xl:text-base'>
-											{getAge(pair.whiteParticipantData?.birthDate)} age, {pair.whiteParticipantData?.weight} kg
+											{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight} kg
 										</p>
 									</div>
 								</div>
