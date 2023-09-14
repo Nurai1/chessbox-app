@@ -8,7 +8,8 @@ import {
 	CompetitionGroupsOrdersSchema,
 	CompetitionGroupSchema,
 	ParticipantSchema,
-	DeleteCompetitionGroupSchema
+	DeleteCompetitionGroupSchema,
+	AddNewParticipantSchema
 } from 'src/types'
 import {
 	getCompetitionByIdApi,
@@ -18,7 +19,8 @@ import {
 	setJudgesToPairsApi,
 	setCompetitionGroupsOrdersApi,
 	setCompetitionGroupsApi,
-	deleteCompetitionGroupApi
+	deleteCompetitionGroupApi,
+	addNewParticipantApi
 } from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
@@ -103,6 +105,16 @@ export const deleteCompetitionGroup = createAsyncThunk(
 	}
 )
 
+export const addNewParticipant = createAsyncThunk(
+	'competition/addNewParticipant',
+	async ({ userId, id }: { userId: AddNewParticipantSchema; id: string }, thunkApi) => {
+		const response = await addNewParticipantApi(userId, id)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
 
 export interface CompetitionState {
 	data: CompetitionSchema | null
@@ -125,6 +137,8 @@ export interface CompetitionState {
 	groupDeletePending?: boolean
 	groupDeleteSuccess?: boolean
 	groupDeleteError?: string
+	addNewParticipantPending?: boolean
+	addNewParticipantError?: string
 }
 
 const initialState: CompetitionState = {
@@ -249,7 +263,7 @@ export const competitionSlice = createSlice({
 			state.groupAddPending = false
 			state.groupAddError = action.payload.errorMessage
 		},
-		[deleteCompetitionGroup.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>)  => {
+		[deleteCompetitionGroup.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.data = action.payload
 			state.groupDeletePending = false
 			state.groupDeleteSuccess = true
@@ -260,6 +274,14 @@ export const competitionSlice = createSlice({
 		[deleteCompetitionGroup.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.groupDeletePending = false
 			state.groupDeleteError = action.payload.errorMessage
+		},
+		// доделать добавление участника
+		[addNewParticipant.pending.type]: state => {
+			state.addNewParticipantPending = true
+		},
+		[addNewParticipant.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.addNewParticipantPending = false
+			state.addNewParticipantError = action.payload.errorMessage
 		}
 	}
 })

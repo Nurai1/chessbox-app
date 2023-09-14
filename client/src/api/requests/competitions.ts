@@ -4,7 +4,8 @@ import {
 	SetJudgesToPairsSchema,
 	CompetitionGroupsOrdersSchema,
 	CompetitionGroupSchema,
-	DeleteCompetitionGroupSchema
+	DeleteCompetitionGroupSchema,
+	AddNewParticipantSchema
 } from 'src/types'
 
 export const getCompetitionsApi = async () => {
@@ -94,6 +95,19 @@ export const setCompetitionGroupsApi = async (data: CompetitionGroupSchema, id: 
 export const deleteCompetitionGroupApi = async (groupId: DeleteCompetitionGroupSchema, id: string) => {
 	const result = await del('/api/competition/{id}/group', {
 		body: groupId,
+		params: {
+			path: {
+				id
+			}
+		}
+	})
+
+	return result
+}
+
+export const addNewParticipantApi = async (userId: AddNewParticipantSchema, id: string) => {
+	const result = await patch('/api/competition/{id}/addNewParticipant', {
+		body: userId,
 		params: {
 			path: {
 				id

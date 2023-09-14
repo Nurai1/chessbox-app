@@ -6,13 +6,14 @@ import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
 import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
 import { ReactComponent as Hourglass } from 'src/assets/hourglass.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAppSelector } from 'src/hooks/redux'
 import { CompetitionSchema } from 'src/types'
 import { Button, Timer, Tag } from 'src/ui'
 import { getFormattedDate, isPast } from 'src/helpers/datetime'
 import { BreakPoint } from 'src/constants/breakPoints'
 import { Role } from 'src/constants/role'
+import { AppRoute } from 'src/constants/appRoute'
 import style from './CompetitionCard.module.css'
 
 type CompetitionPropsType = {
@@ -23,12 +24,21 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 	competition: { startDate, registrationEndsAt, endDate, name, price, description, participants, _id }
 }) => {
 	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
-	const handleClick = () => {}
+	const navigate = useNavigate()
 	const dateStart = getFormattedDate(startDate, 'MMM D, HH:mm')
 	const isRegistrationClosed = isPast(registrationEndsAt)
 	const isOver = Boolean(endDate)
 	const isParticipant = participants?.includes(authorizedUser?._id ?? '')
 	const { width: screenWidth } = useWindowSize()
+
+	const handleParticipateClick = () => {
+		if (!authorizedUser) {
+			navigate(`/${AppRoute.SignIn}`)
+		} else {
+			// eslint-disable-next-line no-console
+			console.log('participate')
+		}
+	}
 
 	const participateMobile = () =>
 		screenWidth < BreakPoint.Lg &&
@@ -36,7 +46,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 		!isParticipant &&
 		!isOver &&
 		authorizedUser?.role !== Role.ChiefJudge && (
-			<Button onClick={handleClick} classes='w-full mt-[17px] md:mt-[12px]'>
+			<Button onClick={handleParticipateClick} classes='w-full mt-[17px] md:mt-[12px]'>
 				Participate
 			</Button>
 		)
@@ -60,7 +70,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 				</h3>
 				<Timer time={registrationEndsAt} classes='lg:mb-[20px] 2xl:mb-[26px]' />
 				{screenWidth >= BreakPoint.Lg && authorizedUser?.role !== Role.ChiefJudge && (
-					<Button onClick={handleClick} classes='w-full'>
+					<Button onClick={handleParticipateClick} classes='w-full'>
 						Participate
 					</Button>
 				)}
@@ -71,7 +81,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 		screenWidth < BreakPoint.Lg &&
 		isParticipant &&
 		!isOver && (
-			<Button type='outlined' onClick={handleClick} classes='w-full mt-[17px] md:mt-[12px] pointer-events-none'>
+			<Button type='outlined' onClick={() => ''} classes='w-full mt-[17px] md:mt-[12px] pointer-events-none'>
 				You are participant!
 			</Button>
 		)
@@ -114,7 +124,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 		isRegistrationClosed &&
 		!isOver &&
 		!isParticipant && (
-			<Button type='outlined' onClick={handleClick} classes='w-full mt-[17px] md:mt-[12px] pointer-events-none'>
+			<Button type='outlined' onClick={() => ''} classes='w-full mt-[17px] md:mt-[12px] pointer-events-none'>
 				Registration closed
 			</Button>
 		)
@@ -141,7 +151,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 	const competitionOverMobile = () =>
 		screenWidth < BreakPoint.Lg &&
 		isOver && (
-			<Button type='outlined' onClick={handleClick} classes='w-full mt-[17px] md:mt-[12px] pointer-events-none'>
+			<Button type='outlined' onClick={() => ''} classes='w-full mt-[17px] md:mt-[12px] pointer-events-none'>
 				This competition is&nbsp;over
 			</Button>
 		)
