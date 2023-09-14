@@ -145,6 +145,7 @@ export const SignUpForm = (): ReactElement => {
 						placeholder='Select gender'
 						name='gender'
 						validationErrorText={validateErrors?.gender}
+						dropdownPlaceholder='Select gender'
 					/>
 					<Input
 						onChange={onChange}

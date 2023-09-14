@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { Checkbox, Input } from 'src/ui'
+import { CheckboxAndRadioButton, Input } from 'src/ui'
 
 export type UserFilterType = {
 	ageFrom?: number
@@ -78,8 +78,21 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, set
 		<div className={twMerge('flex flex-col gap-[20px]', classes)}>
 			<div className='flex gap-[10px] pb-[10px]'>
 				<h3 className='min-w-[61px] text-sm font-bold'>Sex:</h3>
-				<Checkbox onChange={onChange} checked={inputValues.withMen} title='Man' name='withMen' classes='mr-[10px]' />
-				<Checkbox onChange={onChange} checked={inputValues.withWomen} title='Woman' name='withWomen' />
+				<CheckboxAndRadioButton
+					onChange={onChange}
+					type='checkbox'
+					checked={inputValues.withMen}
+					title='Man'
+					name='withMen'
+					classes='mr-[10px]'
+				/>
+				<CheckboxAndRadioButton
+					onChange={onChange}
+					type='checkbox'
+					checked={inputValues.withWomen}
+					title='Woman'
+					name='withWomen'
+				/>
 			</div>
 			<div className='flex items-center gap-[10px]'>
 				<h3 className='min-w-[61px] text-sm font-bold'>Weight:</h3>

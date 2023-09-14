@@ -9,10 +9,10 @@ type UsersTableWithTitlePropsType = {
 } & TablePropsType
 
 const columnsDefault = [
-	{ title: 'Place', classes: 'max-w-[50px] md:max-w-[70px] lg:max-w-[100px]' },
-	{ title: 'Name', classes: '!grow-[2] xl:!grow-[1]' },
-	{ title: 'Location', classes: 'hidden xl:flex' },
-	{ title: 'Points', classes: '2xl:min-w-[45%] xl:min-w-[40%]' }
+	{ node: 'Place', classes: 'max-w-[50px] md:max-w-[70px] lg:max-w-[100px]' },
+	{ node: 'Name', classes: '!grow-[2] xl:!grow-[1]' },
+	{ node: 'Location', classes: 'hidden xl:flex' },
+	{ node: 'Points', classes: '2xl:min-w-[45%] xl:min-w-[40%]' }
 ]
 
 export const UsersTableWithTitle: FC<UsersTableWithTitlePropsType> = ({

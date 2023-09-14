@@ -1,9 +1,9 @@
 import { ReactElement, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchUsers, clearUsers } from 'src/store/slices/usersSlice'
-import { ratingTableSchema } from '../helpers/tableSchema'
+import { ratingTableSchema } from 'src/helpers/tableSchemas/tableSchema'
 import { UsersTableWithTitle, UsersSearch } from '../components'
-import { TableWrapper, Loader } from '../ui'
+import { RoundedBorderWrapper, Loader } from '../ui'
 
 const USERS_PER_STEP = 5
 
@@ -48,7 +48,7 @@ export const RatingPage = (): ReactElement => {
 		<main className='container m-auto flex grow flex-col px-[17px] pt-[15px] md:px-7 md:pt-[25px] lg:px-10 lg:pt-[33px] 2xl:px-[40px]'>
 			<h1 className='2xl:[mb-40px] mb-[13px] text-heading-4 xl:mb-[17px] xl:text-heading-1'>Rating</h1>
 
-			<TableWrapper>
+			<RoundedBorderWrapper>
 				<UsersSearch classes='mb-[35px] md:mb-[30px]' />
 				{isLoading && <Loader classes='h-[80vh]' />}
 				{hasUsers && (
@@ -62,7 +62,7 @@ export const RatingPage = (): ReactElement => {
 					/>
 				)}
 				{nothingFound && <h2 className='m-auto text-2xl'>Nothing found</h2>}
-			</TableWrapper>
+			</RoundedBorderWrapper>
 		</main>
 	)
 }

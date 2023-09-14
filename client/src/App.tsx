@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
+import { Role } from 'src/constants/role'
 import { Route404 } from 'src/routes/404'
 import { UILibrary } from 'src/routes/UILibrary'
 import { CompetitionsPage } from 'src/routes/CompetitionsPage'
@@ -11,7 +12,11 @@ import { SignInPage } from 'src/routes/SignInPage'
 import { EditProfilePage } from 'src/routes/EditProfilePage'
 import { ForgotPasswordPage } from 'src/routes/ForgotPasswordPage'
 import { ChangePasswordPage } from 'src/routes/ChangePasswordPage'
+import { JudgeChoicePage } from 'src/routes/JudgeChoicePage'
+import { CreateGroupPage } from 'src/routes/CreateGroupPage'
 import { PrivateRoute } from 'src/components/PrivateRoute'
+import { JudgeAssignPage } from 'src/routes/JudgeAssignPage'
+import { OrdersToGroupAssignPage } from 'src/routes/OrdersToGroupAssignPage'
 import { useAppDispatch } from 'src/hooks/redux'
 import { checkAuth } from 'src/store/slices/userSlice'
 import { MainLayout } from 'src/layouts'
@@ -31,7 +36,41 @@ const App = () => {
 					<Route element={<UILibrary />} path={AppRoute.UILibrary} />
 					<Route path={AppRoute.Competitions}>
 						<Route index element={<CompetitionsPage />} />
-						<Route element={<CompetitionPage />} path={AppRoute.Competition} />
+						<Route path={AppRoute.Competition}>
+							<Route index element={<CompetitionPage />} />
+							<Route
+								path={AppRoute.JudgeChoice}
+								element={
+									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+										<JudgeChoicePage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path={AppRoute.CreateGroup}
+								element={
+									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+										<CreateGroupPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path={AppRoute.OrdersGroupAssign}
+								element={
+									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+										<OrdersToGroupAssignPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path={AppRoute.JudgeAssign}
+								element={
+									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+										<JudgeAssignPage />
+									</PrivateRoute>
+								}
+							/>
+						</Route>
 					</Route>
 					<Route element={<RatingPage />} path={AppRoute.Rating} />
 					<Route element={<SignUpPage />} path={AppRoute.SignUp} />
@@ -39,7 +78,7 @@ const App = () => {
 					<Route
 						path={AppRoute.EditProfile}
 						element={
-							<PrivateRoute>
+							<PrivateRoute role={Role.Admin || Role.Judge || Role.ChiefJudge || Role.Participant}>
 								<EditProfilePage />
 							</PrivateRoute>
 						}
