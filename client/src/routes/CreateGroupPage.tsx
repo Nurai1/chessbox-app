@@ -26,12 +26,10 @@ type AlertType = {
 	show: boolean
 } & AlertPropTypes
 
-const overlapError = {
-	hasError: false,
-	stopWatching: false
-}
-
-let showButtonClicked = false
+// const overlapError = {
+// 	hasError: false,
+// 	stopWatching: false
+// }
 
 export const CreateGroupPage = (): ReactElement => {
 	const { competitionId } = useParams()
@@ -51,6 +49,8 @@ export const CreateGroupPage = (): ReactElement => {
 	const [allParticipants, setAllParticipants] = useState<ParticipantSchema[]>()
 	const [participants, setParticipants] = useState<ParticipantsListTable>({ inGroup: [], outGroup: [] })
 	const [alertData, setAlertData] = useState<AlertType>({ show: false, type: 'success' })
+	const [showButtonClicked, setShowButtonClicked] = useState(false)
+	const [hasOverlapError, setHasOverlapError] = useState({ hasError: false, stopWatching: false })
 
 	const addGroupInfo = (participantsData: ParticipantSchema[]) => {
 		if (competitionData) {
@@ -71,7 +71,7 @@ export const CreateGroupPage = (): ReactElement => {
 		return null
 	}
 
-	const getFilterCondition = (participant: UserSchema, filterParameters: CompetitionRequirementsSchema) => {
+	const getFilterCondition = (participant: ParticipantSchema, filterParameters: CompetitionRequirementsSchema) => {
 		return (
 			participant.gender === filterParameters?.gender &&
 			(getAge(participant.birthDate) as number) >= (filterParameters.ageCategory?.from as number) &&
@@ -84,10 +84,11 @@ export const CreateGroupPage = (): ReactElement => {
 	const filterUsers = (participantsList: ParticipantSchema[], filterParameters?: CompetitionRequirementsSchema) => {
 		if (filterParameters) {
 			return participantsList.reduce(
-				(acc: ParticipantsListTable, participant: UserSchema) => {
+				(acc: ParticipantsListTable, participant) => {
 					if (getFilterCondition(participant, filterParameters)) {
 						acc.inGroup.push(participant)
-					} else if (participant.gender === filterParameters.gender) {
+					}
+					if (getFilterCondition(participant, filterParameters) && !participant.group) {
 						acc.outGroup.push(participant)
 					}
 					return acc
@@ -95,7 +96,17 @@ export const CreateGroupPage = (): ReactElement => {
 				{ inGroup: [], outGroup: [] }
 			)
 		}
-		return { inGroup: participantsList, outGroup: [] }
+
+		return participantsList?.reduce(
+			(acc: ParticipantsListTable, participant) => {
+				acc.inGroup.push(participant)
+				if (!participant.group) {
+					acc.outGroup.push(participant)
+				}
+				return acc
+			},
+			{ inGroup: [], outGroup: [] }
+		)
 	}
 
 	const removeUserGroupInfo = (groupId: string) => {
@@ -129,9 +140,10 @@ export const CreateGroupPage = (): ReactElement => {
 						...participant,
 						groupOverlap: true
 					}
-					if (!overlapError.stopWatching) {
-						overlapError.hasError = true
-						overlapError.stopWatching = true
+					if (!hasOverlapError.stopWatching) {
+						setHasOverlapError({ hasError: true, stopWatching: true })
+						// overlapError.hasError = true
+						// overlapError.stopWatching = true
 					}
 					return participant
 				}
@@ -145,8 +157,7 @@ export const CreateGroupPage = (): ReactElement => {
 	const getParticipantsByParameters = (filterParameters: CompetitionRequirementsSchema) => {
 		if (allParticipants) {
 			const users = filterUsers(allParticipants, filterParameters)
-			overlapError.hasError = false
-			overlapError.stopWatching = false
+			setHasOverlapError({ hasError: false, stopWatching: false })
 			// adds overlap error to participants list
 			competitionData?.groups?.map(group => {
 				const filterParametersOverlap: CompetitionRequirementsSchema = {
@@ -162,7 +173,7 @@ export const CreateGroupPage = (): ReactElement => {
 	}
 
 	const getParticipantsByFilter = (filterParameters: CompetitionRequirementsSchema) => {
-		showButtonClicked = true
+		setShowButtonClicked(true)
 		setGroupParameters(filterParameters)
 		getParticipantsByParameters(filterParameters)
 	}
@@ -190,7 +201,7 @@ export const CreateGroupPage = (): ReactElement => {
 				[participant => new Date(participant.birthDate).getFullYear(), sortOrder as SortOrder]
 			)
 			sortedParticipants.outGroup = sortBy(
-				[...participants.inGroup],
+				[...participants.outGroup],
 				[participant => new Date(participant.birthDate).getFullYear(), sortOrder as SortOrder]
 			)
 		} else {
@@ -231,7 +242,7 @@ export const CreateGroupPage = (): ReactElement => {
 			navigate(`../${AppRoute.JudgeChoice}`)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, [judges])
 
 	useEffect(() => {
 		if (!competitionData) {
@@ -246,10 +257,19 @@ export const CreateGroupPage = (): ReactElement => {
 
 	useEffect(() => {
 		if (allParticipantsData) {
-			setParticipants({
-				inGroup: addGroupInfo(allParticipantsData) as ParticipantSchema[],
-				outGroup: []
-			})
+			const participantsWithGroup = addGroupInfo(allParticipantsData)
+			const participantsSplitted = participantsWithGroup?.reduce(
+				(acc: ParticipantsListTable, participant) => {
+					acc.inGroup.push(participant)
+					if (!participant.group) {
+						acc.outGroup.push(participant)
+					}
+					return acc
+				},
+				{ inGroup: [], outGroup: [] }
+			)
+
+			setParticipants(participantsSplitted as ParticipantsListTable)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [allParticipantsData, addGroupSuccess])
@@ -262,10 +282,7 @@ export const CreateGroupPage = (): ReactElement => {
 			setAllParticipants(updatedGroupInfoParticipants as ParticipantSchema[])
 		} else {
 			const updatedGroupInfoParticipants = removeUserGroupInfo(deletingGroupId as string)
-			const participantsGroupSplitted = filterUsers(
-				updatedGroupInfoParticipants as ParticipantSchema[],
-				groupParameters
-			)
+			const participantsGroupSplitted = filterUsers(updatedGroupInfoParticipants as ParticipantSchema[])
 			setAllParticipants(updatedGroupInfoParticipants as ParticipantSchema[])
 			setParticipants(participantsGroupSplitted)
 		}
@@ -274,7 +291,7 @@ export const CreateGroupPage = (): ReactElement => {
 
 	useEffect(() => {
 		if (addGroupSuccess) {
-			showButtonClicked = false
+			setShowButtonClicked(false)
 			setAlertData({ show: true, title: 'Group added', type: 'success' })
 			setGroupParameters(undefined)
 			dispatch(resetCompetitionGroupsStatus())
@@ -319,7 +336,7 @@ export const CreateGroupPage = (): ReactElement => {
 							requirements={competitionData.requirements}
 							getGroupParameters={getParticipantsByFilter}
 							addGroup={handleAddGroup}
-							disableAddGroupBtn={participants.inGroup?.length === 0 || overlapError.hasError || !showButtonClicked}
+							disableAddGroupBtn={participants?.inGroup?.length === 0 || hasOverlapError.hasError || !showButtonClicked}
 							addGroupRequestPending={addGroupPending}
 							resetFilterTrigger={addGroupSuccess}
 							resetFilter={resetParticipantsList}
@@ -395,9 +412,9 @@ export const CreateGroupPage = (): ReactElement => {
 								navigate(`../${AppRoute.OrdersGroupAssign}`)
 							}
 						}}
-						disabled={competitionData?.groups?.length === 0}
+						disabled={participants?.outGroup?.length !== 0}
 					>
-						Done
+						Confirm the groups
 					</Button>
 				</div>
 			</BottomFixedContainer>
