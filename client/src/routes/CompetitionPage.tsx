@@ -10,10 +10,12 @@ import { ReactComponent as TwoStarsIcon } from 'src/assets/two-stars.svg'
 import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { AppRoute } from 'src/constants/appRoute'
-import { getAge, getFormattedDate, isPast } from 'src/helpers/datetime'
 import { PairInfo } from 'src/components'
+import { getAge, getFormattedDate, isPast } from 'src/helpers/datetime'
 import { PairType, getTimeTuplePlusMinutes, tableSchemaPairs } from 'src/helpers/tableSchemas/tableSchemaPairs'
 import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
+import useWebSocket, { ReadyState } from 'react-use-websocket'
+import configEnv from 'src/configEnv'
 import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
@@ -44,6 +46,17 @@ export const CompetitionPage = (): ReactElement => {
 	const { competitionId } = useParams()
 	const currentUserPairRef = useRef<{ pair?: PairType; withPair?: boolean; startTime: string }>()
 	const navigate = useNavigate()
+
+	const { sendMessage, lastMessage, readyState } = useWebSocket(`${configEnv.serviceApiWSUrl}/api`)
+
+	const connectionStatus = {
+		[ReadyState.CONNECTING]: 'Connecting',
+		[ReadyState.OPEN]: 'Open',
+		[ReadyState.CLOSING]: 'Closing',
+		[ReadyState.CLOSED]: 'Closed',
+		[ReadyState.UNINSTANTIATED]: 'Uninstantiated'
+	}[readyState]
+
 	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
 	const competitionDataExisting = useAppSelector(s => s.competitions.data).find(({ _id }) => _id === competitionId)
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
@@ -195,6 +208,15 @@ export const CompetitionPage = (): ReactElement => {
 				>
 					<ArrowLeftIcon />
 				</Link>
+				<Button
+					onClick={() => {
+						sendMessage('Hello ws')
+					}}
+				>
+					sendMessage
+				</Button>
+				{connectionStatus}
+				{lastMessage ? <span>Last message: {lastMessage.data}</span> : null}
 				{/* authLoading needs here because we save in currentUserPairRef time data on render */}
 				{authLoading && !competitionData && !fetchError && <Loader />}
 				{fetchError && <h2>{fetchError}</h2>}

@@ -15,21 +15,25 @@ export interface AppConfig {
 	type: 'local' | 'dev' | 'int' | 'test' | 'staging' | 'prod'
 	publicUrl: string
 	serviceApiUrl: string
+	serviceApiWSUrl: string
 }
 
 const localConfig: AppConfig = {
 	type: 'local',
 	publicUrl: 'http://localhost:5173',
+	serviceApiWSUrl: 'ws://localhost:3001',
 	serviceApiUrl: 'http://localhost:3001'
 }
 const devConfig: AppConfig = {
 	type: 'dev',
 	publicUrl: '',
+	serviceApiWSUrl: 'ws://eclectium0iuzdi5t-chessbox.functions.fnc.pl-waw.scw.cloud',
 	serviceApiUrl: 'https://eclectium0iuzdi5t-chessbox.functions.fnc.pl-waw.scw.cloud'
 }
 const prodConfig: AppConfig = {
 	type: 'prod',
 	publicUrl: '',
+	serviceApiWSUrl: '',
 	serviceApiUrl: ''
 }
 

@@ -701,7 +701,6 @@ export const getCompetitionParticipants = async (
   const competition = await Competition.findOne({ _id: id }).populate(
     'participants'
   );
-  console.log('competition', competition);
 
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
@@ -726,7 +725,8 @@ export const getCompetitionJudges = async (
 
 export const setCompetitionBreakTime = async (
   req: Request<{ id: string }, any, { breakTime: ICompetition['breakTime'] }>,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   const { id } = req.params;
   const { breakTime } = req.body;
@@ -749,5 +749,6 @@ export const setCompetitionBreakTime = async (
     await Competition.findOneAndUpdate({ _id: id }, { breakTime: null });
   }, breakTimeInMs);
 
-  return res.sendStatus(200);
+  res.sendStatus(200);
+  next({ connection: 'ws', type: 'SET_BREAK_TIME', payload: breakTime });
 };

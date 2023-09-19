@@ -5,11 +5,14 @@ import jwt from 'jsonwebtoken';
 import cors from 'cors';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as swaggerUi from 'swagger-ui-express';
+import { WebSocketServer } from 'ws';
+import expressWsExec from 'express-ws';
 import * as swaggerFile from './swagger_output.json';
 import { User } from './models/index';
 import { competitionRouter, userRouter } from './routes/index';
 
 export const app = express();
+const expressWs = expressWsExec(app);
 
 const { TokenExpiredError } = jwt;
 
@@ -96,7 +99,18 @@ app.use('/api', competitionRouter);
 
 app.use('/api', userRouter);
 
+// @ts-ignore
+app.ws('/api', (ws, req) => {
+  // @ts-ignore
+  ws.on('message', (msg) => {
+    console.log(msg);
+    ws.send(`We got your message: ${msg}`);
+  });
+  console.log('socket', req.testing);
+});
+
 app.use((err: any, req: Request, res: Response) => {
+  // TODO: after adding ws, error handling approximately is not working
   console.error('ERROR STACK:');
   console.error(err.stack);
   res.status(500).send({ error: err.message });
