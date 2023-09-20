@@ -96,9 +96,13 @@ export const tableSchemaPairs = ({
 									Judge: {pair.judgeData?.fullName}
 								</a>
 							</div>
-							{pair.calledForFight && <div className={`text-[#FB9F16] ${statusStyle}`}>IN PROGRESS</div>}
+							{pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant && (
+								<div className={`text-[#FB9F16] ${statusStyle}`}>IN PROGRESS</div>
+							)}
 							{pair.winner && <div className={`text-[#6DDA64] ${statusStyle}`}>FINISHED</div>}
-							{!pair.winner && !pair.calledForFight && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
+							{!pair.winner && !pair.acceptedForFight && pair.calledForPreparation && (
+								<div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>
+							)}
 							<div className='col-start-1 col-end-3 flex justify-between md:col-end-2 xl:col-start-2 xl:col-end-3 xl:row-start-1 xl:row-end-2'>
 								<div className='w-[45%]'>
 									<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
@@ -111,7 +115,8 @@ export const tableSchemaPairs = ({
 									<div className='ml-auto w-fit'>
 										<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
 										<p className=' text-xs xl:text-base'>
-											{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight} kg
+											{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight}{' '}
+											kg
 										</p>
 									</div>
 								</div>

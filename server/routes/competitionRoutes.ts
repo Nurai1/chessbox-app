@@ -134,9 +134,41 @@ competitionRouter.patch(
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  UserController.allowIfLoggedin,
-  UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.callPairPreparation)
+);
+
+competitionRouter.patch(
+  '/competition/acceptPairFight',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
+  /*	#swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                      type: "object",
+                      properties: {
+                        competitionId: { type: "string" },
+                        groupId: { type: "string" },
+                        pairId: { type: "string" },
+                        userId: { type: "string" },
+                      },
+                      required: ["pairId", "groupId", "competitionId", "userId"]
+                    }  
+                },
+            }
+        } 
+    */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccess(ACTIONS.updateOwn, RESOURCES.PAIR),
+  controllerErrorHandler(CompetitionController.acceptPairFight)
 );
 
 competitionRouter.patch(
@@ -284,7 +316,6 @@ competitionRouter.patch(
 
 competitionRouter.patch(
   '/competition/:id/zoomLink',
-  // #swagger.description = 'Редактировать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.'
   /*	#swagger.requestBody = {
           required: true,
           content: {

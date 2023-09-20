@@ -413,35 +413,56 @@ export const callPairPreparation = async (
       competition,
       { new: true }
     );
-    res.status(200).send(newCompetition);
+    return res.status(200).send(newCompetition);
   }
 
   res.sendStatus(500);
 };
 
-export const callPairFight = async (
+export const acceptPairFight = async (
   req: Request<
     any,
     any,
-    { competitionId: string; groupId: string; pairId: string }
+    { competitionId: string; groupId: string; pairId: string; userId: string }
   >,
   res: Response
 ) => {
-  const { competitionId, groupId, pairId } = req.body;
+  const { competitionId, groupId, pairId, userId } = req.body;
   const competition = await Competition.findById(competitionId);
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
+
+  let userIdNotFromThisPairs = false;
 
   const newGroups = competition?.groups.map((group) => {
     if (group._id?.toString() === groupId) {
       return {
         ...group,
         pairs: group.currentRoundPairs.map((pair) => {
+          const { blackParticipant, whiteParticipant } = pair;
+
           if (pair._id?.toString() === pairId) {
-            return {
-              ...pair,
-              calledForFight: true,
-            };
+            if (
+              whiteParticipant?._id?.toString() !== userId &&
+              blackParticipant?._id?.toString() !== userId
+            ) {
+              userIdNotFromThisPairs = true;
+              return pair;
+            }
+
+            // eslint-disable-next-line no-param-reassign
+            pair.acceptedForFight =
+              whiteParticipant._id?.toString() === userId
+                ? {
+                    ...pair.acceptedForFight,
+                    whiteParticipant: true,
+                  }
+                : {
+                    ...pair.acceptedForFight,
+                    blackParticipant: true,
+                  };
+
+            return pair;
           }
           return pair;
         }),
@@ -449,6 +470,13 @@ export const callPairFight = async (
     }
     return group;
   });
+
+  if (userIdNotFromThisPairs) {
+    return res.status(400).send({
+      error: 'User is not from provided pair',
+    });
+  }
+
   if (competition && newGroups) {
     competition.groups = newGroups;
 
@@ -457,7 +485,7 @@ export const callPairFight = async (
       competition,
       { new: true }
     );
-    res.status(200).send(newCompetition);
+    return res.status(200).send(newCompetition);
   }
 
   res.sendStatus(500);

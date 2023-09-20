@@ -37,10 +37,6 @@ const competitionSchema = new Schema<ICompetition>(
       },
       gender: { type: String },
     },
-    lastOrder: {
-      group: { type: Number, default: 0 },
-      pair: { type: Number, default: 0 },
-    },
     participants: [
       {
         type: Schema.Types.ObjectId,

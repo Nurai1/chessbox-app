@@ -7,6 +7,7 @@ export const ROLES = {
 export const RESOURCES = {
   USER: 'USER',
   COMPETITION: 'COMPETITION',
+  PAIR: 'PAIR',
 } as const;
 
 export const ACTIONS = {

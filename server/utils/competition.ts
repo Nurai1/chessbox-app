@@ -6,8 +6,8 @@ export const getPairsWithJudges = ({
 }: {
   pairs: IPair[];
   judges: IUser[];
-}) => {
-  return pairs.map((pair, index) => {
+}) =>
+  pairs.map((pair, index) => {
     const judgesNum = judges?.length;
     const currentJudgeIndex = index % judgesNum;
 
@@ -16,4 +16,3 @@ export const getPairsWithJudges = ({
       judge: judges[currentJudgeIndex],
     };
   });
-};
