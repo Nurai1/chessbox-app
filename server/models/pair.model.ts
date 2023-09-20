@@ -36,8 +36,9 @@ export const pairSchema = new Schema<IPair>(
     calledForPreparation: {
       type: Boolean,
     },
-    calledForFight: {
-      type: Boolean,
+    acceptedForFight: {
+      blackParticipant: Boolean,
+      whiteParticipant: Boolean,
     },
     judge: {
       type: Schema.Types.ObjectId,

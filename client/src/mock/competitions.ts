@@ -1,9 +1,5 @@
 export const competitionsMock = [
 	{
-		lastOrder: {
-			group: 0,
-			pair: 0
-		},
 		judges: [],
 		_id: '63f09b7acf01840581661af2',
 		startDate: '2023-06-27T09:00:00.000Z',
@@ -50,10 +46,6 @@ export const competitionsMock = [
 		]
 	},
 	{
-		lastOrder: {
-			group: 0,
-			pair: 0
-		},
 		_id: '641492f3a0462b63f09b7acf01840581661af2df071d0b3d',
 		startDate: '2023-07-24T09:00:00.000Z',
 		registrationEndsAt: '2023-07-23T09:00:00.000Z',
@@ -90,10 +82,6 @@ export const competitionsMock = [
 		judges: ['6478bcbe5d8472d6b19a970b', '6478bcc85d8472d6b19a970d']
 	},
 	{
-		lastOrder: {
-			group: 0,
-			pair: 0
-		},
 		judges: [],
 		_id: '63f09b7acf01840581661a63f09b7acf01840581661af2f2',
 		startDate: '2023-07-27T09:00:00.000Z',
@@ -140,10 +128,6 @@ export const competitionsMock = [
 		]
 	},
 	{
-		lastOrder: {
-			group: 0,
-			pair: 0
-		},
 		judges: [],
 		_id: '63f63f09b7acf01840581661af209b7acf01840581661af2',
 		startDate: '2023-06-16T09:00:00.000Z',
@@ -191,10 +175,6 @@ export const competitionsMock = [
 		]
 	},
 	{
-		lastOrder: {
-			group: 0,
-			pair: 0
-		},
 		judges: [],
 		_id: '63f63f09b7acf018405810581661af2',
 		startDate: '2023-10-16T09:00:00.000Z',
@@ -240,10 +220,6 @@ export const competitionsMock = [
 		]
 	},
 	{
-		lastOrder: {
-			group: 0,
-			pair: 0
-		},
 		judges: [],
 		_id: '63f63f09b7acf018405810581661af2',
 		startDate: '2023-06-16T09:00:00.000Z',
