@@ -9484,6 +9484,17 @@
                           }
                         }
                       },
+                      "disqualified": {
+                        "type": "object",
+                        "properties": {
+                          "blackParticipant": {
+                            "type": "boolean"
+                          },
+                          "whiteParticipant": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
                       "judge": {
                         "type": "string",
                         "identificator": true
@@ -9525,6 +9536,17 @@
                         "type": "boolean"
                       },
                       "acceptedForFight": {
+                        "type": "object",
+                        "properties": {
+                          "blackParticipant": {
+                            "type": "boolean"
+                          },
+                          "whiteParticipant": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "disqualified": {
                         "type": "object",
                         "properties": {
                           "blackParticipant": {
@@ -9854,6 +9876,17 @@
                     }
                   }
                 },
+                "disqualified": {
+                  "type": "object",
+                  "properties": {
+                    "blackParticipant": {
+                      "type": "boolean"
+                    },
+                    "whiteParticipant": {
+                      "type": "boolean"
+                    }
+                  }
+                },
                 "judge": {
                   "type": "string",
                   "identificator": true
@@ -9895,6 +9928,17 @@
                   "type": "boolean"
                 },
                 "acceptedForFight": {
+                  "type": "object",
+                  "properties": {
+                    "blackParticipant": {
+                      "type": "boolean"
+                    },
+                    "whiteParticipant": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "disqualified": {
                   "type": "object",
                   "properties": {
                     "blackParticipant": {
@@ -9949,6 +9993,17 @@
             "type": "boolean"
           },
           "acceptedForFight": {
+            "type": "object",
+            "properties": {
+              "blackParticipant": {
+                "type": "boolean"
+              },
+              "whiteParticipant": {
+                "type": "boolean"
+              }
+            }
+          },
+          "disqualified": {
             "type": "object",
             "properties": {
               "blackParticipant": {
@@ -10084,6 +10139,17 @@
                           }
                         }
                       },
+                      "disqualified": {
+                        "type": "object",
+                        "properties": {
+                          "blackParticipant": {
+                            "type": "boolean"
+                          },
+                          "whiteParticipant": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
                       "judge": {
                         "type": "string",
                         "identificator": true
@@ -10122,6 +10188,17 @@
                         "type": "boolean"
                       },
                       "acceptedForFight": {
+                        "type": "object",
+                        "properties": {
+                          "blackParticipant": {
+                            "type": "boolean"
+                          },
+                          "whiteParticipant": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "disqualified": {
                         "type": "object",
                         "properties": {
                           "blackParticipant": {
@@ -10439,6 +10516,17 @@
                     }
                   }
                 },
+                "disqualified": {
+                  "type": "object",
+                  "properties": {
+                    "blackParticipant": {
+                      "type": "boolean"
+                    },
+                    "whiteParticipant": {
+                      "type": "boolean"
+                    }
+                  }
+                },
                 "judge": {
                   "type": "string",
                   "identificator": true
@@ -10487,6 +10575,17 @@
                     }
                   }
                 },
+                "disqualified": {
+                  "type": "object",
+                  "properties": {
+                    "blackParticipant": {
+                      "type": "boolean"
+                    },
+                    "whiteParticipant": {
+                      "type": "boolean"
+                    }
+                  }
+                },
                 "judge": {
                   "type": "string",
                   "identificator": true
@@ -10525,6 +10624,17 @@
             "type": "boolean"
           },
           "acceptedForFight": {
+            "type": "object",
+            "properties": {
+              "blackParticipant": {
+                "type": "boolean"
+              },
+              "whiteParticipant": {
+                "type": "boolean"
+              }
+            }
+          },
+          "disqualified": {
             "type": "object",
             "properties": {
               "blackParticipant": {

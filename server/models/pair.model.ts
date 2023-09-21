@@ -40,6 +40,10 @@ export const pairSchema = new Schema<IPair>(
       blackParticipant: Boolean,
       whiteParticipant: Boolean,
     },
+    disqualified: {
+      blackParticipant: Boolean,
+      whiteParticipant: Boolean,
+    },
     judge: {
       type: Schema.Types.ObjectId,
       ref: 'User',

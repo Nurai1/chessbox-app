@@ -2903,6 +2903,10 @@ export interface components {
 						blackParticipant?: boolean
 						whiteParticipant?: boolean
 					}
+					disqualified?: {
+						blackParticipant?: boolean
+						whiteParticipant?: boolean
+					}
 					judge?: string
 					_id?: string
 				}[]
@@ -2915,6 +2919,10 @@ export interface components {
 					order?: number
 					calledForPreparation?: boolean
 					acceptedForFight?: {
+						blackParticipant?: boolean
+						whiteParticipant?: boolean
+					}
+					disqualified?: {
 						blackParticipant?: boolean
 						whiteParticipant?: boolean
 					}
@@ -3013,6 +3021,10 @@ export interface components {
 					blackParticipant?: boolean
 					whiteParticipant?: boolean
 				}
+				disqualified?: {
+					blackParticipant?: boolean
+					whiteParticipant?: boolean
+				}
 				judge?: string
 				_id?: string
 			}[]
@@ -3025,6 +3037,10 @@ export interface components {
 				order?: number
 				calledForPreparation?: boolean
 				acceptedForFight?: {
+					blackParticipant?: boolean
+					whiteParticipant?: boolean
+				}
+				disqualified?: {
 					blackParticipant?: boolean
 					whiteParticipant?: boolean
 				}
@@ -3043,6 +3059,10 @@ export interface components {
 			order?: number
 			calledForPreparation?: boolean
 			acceptedForFight?: {
+				blackParticipant?: boolean
+				whiteParticipant?: boolean
+			}
+			disqualified?: {
 				blackParticipant?: boolean
 				whiteParticipant?: boolean
 			}
@@ -3085,6 +3105,10 @@ export interface components {
 						blackParticipant?: boolean
 						whiteParticipant?: boolean
 					}
+					disqualified?: {
+						blackParticipant?: boolean
+						whiteParticipant?: boolean
+					}
 					judge?: string
 				}[]
 				currentRoundPairs?: {
@@ -3096,6 +3120,10 @@ export interface components {
 					order?: number
 					calledForPreparation?: boolean
 					acceptedForFight?: {
+						blackParticipant?: boolean
+						whiteParticipant?: boolean
+					}
+					disqualified?: {
 						blackParticipant?: boolean
 						whiteParticipant?: boolean
 					}
@@ -3190,6 +3218,10 @@ export interface components {
 					blackParticipant?: boolean
 					whiteParticipant?: boolean
 				}
+				disqualified?: {
+					blackParticipant?: boolean
+					whiteParticipant?: boolean
+				}
 				judge?: string
 			}[]
 			currentRoundPairs?: {
@@ -3201,6 +3233,10 @@ export interface components {
 				order?: number
 				calledForPreparation?: boolean
 				acceptedForFight?: {
+					blackParticipant?: boolean
+					whiteParticipant?: boolean
+				}
+				disqualified?: {
 					blackParticipant?: boolean
 					whiteParticipant?: boolean
 				}
@@ -3217,6 +3253,10 @@ export interface components {
 			order?: number
 			calledForPreparation?: boolean
 			acceptedForFight?: {
+				blackParticipant?: boolean
+				whiteParticipant?: boolean
+			}
+			disqualified?: {
 				blackParticipant?: boolean
 				whiteParticipant?: boolean
 			}

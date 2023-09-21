@@ -55,6 +55,10 @@ export interface IPair {
     blackParticipant?: boolean;
     whiteParticipant?: boolean;
   };
+  disqualified?: {
+    blackParticipant?: boolean;
+    whiteParticipant?: boolean;
+  };
   judge?: PopulatedDoc<IUser & Document>;
 }
 

@@ -413,6 +413,42 @@ export const callPairPreparation = async (
       competition,
       { new: true }
     );
+
+    const ms2minutes10Seconds = 130000;
+    setTimeout(async () => {
+      const comp = await Competition.findById(competitionId);
+
+      const groups = comp?.groups.map((group) => {
+        if (group._id?.toString() === groupId) {
+          return {
+            ...group,
+            currentRoundPairs: group.currentRoundPairs.map((pair) => {
+              if (pair._id?.toString() === pairId) {
+                const pairAcceptedForFight = pair.acceptedForFight;
+
+                return {
+                  ...pair,
+                  disqualified: {
+                    whiteParticipant: !pairAcceptedForFight?.whiteParticipant,
+                    blackParticipant: !pairAcceptedForFight?.blackParticipant,
+                  },
+                };
+              }
+              return pair;
+            }),
+          };
+        }
+        return group;
+      });
+
+      if (comp && groups) {
+        comp.groups = groups;
+        await Competition.findByIdAndUpdate(competitionId, comp, {
+          new: true,
+        });
+      }
+    }, ms2minutes10Seconds);
+
     return res.status(200).send(newCompetition);
   }
 
@@ -729,7 +765,6 @@ export const getCompetitionParticipants = async (
   const competition = await Competition.findOne({ _id: id }).populate(
     'participants'
   );
-  console.log('competition', competition);
 
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });

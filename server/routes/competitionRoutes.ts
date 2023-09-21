@@ -134,8 +134,8 @@ competitionRouter.patch(
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  // UserController.allowIfLoggedin,
-  // UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  UserController.allowIfLoggedin,
+  UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.callPairPreparation)
 );
 
@@ -166,8 +166,8 @@ competitionRouter.patch(
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  // UserController.allowIfLoggedin,
-  // UserController.grantAccess(ACTIONS.updateOwn, RESOURCES.PAIR),
+  UserController.allowIfLoggedin,
+  UserController.grantAccess(ACTIONS.updateOwn, RESOURCES.PAIR),
   controllerErrorHandler(CompetitionController.acceptPairFight)
 );
 
@@ -240,8 +240,8 @@ competitionRouter.patch(
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  // UserController.allowIfLoggedin,
-  // UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  UserController.allowIfLoggedin,
+  UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.setJudgesToPairs)
 );
 
