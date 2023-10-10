@@ -25,9 +25,9 @@ export const competitionsSlice = createSlice({
 	name: 'competitions',
 	initialState,
 	reducers: {
-		updateCompetitionsList: (state, action: PayloadAction<{ selectedJudges: string[];  competitionId: string}>) => {
+		updateCompetitionsList: (state, action: PayloadAction<{ selectedJudges: string[]; competitionId: string }>) => {
 			if (state.data) {
-				const competition = state.data.find(({_id}) => _id === action.payload.competitionId)
+				const competition = state.data.find(({ _id }) => _id === action.payload.competitionId)
 				if (competition) {
 					competition.judges = action.payload.selectedJudges
 				}

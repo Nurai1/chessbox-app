@@ -15,7 +15,9 @@ export const tableSchemaGroupCreateParticipantsBody = (tableData: ParticipantSch
 				},
 				{
 					node: user.gender,
-					classes: `max-w-[6.5rem] px-2 py-2 min-h-[5.25rem] capitalize ${user.groupOverlap ? 'text-error-red' : 'text-black'}`
+					classes: `max-w-[6.5rem] px-2 py-2 min-h-[5.25rem] capitalize ${
+						user.groupOverlap ? 'text-error-red' : 'text-black'
+					}`
 				},
 				{
 					node: <span>{getAge(user.birthDate)} age</span>,

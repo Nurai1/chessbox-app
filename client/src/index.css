@@ -155,7 +155,7 @@ input[type='number']:focus {
 }
 
 input[type='checkbox']:checked {
-	color: #09090C;
+	color: #09090c;
 }
 
 @media (min-width: 744px) {
@@ -182,4 +182,3 @@ input[type='checkbox']:checked {
 		background-color: #999999;
 	}
 }
-

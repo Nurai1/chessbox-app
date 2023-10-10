@@ -138,9 +138,15 @@ export const UsersSearch: FC<SearchPropsType> = ({ classes }) => {
 	}
 
 	return (
-		<div className={twMerge('', classes)}>
+		<div className={classes}>
 			<div className={twMerge('flex items-center gap-[20px]')}>
-				<Input onChange={handleSearchInput} value={searchValue ?? ''} isSearch placeholder='UsersSearch users' />
+				<Input
+					onChange={handleSearchInput}
+					value={searchValue ?? ''}
+					isSearch
+					placeholder='Search users'
+					classes='h-12'
+				/>
 				<button
 					onClick={handleModalOpen}
 					className={`relative transition hover:opacity-70 ${

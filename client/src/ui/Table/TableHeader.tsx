@@ -3,7 +3,7 @@ import { FC, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export type TableHeaderPropsType = {
-	columns: { node: string | ReactNode; width?: number | string; classes?: string }[]
+	columns: { node?: string | ReactNode; width?: number | string; classes?: string }[]
 }
 
 export const TableHeader: FC<TableHeaderPropsType> = ({ columns }) => {
@@ -13,7 +13,7 @@ export const TableHeader: FC<TableHeaderPropsType> = ({ columns }) => {
 				<div
 					key={idx}
 					className={twMerge(
-						'flex min-h-[50px] items-center p-2.5 text-sm font-medium uppercase text-gray-500 first:pl-0 last:pr-0 md:min-h-[85px] lg:text-xl',
+						'mb-2 flex h-10 items-center p-2 text-sm font-medium uppercase text-grey first:pl-0 lg:first:pl-2 xl:first:pl-5',
 						column.classes
 					)}
 					style={{
