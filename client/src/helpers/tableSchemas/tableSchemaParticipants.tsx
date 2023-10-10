@@ -1,5 +1,5 @@
-import { UserSchema } from '../types'
-import { getAge } from './datetime'
+import { UserSchema } from 'src/types'
+import { getAge } from 'src/helpers/datetime'
 
 export const tableSchemaParticipants = (tableData: UserSchema[]) => {
 	return tableData.map(user => {

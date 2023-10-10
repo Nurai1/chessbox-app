@@ -1,9 +1,9 @@
 /* eslint-disable react/no-array-index-key */
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export type TableHeaderPropsType = {
-	columns: { title: string; width?: number | string; classes?: string }[]
+	columns: { node?: string | ReactNode; width?: number | string; classes?: string }[]
 }
 
 export const TableHeader: FC<TableHeaderPropsType> = ({ columns }) => {
@@ -22,7 +22,7 @@ export const TableHeader: FC<TableHeaderPropsType> = ({ columns }) => {
 						width: column.width
 					}}
 				>
-					{column.title}
+					{column.node}
 				</div>
 			))}
 		</div>

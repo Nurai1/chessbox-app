@@ -1,22 +1,25 @@
 import { Fragment, ReactElement, useEffect, useRef, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { ReactComponent as ArrowLeft } from 'src/assets/arrow-left.svg'
-import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
-import { ReactComponent as Persons } from 'src/assets/persons.svg'
-import { ReactComponent as ThreeStars } from 'src/assets/three-stars.svg'
-import { ReactComponent as TwoStars } from 'src/assets/two-stars.svg'
-import { PairInfo } from 'src/components'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { Button, Loader, Modal, TableBody, Tag, Timer } from 'src/ui'
+import { ReactComponent as BanknoteIcon } from 'src/assets/banknote.svg'
+import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
+import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
+import { ReactComponent as ArrowRightIcon } from 'src/assets/arrow-right-long.svg'
+import { ReactComponent as ThreeStarsIcon } from 'src/assets/three-stars.svg'
+import { ReactComponent as TwoStarsIcon } from 'src/assets/two-stars.svg'
+import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { AppRoute } from 'src/constants/appRoute'
 import { getAge, getFormattedDate, isPast } from 'src/helpers/datetime'
-import { PairType, getTimeTuplePlusMinutes, tableSchemaPairs } from 'src/helpers/tableSchemaPairs'
-import { tableSchemaParticipants } from 'src/helpers/tableSchemaParticipants'
-import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { PairInfo } from 'src/components'
+import { PairType, getTimeTuplePlusMinutes, tableSchemaPairs } from 'src/helpers/tableSchemas/tableSchemaPairs'
+import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
 import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
-	fetchCompetitionParticipants
+	fetchCompetitionParticipants,
+	setCompetitionData
 } from 'src/store/slices/competitionSlice'
-import { Button, Loader, Modal, TableBody, Tag, Timer } from 'src/ui'
 
 const getGroupPairsLen = ({
 	currentPairsLen,
@@ -39,21 +42,20 @@ const getGroupPairsLen = ({
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
 	const { competitionId } = useParams()
-
 	const currentUserPairRef = useRef<{ pair?: PairType; withPair?: boolean; startTime: string }>()
+	const navigate = useNavigate()
 	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
 	const competitionDataExisting = useAppSelector(s => s.competitions.data).find(({ _id }) => _id === competitionId)
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
-
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
 	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
-	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
+	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
 	const authLoading = useAppSelector(state => state.user.authLoading)
 	const competitionData = competitionDataExisting || competitionDataFetched
-
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
-	const isParticipant = competitionData?.participants && competitionData.participants.includes(authorizedUserId ?? '')
+	const isParticipant =
+		competitionData?.participants && competitionData.participants.includes(authorizedUser?._id ?? '')
 	const isRegistrationClosed = competitionData && isPast(competitionData.registrationEndsAt)
 	const isOver = competitionData && Boolean(competitionData.endDate)
 	const participantsTable = participants && tableSchemaParticipants(participants)
@@ -66,13 +68,18 @@ export const CompetitionPage = (): ReactElement => {
 	useEffect(() => {
 		if (!competitionDataExisting) {
 			dispatch(fetchCompetitionById(competitionId as string))
+		} else {
+			dispatch(setCompetitionData(competitionDataExisting))
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	useEffect(() => {
-		if (isRegistrationClosed) {
+		if (isRegistrationClosed && !participants) {
 			dispatch(fetchCompetitionParticipants(competitionId as string))
+		}
+
+		if (isRegistrationClosed && !judges) {
 			dispatch(fetchCompetitionJudges(competitionId as string))
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,6 +94,15 @@ export const CompetitionPage = (): ReactElement => {
 
 	const handleSideMenuOpen = () => {
 		setIsSideMenuOpen(!isSideMenuOpen)
+	}
+
+	const handleParticipateClick = () => {
+		if (!authorizedUser) {
+			navigate(`/${AppRoute.SignIn}`)
+		} else {
+			// eslint-disable-next-line no-console
+			console.log('participate')
+		}
 	}
 
 	const participate = () =>
@@ -107,9 +123,11 @@ export const CompetitionPage = (): ReactElement => {
 					)}
 				</div>
 				<div className='flex flex-col gap-[15px] md:flex-row md:gap-[20px] lg:flex-col lg:gap-[10px]'>
-					<Button onClick={() => ''} classes='md:w-full'>
-						Participate
-					</Button>
+					{authorizedUser?.role !== 'chief_judge' && (
+						<Button onClick={handleParticipateClick} classes='md:w-full'>
+							Participate
+						</Button>
+					)}
 					<Button
 						onClick={handleSideMenuOpen}
 						type='outlined'
@@ -132,15 +150,15 @@ export const CompetitionPage = (): ReactElement => {
 						participant!
 					</h3>
 					<p className='hidden text-sm lg:block xl:text-base'>Additional information will be published later</p>
-					<ThreeStars
+					<ThreeStarsIcon
 						className='absolute top-[15px] left-[92px] w-[24px]
 					xl:top-[34px] xl:left-[150px] xl:w-[44px]'
 					/>
-					<ThreeStars
+					<ThreeStarsIcon
 						className='2xl:h-[37px absolute top-[24px] left-[143px] w-[24px]
 					xl:top-[50px] xl:left-[260px] xl:w-[44px]'
 					/>
-					<TwoStars
+					<TwoStarsIcon
 						className='absolute top-[70px] left-[130px] w-[23px]
 					xl:top-[120px] xl:left-[240px] xl:w-[40px]'
 					/>
@@ -170,12 +188,12 @@ export const CompetitionPage = (): ReactElement => {
 
 	return (
 		<>
-			<main className='container relative mx-auto grow px-[17px] pb-[50px] pt-[30px] md:pt-[38px] xl:pl-[103px] xl:pr-[50px] xl:pt-[55px]'>
+			<main className='container relative mx-auto grow px-4 py-8 md:py-9 xl:py-14 xl:pl-[6.5rem] xl:pr-[3.125rem]'>
 				<Link
 					to={`/${AppRoute.Competitions}`}
 					className='hidden transition hover:opacity-70 xl:absolute xl:left-[38px] xl:top-[77px] xl:block'
 				>
-					<ArrowLeft />
+					<ArrowLeftIcon />
 				</Link>
 				{/* authLoading needs here because we save in currentUserPairRef time data on render */}
 				{authLoading && !competitionData && !fetchError && <Loader />}
@@ -191,13 +209,13 @@ export const CompetitionPage = (): ReactElement => {
 								<div className='mb-[35px] flex flex-wrap gap-4 xl:mb-[64px]'>
 									{competitionData.price && (
 										<Tag
-											img={<Banknote className='max-5 mr-2' />}
+											img={<BanknoteIcon className='max-5 mr-2' />}
 											text={`Price ${competitionData.price.currentValue} $`}
 										/>
 									)}
 									{competitionData.participants && (
 										<Tag
-											img={<Persons className='max-5 mr-2' />}
+											img={<PersonsIcon className='max-5 mr-2' />}
 											text={`${competitionData.participants.length} participant${
 												competitionData.participants.length === 1 ? '' : 's'
 											} enrolled`}
@@ -228,17 +246,29 @@ export const CompetitionPage = (): ReactElement => {
 							{isRegistrationClosed && !isParticipant && <h2>Registration Closed</h2>}
 							{isRegistrationClosed && isParticipant && <h2>Time before start {competitionData.startDate}</h2>}
 							<div>
-								<p className='mb-[8px] text-grey xl:font-bold'>Description:</p>
-								<p className='mb-[24px] 2xl:text-body-1'>{competitionData.description}</p>
+								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
+								<p className='mb-9'>{competitionData.description}</p>
+								{authorizedUser?.role === 'chief_judge' && (
+									<>
+										<Link
+											to={AppRoute.JudgeChoice}
+											className='mb-2.5 flex items-center gap-5 text-lg font-bold transition hover:opacity-70 xl:text-4xl xl:leading-normal'
+										>
+											Set up the competition
+											<ArrowRightIcon className='w-8 xl:w-[3.125rem]' />
+										</Link>
+										<div className='mb-5 flex max-w-[40rem] items-center gap-3.5 md:mb-8'>
+											<WarningIcon />
+											<p>
+												You need to assign judges, create groups, connect judges to pairs and assign orders to groups
+											</p>
+										</div>
+									</>
+								)}
 							</div>
 						</div>
 						{isRegistrationClosed && (
 							<>
-								{isParticipant && !currentUserPairRef.current?.withPair && (
-									<h2 className='mb-[10px] text-xl font-medium md:mb-[15px] lg:mb-[34px] xl:text-4xl xl:font-bold'>
-										You will be paired with other participant at {currentUserPairRef.current?.startTime}
-									</h2>
-								)}
 								{isParticipant && currentUserPairRef.current?.pair && (
 									<>
 										<h2 className='mb-[10px] text-xl font-medium md:mb-[15px] lg:mb-[34px] xl:text-4xl xl:font-bold'>
@@ -276,7 +306,8 @@ export const CompetitionPage = (): ReactElement => {
 
 											const nextRoundParticipantsStartTime = getTimeTuplePlusMinutes(
 												startPointTimeTuple,
-												((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen
+												((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen +
+													(competitionData?.breakTime?.minutes ?? 0)
 											).join(':')
 
 											return (
@@ -284,7 +315,7 @@ export const CompetitionPage = (): ReactElement => {
 													<h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
 														{getTimeTuplePlusMinutes(
 															startPointTimeTuple,
-															(pairsBeforeLen * 10) / competitionJudgesLen
+															(pairsBeforeLen * 10) / competitionJudgesLen + (competitionData?.breakTime?.minutes ?? 0)
 														).join(':')}
 														<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}-
 														{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
@@ -297,19 +328,22 @@ export const CompetitionPage = (): ReactElement => {
 																judges,
 																startTimeTuple: getTimeTuplePlusMinutes(
 																	startPointTimeTuple,
-																	(pairsBeforeLen * 10) / competitionJudgesLen
+																	(pairsBeforeLen * 10) / competitionJudgesLen +
+																		(competitionData?.breakTime?.minutes ?? 0)
 																),
-																currentUser: { currentUserPairRef, authorizedUserId }
+																currentUser: { currentUserPairRef, authorizedUserId: authorizedUser?._id },
+																breakTime: competitionData?.breakTime
 															})}
 														/>
 													) : (
 														<Loader />
 													)}
-													{nextRoundParticipants?.length && (
+													{!!nextRoundParticipants?.length && (
 														<h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
 															{getTimeTuplePlusMinutes(
 																startPointTimeTuple,
-																((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen
+																((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen +
+																	(competitionData?.breakTime?.minutes ?? 0)
 															).join(':')}
 															<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}-
 															{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
@@ -320,11 +354,15 @@ export const CompetitionPage = (): ReactElement => {
 															? participants.find(({ _id: pId }) => pId === participantId)
 															: null
 
-														if (participantId === authorizedUserId)
+														if (participantId === authorizedUser?._id) {
 															currentUserPairRef.current = {
-																withPair: false,
-																startTime: nextRoundParticipantsStartTime
+																startTime: nextRoundParticipantsStartTime,
+																pair: {
+																	whiteParticipant: participantId,
+																	whiteParticipantData: nextRoundParticipant ?? undefined
+																}
 															}
+														}
 
 														return (
 															<div
@@ -337,7 +375,8 @@ export const CompetitionPage = (): ReactElement => {
 																		{nextRoundParticipant?.fullName}
 																	</div>
 																	<div className='text-[#6C6A6C]'>
-																		{getAge(nextRoundParticipant?.birthDate)} age, {nextRoundParticipant?.weight} kg
+																		{getAge(nextRoundParticipant?.birthDate as string)} age,{' '}
+																		{nextRoundParticipant?.weight} kg
 																	</div>
 																</div>
 																<div>

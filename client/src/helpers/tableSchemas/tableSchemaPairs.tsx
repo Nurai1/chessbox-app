@@ -1,7 +1,7 @@
 import { MutableRefObject } from 'react'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
-import { PairSchema, UserSchema } from 'src/types'
-import { getAge, localTZName } from './datetime'
+import { CompetitionSchema, PairSchema, UserSchema } from 'src/types'
+import { getAge, localTZName } from 'src/helpers/datetime'
 
 export const getTimeTuplePlusMinutes = (startTimeTuple: string[] | null, minutesPassed: number) => {
 	const [hours, minutes] = startTimeTuple?.map(Number) ?? []
@@ -18,7 +18,6 @@ export type PairType = {
 	blackParticipantData?: UserSchema
 	whiteParticipantData?: UserSchema
 	judgeData?: UserSchema
-	time?: string
 } & PairSchema
 
 export const tableSchemaPairs = ({
@@ -26,16 +25,18 @@ export const tableSchemaPairs = ({
 	participants,
 	judges,
 	startTimeTuple,
-	currentUser
+	currentUser,
+	breakTime
 }: {
 	tableData: PairSchema[]
 	participants: UserSchema[]
 	judges: UserSchema[]
 	startTimeTuple: string[]
 	currentUser: {
-		currentUserPairRef: MutableRefObject<undefined | { pair?: PairType; withPair?: boolean; startTime: string }>
+		currentUserPairRef: MutableRefObject<undefined | { pair?: PairType; startTime: string }>
 		authorizedUserId?: string
 	}
+	breakTime?: CompetitionSchema['breakTime']
 }) => {
 	const participantsData = tableData.reduce((acc, pair) => {
 		const blackParticipantData = participants.find(({ _id }) => pair.blackParticipant === _id)
@@ -59,7 +60,8 @@ export const tableSchemaPairs = ({
 	return participantsData.map((pair, i) => {
 		const currentPairTime = getTimeTuplePlusMinutes(
 			startTimeTuple,
-			i % judges.length === 0 ? (i * 10) / judges.length : ((i - (i % judges.length)) * 10) / judges.length
+			(i % judges.length === 0 ? (i * 10) / judges.length : ((i - (i % judges.length)) * 10) / judges.length) +
+				(breakTime?.minutes ?? 0)
 		).join(':')
 
 		if (
@@ -94,14 +96,18 @@ export const tableSchemaPairs = ({
 									Judge: {pair.judgeData?.fullName}
 								</a>
 							</div>
-							{pair.calledForFight && <div className={`text-[#FB9F16] ${statusStyle}`}>IN PROGRESS</div>}
+							{pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant && (
+								<div className={`text-[#FB9F16] ${statusStyle}`}>IN PROGRESS</div>
+							)}
 							{pair.winner && <div className={`text-[#6DDA64] ${statusStyle}`}>FINISHED</div>}
-							{!pair.winner && !pair.calledForFight && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
+							{!pair.winner && !pair.acceptedForFight && pair.calledForPreparation && (
+								<div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>
+							)}
 							<div className='col-start-1 col-end-3 flex justify-between md:col-end-2 xl:col-start-2 xl:col-end-3 xl:row-start-1 xl:row-end-2'>
 								<div className='w-[45%]'>
 									<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
 									<p className='text-xs xl:text-base'>
-										{getAge(pair.blackParticipantData?.birthDate)} age, {pair.blackParticipantData?.weight} kg
+										{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight} kg
 									</p>
 								</div>
 								<span className='mx-[2%] w-[6%] text-sm text-black xl:text-base'>VS</span>
@@ -109,7 +115,8 @@ export const tableSchemaPairs = ({
 									<div className='ml-auto w-fit'>
 										<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
 										<p className=' text-xs xl:text-base'>
-											{getAge(pair.whiteParticipantData?.birthDate)} age, {pair.whiteParticipantData?.weight} kg
+											{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight}{' '}
+											kg
 										</p>
 									</div>
 								</div>

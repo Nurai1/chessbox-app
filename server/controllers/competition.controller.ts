@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { Competition, User } from '../models/index';
-import { ICompetitionGroup, IPair } from '../types/index';
+import { ICompetition, ICompetitionGroup, IPair } from '../types/index';
 import { getParticipantsAmountForFirstRound } from '../utils/getParticipantsAmountForFirstRound';
 import { recalculateRating } from '../utils/recalculateRating';
 import { getPairsWithJudges } from '../utils/competition';
@@ -212,6 +212,32 @@ export const deleteCompetition = async (
   res.send(competition);
 };
 
+export const deleteCompetitionGroup = async (
+  req: Request<{ id: string }, any, { groupId: string }>,
+  res: Response
+) => {
+  const { id } = req.params;
+  const { groupId } = req.body;
+
+  const competition = await Competition.findById(id);
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  const { groups } = competition;
+
+  const newGroups = groups?.filter(
+    (group) => group._id?.toString() !== groupId
+  );
+
+  const newCompetition = await Competition.findOneAndUpdate(
+    { _id: id },
+    { groups: newGroups },
+    { new: true }
+  );
+
+  res.send(newCompetition);
+};
+
 export const updateCompetition = async (
   req: Request,
   res: Response,
@@ -274,7 +300,6 @@ export const createCompetitionGroup = async (
 
   for (let i = 0; i < participantsAmountForFirstRound; i += 2) {
     firstRoundPairs.push({
-      roundNumber: 1,
       blackParticipant: shuffledParticipants[i + 1],
       whiteParticipant: shuffledParticipants[i],
       passed: false,
@@ -387,35 +412,92 @@ export const callPairPreparation = async (
       competition,
       { new: true }
     );
-    res.status(200).send(newCompetition);
+
+    const ms2minutes10Seconds = 130000;
+    setTimeout(async () => {
+      const comp = await Competition.findById(competitionId);
+
+      const groups = comp?.groups.map((group) => {
+        if (group._id?.toString() === groupId) {
+          return {
+            ...group,
+            currentRoundPairs: group.currentRoundPairs.map((pair) => {
+              if (pair._id?.toString() === pairId) {
+                const pairAcceptedForFight = pair.acceptedForFight;
+
+                return {
+                  ...pair,
+                  disqualified: {
+                    whiteParticipant: !pairAcceptedForFight?.whiteParticipant,
+                    blackParticipant: !pairAcceptedForFight?.blackParticipant,
+                  },
+                };
+              }
+              return pair;
+            }),
+          };
+        }
+        return group;
+      });
+
+      if (comp && groups) {
+        comp.groups = groups;
+        await Competition.findByIdAndUpdate(competitionId, comp, {
+          new: true,
+        });
+      }
+    }, ms2minutes10Seconds);
+
+    return res.status(200).send(newCompetition);
   }
 
   res.sendStatus(500);
 };
 
-export const callPairFight = async (
+export const acceptPairFight = async (
   req: Request<
     any,
     any,
-    { competitionId: string; groupId: string; pairId: string }
+    { competitionId: string; groupId: string; pairId: string; userId: string }
   >,
   res: Response
 ) => {
-  const { competitionId, groupId, pairId } = req.body;
+  const { competitionId, groupId, pairId, userId } = req.body;
   const competition = await Competition.findById(competitionId);
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
+
+  let userIdNotFromThisPairs = false;
 
   const newGroups = competition?.groups.map((group) => {
     if (group._id?.toString() === groupId) {
       return {
         ...group,
         pairs: group.currentRoundPairs.map((pair) => {
+          const { blackParticipant, whiteParticipant } = pair;
+
           if (pair._id?.toString() === pairId) {
-            return {
-              ...pair,
-              calledForFight: true,
-            };
+            if (
+              whiteParticipant?._id?.toString() !== userId &&
+              blackParticipant?._id?.toString() !== userId
+            ) {
+              userIdNotFromThisPairs = true;
+              return pair;
+            }
+
+            // eslint-disable-next-line no-param-reassign
+            pair.acceptedForFight =
+              whiteParticipant._id?.toString() === userId
+                ? {
+                    ...pair.acceptedForFight,
+                    whiteParticipant: true,
+                  }
+                : {
+                    ...pair.acceptedForFight,
+                    blackParticipant: true,
+                  };
+
+            return pair;
           }
           return pair;
         }),
@@ -423,6 +505,13 @@ export const callPairFight = async (
     }
     return group;
   });
+
+  if (userIdNotFromThisPairs) {
+    return res.status(400).send({
+      error: 'User is not from provided pair',
+    });
+  }
+
   if (competition && newGroups) {
     competition.groups = newGroups;
 
@@ -431,7 +520,7 @@ export const callPairFight = async (
       competition,
       { new: true }
     );
-    res.status(200).send(newCompetition);
+    return res.status(200).send(newCompetition);
   }
 
   res.sendStatus(500);
@@ -623,12 +712,8 @@ export const launchNextGroupRound = async (
     competitionGroup?.nextRoundParticipants &&
     competitionGroup?.currentRoundPairs
   ) {
-    const nextRoundNumber =
-      (competitionGroup?.currentRoundPairs[0]?.roundNumber ?? 0) + 1;
-
     for (let i = 0; i < competitionGroup.nextRoundParticipants.length; i += 2) {
       nextRoundPairs.push({
-        roundNumber: nextRoundNumber,
         blackParticipant: competitionGroup.nextRoundParticipants[i + 1],
         whiteParticipant: competitionGroup.nextRoundParticipants[i],
         passed: false,
@@ -636,6 +721,7 @@ export const launchNextGroupRound = async (
     }
 
     competitionGroup.nextRoundParticipants = [];
+    competitionGroup.currentRoundNumber += 1;
     let currentPairOrder = 0;
     competitionGroup.currentRoundPairs = nextRoundPairs
       .map((pair) => ({
@@ -675,7 +761,6 @@ export const getCompetitionParticipants = async (
   const competition = await Competition.findOne({ _id: id }).populate(
     'participants'
   );
-  console.log('competition', competition);
 
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
@@ -696,4 +781,32 @@ export const getCompetitionJudges = async (
     return res.status(404).send({ error: "Competition wasn't found" });
 
   res.send(competition?.judges);
+};
+
+export const setCompetitionBreakTime = async (
+  req: Request<{ id: string }, any, { breakTime: ICompetition['breakTime'] }>,
+  res: Response
+) => {
+  const { id } = req.params;
+  const { breakTime } = req.body;
+
+  if (!breakTime) {
+    return res.status(400).send({ error: 'No break time provided' });
+  }
+
+  const competition = await Competition.findOneAndUpdate(
+    { _id: id },
+    { breakTime }
+  );
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  const breakTimeInMs = (breakTime?.minutes ?? 0) * 60 * 1000;
+
+  setTimeout(async () => {
+    await Competition.findOneAndUpdate({ _id: id }, { breakTime: null });
+  }, breakTimeInMs);
+
+  return res.sendStatus(200);
 };

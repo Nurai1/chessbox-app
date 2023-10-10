@@ -1,5 +1,6 @@
 import express from 'express';
 
+import { allowIfLoggedin, grantAccess } from '../controllers/user.controller';
 import { CompetitionController, UserController } from '../controllers/index';
 import { controllerErrorHandler } from '../utils/controllerErrorHandler';
 import { RESOURCES, ACTIONS } from '../constants';
@@ -139,6 +140,38 @@ competitionRouter.patch(
 );
 
 competitionRouter.patch(
+  '/competition/acceptPairFight',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
+  /*	#swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                      type: "object",
+                      properties: {
+                        competitionId: { type: "string" },
+                        groupId: { type: "string" },
+                        pairId: { type: "string" },
+                        userId: { type: "string" },
+                      },
+                      required: ["pairId", "groupId", "competitionId", "userId"]
+                    }  
+                },
+            }
+        } 
+    */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+  UserController.allowIfLoggedin,
+  UserController.grantAccess(ACTIONS.updateOwn, RESOURCES.PAIR),
+  controllerErrorHandler(CompetitionController.acceptPairFight)
+);
+
+competitionRouter.patch(
   '/competition/setJudgesToCompetition',
   /* #swagger.security = [{
       "apiKeyAuth": []
@@ -207,8 +240,8 @@ competitionRouter.patch(
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  // UserController.allowIfLoggedin,
-  // UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  UserController.allowIfLoggedin,
+  UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.setJudgesToPairs)
 );
 
@@ -283,7 +316,6 @@ competitionRouter.patch(
 
 competitionRouter.patch(
   '/competition/:id/zoomLink',
-  // #swagger.description = 'Редактировать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.'
   /*	#swagger.requestBody = {
           required: true,
           content: {
@@ -316,6 +348,30 @@ competitionRouter.delete(
             schema: { $ref: '#/definitions/Competition' }
     } */
   controllerErrorHandler(CompetitionController.deleteCompetition)
+);
+
+competitionRouter.delete(
+  '/competition/:id/group',
+  /*	#swagger.requestBody = {
+          required: true,
+          content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                groupId: { type: "string" },
+              },
+              required: ["groupId"]
+            },
+          }
+        } 
+      } 
+    */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+  controllerErrorHandler(CompetitionController.deleteCompetitionGroup)
 );
 
 competitionRouter.post(
@@ -394,6 +450,40 @@ competitionRouter.get(
             schema: [{ $ref: '#/definitions/User' }]
     } */
   controllerErrorHandler(CompetitionController.getCompetitionJudges)
+);
+
+competitionRouter.patch(
+  '/competition/:id/setCompetitionBreakTime',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
+  /*	#swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                      type: "object",
+                      properties: {
+                        breakTime: {
+                          type: "object",
+                          properties: {
+                            minutes: { type: "number" },
+                          },
+                          required: ["minutes"]
+                        },
+                      },
+                      required: ["breakTime"]
+                    }
+                },
+            }
+        } 
+    */
+  /* #swagger.responses[200] = {
+            description: '',
+    } */
+  allowIfLoggedin,
+  grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.setCompetitionBreakTime)
 );
 
 routerMockForSwaggerGenerator.use(

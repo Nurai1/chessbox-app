@@ -1703,6 +1703,96 @@ export interface paths {
 			}
 		}
 	}
+	'/api/competition/acceptPairFight': {
+		patch: {
+			requestBody: {
+				content: {
+					'application/json': {
+						competitionId: string
+						groupId: string
+						pairId: string
+						userId: string
+					}
+				}
+			}
+			responses: {
+				/** @description OK */
+				200: {
+					content: {
+						'application/json': components['schemas']['Competition']
+						'application/xml': components['schemas']['Competition']
+					}
+				}
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+							data?: Record<string, never>
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+							data?: Record<string, never>
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+	}
 	'/api/competition/setJudgesToCompetition': {
 		patch: {
 			requestBody: {
@@ -2061,7 +2151,6 @@ export interface paths {
 		}
 	}
 	'/api/competition/{id}/zoomLink': {
-		/** @description Редактировать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде. */
 		patch: {
 			parameters: {
 				path: {
@@ -2163,6 +2252,96 @@ export interface paths {
 			requestBody: {
 				content: {
 					'application/json': components['schemas']['CompetitionGroupBody']
+				}
+			}
+			responses: {
+				/** @description OK */
+				200: {
+					content: {
+						'application/json': components['schemas']['Competition']
+						'application/xml': components['schemas']['Competition']
+					}
+				}
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+							data?: Record<string, never>
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+							data?: Record<string, never>
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+		delete: {
+			parameters: {
+				path: {
+					id: string
+				}
+			}
+			requestBody: {
+				content: {
+					'application/json': {
+						groupId: string
+					}
 				}
 			}
 			responses: {
@@ -2590,6 +2769,98 @@ export interface paths {
 			}
 		}
 	}
+	'/api/competition/{id}/setCompetitionBreakTime': {
+		patch: {
+			parameters: {
+				header?: {
+					'x-access-token'?: string
+				}
+				path: {
+					id: string
+				}
+			}
+			requestBody: {
+				content: {
+					'application/json': {
+						breakTime: {
+							minutes: number
+						}
+					}
+				}
+			}
+			responses: {
+				/** @description OK */
+				200: never
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+							data?: Record<string, never>
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+							data?: Record<string, never>
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 export type webhooks = Record<string, never>
@@ -2621,26 +2892,38 @@ export interface components {
 				nextRoundParticipants?: string[]
 				allParticipants?: string[]
 				passedPairs?: {
-					roundNumber?: number
 					blackParticipant?: string
 					whiteParticipant?: string
 					winner?: string
 					passed?: boolean
 					order?: number
 					calledForPreparation?: boolean
-					calledForFight?: boolean
+					acceptedForFight?: {
+						blackParticipant?: boolean
+						whiteParticipant?: boolean
+					}
+					disqualified?: {
+						blackParticipant?: boolean
+						whiteParticipant?: boolean
+					}
 					judge?: string
 					_id?: string
 				}[]
 				currentRoundPairs?: {
-					roundNumber?: number
 					blackParticipant?: string
 					whiteParticipant?: string
 					winner?: string
 					passed?: boolean
 					order?: number
 					calledForPreparation?: boolean
-					calledForFight?: boolean
+					acceptedForFight?: {
+						blackParticipant?: boolean
+						whiteParticipant?: boolean
+					}
+					disqualified?: {
+						blackParticipant?: boolean
+						whiteParticipant?: boolean
+					}
 					judge?: string
 					_id?: string
 				}[]
@@ -2654,6 +2937,9 @@ export interface components {
 				}[]
 			}
 			zoomLink?: string
+			breakTime?: {
+				minutes?: number
+			}
 			requirements?: {
 				ageCategory?: {
 					from?: number
@@ -2664,10 +2950,6 @@ export interface components {
 					to?: number
 				}
 				gender?: string
-			}
-			lastOrder?: {
-				group?: number
-				pair?: number
 			}
 			participants?: string[]
 			judges?: string[]
@@ -2726,26 +3008,38 @@ export interface components {
 			nextRoundParticipants?: string[]
 			allParticipants?: string[]
 			passedPairs?: {
-				roundNumber?: number
 				blackParticipant?: string
 				whiteParticipant?: string
 				winner?: string
 				passed?: boolean
 				order?: number
 				calledForPreparation?: boolean
-				calledForFight?: boolean
+				acceptedForFight?: {
+					blackParticipant?: boolean
+					whiteParticipant?: boolean
+				}
+				disqualified?: {
+					blackParticipant?: boolean
+					whiteParticipant?: boolean
+				}
 				judge?: string
 				_id?: string
 			}[]
 			currentRoundPairs?: {
-				roundNumber?: number
 				blackParticipant?: string
 				whiteParticipant?: string
 				winner?: string
 				passed?: boolean
 				order?: number
 				calledForPreparation?: boolean
-				calledForFight?: boolean
+				acceptedForFight?: {
+					blackParticipant?: boolean
+					whiteParticipant?: boolean
+				}
+				disqualified?: {
+					blackParticipant?: boolean
+					whiteParticipant?: boolean
+				}
 				judge?: string
 				_id?: string
 			}[]
@@ -2753,14 +3047,20 @@ export interface components {
 		}
 		/** Pair */
 		Pair: {
-			roundNumber?: number
 			blackParticipant?: string
 			whiteParticipant?: string
 			winner?: string
 			passed?: boolean
 			order?: number
 			calledForPreparation?: boolean
-			calledForFight?: boolean
+			acceptedForFight?: {
+				blackParticipant?: boolean
+				whiteParticipant?: boolean
+			}
+			disqualified?: {
+				blackParticipant?: boolean
+				whiteParticipant?: boolean
+			}
 			judge?: string
 			_id?: string
 		}
@@ -2789,25 +3089,37 @@ export interface components {
 				nextRoundParticipants?: string[]
 				allParticipants?: string[]
 				passedPairs?: {
-					roundNumber?: number
 					blackParticipant?: string
 					whiteParticipant?: string
 					winner?: string
 					passed?: boolean
 					order?: number
 					calledForPreparation?: boolean
-					calledForFight?: boolean
+					acceptedForFight?: {
+						blackParticipant?: boolean
+						whiteParticipant?: boolean
+					}
+					disqualified?: {
+						blackParticipant?: boolean
+						whiteParticipant?: boolean
+					}
 					judge?: string
 				}[]
 				currentRoundPairs?: {
-					roundNumber?: number
 					blackParticipant?: string
 					whiteParticipant?: string
 					winner?: string
 					passed?: boolean
 					order?: number
 					calledForPreparation?: boolean
-					calledForFight?: boolean
+					acceptedForFight?: {
+						blackParticipant?: boolean
+						whiteParticipant?: boolean
+					}
+					disqualified?: {
+						blackParticipant?: boolean
+						whiteParticipant?: boolean
+					}
 					judge?: string
 				}[]
 			}[]
@@ -2819,6 +3131,9 @@ export interface components {
 				}[]
 			}
 			zoomLink?: string
+			breakTime?: {
+				minutes?: number
+			}
 			requirements?: {
 				ageCategory?: {
 					from?: number
@@ -2829,10 +3144,6 @@ export interface components {
 					to?: number
 				}
 				gender?: string
-			}
-			lastOrder?: {
-				group?: number
-				pair?: number
 			}
 			participants?: string[]
 			judges?: string[]
@@ -2889,38 +3200,56 @@ export interface components {
 			nextRoundParticipants?: string[]
 			allParticipants?: string[]
 			passedPairs?: {
-				roundNumber?: number
 				blackParticipant?: string
 				whiteParticipant?: string
 				winner?: string
 				passed?: boolean
 				order?: number
 				calledForPreparation?: boolean
-				calledForFight?: boolean
+				acceptedForFight?: {
+					blackParticipant?: boolean
+					whiteParticipant?: boolean
+				}
+				disqualified?: {
+					blackParticipant?: boolean
+					whiteParticipant?: boolean
+				}
 				judge?: string
 			}[]
 			currentRoundPairs?: {
-				roundNumber?: number
 				blackParticipant?: string
 				whiteParticipant?: string
 				winner?: string
 				passed?: boolean
 				order?: number
 				calledForPreparation?: boolean
-				calledForFight?: boolean
+				acceptedForFight?: {
+					blackParticipant?: boolean
+					whiteParticipant?: boolean
+				}
+				disqualified?: {
+					blackParticipant?: boolean
+					whiteParticipant?: boolean
+				}
 				judge?: string
 			}[]
 		}
 		/** Pair */
 		PairBody: {
-			roundNumber?: number
 			blackParticipant?: string
 			whiteParticipant?: string
 			winner?: string
 			passed?: boolean
 			order?: number
 			calledForPreparation?: boolean
-			calledForFight?: boolean
+			acceptedForFight?: {
+				blackParticipant?: boolean
+				whiteParticipant?: boolean
+			}
+			disqualified?: {
+				blackParticipant?: boolean
+				whiteParticipant?: boolean
+			}
 			judge?: string
 		}
 	}

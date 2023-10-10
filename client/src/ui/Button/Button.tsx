@@ -39,7 +39,8 @@ export const Button: FC<ButtonPropsType> = ({ children, type = 'primary', onClic
 			className={twMerge(
 				button({ shape: type }),
 				disabled && button({ disabled: type }),
-				'inline-flex-center h-[46px] gap-2 rounded-md px-4 font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2',
+				loading && 'pointer-events-none',
+				'inline-flex-center h-[2.875rem] select-none gap-2 rounded-md px-4 font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2',
 				classes
 			)}
 		>
