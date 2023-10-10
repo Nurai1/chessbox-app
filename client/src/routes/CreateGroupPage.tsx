@@ -225,7 +225,7 @@ export const CreateGroupPage = (): ReactElement => {
 						...groupParameters,
 						gender: groupParameters?.gender as string,
 						allParticipants: participants.inGroup.map(participant => participant._id) as string[],
-						currentRoundNumber: 0 // todo make optional
+						currentRoundNumber: 1 // todo make optional
 					},
 					id: competitionId as string
 				})

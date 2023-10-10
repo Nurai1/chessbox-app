@@ -9449,9 +9449,6 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "roundNumber": {
-                        "type": "number"
-                      },
                       "blackParticipant": {
                         "type": "string",
                         "identificator": true
@@ -9511,9 +9508,6 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "roundNumber": {
-                        "type": "number"
-                      },
                       "blackParticipant": {
                         "type": "string",
                         "identificator": true
@@ -9841,9 +9835,6 @@
             "items": {
               "type": "object",
               "properties": {
-                "roundNumber": {
-                  "type": "number"
-                },
                 "blackParticipant": {
                   "type": "string",
                   "identificator": true
@@ -9903,9 +9894,6 @@
             "items": {
               "type": "object",
               "properties": {
-                "roundNumber": {
-                  "type": "number"
-                },
                 "blackParticipant": {
                   "type": "string",
                   "identificator": true
@@ -9968,9 +9956,6 @@
       "Pair": {
         "title": "Pair",
         "properties": {
-          "roundNumber": {
-            "type": "number"
-          },
           "blackParticipant": {
             "type": "string",
             "identificator": true
@@ -10104,9 +10089,6 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "roundNumber": {
-                        "type": "number"
-                      },
                       "blackParticipant": {
                         "type": "string",
                         "identificator": true
@@ -10163,9 +10145,6 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "roundNumber": {
-                        "type": "number"
-                      },
                       "blackParticipant": {
                         "type": "string",
                         "identificator": true
@@ -10481,9 +10460,6 @@
             "items": {
               "type": "object",
               "properties": {
-                "roundNumber": {
-                  "type": "number"
-                },
                 "blackParticipant": {
                   "type": "string",
                   "identificator": true
@@ -10540,9 +10516,6 @@
             "items": {
               "type": "object",
               "properties": {
-                "roundNumber": {
-                  "type": "number"
-                },
                 "blackParticipant": {
                   "type": "string",
                   "identificator": true
@@ -10599,9 +10572,6 @@
       "PairBody": {
         "title": "Pair",
         "properties": {
-          "roundNumber": {
-            "type": "number"
-          },
           "blackParticipant": {
             "type": "string",
             "identificator": true

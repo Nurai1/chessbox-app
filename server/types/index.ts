@@ -44,7 +44,6 @@ export interface IUser {
 
 export interface IPair {
   _id?: Types.ObjectId;
-  roundNumber: number;
   blackParticipant?: PopulatedDoc<IUser & Document>;
   whiteParticipant?: PopulatedDoc<IUser & Document>;
   winner?: PopulatedDoc<IUser & Document>;
