@@ -12,7 +12,8 @@ ac.grant(ROLES.PARTICIPANT)
   .updateOwn(RESOURCES.USER)
   // participant permissions for competition entity
   .readAny(RESOURCES.COMPETITION)
-  .readOwn(RESOURCES.COMPETITION);
+  .readOwn(RESOURCES.COMPETITION)
+  .updateOwn(RESOURCES.PAIR);
 
 ac.grant(ROLES.CHIEF_JUDGE)
   .readAny(RESOURCES.USER)

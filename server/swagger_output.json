@@ -5570,6 +5570,304 @@
         }
       }
     },
+    "/api/competition/acceptPairFight": {
+      "patch": {
+        "tags": [
+          "Competitions"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competition"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competition"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "competitionId": {
+                    "type": "string"
+                  },
+                  "groupId": {
+                    "type": "string"
+                  },
+                  "pairId": {
+                    "type": "string"
+                  },
+                  "userId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "pairId",
+                  "groupId",
+                  "competitionId",
+                  "userId"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/competition/setJudgesToCompetition": {
       "patch": {
         "tags": [
@@ -6762,7 +7060,7 @@
         "tags": [
           "Competitions"
         ],
-        "description": "Редактировать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.",
+        "description": "",
         "parameters": [
           {
             "name": "id",
@@ -7048,6 +7346,294 @@
       }
     },
     "/api/competition/{id}/group": {
+      "delete": {
+        "tags": [
+          "Competitions"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competition"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competition"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "groupId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "groupId"
+                ]
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "Competitions"
@@ -8480,6 +9066,304 @@
           }
         }
       }
+    },
+    "/api/competition/{id}/setCompetitionBreakTime": {
+      "patch": {
+        "tags": [
+          "Competitions"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Client error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Permissions error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "breakTime": {
+                    "type": "object",
+                    "properties": {
+                      "minutes": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "minutes"
+                    ]
+                  }
+                },
+                "required": [
+                  "breakTime"
+                ]
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -8565,9 +9449,6 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "roundNumber": {
-                        "type": "number"
-                      },
                       "blackParticipant": {
                         "type": "string",
                         "identificator": true
@@ -8589,8 +9470,27 @@
                       "calledForPreparation": {
                         "type": "boolean"
                       },
-                      "calledForFight": {
-                        "type": "boolean"
+                      "acceptedForFight": {
+                        "type": "object",
+                        "properties": {
+                          "blackParticipant": {
+                            "type": "boolean"
+                          },
+                          "whiteParticipant": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "disqualified": {
+                        "type": "object",
+                        "properties": {
+                          "blackParticipant": {
+                            "type": "boolean"
+                          },
+                          "whiteParticipant": {
+                            "type": "boolean"
+                          }
+                        }
                       },
                       "judge": {
                         "type": "string",
@@ -8608,9 +9508,6 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "roundNumber": {
-                        "type": "number"
-                      },
                       "blackParticipant": {
                         "type": "string",
                         "identificator": true
@@ -8632,8 +9529,27 @@
                       "calledForPreparation": {
                         "type": "boolean"
                       },
-                      "calledForFight": {
-                        "type": "boolean"
+                      "acceptedForFight": {
+                        "type": "object",
+                        "properties": {
+                          "blackParticipant": {
+                            "type": "boolean"
+                          },
+                          "whiteParticipant": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "disqualified": {
+                        "type": "object",
+                        "properties": {
+                          "blackParticipant": {
+                            "type": "boolean"
+                          },
+                          "whiteParticipant": {
+                            "type": "boolean"
+                          }
+                        }
                       },
                       "judge": {
                         "type": "string",
@@ -8685,6 +9601,14 @@
           "zoomLink": {
             "type": "string"
           },
+          "breakTime": {
+            "type": "object",
+            "properties": {
+              "minutes": {
+                "type": "number"
+              }
+            }
+          },
           "requirements": {
             "type": "object",
             "properties": {
@@ -8712,17 +9636,6 @@
               },
               "gender": {
                 "type": "string"
-              }
-            }
-          },
-          "lastOrder": {
-            "type": "object",
-            "properties": {
-              "group": {
-                "type": "number"
-              },
-              "pair": {
-                "type": "number"
               }
             }
           },
@@ -8922,9 +9835,6 @@
             "items": {
               "type": "object",
               "properties": {
-                "roundNumber": {
-                  "type": "number"
-                },
                 "blackParticipant": {
                   "type": "string",
                   "identificator": true
@@ -8946,8 +9856,27 @@
                 "calledForPreparation": {
                   "type": "boolean"
                 },
-                "calledForFight": {
-                  "type": "boolean"
+                "acceptedForFight": {
+                  "type": "object",
+                  "properties": {
+                    "blackParticipant": {
+                      "type": "boolean"
+                    },
+                    "whiteParticipant": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "disqualified": {
+                  "type": "object",
+                  "properties": {
+                    "blackParticipant": {
+                      "type": "boolean"
+                    },
+                    "whiteParticipant": {
+                      "type": "boolean"
+                    }
+                  }
                 },
                 "judge": {
                   "type": "string",
@@ -8965,9 +9894,6 @@
             "items": {
               "type": "object",
               "properties": {
-                "roundNumber": {
-                  "type": "number"
-                },
                 "blackParticipant": {
                   "type": "string",
                   "identificator": true
@@ -8989,8 +9915,27 @@
                 "calledForPreparation": {
                   "type": "boolean"
                 },
-                "calledForFight": {
-                  "type": "boolean"
+                "acceptedForFight": {
+                  "type": "object",
+                  "properties": {
+                    "blackParticipant": {
+                      "type": "boolean"
+                    },
+                    "whiteParticipant": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "disqualified": {
+                  "type": "object",
+                  "properties": {
+                    "blackParticipant": {
+                      "type": "boolean"
+                    },
+                    "whiteParticipant": {
+                      "type": "boolean"
+                    }
+                  }
                 },
                 "judge": {
                   "type": "string",
@@ -9011,9 +9956,6 @@
       "Pair": {
         "title": "Pair",
         "properties": {
-          "roundNumber": {
-            "type": "number"
-          },
           "blackParticipant": {
             "type": "string",
             "identificator": true
@@ -9035,8 +9977,27 @@
           "calledForPreparation": {
             "type": "boolean"
           },
-          "calledForFight": {
-            "type": "boolean"
+          "acceptedForFight": {
+            "type": "object",
+            "properties": {
+              "blackParticipant": {
+                "type": "boolean"
+              },
+              "whiteParticipant": {
+                "type": "boolean"
+              }
+            }
+          },
+          "disqualified": {
+            "type": "object",
+            "properties": {
+              "blackParticipant": {
+                "type": "boolean"
+              },
+              "whiteParticipant": {
+                "type": "boolean"
+              }
+            }
           },
           "judge": {
             "type": "string",
@@ -9128,9 +10089,6 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "roundNumber": {
-                        "type": "number"
-                      },
                       "blackParticipant": {
                         "type": "string",
                         "identificator": true
@@ -9152,8 +10110,27 @@
                       "calledForPreparation": {
                         "type": "boolean"
                       },
-                      "calledForFight": {
-                        "type": "boolean"
+                      "acceptedForFight": {
+                        "type": "object",
+                        "properties": {
+                          "blackParticipant": {
+                            "type": "boolean"
+                          },
+                          "whiteParticipant": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "disqualified": {
+                        "type": "object",
+                        "properties": {
+                          "blackParticipant": {
+                            "type": "boolean"
+                          },
+                          "whiteParticipant": {
+                            "type": "boolean"
+                          }
+                        }
                       },
                       "judge": {
                         "type": "string",
@@ -9168,9 +10145,6 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "roundNumber": {
-                        "type": "number"
-                      },
                       "blackParticipant": {
                         "type": "string",
                         "identificator": true
@@ -9192,8 +10166,27 @@
                       "calledForPreparation": {
                         "type": "boolean"
                       },
-                      "calledForFight": {
-                        "type": "boolean"
+                      "acceptedForFight": {
+                        "type": "object",
+                        "properties": {
+                          "blackParticipant": {
+                            "type": "boolean"
+                          },
+                          "whiteParticipant": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "disqualified": {
+                        "type": "object",
+                        "properties": {
+                          "blackParticipant": {
+                            "type": "boolean"
+                          },
+                          "whiteParticipant": {
+                            "type": "boolean"
+                          }
+                        }
                       },
                       "judge": {
                         "type": "string",
@@ -9239,6 +10232,14 @@
           "zoomLink": {
             "type": "string"
           },
+          "breakTime": {
+            "type": "object",
+            "properties": {
+              "minutes": {
+                "type": "number"
+              }
+            }
+          },
           "requirements": {
             "type": "object",
             "properties": {
@@ -9266,17 +10267,6 @@
               },
               "gender": {
                 "type": "string"
-              }
-            }
-          },
-          "lastOrder": {
-            "type": "object",
-            "properties": {
-              "group": {
-                "type": "number"
-              },
-              "pair": {
-                "type": "number"
               }
             }
           },
@@ -9470,9 +10460,6 @@
             "items": {
               "type": "object",
               "properties": {
-                "roundNumber": {
-                  "type": "number"
-                },
                 "blackParticipant": {
                   "type": "string",
                   "identificator": true
@@ -9494,8 +10481,27 @@
                 "calledForPreparation": {
                   "type": "boolean"
                 },
-                "calledForFight": {
-                  "type": "boolean"
+                "acceptedForFight": {
+                  "type": "object",
+                  "properties": {
+                    "blackParticipant": {
+                      "type": "boolean"
+                    },
+                    "whiteParticipant": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "disqualified": {
+                  "type": "object",
+                  "properties": {
+                    "blackParticipant": {
+                      "type": "boolean"
+                    },
+                    "whiteParticipant": {
+                      "type": "boolean"
+                    }
+                  }
                 },
                 "judge": {
                   "type": "string",
@@ -9510,9 +10516,6 @@
             "items": {
               "type": "object",
               "properties": {
-                "roundNumber": {
-                  "type": "number"
-                },
                 "blackParticipant": {
                   "type": "string",
                   "identificator": true
@@ -9534,8 +10537,27 @@
                 "calledForPreparation": {
                   "type": "boolean"
                 },
-                "calledForFight": {
-                  "type": "boolean"
+                "acceptedForFight": {
+                  "type": "object",
+                  "properties": {
+                    "blackParticipant": {
+                      "type": "boolean"
+                    },
+                    "whiteParticipant": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "disqualified": {
+                  "type": "object",
+                  "properties": {
+                    "blackParticipant": {
+                      "type": "boolean"
+                    },
+                    "whiteParticipant": {
+                      "type": "boolean"
+                    }
+                  }
                 },
                 "judge": {
                   "type": "string",
@@ -9550,9 +10572,6 @@
       "PairBody": {
         "title": "Pair",
         "properties": {
-          "roundNumber": {
-            "type": "number"
-          },
           "blackParticipant": {
             "type": "string",
             "identificator": true
@@ -9574,8 +10593,27 @@
           "calledForPreparation": {
             "type": "boolean"
           },
-          "calledForFight": {
-            "type": "boolean"
+          "acceptedForFight": {
+            "type": "object",
+            "properties": {
+              "blackParticipant": {
+                "type": "boolean"
+              },
+              "whiteParticipant": {
+                "type": "boolean"
+              }
+            }
+          },
+          "disqualified": {
+            "type": "object",
+            "properties": {
+              "blackParticipant": {
+                "type": "boolean"
+              },
+              "whiteParticipant": {
+                "type": "boolean"
+              }
+            }
           },
           "judge": {
             "type": "string",

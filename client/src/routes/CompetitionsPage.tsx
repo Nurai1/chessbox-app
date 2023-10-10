@@ -7,9 +7,9 @@ import {
 	currentUserCompetitionsSelector,
 	expiredCompetitionsSelector,
 	selectCompetitions
-} from '../store/selectors/competitions'
-import { CompetitionCard } from '../components'
-import { CompetitionSchema } from '../types'
+} from 'src/store/selectors/competitions'
+import { CompetitionCard } from 'src/components'
+import { CompetitionSchema } from 'src/types'
 
 export const CompetitionsPage = (): ReactElement => {
 	const dispatch = useAppDispatch()

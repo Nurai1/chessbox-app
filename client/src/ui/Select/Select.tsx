@@ -28,6 +28,7 @@ export type GeneralSelectProps = {
 	label?: string
 	// isRequired?: boolean
 	placeholder?: string
+	dropdownPlaceholder?: string
 	withSearch?: boolean
 	validationErrorText?: string
 	selectClasses?: string
@@ -50,7 +51,8 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 	validationErrorText,
 	selectClasses,
 	disabled,
-	name
+	name,
+	dropdownPlaceholder
 }) {
 	const [isOpen, setIsOpen] = useState(false)
 	const [searchValue, setSearchValue] = useState<string>()
@@ -121,7 +123,7 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 							type='text'
 							name={name}
 							className={twMerge(
-								'relative z-10 box-border h-[48px] w-full cursor-pointer rounded-md border border-gray-200 bg-white pl-5 pr-14 text-input font-normal placeholder:text-[#B3B3B3] focus:border-blue-500 focus:ring-4 focus:ring-blue-500/25',
+								'relative z-10 box-border h-9 w-full cursor-pointer rounded-md border border-gray-200 bg-white pl-5 pr-14 text-input font-normal placeholder:text-[#B3B3B3] focus:border focus:border-black focus:ring-0 xl:h-12',
 								validationErrorText && 'border-red-400 ring-4 ring-red-200',
 								selectClasses,
 								disabled && 'text-gray-400'
@@ -152,6 +154,11 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 						</div>
 					)}
 					<div className='flex flex-col'>
+						{dropdownPlaceholder && (
+							<span className='flex min-h-[3rem] items-center pl-3 font-bold [&:not(:last-child)]:border-b [&:not(:last-child)]:border-zinc-300'>
+								{dropdownPlaceholder}
+							</span>
+						)}
 						{visibleOptions.map(menuOption => {
 							const isChosenOption = multiple ? chosenIds.includes(menuOption.id) : menuOption.id === chosenId
 							const onOptionClick = (fieldName?: string) => {
@@ -172,27 +179,23 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 							return (
 								<button
 									className={twMerge(
-										'relative flex min-h-[2.25rem] items-center rounded px-3 text-left hover:bg-gray-100',
-										isChosenOption && 'bg-gray-100'
+										'relative flex min-h-[3rem] items-center text-left hover:bg-gray-100 [&:not(:last-child)]:border-b [&:not(:last-child)]:border-zinc-300'
+										// isChosenOption && 'bg-gray-100'
 									)}
 									type='button'
 									key={menuOption.id}
 									onClick={() => onOptionClick(name)}
 								>
-									<span
-										className={twMerge(
-											'inline-flex h-4 min-w-[1rem] items-center justify-center border',
-											multiple ? 'rounded' : 'rounded-full',
-											isChosenOption && 'border-0 bg-blue-500'
-										)}
-									>
-										{multiple ? (
+									{multiple && (
+										<span
+											className={twMerge(
+												'inline-flex h-4 min-w-[1rem] items-center justify-center rounded-full border',
+												isChosenOption && 'border-0 bg-blue-500'
+											)}
+										>
 											<CheckMarkIcon />
-										) : (
-											<span className='inline-block h-[7px] w-[7px] rounded-full bg-white' />
-										)}
-									</span>
-
+										</span>
+									)}
 									<span className='whitespace-nowrap pl-3 text-sm'>{menuOption.value}</span>
 								</button>
 							)

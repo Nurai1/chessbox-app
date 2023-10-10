@@ -44,14 +44,20 @@ export interface IUser {
 
 export interface IPair {
   _id?: Types.ObjectId;
-  roundNumber: number;
   blackParticipant?: PopulatedDoc<IUser & Document>;
   whiteParticipant?: PopulatedDoc<IUser & Document>;
   winner?: PopulatedDoc<IUser & Document>;
   passed: boolean;
   order?: number;
   calledForPreparation?: boolean;
-  calledForFight?: boolean;
+  acceptedForFight?: {
+    blackParticipant?: boolean;
+    whiteParticipant?: boolean;
+  };
+  disqualified?: {
+    blackParticipant?: boolean;
+    whiteParticipant?: boolean;
+  };
   judge?: PopulatedDoc<IUser & Document>;
 }
 
@@ -70,12 +76,14 @@ export interface ICompetition {
     }[];
   };
   zoomLink?: string;
+  breakTime?: {
+    minutes?: number;
+  };
   requirements?: {
     ageCategory?: Category;
     weightCategory?: Category;
     gender?: GenderType;
   };
-  lastOrder: { group: number; pair: number };
   groups: ICompetitionGroup[];
   participants: PopulatedDoc<IUser & Document>[];
   judges: PopulatedDoc<IUser & Document>[];

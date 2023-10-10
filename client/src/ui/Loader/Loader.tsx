@@ -3,12 +3,18 @@ import { twMerge } from 'tailwind-merge'
 
 type LoaderProps = {
 	classes?: string
+	ringClasses?: string
 }
 
-export const Loader: FC<LoaderProps> = ({ classes }) => {
+export const Loader: FC<LoaderProps> = ({ classes, ringClasses }) => {
 	return (
 		<div className={twMerge('flex grow items-center justify-center', classes)}>
-			<span className='block h-[32px] w-[32px] animate-spin rounded-full border-[4px] border-black border-b-transparent lg:h-[48px] lg:w-[48px] lg:border-[5px]' />
+			<span
+				className={twMerge(
+					'block h-8 w-8 animate-spin rounded-full border-4 border-black border-b-transparent lg:h-12 lg:w-12 lg:border-[0.3125rem]',
+					ringClasses
+				)}
+			/>
 		</div>
 	)
 }

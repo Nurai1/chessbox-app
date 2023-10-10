@@ -1,12 +1,22 @@
 import { useState, FC } from 'react'
 import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
 import { ReactComponent as Persons } from 'src/assets/persons.svg'
-import { Button, HorizontalTabs, TableBody, TableWrapper, Tag, Timer, Loader, Checkbox } from 'src/ui'
-import { UsersTableWithTitle, CompetitionCard } from 'src/components'
-import { tableSchemaRating } from 'src/helpers/tableSchemaRating'
-import { usersMock, competitionsMock } from 'src/mock'
+import { ratingTableSchema } from 'src/helpers/tableSchemas/tableSchema'
+import {
+	Button,
+	HorizontalTabs,
+	TableBody,
+	RoundedBorderWrapper,
+	Tag,
+	Timer,
+	Loader,
+	CheckboxAndRadioButton,
+	Accordion
+} from '../ui'
+import { UsersTableWithTitle, CompetitionCard } from '../components'
+import { usersMock, competitionsMock } from '../mock'
 
-const usersTable = tableSchemaRating(usersMock)
+const usersTable = ratingTableSchema(usersMock)
 const tabsContent = ['Active competitions', 'My competitions', 'Archive']
 export const UILibrary: FC = () => {
 	const [activeIndex, setActiveIndex] = useState(0)
@@ -98,18 +108,19 @@ export const UILibrary: FC = () => {
 			<hr className='my-8' />
 
 			<h2 className='mb-5 text-xl font-semibold'>Чекбокс</h2>
-			<Checkbox
+			<CheckboxAndRadioButton
 				title='Choose something'
+				type='checkbox'
 				name='something'
 				checked={checked}
 				classes='mr-5'
 				onChange={() => setChecked(!checked)}
 			/>
-			<Checkbox title='Disabled' name='disabled' onChange={() => ''} disabled />
+			<CheckboxAndRadioButton type='checkbox' title='Disabled' name='disabled' onChange={() => ''} disabled />
 			<hr className='my-8' />
 
 			<h2 className='mb-8 text-xl font-semibold'>Таблица</h2>
-			<TableWrapper>
+			<RoundedBorderWrapper>
 				<h2
 					className='py-[18px] text-base font-medium
 				text-black md:pb-[26px] md:text-xl
@@ -121,12 +132,12 @@ export const UILibrary: FC = () => {
 				<div className='relative w-full'>
 					<TableBody rows={usersTable} />
 				</div>
-			</TableWrapper>
+			</RoundedBorderWrapper>
 			<hr className='my-8' />
 
-			<TableWrapper>
+			<RoundedBorderWrapper>
 				<UsersTableWithTitle rows={usersTable} title='Список пользователей' />
-			</TableWrapper>
+			</RoundedBorderWrapper>
 			<hr className='my-8' />
 
 			<h2 className='mb-5 text-xl font-semibold'>Карточка соревнования</h2>
@@ -140,8 +151,31 @@ export const UILibrary: FC = () => {
 				<CompetitionCard competition={competitionsMock[2]} />
 				<CompetitionCard competition={competitionsMock[3]} />
 			</div>
-
 			<hr className='my-8' />
+
+			<h2 className='mb-5 text-xl font-semibold'>Аккордеон</h2>
+			<Accordion>
+				<p>Accordion content</p>
+				<ul>
+					<li>
+						This type is meant to model operations like await in async functions, or the .then() method on Promises -
+						specifically, the way that they recursively unwrap Promises.
+					</li>
+					<li>
+						Constructs a type with all properties of Type set to optional. This utility will return a type that
+						represents all subsets of a given type.
+					</li>
+					<li>Constructs a type consisting of all properties of Type set to required. The opposite of Partial.</li>
+					<li>
+						Constructs a type with all properties of Type set to readonly, meaning the properties of the constructed
+						type cannot be reassigned.
+					</li>
+					<li>
+						Constructs an object type whose property keys are Keys and whose property values are Type. This utility can
+						be used to map the properties of a type to another type.
+					</li>
+				</ul>
+			</Accordion>
 		</div>
 	)
 }

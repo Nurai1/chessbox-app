@@ -1,1 +1,1 @@
-export { PairInfo } from 'src/components/PairInfo/PairInfo'
+export { PairInfo } from './PairInfo'

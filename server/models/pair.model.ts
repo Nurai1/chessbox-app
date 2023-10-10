@@ -6,9 +6,6 @@ const { Schema } = mongoose;
 
 export const pairSchema = new Schema<IPair>(
   {
-    roundNumber: {
-      type: Number,
-    },
     blackParticipant: {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -36,8 +33,13 @@ export const pairSchema = new Schema<IPair>(
     calledForPreparation: {
       type: Boolean,
     },
-    calledForFight: {
-      type: Boolean,
+    acceptedForFight: {
+      blackParticipant: Boolean,
+      whiteParticipant: Boolean,
+    },
+    disqualified: {
+      blackParticipant: Boolean,
+      whiteParticipant: Boolean,
     },
     judge: {
       type: Schema.Types.ObjectId,

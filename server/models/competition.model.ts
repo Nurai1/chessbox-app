@@ -23,6 +23,9 @@ const competitionSchema = new Schema<ICompetition>(
       ],
     },
     zoomLink: String,
+    breakTime: {
+      minutes: { type: Number },
+    },
     requirements: {
       ageCategory: {
         from: { type: Number },
@@ -33,10 +36,6 @@ const competitionSchema = new Schema<ICompetition>(
         to: { type: Number },
       },
       gender: { type: String },
-    },
-    lastOrder: {
-      group: { type: Number, default: 0 },
-      pair: { type: Number, default: 0 },
     },
     participants: [
       {
