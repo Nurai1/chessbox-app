@@ -2892,7 +2892,6 @@ export interface components {
 				nextRoundParticipants?: string[]
 				allParticipants?: string[]
 				passedPairs?: {
-					roundNumber?: number
 					blackParticipant?: string
 					whiteParticipant?: string
 					winner?: string
@@ -2911,7 +2910,6 @@ export interface components {
 					_id?: string
 				}[]
 				currentRoundPairs?: {
-					roundNumber?: number
 					blackParticipant?: string
 					whiteParticipant?: string
 					winner?: string
@@ -3010,7 +3008,6 @@ export interface components {
 			nextRoundParticipants?: string[]
 			allParticipants?: string[]
 			passedPairs?: {
-				roundNumber?: number
 				blackParticipant?: string
 				whiteParticipant?: string
 				winner?: string
@@ -3029,7 +3026,6 @@ export interface components {
 				_id?: string
 			}[]
 			currentRoundPairs?: {
-				roundNumber?: number
 				blackParticipant?: string
 				whiteParticipant?: string
 				winner?: string
@@ -3051,7 +3047,6 @@ export interface components {
 		}
 		/** Pair */
 		Pair: {
-			roundNumber?: number
 			blackParticipant?: string
 			whiteParticipant?: string
 			winner?: string
@@ -3094,7 +3089,6 @@ export interface components {
 				nextRoundParticipants?: string[]
 				allParticipants?: string[]
 				passedPairs?: {
-					roundNumber?: number
 					blackParticipant?: string
 					whiteParticipant?: string
 					winner?: string
@@ -3112,7 +3106,6 @@ export interface components {
 					judge?: string
 				}[]
 				currentRoundPairs?: {
-					roundNumber?: number
 					blackParticipant?: string
 					whiteParticipant?: string
 					winner?: string
@@ -3207,7 +3200,6 @@ export interface components {
 			nextRoundParticipants?: string[]
 			allParticipants?: string[]
 			passedPairs?: {
-				roundNumber?: number
 				blackParticipant?: string
 				whiteParticipant?: string
 				winner?: string
@@ -3225,7 +3217,6 @@ export interface components {
 				judge?: string
 			}[]
 			currentRoundPairs?: {
-				roundNumber?: number
 				blackParticipant?: string
 				whiteParticipant?: string
 				winner?: string
@@ -3245,7 +3236,6 @@ export interface components {
 		}
 		/** Pair */
 		PairBody: {
-			roundNumber?: number
 			blackParticipant?: string
 			whiteParticipant?: string
 			winner?: string

@@ -300,7 +300,6 @@ export const createCompetitionGroup = async (
 
   for (let i = 0; i < participantsAmountForFirstRound; i += 2) {
     firstRoundPairs.push({
-      roundNumber: 1,
       blackParticipant: shuffledParticipants[i + 1],
       whiteParticipant: shuffledParticipants[i],
       passed: false,
@@ -713,12 +712,8 @@ export const launchNextGroupRound = async (
     competitionGroup?.nextRoundParticipants &&
     competitionGroup?.currentRoundPairs
   ) {
-    const nextRoundNumber =
-      (competitionGroup?.currentRoundPairs[0]?.roundNumber ?? 0) + 1;
-
     for (let i = 0; i < competitionGroup.nextRoundParticipants.length; i += 2) {
       nextRoundPairs.push({
-        roundNumber: nextRoundNumber,
         blackParticipant: competitionGroup.nextRoundParticipants[i + 1],
         whiteParticipant: competitionGroup.nextRoundParticipants[i],
         passed: false,
@@ -726,6 +721,7 @@ export const launchNextGroupRound = async (
     }
 
     competitionGroup.nextRoundParticipants = [];
+    competitionGroup.currentRoundNumber += 1;
     let currentPairOrder = 0;
     competitionGroup.currentRoundPairs = nextRoundPairs
       .map((pair) => ({

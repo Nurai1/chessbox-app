@@ -6,9 +6,6 @@ const { Schema } = mongoose;
 
 export const pairSchema = new Schema<IPair>(
   {
-    roundNumber: {
-      type: Number,
-    },
     blackParticipant: {
       type: Schema.Types.ObjectId,
       ref: 'User',
