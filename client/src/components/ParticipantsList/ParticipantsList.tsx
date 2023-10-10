@@ -27,11 +27,7 @@ export enum SortType {
 	Weight = 'weight'
 }
 
-export const ParticipantsList: FC<ParticipantsListPropsType> = ({
-	participants,
-	onSort,
-	classes
-}) => {
+export const ParticipantsList: FC<ParticipantsListPropsType> = ({ participants, onSort, classes }) => {
 	const [activeList, setActiveList] = useState(ActiveListStatus.InGroup)
 	const [activeSort, setActiveSort] = useState<string>()
 
@@ -46,36 +42,37 @@ export const ParticipantsList: FC<ParticipantsListPropsType> = ({
 	const participantsOutGroupTable = tableSchemaGroupCreateParticipantsBody(participants.outGroup)
 
 	const renderParticipantsTable = () => {
-		return (
-			activeList === 'inGroup'
-				? <TableBody rows={participantsInGroupTable} classes="max-h-[49.8rem]"/>
-				: <TableBody rows={participantsOutGroupTable} classes="max-h-[49.8rem]"/>
+		return activeList === 'inGroup' ? (
+			<TableBody rows={participantsInGroupTable} classes='max-h-[49.8rem]' />
+		) : (
+			<TableBody rows={participantsOutGroupTable} classes='max-h-[49.8rem]' />
 		)
 	}
 
 	return (
 		<div className={classes}>
 			<button
-				type="button"
-				className={`px-7 py-2 ml-8 relative border border-pale-grey rounded-t-[1.25rem] text-xl font-medium bg-white z-10 hover:text-grey transition ${activeList === ActiveListStatus.OutGroup && 'text-disabled-grey'}`}
+				type='button'
+				className={`relative z-10 ml-8 rounded-t-[1.25rem] border border-pale-grey bg-white px-7 py-2 text-xl font-medium transition hover:text-grey ${
+					activeList === ActiveListStatus.OutGroup && 'text-disabled-grey'
+				}`}
 				onClick={() => setActiveList(ActiveListStatus.InGroup)}
 			>
-				Participants <span className="text-disabled-grey">{participantsInGroupTable.length}</span>
+				Participants <span className='text-disabled-grey'>{participantsInGroupTable.length}</span>
 			</button>
 			<button
-				type="button"
-				className={`pl-14 pr-7 py-2 -ml-9 border border-pale-grey rounded-t-[1.25rem] text-xl font-medium hover:text-grey transition ${activeList === ActiveListStatus.InGroup && 'text-disabled-grey'}`}
+				type='button'
+				className={`-ml-9 rounded-t-[1.25rem] border border-pale-grey py-2 pl-14 pr-7 text-xl font-medium transition hover:text-grey ${
+					activeList === ActiveListStatus.InGroup && 'text-disabled-grey'
+				}`}
 				onClick={() => setActiveList(ActiveListStatus.OutGroup)}
 			>
-				Outgroup <span className="text-disabled-grey">{participantsOutGroupTable.length}</span>
+				Outgroup <span className='text-disabled-grey'>{participantsOutGroupTable.length}</span>
 			</button>
-			<div className="pt-2 pb-5 px-10 -mb-5 -mt-px border border-pale-grey rounded-l-3xl">
-				<TableHeader columns={tableHeaderColumns}/>
-				<div className="h-full overflow-y-auto scroll-custom">
-					{noParticipants
-						? <p className='text-heading-4 text-center'>No matches</p>
-						: renderParticipantsTable()
-					}
+			<div className='-mb-5 -mt-px rounded-l-3xl border border-pale-grey px-10 pt-2 pb-5'>
+				<TableHeader columns={tableHeaderColumns} />
+				<div className='scroll-custom h-full overflow-y-auto'>
+					{noParticipants ? <p className='text-center text-heading-4'>No matches</p> : renderParticipantsTable()}
 				</div>
 			</div>
 		</div>

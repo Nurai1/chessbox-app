@@ -9,20 +9,22 @@ type TableSortButtonPropsType = {
 	activeClass?: string
 }
 
-export const TableSortButton: FC<TableSortButtonPropsType> = ({children, sortType, onClick, activeClass}) => {
+export const TableSortButton: FC<TableSortButtonPropsType> = ({ children, sortType, onClick, activeClass }) => {
 	const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.ASC)
-	const updateSortOrder = () => sortOrder === SortOrder.ASC ? setSortOrder(SortOrder.DESC) : setSortOrder(SortOrder.ASC)
+	const updateSortOrder = () =>
+		sortOrder === SortOrder.ASC ? setSortOrder(SortOrder.DESC) : setSortOrder(SortOrder.ASC)
 
 	return (
 		<button
-			type="button"
-			className={`flex gap-1 uppercase hover:opacity-70 transition ${activeClass}`}
+			type='button'
+			className={`flex gap-1 uppercase transition hover:opacity-70 ${activeClass}`}
 			onClick={() => {
 				onClick(sortType, sortOrder)
 				updateSortOrder()
-			}}>
+			}}
+		>
 			{children}
-			<ArrowDown/>
+			<ArrowDown />
 		</button>
 	)
 }

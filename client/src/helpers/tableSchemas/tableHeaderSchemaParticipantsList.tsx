@@ -6,7 +6,10 @@ type TableHeaderSchemaParticipantsListPropsType = {
 	activeSort?: string
 }
 
-export const tableHeaderSchemaParticipantsList = ({ handleClick, activeSort}: TableHeaderSchemaParticipantsListPropsType) => {
+export const tableHeaderSchemaParticipantsList = ({
+	handleClick,
+	activeSort
+}: TableHeaderSchemaParticipantsListPropsType) => {
 	return [
 		{ node: '', classes: 'max-w-[3rem]' },
 		{
@@ -58,7 +61,7 @@ export const tableHeaderSchemaParticipantsList = ({ handleClick, activeSort}: Ta
 			classes: 'max-w-[6.5rem] !text-base font-bold'
 		},
 		{
-			node: <span className="flex gap-1 uppercase">Group</span>,
+			node: <span className='flex gap-1 uppercase'>Group</span>,
 			classes: '!text-base font-bold'
 		}
 	]

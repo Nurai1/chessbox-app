@@ -10,7 +10,13 @@ type AccordionPropsType = {
 	additionalIcon?: ReactNode
 }
 
-export const Accordion: FC<AccordionPropsType> = ({ children, title, classes, isOpenDefault = false, additionalIcon }) => {
+export const Accordion: FC<AccordionPropsType> = ({
+	children,
+	title,
+	classes,
+	isOpenDefault = false,
+	additionalIcon
+}) => {
 	const [isOpen, setIsOpen] = useState(isOpenDefault)
 	const [contentHeight, setContentHeight] = useState<number>()
 	const accordionContentRef = useRef<HTMLDivElement | null>(null)
@@ -42,8 +48,7 @@ export const Accordion: FC<AccordionPropsType> = ({ children, title, classes, is
 				{additionalIcon}
 			</div>
 			<div
-				className={twMerge('overflow-hidden transition-[max-height]',
-					isOpen && 'overflow-visible')}
+				className={twMerge('overflow-hidden transition-[max-height]', isOpen && 'overflow-visible')}
 				style={{
 					maxHeight: `${contentHeight}px`
 				}}
