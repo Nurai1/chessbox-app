@@ -13,9 +13,7 @@ export const ForgotPasswordPage = (): ReactElement => {
 	})
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
-	const isAuthRequestPending = useAppSelector(state => state.user.authLoading)
-	const passwordError = useAppSelector(state => state.user.passwordError)
-	const isPasswordLinkSent = useAppSelector(state => state.user.isPasswordLinkSent)
+	const { passwordError, isPasswordLinkSent, authLoading } = useAppSelector(state => state.user)
 
 	const onChange = (value?: string, name?: string) => {
 		setFormData({
@@ -53,7 +51,7 @@ export const ForgotPasswordPage = (): ReactElement => {
 						type='text'
 						validationErrorText={validateErrors?.email}
 					/>
-					<Button loading={isAuthRequestPending} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
+					<Button loading={authLoading} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
 						Send link to Email
 					</Button>
 				</div>

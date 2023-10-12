@@ -9,7 +9,8 @@ import {
 	CompetitionGroupSchema,
 	ParticipantSchema,
 	DeleteCompetitionGroupSchema,
-	AddNewParticipantSchema
+	AddNewParticipantSchema,
+	CallPairPreparationSchema
 } from 'src/types'
 import {
 	getCompetitionByIdApi,
@@ -20,7 +21,9 @@ import {
 	setCompetitionGroupsOrdersApi,
 	setCompetitionGroupsApi,
 	deleteCompetitionGroupApi,
-	addNewParticipantApi
+	addNewParticipantApi,
+	setBreakTimeApi,
+	callPairPreparationApi
 } from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
@@ -116,6 +119,28 @@ export const addNewParticipant = createAsyncThunk(
 	}
 )
 
+export const setBreakTime = createAsyncThunk(
+	'competition/setBreakTime',
+	async ({ breakTimeMinutes, id }: { breakTimeMinutes: number; id: string }, thunkApi) => {
+		const response = await setBreakTimeApi(breakTimeMinutes, id)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
+export const callPairPreparation = createAsyncThunk(
+	'competition/callPairPreparationApi',
+	async (callPairPreparationData: CallPairPreparationSchema, thunkApi) => {
+		const response = await callPairPreparationApi(callPairPreparationData)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
 export interface CompetitionState {
 	data: CompetitionSchema | null
 	participants: Record<string, ParticipantSchema[] | null>
@@ -139,6 +164,12 @@ export interface CompetitionState {
 	groupDeleteError?: string
 	addNewParticipantPending?: boolean
 	addNewParticipantError?: string
+	setBreakTimePending?: boolean
+	setBreakTimeSuccess?: boolean
+	setBreakTimeError?: string
+	callPairPreparationPending?: boolean
+	callPairPreparationSuccess?: boolean
+	callPairPreparationError?: string
 }
 
 const initialState: CompetitionState = {
@@ -172,6 +203,32 @@ export const competitionSlice = createSlice({
 		},
 		resetDeleteCompetitionGroupStatus: state => {
 			state.groupDeleteSuccess = undefined
+		}, 
+		setBreakTimeLocalState: (state, action: PayloadAction<number>) => {
+			return {
+				...state,
+				data: {
+					...state.data as CompetitionSchema,
+					breakTime: {
+						...state.data?.breakTime,
+						minutes: action.payload
+					}
+				}
+			}
+		},
+		resetBreakTime: state => {
+			return {
+				...state,
+				setBreakTimeError: undefined,
+				setBreakTimeSuccess: undefined,
+				data: {
+					...state.data as CompetitionSchema,
+					breakTime: undefined
+				}
+			}
+		},
+		resetBreakTimeSuccess: state => {
+			state.setBreakTimeSuccess = undefined
 		}
 	},
 	extraReducers: {
@@ -282,7 +339,30 @@ export const competitionSlice = createSlice({
 		[addNewParticipant.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.addNewParticipantPending = false
 			state.addNewParticipantError = action.payload.errorMessage
-		}
+		},
+		[setBreakTime.fulfilled.type]: state => {
+			state.setBreakTimeSuccess = true
+			state.setBreakTimePending = false
+		},
+		[setBreakTime.pending.type]: state => {
+			state.setBreakTimePending = true
+		},
+		[setBreakTime.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.setBreakTimePending = false
+			state.setBreakTimeError = action.payload.errorMessage
+		},
+		[callPairPreparation.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>)  => {
+			state.data = action.payload
+			state.callPairPreparationSuccess = true
+			state.callPairPreparationPending = false
+		},
+		[callPairPreparation.pending.type]: state => {
+			state.callPairPreparationPending = true
+		},
+		[callPairPreparation.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.callPairPreparationPending = false
+			state.callPairPreparationError = action.payload.errorMessage
+		},
 	}
 })
 
@@ -292,7 +372,10 @@ export const {
 	resetCompetitionGroupsOrdersStatus,
 	resetPairJudgeAssignStatus,
 	resetCompetitionGroupsStatus,
-	resetDeleteCompetitionGroupStatus
+	resetDeleteCompetitionGroupStatus,
+	setBreakTimeLocalState,
+	resetBreakTime,
+	resetBreakTimeSuccess
 } = competitionSlice.actions
 
 export default competitionSlice.reducer

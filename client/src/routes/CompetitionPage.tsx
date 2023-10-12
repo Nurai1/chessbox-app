@@ -1,18 +1,16 @@
-import { Fragment, ReactElement, useEffect, useRef, useState } from 'react'
+import { ReactElement, useEffect, useRef, useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Button, Loader, Modal, TableBody, Tag, Timer } from 'src/ui'
 import { ReactComponent as BanknoteIcon } from 'src/assets/banknote.svg'
 import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
 import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
 import { ReactComponent as ArrowRightIcon } from 'src/assets/arrow-right-long.svg'
-import { ReactComponent as ThreeStarsIcon } from 'src/assets/three-stars.svg'
-import { ReactComponent as TwoStarsIcon } from 'src/assets/two-stars.svg'
 import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { AppRoute } from 'src/constants/appRoute'
-import { getAge, getFormattedDate, isPast } from 'src/helpers/datetime'
-import { PairInfo } from 'src/components'
-import { PairType, getTimeTuplePlusMinutes, tableSchemaPairs } from 'src/helpers/tableSchemas/tableSchemaPairs'
+import { getFormattedDate, isPast } from 'src/helpers/datetime'
+import { PairInfo, CompetitionRequirements, YouAreParticipant, RegistrationEndsTimer, CompetitionParticipantsTable } from 'src/components'
+import { PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
 import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
 import {
 	fetchCompetitionById,
@@ -20,24 +18,8 @@ import {
 	fetchCompetitionParticipants,
 	setCompetitionData
 } from 'src/store/slices/competitionSlice'
-
-const getGroupPairsLen = ({
-	currentPairsLen,
-	nextRoundParticipantsLen
-}: {
-	currentPairsLen: number
-	nextRoundParticipantsLen: number
-}) => {
-	let allPairsLen = currentPairsLen + nextRoundParticipantsLen / 2 + currentPairsLen / 2
-	let roundPairsLen = nextRoundParticipantsLen / 2 + currentPairsLen / 2
-
-	while (roundPairsLen > 1) {
-		roundPairsLen = Math.floor(roundPairsLen / 2)
-		allPairsLen += roundPairsLen
-	}
-
-	return allPairsLen
-}
+import { Role } from 'src/constants/role'
+import { UserSchema } from 'src/types'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
@@ -57,13 +39,9 @@ export const CompetitionPage = (): ReactElement => {
 	const isParticipant =
 		competitionData?.participants && competitionData.participants.includes(authorizedUser?._id ?? '')
 	const isRegistrationClosed = competitionData && isPast(competitionData.registrationEndsAt)
-	const isOver = competitionData && Boolean(competitionData.endDate)
+	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
 	const participantsTable = participants && tableSchemaParticipants(participants)
-	const requirements = competitionData?.requirements
-	const startPointTimeTuple =
-		competitionData?.startDate && Number(new Date(competitionData?.startDate)) - Date.now() > 0
-			? getFormattedDate(competitionData.startDate, 'HH:mm').split(':')
-			: getFormattedDate(new Date().toISOString(), 'HH:mm').split(':')
+	const [isTimeOver, setIsTimeOver] = useState(competitionData && isPast(competitionData.startDate))
 
 	useEffect(() => {
 		if (!competitionDataExisting) {
@@ -92,6 +70,12 @@ export const CompetitionPage = (): ReactElement => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isSideMenuOpen])
 
+	useEffect(() => {
+		if (competitionData) {
+			setIsTimeOver(isPast(competitionData.startDate))
+		}
+	}, [competitionData])
+
 	const handleSideMenuOpen = () => {
 		setIsSideMenuOpen(!isSideMenuOpen)
 	}
@@ -105,85 +89,38 @@ export const CompetitionPage = (): ReactElement => {
 		}
 	}
 
-	const participate = () =>
-		!isRegistrationClosed &&
-		!isParticipant &&
-		!isOver && (
-			<div className='mb-[24px] lg:mb-0'>
-				<div className='mb-[24px] flex items-baseline lg:flex-col lg:gap-[20px]'>
-					<h3 className='mr-[8px] text-sm text-grey lg:text-base xl:text-[32px] xl:font-semibold xl:leading-[48px]'>
-						Registration ends in:
-					</h3>
-					{competitionData && (
-						<Timer
-							time={competitionData.registrationEndsAt}
-							containerClasses='xl:h-[107px] xl:w-[107px] '
-							countNumbersClasses='xl:text-[32px] xl:leading-[48px]'
-						/>
-					)}
+	const timeBeforeStart = () => (
+		(isRegistrationClosed && isParticipant || isRegistrationClosed && authorizedUser?.role === Role.ChiefJudge) && (
+			<div>
+				<div className='flex items-center justify-between mb-5 p-3 rounded-2xl border-2
+                            md:py-4 md:px-9
+                            lg:flex-col lg:justify-start lg:gap-6 lg:p-4 lg:h-fit
+                            xl:items-baseline xl:p-7'>
+					<div>
+						<h3 className='mr-1 mb-2 text-sm xl:text-heading-3 xl:text-grey'>Approximate time start before match:</h3>
+						{competitionData && (
+							<Timer
+								time={competitionData.startDate}
+								classes='gap-1.5 lg:gap-3'
+								containerClasses='lg:w-14 lg:h-14 xl:h-[6.5rem] xl:min-w-[6.5rem] xl:p-4'
+								countNumbersClasses='xl:text-[2rem]'
+								handleTimeOver={(isTimerFinished: boolean) => setIsTimeOver(isTimerFinished)}
+							/>
+						)}
+					</div>
 				</div>
-				<div className='flex flex-col gap-[15px] md:flex-row md:gap-[20px] lg:flex-col lg:gap-[10px]'>
-					{authorizedUser?.role !== 'chief_judge' && (
-						<Button onClick={handleParticipateClick} classes='md:w-full'>
-							Participate
-						</Button>
-					)}
-					<Button
-						onClick={handleSideMenuOpen}
-						type='outlined'
-						classes='md:w-full lg:font-normal lg:text-sm xl:text-base xl:font-bold'
-					>
-						Check out participants
+				{authorizedUser?.role === Role.ChiefJudge && isTimeOver && (
+					<Button classes='w-full mb-[1.25rem]' onClick={() => navigate(AppRoute.JudgeCompetition)}>
+						To competition
 					</Button>
-				</div>
+				)}
+				{isParticipant && isTimeOver && (
+					<Button classes='w-full' onClick={() => ''}>
+						Show this button after call up for participant
+					</Button>
+				)}
 			</div>
 		)
-
-	const participant = () =>
-		isParticipant &&
-		!isOver &&
-		!isRegistrationClosed && (
-			<div className='relative mb-[24px] lg:mb-0 lg:h-fit lg:rounded-[12px] lg:border lg:p-[30px_10px_10px_10px] xl:p-[45px_25px_25px_25px]'>
-				<div className='hidden lg:mb-[25px] lg:block xl:mb-[40px]'>
-					<h3 className='hidden lg:mb-[20px] lg:block lg:text-xl lg:font-semibold xl:mb-[30px] xl:text-[32px] xl:leading-[48px]'>
-						You are <br />
-						participant!
-					</h3>
-					<p className='hidden text-sm lg:block xl:text-base'>Additional information will be published later</p>
-					<ThreeStarsIcon
-						className='absolute top-[15px] left-[92px] w-[24px]
-					xl:top-[34px] xl:left-[150px] xl:w-[44px]'
-					/>
-					<ThreeStarsIcon
-						className='2xl:h-[37px absolute top-[24px] left-[143px] w-[24px]
-					xl:top-[50px] xl:left-[260px] xl:w-[44px]'
-					/>
-					<TwoStarsIcon
-						className='absolute top-[70px] left-[130px] w-[23px]
-					xl:top-[120px] xl:left-[240px] xl:w-[40px]'
-					/>
-				</div>
-				<div className='flex flex-col gap-[15px] md:flex-row md:gap-[20px] lg:flex-col lg:gap-[10px]'>
-					<Button onClick={() => ''} type='outlined' classes='pointer-events-none md:w-full lg:hidden'>
-						You are participant!
-					</Button>
-					<Button
-						onClick={handleSideMenuOpen}
-						type='outlined'
-						classes='md:w-full lg:font-normal lg:text-sm lg:px-0 xl:text-base xl:font-bold'
-					>
-						Check out <span className='md:hidden xl:inline'>other</span>
-						participants
-					</Button>
-				</div>
-			</div>
-		)
-
-	const groupsAllPairsLen = competitionData?.groups?.map(group =>
-		getGroupPairsLen({
-			currentPairsLen: group.currentRoundPairs?.length ?? 0,
-			nextRoundParticipantsLen: group.nextRoundParticipants?.length ?? 0
-		})
 	)
 
 	return (
@@ -200,7 +137,7 @@ export const CompetitionPage = (): ReactElement => {
 				{fetchError && <h2>{fetchError}</h2>}
 				{competitionData && (
 					<>
-						<div className='lg:grid lg:grid-cols-[1fr_190px] lg:gap-[0_15px] xl:grid-cols-[1fr_345px] xl:gap-[0_40px]'>
+						<div className='lg:grid lg:grid-cols-[1fr_13.75rem] lg:gap-[0_15px] xl:grid-cols-[1fr_24.5rem] xl:gap-[0_40px]'>
 							<div>
 								<h1 className='mb-[15px] text-heading-4 lg:mb-[10px] xl:mb-[24px] xl:text-heading-1'>
 									{competitionData.name}
@@ -222,37 +159,25 @@ export const CompetitionPage = (): ReactElement => {
 										/>
 									)}
 								</div>
-								{requirements && (
-									<div className='mb-[24px] flex items-center'>
-										<p className='max-w-[150px] pr-[16px] text-[#6C6A6C] xl:font-bold'>Competition requirements:</p>
-										<div className='min-w-[112px] border-x px-[16px]'>
-											<p className='mb-[8px] text-sm xl:text-base'>Age:</p>
-											<p className='whitespace-nowrap font-bold'>
-												{requirements?.ageCategory?.from} - {requirements?.ageCategory?.to}{' '}
-											</p>
-										</div>
-										<div className='min-w-[100px] pl-[16px]'>
-											<p className='mb-[8px] text-sm xl:text-base'>Weight:</p>
-											<p className='whitespace-nowrap font-bold'>
-												{requirements?.weightCategory?.from} - {requirements?.weightCategory?.to}
-												<span className='text-[#6C6A6C]'> kg</span>
-											</p>
-										</div>
-									</div>
-								)}
+								<CompetitionRequirements competitionRequirements={competitionData.requirements} classes='mb-6'/>
 							</div>
-							{participate()}
-							{participant()}
-							{isRegistrationClosed && !isParticipant && <h2>Registration Closed</h2>}
-							{isRegistrationClosed && isParticipant && <h2>Time before start {competitionData.startDate}</h2>}
+							{!isRegistrationClosed && !isParticipant && !isCompetitionOver && <RegistrationEndsTimer
+								time={competitionData.registrationEndsAt}
+								authorizedUser={authorizedUser as UserSchema}
+								onParticipateClick={handleParticipateClick}
+								onSideMenuOpen={handleSideMenuOpen}
+							/>}
+							{isParticipant && !isCompetitionOver && !isRegistrationClosed && <YouAreParticipant onSideMenuOpen={handleSideMenuOpen}/>}
+							{isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge && <h2>Registration Closed</h2>}
+							{timeBeforeStart()}
 							<div>
 								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
 								<p className='mb-9'>{competitionData.description}</p>
-								{authorizedUser?.role === 'chief_judge' && (
-									<>
+								{authorizedUser?.role === 'chief_judge' && competitionData.groups?.length === 0 && (
+									<div className={`${!isRegistrationClosed && 'pointer-events-none opacity-30'}`}>
 										<Link
 											to={AppRoute.JudgeChoice}
-											className='mb-2.5 flex items-center gap-5 text-lg font-bold transition hover:opacity-70 xl:text-4xl xl:leading-normal'
+											className='b-2.5 flex items-center gap-5 text-lg font-bold transition hover:opacity-70 xl:text-4xl xl:leading-normal'
 										>
 											Set up the competition
 											<ArrowRightIcon className='w-8 xl:w-[3.125rem]' />
@@ -263,7 +188,7 @@ export const CompetitionPage = (): ReactElement => {
 												You need to assign judges, create groups, connect judges to pairs and assign orders to groups
 											</p>
 										</div>
-									</>
+									</div>
 								)}
 							</div>
 						</div>
@@ -285,113 +210,15 @@ export const CompetitionPage = (): ReactElement => {
 								<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
 									Competition schedule
 								</h2>
-								<div className='xl:px[50px] flex grow flex-col lg:rounded-3xl lg:border lg:border-[#DADADA] lg:px-[40px] lg:pt-[33px] xl:pt-[63px]'>
-									{competitionData.groups?.map(
-										(
-											{ _id, gender, ageCategory, weightCategory, currentRoundPairs, nextRoundParticipants },
-											groupIndex
-										) => {
-											const currentRoundPairsLen = currentRoundPairs?.length ?? 0
-											const competitionJudgesLen = competitionData?.judges?.length ?? 1
-
-											let pairsBeforeLen = 0
-											for (let i = 0; i < groupIndex; i += 1) {
-												pairsBeforeLen += groupsAllPairsLen?.[i] ?? 0
-											}
-
-											pairsBeforeLen =
-												pairsBeforeLen % competitionJudgesLen === 0
-													? pairsBeforeLen
-													: pairsBeforeLen + (pairsBeforeLen % competitionJudgesLen)
-
-											const nextRoundParticipantsStartTime = getTimeTuplePlusMinutes(
-												startPointTimeTuple,
-												((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen +
-													(competitionData?.breakTime?.minutes ?? 0)
-											).join(':')
-
-											return (
-												<Fragment key={_id}>
-													<h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
-														{getTimeTuplePlusMinutes(
-															startPointTimeTuple,
-															(pairsBeforeLen * 10) / competitionJudgesLen + (competitionData?.breakTime?.minutes ?? 0)
-														).join(':')}
-														<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}-
-														{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
-													</h3>
-													{currentRoundPairs && participants && judges ? (
-														<TableBody
-															rows={tableSchemaPairs({
-																tableData: currentRoundPairs,
-																participants,
-																judges,
-																startTimeTuple: getTimeTuplePlusMinutes(
-																	startPointTimeTuple,
-																	(pairsBeforeLen * 10) / competitionJudgesLen +
-																		(competitionData?.breakTime?.minutes ?? 0)
-																),
-																currentUser: { currentUserPairRef, authorizedUserId: authorizedUser?._id },
-																breakTime: competitionData?.breakTime
-															})}
-														/>
-													) : (
-														<Loader />
-													)}
-													{!!nextRoundParticipants?.length && (
-														<h3 className='mb-[17px] font-bold md:mb-[32px] xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
-															{getTimeTuplePlusMinutes(
-																startPointTimeTuple,
-																((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen +
-																	(competitionData?.breakTime?.minutes ?? 0)
-															).join(':')}
-															<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}-
-															{ageCategory?.to} age, {weightCategory?.from}-{weightCategory?.to}kg
-														</h3>
-													)}
-													{nextRoundParticipants?.map((participantId, participantIdx) => {
-														const nextRoundParticipant = participants
-															? participants.find(({ _id: pId }) => pId === participantId)
-															: null
-
-														if (participantId === authorizedUser?._id) {
-															currentUserPairRef.current = {
-																startTime: nextRoundParticipantsStartTime,
-																pair: {
-																	whiteParticipant: participantId,
-																	whiteParticipantData: nextRoundParticipant ?? undefined
-																}
-															}
-														}
-
-														return (
-															<div
-																key={nextRoundParticipant?._id}
-																className='flex h-20 w-full items-center py-3 md:pr-6'
-															>
-																<div className='h-full w-[50px] font-bold'>{participantIdx}</div>
-																<div className='flex h-full grow flex-col'>
-																	<div className='mb-[7px] text-sm text-black xl:text-base'>
-																		{nextRoundParticipant?.fullName}
-																	</div>
-																	<div className='text-[#6C6A6C]'>
-																		{getAge(nextRoundParticipant?.birthDate as string)} age,{' '}
-																		{nextRoundParticipant?.weight} kg
-																	</div>
-																</div>
-																<div>
-																	<span className='text-sm uppercase text-[#4565D9] md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3 xl:col-start-3 xl:col-end-4 xl:row-auto xl:text-base xl:font-bold'>
-																		WAITING
-																	</span>
-																</div>
-															</div>
-														)
-													})}
-												</Fragment>
-											)
-										}
-									)}
-								</div>
+								{competitionData.groups?.length !== 0 && participants && judges && authorizedUser 
+									? <CompetitionParticipantsTable
+											competitionData={competitionData}
+											participants={participants}
+											judges={judges}
+											authorizedUser={authorizedUser}
+										/>
+									: <Loader/>	
+								}
 							</>
 						)}
 					</>

@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { TableBody, Button, Alert } from 'src/ui'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchCompetitionById, setCompetitionJudges, setJudgesToCompetition } from 'src/store/slices/competitionSlice'
-import { updateCompetitionsList } from 'src/store/slices/competitionsSlice'
+import { updateCompetitionsListJudges } from 'src/store/slices/competitionsSlice'
 import { fetchAllJudges } from 'src/store/slices/usersSlice'
 import { tableSchemaJudges } from 'src/helpers/tableSchemas/tableSchemaJudges'
 import { UserSchema } from 'src/types'
@@ -19,9 +19,9 @@ export const JudgeChoicePage = (): ReactElement => {
 	const competitionData = useAppSelector(s => s.competition.data)
 	const [selectedJudgesId, setSelectedJudgesId] = useState<string[]>([])
 	const judges = useAppSelector(s => s.users.allJudges)
-	const pending = useAppSelector(s => s.competition.setCompetitionJudgesPending)
-	const assignSuccess = useAppSelector(s => s.competition.setCompetitionJudgesSuccess)
-	const submitError = useAppSelector(s => s.competition.setCompetitionJudgesError)
+	const { setCompetitionJudgesError, setCompetitionJudgesSuccess, setCompetitionJudgesPending } = useAppSelector(
+		s => s.competition
+	)
 	const maxJudgesReached = selectedJudgesId.length >= MAX_JUDGES
 
 	useEffect(() => {
@@ -42,7 +42,7 @@ export const JudgeChoicePage = (): ReactElement => {
 	}, [competitionData])
 
 	useEffect(() => {
-		if (assignSuccess) {
+		if (setCompetitionJudgesSuccess) {
 			const selectedJudges = selectedJudgesId.map(judgeId => judges?.find(judge => judge._id === judgeId))
 			navigate(`../${AppRoute.CreateGroup}`)
 			dispatch(
@@ -52,14 +52,14 @@ export const JudgeChoicePage = (): ReactElement => {
 				})
 			)
 			dispatch(
-				updateCompetitionsList({
+				updateCompetitionsListJudges({
 					selectedJudges: selectedJudgesId,
 					competitionId: competitionId as string
 				})
 			)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [assignSuccess])
+	}, [setCompetitionJudgesSuccess])
 
 	const handleSelectJudge = (value?: boolean | string, name?: string) => {
 		if (selectedJudgesId.includes(name as string)) {
@@ -102,11 +102,13 @@ export const JudgeChoicePage = (): ReactElement => {
 						onClick={handleSubmit}
 						classes='w-full mt-4 md:w-[223px] xl:mt-11'
 						disabled={!maxJudgesReached}
-						loading={pending}
+						loading={setCompetitionJudgesPending}
 					>
 						Continue
 					</Button>
-					{submitError && <Alert type='error' subtitle={submitError} classes='mt-6 w-fit xl:mt-9' />}
+					{setCompetitionJudgesError && (
+						<Alert type='error' subtitle={setCompetitionJudgesError} classes='mt-6 w-fit xl:mt-9' />
+					)}
 				</div>
 			)}
 		</main>

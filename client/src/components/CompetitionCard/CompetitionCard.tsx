@@ -40,36 +40,37 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 		}
 	}
 
-	const participateMobile = () =>
-		screenWidth < BreakPoint.Lg &&
-		!isRegistrationClosed &&
-		!isParticipant &&
-		!isOver &&
-		authorizedUser?.role !== Role.ChiefJudge && (
-			<Button onClick={handleParticipateClick} classes='w-full mt-[17px] md:mt-[12px]'>
-				Participate
-			</Button>
-		)
+	// const participateMobile = () =>
+	// 	screenWidth < BreakPoint.Lg &&
+	// 	!isRegistrationClosed &&
+	// 	!isParticipant &&
+	// 	!isOver &&
+	// 	authorizedUser?.role !== Role.ChiefJudge && (
+	// 		<Button onClick={handleParticipateClick} classes='w-full mt-[17px] md:mt-[12px]'>
+	// 			YouAreParticipant
+	// 		</Button>
+	// 	)
 
-	const participateDesktop = () =>
-		screenWidth >= BreakPoint.Lg &&
+	const participate = () =>
 		!isRegistrationClosed &&
 		!isParticipant &&
 		!isOver && (
 			<div
-				className='mb-[17px] flex items-center
-				lg:col-start-2 lg:col-end-3 lg:mb-0 lg:max-w-[190px] lg:flex-col
-				lg:items-start xl:col-start-3 xl:col-end-4 xl:max-w-[250px]'
+				className='mt-6 w-full
+				lg:col-start-2 lg:col-end-3 lg:mb-0  lg:flex-col
+				lg:items-start xl:col-start-3 xl:col-end-4'
 			>
-				<h3
-					className='mr-1 text-grey
-					lg:mb-3
-					xl:mb-4 xl:text-2xl xl:font-semibold'
-				>
-					Registration ends in:
-				</h3>
-				<Timer time={registrationEndsAt} classes='lg:mb-[20px] 2xl:mb-[26px]' />
-				{screenWidth >= BreakPoint.Lg && authorizedUser?.role !== Role.ChiefJudge && (
+				<div className='flex items-center justify-between gap-4 mb-6 md:mb-3 lg:flex-col lg:items-baseline xl:mb-[1.625rem]'>
+					<h3
+						className='font-bold
+						xl:text-2xl xl:font-semibold'
+					>
+						Registration ends in:
+					</h3>
+					<Timer time={registrationEndsAt} />
+				</div>
+
+				{authorizedUser?.role !== Role.ChiefJudge && (
 					<Button onClick={handleParticipateClick} classes='w-full'>
 						Participate
 					</Button>
@@ -178,10 +179,10 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 
 	return (
 		<article
-			className='pt-[20px] pb-[30px] lg:grid lg:grid-cols-[auto_190px]
-		lg:gap-[25px] lg:pt-[25px] xl:grid-cols-[44%_27%_250px] xl:gap-[20px]
+			className='pt-[20px] pb-[30px] lg:grid lg:grid-cols-[auto_14.25rem]
+		lg:gap-[25px] lg:pt-[25px] xl:grid-cols-[44%_27%_18.75rem] xl:gap-[20px]
 		xl:px-[23px] xl:py-[41px] 2xl:px-[26px] 2xl:pt-[68px]
-		 2xl:pb-[44px] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-b-[#DADADA]'
+		 2xl:pb-[44px] 2xl:grid-cols-[44%_27%_15.625rem] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-b-[#DADADA]'
 		>
 			<div
 				className='lg:col-start-1 lg:col-end-3
@@ -210,7 +211,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 					</div>
 				)}
 			</div>
-			{participateDesktop()}
+			{screenWidth >= BreakPoint.Lg && participate()}
 			{participantDesktop()}
 			{registrationClosedDesktop()}
 			{competitionOverDesktop()}
@@ -233,7 +234,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 						)}
 					</div>
 				)}
-				{participateMobile()}
+				{screenWidth < BreakPoint.Lg && participate()}
 				{participantMobile()}
 				{registrationClosedMobile()}
 				{competitionOverMobile()}

@@ -14,12 +14,9 @@ import { getFormattedDate } from 'src/helpers/datetime'
 export const EditProfilePage = (): ReactElement => {
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
-	const editRequestPending = useAppSelector(state => state.user.editLoading)
-	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
-	const editSuccess = useAppSelector(state => state.user.editSuccess)
-	const editError = useAppSelector(state => state.user.editError)
-	const isPasswordLinkSent = useAppSelector(state => state.user.isPasswordLinkSent)
-	const authLoading = useAppSelector(state => state.user.authLoading)
+	const { authorizedUser, editSuccess, editError, isPasswordLinkSent, authLoading, editLoading } = useAppSelector(
+		state => state.user
+	)
 
 	const [formData, setFormData] = useState<FormData>({
 		firstName: authorizedUser?.firstName,
@@ -195,7 +192,7 @@ export const EditProfilePage = (): ReactElement => {
 									<span className=' ml-2 inline-block h-5 w-5 animate-spin rounded-full border-[4px] border-black border-b-transparent' />
 								)}
 							</button>
-							<Button loading={editRequestPending} classes='w-full font-medium sm:w-[160px]' onClick={handleSubmit}>
+							<Button loading={editLoading} classes='w-full font-medium sm:w-[160px]' onClick={handleSubmit}>
 								Save
 							</Button>
 						</div>

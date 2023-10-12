@@ -28,8 +28,7 @@ export const SignUpForm = (): ReactElement => {
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
-	const isAuthRequestPending = useAppSelector(state => state.user.authLoading)
-	const authError = useAppSelector(state => state.user.authError)
+	const { authError, authLoading } = useAppSelector(state => state.user)
 
 	const onChange = (value?: string, name?: string) => {
 		setFormData({
@@ -216,7 +215,7 @@ export const SignUpForm = (): ReactElement => {
 						onShowPassword={() => setShowConfirmPassword(!showConfirmPassword)}
 						showPasswordIcon
 					/>
-					<Button loading={isAuthRequestPending} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
+					<Button loading={authLoading} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
 						Sign Up
 					</Button>
 				</div>
