@@ -13,5 +13,6 @@ export const AppRoute = {
 	CreateGroup: 'create-group',
 	OrdersGroupAssign: 'orders-group-assign',
 	JudgeAssign: 'judge-assign',
+	JudgeCompetition: 'judge-competition',
 	NotFound: '*'
 }

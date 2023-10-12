@@ -2,6 +2,9 @@ import { MutableRefObject } from 'react'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 import { CompetitionSchema, PairSchema, UserSchema } from 'src/types'
 import { getAge, localTZName } from 'src/helpers/datetime'
+import { Button } from 'src/ui'
+import { useTimer } from 'src/hooks/useTimer'
+import { addZero } from '../addZero'
 
 export const getTimeTuplePlusMinutes = (startTimeTuple: string[] | null, minutesPassed: number) => {
 	const [hours, minutes] = startTimeTuple?.map(Number) ?? []
@@ -26,7 +29,13 @@ export const tableSchemaPairs = ({
 	judges,
 	startTimeTuple,
 	currentUser,
-	breakTime
+	breakTime,
+	isJudgeCompetitionPage,
+	maxPairs,
+	groupIndex,
+	groupId,
+	onCallPairPreparation,
+	onCallUpTimer
 }: {
 	tableData: PairSchema[]
 	participants: UserSchema[]
@@ -37,6 +46,12 @@ export const tableSchemaPairs = ({
 		authorizedUserId?: string
 	}
 	breakTime?: CompetitionSchema['breakTime']
+	isJudgeCompetitionPage?: boolean
+	maxPairs?: number
+	groupIndex?: number
+	groupId?: string
+	onCallPairPreparation?: (groupId: string, pairId: string) => void
+	onCallUpTimer?: () => void
 }) => {
 	const participantsData = tableData.reduce((acc, pair) => {
 		const blackParticipantData = participants.find(({ _id }) => pair.blackParticipant === _id)
@@ -54,6 +69,7 @@ export const tableSchemaPairs = ({
 		]
 	}, [] as PairType[])
 
+	const isFirstGroup = groupIndex === 0
 	const statusStyle =
 		'uppercase text-sm md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3 xl:row-auto xl:col-start-3 xl:col-end-4 xl:text-base xl:font-bold text-right md:pr-6'
 
@@ -72,6 +88,22 @@ export const tableSchemaPairs = ({
 				pair,
 				startTime: currentPairTime
 			}
+
+		const timer = pair.calledForPreparation ? useTimer({
+			minutes: 2,
+			seconds: 10,
+			isTimeOver: onCallUpTimer
+		}) : null
+
+		const inProgressCondition = pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant
+		const waitingCondition =
+			(!pair.acceptedForFight?.blackParticipant || !pair.acceptedForFight?.whiteParticipant) &&
+			!pair.winner &&
+			pair.calledForPreparation &&
+			!isJudgeCompetitionPage
+		const callUpCondition =
+			isFirstGroup && isJudgeCompetitionPage && onCallPairPreparation && !pair.calledForPreparation
+		const showCallUpTimerCondition = pair.calledForPreparation && timer && isJudgeCompetitionPage
 
 		return {
 			cells: [
@@ -92,17 +124,13 @@ export const tableSchemaPairs = ({
 									rel='noreferrer'
 									className='inline-flex gap-[8px] text-xs transition hover:opacity-70 xl:text-base'
 								>
-									<WhatsappIcon className='xl:h-[24px] xl:min-w-[24px]' />
+									<WhatsappIcon className='h-4 w-4 xl:h-6 xl:w-6' />
 									Judge: {pair.judgeData?.fullName}
 								</a>
 							</div>
-							{pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant && (
-								<div className={`text-[#FB9F16] ${statusStyle}`}>IN PROGRESS</div>
-							)}
+							{inProgressCondition && <div className={`text-[#FB9F16] ${statusStyle}`}>IN PROGRESS</div>}
 							{pair.winner && <div className={`text-[#6DDA64] ${statusStyle}`}>FINISHED</div>}
-							{!pair.winner && !pair.acceptedForFight && pair.calledForPreparation && (
-								<div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>
-							)}
+							{waitingCondition && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
 							<div className='col-start-1 col-end-3 flex justify-between md:col-end-2 xl:col-start-2 xl:col-end-3 xl:row-start-1 xl:row-end-2'>
 								<div className='w-[45%]'>
 									<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
@@ -121,6 +149,19 @@ export const tableSchemaPairs = ({
 									</div>
 								</div>
 							</div>
+							{callUpCondition && (
+								<Button
+									onClick={() => onCallPairPreparation(groupId as string, pair._id as string)}
+									disabled={Boolean(breakTime)}
+								>
+									Call up
+								</Button>
+							)}
+							{showCallUpTimerCondition && (
+								<Button type='outlined' disabled>
+									{addZero(String(timer.minutes))}:{addZero(String(timer.seconds))}
+								</Button>
+							)}
 						</div>
 					),
 					classes: 'pl-0'
@@ -129,3 +170,4 @@ export const tableSchemaPairs = ({
 		}
 	})
 }
+// as MouseEventHandler<HTMLButtonElement>

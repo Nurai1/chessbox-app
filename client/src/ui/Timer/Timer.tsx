@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, memo } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { calcTime, getEndTime } from '../../helpers/datetime'
+import { calcTime, getEndTime, isPast } from '../../helpers/datetime'
 import { addZero } from '../../helpers/addZero'
 
 type TimerPropsType = {
@@ -8,8 +8,9 @@ type TimerPropsType = {
 	classes?: string
 	containerClasses?: string
 	countNumbersClasses?: string
+	handleTimeOver?: (isTimerFinished: boolean) => void
 }
-const Timer: FC<TimerPropsType> = memo(({ time, classes, containerClasses, countNumbersClasses }) => {
+const Timer: FC<TimerPropsType> = memo(({ time, classes, containerClasses, countNumbersClasses, handleTimeOver }) => {
 	const [endTime, setEndTime] = useState<{
 		minutes: number
 		hours: number
@@ -21,82 +22,86 @@ const Timer: FC<TimerPropsType> = memo(({ time, classes, containerClasses, count
 	})
 
 	useEffect(() => {
-		const currentParsedTime = getEndTime(time)
-		setEndTime(currentParsedTime)
+		if (!isPast(time)) {
+			setEndTime(getEndTime(time))
+		}
 
 		const timer = setInterval(() => {
+			if (isPast(time)) {
+				if (handleTimeOver) {
+					handleTimeOver(true)
+				}
+				clearInterval(timer)
+
+				return
+			}
 			setEndTime(t => calcTime(t))
 		}, 60000)
+		// eslint-disable-next-line consistent-return
 		return () => clearInterval(timer)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [time])
 
 	return (
-		<ul className={twMerge('inline-flex gap-2 ', classes)}>
+		<ul className={twMerge('inline-flex gap-3', classes)}>
 			<li
 				className={twMerge(
-					'text-base font-bold lg:flex lg:h-[55px] lg:w-[55px] lg:flex-col lg:justify-center lg:rounded-2xl lg:border-2 lg:border-[#DADADA] lg:py-2 lg:px-0.5 lg:text-center xl:h-[75px] xl:w-[75px] xl:py-2 xl:px-1',
+					'p-1 w-14 h-14 rounded-2xl border-2 border-pale-grey flex flex-col text-center md:w-[4.25rem] xl:w-[5.75rem] xl:h-[4.75rem] xl:p-2 2xl:w-[4.75rem]',
 					containerClasses
 				)}
 			>
 				<span
 					className={twMerge(
-						'inline font-bold lg:text-sm lg:font-normal xl:block xl:text-2xl xl:font-semibold',
+						'font-bold xl:text-2xl xl:font-semibold',
 						countNumbersClasses
 					)}
 				>
 					{endTime ? addZero(endTime.days.toString()) : '0'}
 				</span>
-				<span className='text-base font-bold lg:hidden'>&nbsp;d</span>
 				<span
-					className='hidden
-				lg:block lg:text-xs lg:font-normal lg:capitalize lg:text-grey xl:text-sm'
+					className='text-xs text-grey xl:text-sm'
 				>
-					{endTime?.days === 1 ? 'day' : 'days'}
+					{endTime?.days === 1 ? 'Day' : 'Days'}
 				</span>
 			</li>
 			<li
 				className={twMerge(
-					'text-base font-bold lg:flex lg:h-[55px] lg:w-[55px] lg:flex-col lg:justify-center lg:rounded-2xl lg:border-2 lg:border-[#DADADA] lg:py-2 lg:px-0.5 lg:text-center xl:h-[75px] xl:w-[75px] xl:py-2 xl:px-1',
+					'p-1 w-14 h-14 rounded-2xl border-2 border-pale-grey flex flex-col text-center md:w-[4.25rem] xl:w-[5.75rem] xl:h-[4.75rem] xl:p-2 2xl:w-[4.75rem]',
 					containerClasses
 				)}
 			>
 				<span
 					className={twMerge(
-						'inline font-bold lg:text-sm lg:font-normal xl:block xl:text-2xl xl:font-semibold',
+						'font-bold xl:text-2xl xl:font-semibold',
 						countNumbersClasses
 					)}
 				>
 					{endTime ? addZero(endTime.hours.toString()) : 0}
 				</span>
-				<span className='text-base font-bold lg:hidden'>h</span>
 				<span
-					className='hidden
-				lg:block lg:text-xs lg:font-normal lg:capitalize lg:text-grey xl:text-sm'
+					className='text-xs text-grey xl:text-sm'
 				>
-					{endTime?.hours === 1 ? 'hour' : 'hours'}
+					{endTime?.hours === 1 ? 'Hour' : 'Hours'}
 				</span>
 			</li>
 			<li
 				className={twMerge(
-					'text-base font-bold lg:flex lg:h-[55px] lg:w-[55px] lg:flex-col lg:justify-center lg:rounded-2xl lg:border-2 lg:border-[#DADADA] lg:py-2 lg:px-0.5 lg:text-center xl:h-[75px] xl:w-[75px] xl:py-2 xl:px-1',
+					'p-1 w-14 h-14 rounded-2xl border-2 border-pale-grey flex flex-col text-center md:w-[4.25rem] xl:w-[5.75rem] xl:h-[4.75rem] xl:p-2 2xl:w-[4.75rem]',
 					containerClasses
 				)}
 			>
 				<span
 					className={twMerge(
-						'inline font-bold lg:text-sm lg:font-normal xl:block xl:text-2xl xl:font-semibold',
+						'font-bold xl:text-2xl xl:font-semibold',
 						countNumbersClasses
 					)}
 				>
 					{endTime ? addZero(endTime.minutes.toString()) : 0}
 				</span>
-				<span className='text-base font-bold lg:hidden'>m</span>
 				<span
-					className='hidden
-				lg:block lg:text-xs lg:font-normal lg:capitalize lg:text-grey xl:text-sm'
+					className='text-xs text-grey xl:text-sm'
 				>
-					{endTime?.minutes === 1 ? 'minute' : 'minutes'}
+					{endTime?.minutes === 1 ? 'Minute' : 'Minutes'}
 				</span>
 			</li>
 		</ul>

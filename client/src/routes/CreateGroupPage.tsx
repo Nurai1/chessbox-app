@@ -4,7 +4,12 @@ import { AppRoute } from 'src/constants/appRoute'
 import { SortOrder } from 'src/constants/sortOrder'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { Button, BottomFixedContainer, Loader, RoundedBorderWrapper, Accordion, TableBody, Alert } from 'src/ui'
-import { CompetitionRequirements, GroupParameters, CompetitionCreateHeader, ParticipantsList } from 'src/components'
+import {
+	CompetitionRequirementsBordered,
+	GroupParameters,
+	CompetitionCreateHeader,
+	ParticipantsList
+} from 'src/components'
 import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
@@ -25,12 +30,6 @@ import { sortBy } from 'remeda'
 type AlertType = {
 	show: boolean
 } & AlertPropTypes
-
-// const overlapError = {
-// 	hasError: false,
-// 	stopWatching: false
-// }
-
 export const CreateGroupPage = (): ReactElement => {
 	const { competitionId } = useParams()
 	const dispatch = useAppDispatch()
@@ -38,12 +37,8 @@ export const CreateGroupPage = (): ReactElement => {
 	const competitionData = useAppSelector(s => s.competition.data)
 	const judges = useAppSelector(s => s.competition.judges[competitionId as string])
 	const allParticipantsData = useAppSelector(s => s.competition.participants[competitionId as string])
-	const addGroupPending = useAppSelector(s => s.competition.groupAddPending)
-	const addGroupSuccess = useAppSelector(s => s.competition.groupAddSuccess)
-	const addGroupError = useAppSelector(s => s.competition.groupAddError)
-	const deleteGroupPending = useAppSelector(s => s.competition.groupDeletePending)
-	const deleteGroupSuccess = useAppSelector(s => s.competition.groupDeleteSuccess)
-	const deleteGroupError = useAppSelector(s => s.competition.groupDeleteError)
+	const { groupAddPending, groupAddSuccess, groupAddError, groupDeletePending, groupDeleteSuccess, groupDeleteError } =
+		useAppSelector(s => s.competition)
 	const [groupParameters, setGroupParameters] = useState<CompetitionRequirementsSchema>()
 	const [deletingGroupId, setDeletingGroupId] = useState<string>()
 	const [allParticipants, setAllParticipants] = useState<ParticipantSchema[]>()
@@ -142,8 +137,6 @@ export const CreateGroupPage = (): ReactElement => {
 					}
 					if (!hasOverlapError.stopWatching) {
 						setHasOverlapError({ hasError: true, stopWatching: true })
-						// overlapError.hasError = true
-						// overlapError.stopWatching = true
 					}
 					return participant
 				}
@@ -272,7 +265,7 @@ export const CreateGroupPage = (): ReactElement => {
 			setParticipants(participantsSplitted as ParticipantsListTable)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [allParticipantsData, addGroupSuccess])
+	}, [allParticipantsData, groupAddSuccess])
 
 	useEffect(() => {
 		// updates participants after group deleted
@@ -287,34 +280,34 @@ export const CreateGroupPage = (): ReactElement => {
 			setParticipants(participantsGroupSplitted)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [deleteGroupSuccess, deletingGroupId])
+	}, [groupDeleteSuccess, deletingGroupId])
 
 	useEffect(() => {
-		if (addGroupSuccess) {
+		if (groupAddSuccess) {
 			setShowButtonClicked(false)
 			setAlertData({ show: true, title: 'Group added', type: 'success' })
 			setGroupParameters(undefined)
 			dispatch(resetCompetitionGroupsStatus())
 		}
 
-		if (addGroupError) {
-			setAlertData({ show: true, title: 'Group add failed', subtitle: addGroupError, type: 'error' })
+		if (groupAddError) {
+			setAlertData({ show: true, title: 'Group add failed', subtitle: groupAddError, type: 'error' })
 			dispatch(resetCompetitionGroupsStatus())
 		}
 
-		if (deleteGroupSuccess) {
+		if (groupDeleteSuccess) {
 			setAlertData({ show: true, title: 'Group deleted', type: 'success' })
 			dispatch(resetDeleteCompetitionGroupStatus())
 		}
 
-		if (deleteGroupError) {
-			setAlertData({ show: true, title: 'Group delete failed', subtitle: deleteGroupError, type: 'error' })
+		if (groupDeleteError) {
+			setAlertData({ show: true, title: 'Group delete failed', subtitle: groupDeleteError, type: 'error' })
 			dispatch(resetDeleteCompetitionGroupStatus())
 		}
 
 		setTimeout(() => setAlertData({ show: false, type: alertData.type, subtitle: '' }), 3000)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [addGroupSuccess, addGroupError, deleteGroupSuccess, deleteGroupError])
+	}, [groupAddSuccess, groupAddError, groupDeleteSuccess, groupDeleteError])
 
 	return (
 		<main className='container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]'>
@@ -337,13 +330,13 @@ export const CreateGroupPage = (): ReactElement => {
 							getGroupParameters={getParticipantsByFilter}
 							addGroup={handleAddGroup}
 							disableAddGroupBtn={participants?.inGroup?.length === 0 || hasOverlapError.hasError || !showButtonClicked}
-							addGroupRequestPending={addGroupPending}
-							resetFilterTrigger={addGroupSuccess}
+							addGroupRequestPending={groupAddPending}
+							resetFilterTrigger={groupAddSuccess}
 							resetFilter={resetParticipantsList}
 							classes='mb-[3.125rem]'
 						/>
 						{competitionData.requirements && (
-							<CompetitionRequirements competitionRequirements={competitionData.requirements} />
+							<CompetitionRequirementsBordered competitionRequirements={competitionData.requirements} />
 						)}
 					</div>
 					{allParticipants ? (
@@ -366,11 +359,11 @@ export const CreateGroupPage = (): ReactElement => {
 											handleDeleteGroup(_id as string, competitionId as string)
 										}}
 										className={`ml-5  h-[1.9375] w-[1.9375] transition hover:opacity-70 ${
-											deleteGroupPending && 'pointer-events-none'
+											groupDeletePending && 'pointer-events-none'
 										}`}
 										type='button'
 									>
-										{deleteGroupPending && _id === deletingGroupId ? (
+										{groupDeletePending && _id === deletingGroupId ? (
 											<Loader ringClasses='!w-[1.9375rem] !h-[1.9375rem] !border-2' />
 										) : (
 											<TrashIcon />
@@ -412,7 +405,7 @@ export const CreateGroupPage = (): ReactElement => {
 								navigate(`../${AppRoute.OrdersGroupAssign}`)
 							}
 						}}
-						disabled={participants?.outGroup?.length !== 0}
+						disabled={allParticipants?.some(participant => !participant.group)}
 					>
 						Confirm the groups
 					</Button>

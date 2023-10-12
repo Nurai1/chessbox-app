@@ -1,6 +1,6 @@
+import { CompetitionRequirementsSchema } from 'src/types'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { CompetitionRequirementsSchema } from 'src/types'
 
 type CompetitionRequirementsPropsType = {
 	competitionRequirements: CompetitionRequirementsSchema
@@ -9,22 +9,20 @@ type CompetitionRequirementsPropsType = {
 
 export const CompetitionRequirements: FC<CompetitionRequirementsPropsType> = ({ competitionRequirements, classes }) => {
 	return (
-		<div className={twMerge('max-w-[16rem] rounded-3xl border border-pale-grey py-5 px-6', classes)}>
-			<h3 className='mb-2.5 text-2xl font-semibold'>Competition requirements:</h3>
-			<div className='flex justify-between'>
-				<div className='grow border-r border-pale-grey pr-4'>
-					<p className='text-grey'>Age</p>
-					<p className='font-bold'>
-						{competitionRequirements?.ageCategory?.from} -{competitionRequirements?.ageCategory?.to}
-					</p>
-				</div>
-				<div className='grow pl-4'>
-					<p className='text-grey'>Weight</p>
-					<p className='font-bold'>
-						{competitionRequirements?.weightCategory?.from} -{competitionRequirements?.weightCategory?.to}{' '}
-						<span className='text-grey'>kg</span>
-					</p>
-				</div>
+		<div className={twMerge('flex items-center', classes)}>
+			<p className='max-w-[9.375rem] pr-2 md:pr-4 text-grey xl:font-bold'>Competition requirements:</p>
+			<div className='min-w-[6.25rem] border-x px-2 md:px-4'>
+				<p className='mb-2 text-sm xl:text-base'>Age:</p>
+				<p className='whitespace-nowrap font-bold'>
+					{competitionRequirements?.ageCategory?.from} - {competitionRequirements?.ageCategory?.to}{' '}
+				</p>
+			</div>
+			<div className='min-w-[6.25rem] pl-2 md:pl-4'>
+				<p className='mb-2 text-sm xl:text-base'>Weight:</p>
+				<p className='whitespace-nowrap font-bold'>
+					{competitionRequirements?.weightCategory?.from} - {competitionRequirements?.weightCategory?.to}
+					<span className='text-grey'> kg</span>
+				</p>
 			</div>
 		</div>
 	)

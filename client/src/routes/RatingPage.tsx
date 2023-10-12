@@ -1,11 +1,11 @@
 import { ReactElement, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchUsers, clearUsers } from 'src/store/slices/usersSlice'
-import { tableSchemaRating } from 'src/helpers/tableSchemaRating'
+import { tableSchemaRating } from 'src/helpers/tableSchemas/tableSchemaRating'
 import { UsersTableWithTitle, UsersSearch } from '../components'
 import { Loader } from '../ui'
 
-const USERS_PER_STEP = 5
+const USERS_PER_STEP = 10
 
 export const RatingPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
