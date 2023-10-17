@@ -1460,7 +1460,12 @@ export interface paths {
 			}
 			responses: {
 				/** @description Winner defined. */
-				200: never
+				200: {
+					content: {
+						'application/json': components['schemas']['Competition']
+						'application/xml': components['schemas']['Competition']
+					}
+				}
 				/** @description Client error. */
 				400: {
 					content: {
@@ -1543,7 +1548,12 @@ export interface paths {
 			}
 			responses: {
 				/** @description Next Group Round launched. */
-				200: never
+				200: {
+					content: {
+						'application/json': components['schemas']['Competition']
+						'application/xml': components['schemas']['Competition']
+					}
+				}
 				/** @description Client error. */
 				400: {
 					content: {
