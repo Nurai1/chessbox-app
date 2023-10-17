@@ -4719,7 +4719,19 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Winner defined."
+            "description": "Winner defined.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competition"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competition"
+                }
+              }
+            }
           },
           "400": {
             "description": "Client error.",
@@ -5007,7 +5019,19 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Next Group Round launched."
+            "description": "Next Group Round launched.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competition"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competition"
+                }
+              }
+            }
           },
           "400": {
             "description": "Client error.",
