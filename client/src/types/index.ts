@@ -27,6 +27,10 @@ export type SetBreakTimeSchema =
 	paths['/api/competition/{id}/setCompetitionBreakTime']['patch']['requestBody']['content']['application/json']
 export type CallPairPreparationSchema =
 	paths['/api/competition/callPairPreparation']['patch']['requestBody']['content']['application/json']
+export type AcceptPairFightSchema =
+	paths['/api/competition/acceptPairFight']['patch']['requestBody']['content']['application/json']
+export type DefineWinnerSchema =
+	paths['/api/competition/defineWinner']['patch']['requestBody']['content']['application/json']
 
 export type ErrorPayload = { errorMessage: string; response: Response }
 export type CompetitionSchemaJudge = Omit<CompetitionSchema, 'judges'> & {

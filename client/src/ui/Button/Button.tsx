@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 
 type ButtonPropsType = {
-	onClick?: React.MouseEventHandler<HTMLButtonElement>
+	onClick: React.MouseEventHandler<HTMLButtonElement>
 	type?: 'primary' | 'outlined' | 'ghost'
 	children: ReactNode
 	loading?: boolean

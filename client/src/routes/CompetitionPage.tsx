@@ -9,7 +9,13 @@ import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { AppRoute } from 'src/constants/appRoute'
 import { getFormattedDate, isPast } from 'src/helpers/datetime'
-import { PairInfo, CompetitionRequirements, YouAreParticipant, RegistrationEndsTimer, CompetitionParticipantsTable } from 'src/components'
+import {
+	PairInfo,
+	CompetitionRequirements,
+	YouAreParticipant,
+	RegistrationEndsTimer,
+	CompetitionParticipantsTable
+} from 'src/components'
 import { PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
 import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
 import {
@@ -27,6 +33,7 @@ export const CompetitionPage = (): ReactElement => {
 	const currentUserPairRef = useRef<{ pair?: PairType; withPair?: boolean; startTime: string }>()
 	const navigate = useNavigate()
 	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
+	const [isCurrentUserCompetition, setIsCurrentUserCompetition] = useState(false)
 	const competitionDataExisting = useAppSelector(s => s.competitions.data).find(({ _id }) => _id === competitionId)
 	const competitionDataFetched = useAppSelector(s => s.competition.data)
 	const fetchError = useAppSelector(s => s.competition.error)
@@ -74,6 +81,18 @@ export const CompetitionPage = (): ReactElement => {
 		if (competitionData) {
 			setIsTimeOver(isPast(competitionData.startDate))
 		}
+
+		if (competitionData?.groups?.length) {
+			competitionData.groups[0].currentRoundPairs?.map(pair => {
+				if (
+					(pair.calledForPreparation && pair.blackParticipant === authorizedUser?._id) ||
+					(pair.calledForPreparation && pair.whiteParticipant === authorizedUser?._id)
+				) {
+					setIsCurrentUserCompetition(true)
+				}
+			})
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [competitionData])
 
 	const handleSideMenuOpen = () => {
@@ -89,13 +108,15 @@ export const CompetitionPage = (): ReactElement => {
 		}
 	}
 
-	const timeBeforeStart = () => (
-		(isRegistrationClosed && isParticipant || isRegistrationClosed && authorizedUser?.role === Role.ChiefJudge) && (
+	const timeBeforeStart = () =>
+		((isRegistrationClosed && isParticipant) || (isRegistrationClosed && authorizedUser?.role === Role.ChiefJudge)) && (
 			<div>
-				<div className='flex items-center justify-between mb-5 p-3 rounded-2xl border-2
+				<div
+					className='mb-5 flex items-center justify-between rounded-2xl border-2 p-3
                             md:py-4 md:px-9
-                            lg:flex-col lg:justify-start lg:gap-6 lg:p-4 lg:h-fit
-                            xl:items-baseline xl:p-7'>
+                            lg:h-fit lg:flex-col lg:justify-start lg:gap-6 lg:p-4
+                            xl:items-baseline xl:p-7'
+				>
 					<div>
 						<h3 className='mr-1 mb-2 text-sm xl:text-heading-3 xl:text-grey'>Approximate time start before match:</h3>
 						{competitionData && (
@@ -114,14 +135,13 @@ export const CompetitionPage = (): ReactElement => {
 						To competition
 					</Button>
 				)}
-				{isParticipant && isTimeOver && (
+				{isCurrentUserCompetition && (
 					<Button classes='w-full' onClick={() => ''}>
-						Show this button after call up for participant
+						Ready!
 					</Button>
 				)}
 			</div>
 		)
-	)
 
 	return (
 		<>
@@ -159,16 +179,22 @@ export const CompetitionPage = (): ReactElement => {
 										/>
 									)}
 								</div>
-								<CompetitionRequirements competitionRequirements={competitionData.requirements} classes='mb-6'/>
+								<CompetitionRequirements competitionRequirements={competitionData.requirements} classes='mb-6' />
 							</div>
-							{!isRegistrationClosed && !isParticipant && !isCompetitionOver && <RegistrationEndsTimer
-								time={competitionData.registrationEndsAt}
-								authorizedUser={authorizedUser as UserSchema}
-								onParticipateClick={handleParticipateClick}
-								onSideMenuOpen={handleSideMenuOpen}
-							/>}
-							{isParticipant && !isCompetitionOver && !isRegistrationClosed && <YouAreParticipant onSideMenuOpen={handleSideMenuOpen}/>}
-							{isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge && <h2>Registration Closed</h2>}
+							{!isRegistrationClosed && !isParticipant && !isCompetitionOver && (
+								<RegistrationEndsTimer
+									time={competitionData.registrationEndsAt}
+									authorizedUser={authorizedUser as UserSchema}
+									onParticipateClick={handleParticipateClick}
+									onSideMenuOpen={handleSideMenuOpen}
+								/>
+							)}
+							{isParticipant && !isCompetitionOver && !isRegistrationClosed && (
+								<YouAreParticipant onSideMenuOpen={handleSideMenuOpen} />
+							)}
+							{isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge && (
+								<h2>Registration Closed</h2>
+							)}
 							{timeBeforeStart()}
 							<div>
 								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
@@ -210,15 +236,16 @@ export const CompetitionPage = (): ReactElement => {
 								<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
 									Competition schedule
 								</h2>
-								{competitionData.groups?.length !== 0 && participants && judges && authorizedUser 
-									? <CompetitionParticipantsTable
-											competitionData={competitionData}
-											participants={participants}
-											judges={judges}
-											authorizedUser={authorizedUser}
-										/>
-									: <Loader/>	
-								}
+								{competitionData.groups?.length !== 0 && participants && judges && authorizedUser ? (
+									<CompetitionParticipantsTable
+										competitionData={competitionData}
+										participants={participants}
+										judges={judges}
+										authorizedUser={authorizedUser}
+									/>
+								) : (
+									<Loader />
+								)}
 							</>
 						)}
 					</>

@@ -6,7 +6,9 @@ import {
 	CompetitionGroupSchema,
 	DeleteCompetitionGroupSchema,
 	AddNewParticipantSchema,
-	CallPairPreparationSchema
+	CallPairPreparationSchema,
+	AcceptPairFightSchema,
+	DefineWinnerSchema
 } from 'src/types'
 
 export const getCompetitionsApi = async () => {
@@ -139,6 +141,22 @@ export const setBreakTimeApi = async (breakTimeMinutes: number, id: string) => {
 export const callPairPreparationApi = async (callPairPreparationData: CallPairPreparationSchema) => {
 	const result = await patch('/api/competition/callPairPreparation', {
 		body: callPairPreparationData
+	})
+
+	return result
+}
+
+export const acceptPairFightApi = async (acceptPairFightData: AcceptPairFightSchema) => {
+	const result = await patch('/api/competition/acceptPairFight', {
+		body: acceptPairFightData
+	})
+
+	return result
+}
+
+export const defineWinnerApi = async (winnerData: DefineWinnerSchema) => {
+	const result = await patch('/api/competition/defineWinner', {
+		body: winnerData
 	})
 
 	return result

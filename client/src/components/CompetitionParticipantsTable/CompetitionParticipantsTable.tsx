@@ -2,8 +2,10 @@ import { FC, Fragment, useRef } from 'react'
 import { TableBody, Loader } from 'src/ui'
 import { CompetitionSchema, ParticipantSchema, UserSchema } from 'src/types'
 import { getGroupPairsLen } from 'src/helpers/getGroupPairsLen'
-import { getTimeTuplePlusMinutes, tableSchemaPairs, PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
+import { tableSchemaPairs, PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
+import { ChooseWinnerType } from 'src/routes/JudgeCompetitionPage'
 import { getFormattedDate, getAge } from 'src/helpers/datetime'
+import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
 
 type CompetitionParticipantsTablePropsType = {
     competitionData: CompetitionSchema
@@ -13,17 +15,17 @@ type CompetitionParticipantsTablePropsType = {
 	isJudgeCompetitionPage?: boolean
 	onCallPairPreparation?: (groupId: string, pairId: string) => void
 	isBreakTime?: boolean
-	onCallUpTimer?: () => void
+	onCallUpTimer?: (pairId: string) => void
+	maxPairs?: number
+	currentPairs?: string[]
+	onChooseWinner?: (data: ChooseWinnerType) => void
 }
-
-const MAX_PAIRS = 2
 
 export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsType> = ({
 	competitionData, 
 	participants, 
 	judges, 
 	authorizedUser,
-	isJudgeCompetitionPage,
 	...rest
 }) => {
     const currentUserPairRef = useRef<{ pair?: PairType; withPair?: boolean; startTime: string }>()
@@ -83,8 +85,6 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 										),
 										currentUser: { currentUserPairRef, authorizedUserId: authorizedUser?._id },
 										breakTime: competitionData?.breakTime,
-										isJudgeCompetitionPage: isJudgeCompetitionPage,
-										maxPairs: MAX_PAIRS,
 										groupIndex,
 										groupId: _id,
 										...rest

@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react'
 type useTimerPropsType = {
     minutes: number
     seconds?: number
-    isTimeOver?: (isOver: boolean) => void
+    onTimeOver?: (isOver: boolean) => void
 }
 
-export const useTimer = ({minutes, seconds = 0, isTimeOver}: useTimerPropsType) => {
+export const useTimer = ({minutes, seconds = 0, onTimeOver}: useTimerPropsType) => {
     const [time, setTime] = useState({
         minutes,
         seconds
@@ -17,8 +17,8 @@ export const useTimer = ({minutes, seconds = 0, isTimeOver}: useTimerPropsType) 
             if (time.seconds === 0 && time.minutes === 0) {
                 clearInterval(timer)
                 
-                if (isTimeOver) {
-                    isTimeOver(true)
+                if (onTimeOver) {
+                    onTimeOver(true)
                 }
             } else {
                 setTime((state) => ({
@@ -29,6 +29,7 @@ export const useTimer = ({minutes, seconds = 0, isTimeOver}: useTimerPropsType) 
         }, 1000)
         
         return () => clearInterval(timer)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [time])
 
     return time

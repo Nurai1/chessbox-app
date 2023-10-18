@@ -30,9 +30,6 @@
 		"diffEditor.ignoreTrimWhitespace": true,
 		"search.exclude": {
 			"node_modules": false
-		},
-		"[typescriptreact]": {
-			"editor.defaultFormatter": "vscode.typescript-language-features"
 		}
 	}
 }

@@ -10,7 +10,9 @@ import {
 	ParticipantSchema,
 	DeleteCompetitionGroupSchema,
 	AddNewParticipantSchema,
-	CallPairPreparationSchema
+	CallPairPreparationSchema,
+	AcceptPairFightSchema,
+	DefineWinnerSchema
 } from 'src/types'
 import {
 	getCompetitionByIdApi,
@@ -23,7 +25,9 @@ import {
 	deleteCompetitionGroupApi,
 	addNewParticipantApi,
 	setBreakTimeApi,
-	callPairPreparationApi
+	callPairPreparationApi,
+	acceptPairFightApi,
+	defineWinnerApi
 } from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
@@ -141,11 +145,34 @@ export const callPairPreparation = createAsyncThunk(
 	}
 )
 
+export const acceptPairFight = createAsyncThunk(
+	'competition/acceptPairFight',
+	async (acceptPairFight: AcceptPairFightSchema, thunkApi) => {
+		const response = await acceptPairFightApi(acceptPairFight)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
+export const defineWinner = createAsyncThunk(
+	'competition/defineWinner',
+	async (winnerData: DefineWinnerSchema, thunkApi) => {
+		const response = await defineWinnerApi(winnerData)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
 export interface CompetitionState {
 	data: CompetitionSchema | null
 	participants: Record<string, ParticipantSchema[] | null>
 	judges: Record<string, UserSchema[] | null>
 	loading: boolean
+	callUpTimerRunningIds: string[]
 	error?: string
 	setCompetitionJudgesSuccess?: boolean
 	setCompetitionJudgesError?: string
@@ -170,13 +197,20 @@ export interface CompetitionState {
 	callPairPreparationPending?: boolean
 	callPairPreparationSuccess?: boolean
 	callPairPreparationError?: string
+	acceptPairFightPending?: boolean
+	acceptPairFightSuccess?: boolean
+	acceptPairFightError?: string
+	defineWinnerPending?: boolean
+	defineWinnerSuccess?: boolean
+	defineWinnerError?: string
 }
 
 const initialState: CompetitionState = {
 	data: null,
 	participants: {},
 	judges: {},
-	loading: true
+	loading: true,
+	callUpTimerRunningIds: []
 }
 
 export const competitionSlice = createSlice({
@@ -229,6 +263,12 @@ export const competitionSlice = createSlice({
 		},
 		resetBreakTimeSuccess: state => {
 			state.setBreakTimeSuccess = undefined
+		},
+		addValuecallUpTimerRunningIds: (state, action: PayloadAction<string>) => {
+			state.callUpTimerRunningIds.push(action.payload)
+		},
+		removeValuecallUpTimerRunningIds: (state, action: PayloadAction<string>)  => {
+			state.callUpTimerRunningIds = state.callUpTimerRunningIds.filter(item => item !== action.payload)
 		}
 	},
 	extraReducers: {
@@ -358,10 +398,37 @@ export const competitionSlice = createSlice({
 		},
 		[callPairPreparation.pending.type]: state => {
 			state.callPairPreparationPending = true
+			state.callPairPreparationError = undefined
 		},
 		[callPairPreparation.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.callPairPreparationPending = false
 			state.callPairPreparationError = action.payload.errorMessage
+		},
+		[acceptPairFight.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.data = action.payload
+			state.acceptPairFightPending = false
+			state.acceptPairFightSuccess = true
+		},
+		[acceptPairFight.pending.type]: state => {
+			state.acceptPairFightPending = true
+			state.acceptPairFightError = undefined
+		},
+		[acceptPairFight.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.acceptPairFightPending = false
+			state.acceptPairFightError = action.payload.errorMessage
+		},
+		[defineWinner.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.data = action.payload
+			state.defineWinnerPending = false
+			state.defineWinnerSuccess = true
+		},
+		[defineWinner.pending.type]: state => {
+			state.defineWinnerPending = true
+			state.defineWinnerError = undefined
+		},
+		[defineWinner.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.defineWinnerPending = false
+			state.defineWinnerError = action.payload.errorMessage
 		},
 	}
 })
@@ -375,7 +442,9 @@ export const {
 	resetDeleteCompetitionGroupStatus,
 	setBreakTimeLocalState,
 	resetBreakTime,
-	resetBreakTimeSuccess
+	resetBreakTimeSuccess,
+	addValuecallUpTimerRunningIds,
+	removeValuecallUpTimerRunningIds
 } = competitionSlice.actions
 
 export default competitionSlice.reducer
