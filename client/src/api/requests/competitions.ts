@@ -5,7 +5,8 @@ import {
 	CompetitionGroupsOrdersSchema,
 	CompetitionGroupSchema,
 	DeleteCompetitionGroupSchema,
-	AddNewParticipantSchema
+	AddNewParticipantSchema,
+	AcceptPairFightBodySchema
 } from 'src/types'
 
 export const getCompetitionsApi = async () => {
@@ -114,6 +115,12 @@ export const addNewParticipantApi = async (userId: AddNewParticipantSchema, id: 
 			}
 		}
 	})
+
+	return result
+}
+
+export const acceptForFightApi = async (body: AcceptPairFightBodySchema) => {
+	const result = await patch('/api/competition/acceptPairFight', { body })
 
 	return result
 }
