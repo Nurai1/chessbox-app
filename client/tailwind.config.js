@@ -27,7 +27,9 @@ const config = {
 				'heading-4': ['1.5rem', { lineHeight: '1.5', fontWeight: 600 }],
 				'heading-6': ['1.25rem', { lineHeight: '1.5', fontWeight: 600 }],
 				'body-1': ['1.25rem', { lineHeight: '1.5', fontWeight: 500 }],
-				'body-2': ['1rem', { lineHeight: '1.5', fontWeight: 400 }]
+				'body-2': ['1rem', { lineHeight: '1.5', fontWeight: 400 }],
+				title: ['1rem', { lineHeight: '1.5', fontWeight: 600 }],
+				caption: ['0.75rem', { lineHeight: '1.5', fontWeight: 400 }]
 			},
 			height: {
 				input: ['15px']

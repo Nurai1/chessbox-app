@@ -23,6 +23,8 @@ export type DeleteCompetitionGroupSchema =
 	paths['/api/competition/{id}/group']['delete']['requestBody']['content']['application/json']
 export type AddNewParticipantSchema =
 	paths['/api/competition/{id}/addNewParticipant']['patch']['requestBody']['content']['application/json']
+export type AcceptPairFightBodySchema =
+	paths['/api/competition/acceptPairFight']['patch']['requestBody']['content']['application/json']
 
 export type ErrorPayload = { errorMessage: string; response: Response }
 export type CompetitionSchemaJudge = Omit<CompetitionSchema, 'judges'> & {

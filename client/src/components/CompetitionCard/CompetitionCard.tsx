@@ -68,7 +68,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 				>
 					Registration ends in:
 				</h3>
-				<Timer time={registrationEndsAt} classes='lg:mb-[20px] 2xl:mb-[26px]' />
+				<Timer time={registrationEndsAt} classes='lg:mb-[20px] 2xl:mb-[26px]' countLabelsClasses='text-grey' />
 				{screenWidth >= BreakPoint.Lg && authorizedUser?.role !== Role.ChiefJudge && (
 					<Button onClick={handleParticipateClick} classes='w-full'>
 						Participate

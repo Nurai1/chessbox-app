@@ -20,6 +20,8 @@ import {
 	fetchCompetitionParticipants,
 	setCompetitionData
 } from 'src/store/slices/competitionSlice'
+import { TimerBeforeParticipantFight } from 'src/components/CompetitionPage/TimerBeforeParticipantFight'
+import { existingCompetitionSelector, existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
 
 const getGroupPairsLen = ({
 	currentPairsLen,
@@ -39,24 +41,26 @@ const getGroupPairsLen = ({
 	return allPairsLen
 }
 
+let pollingWasSet = false
+
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
 	const { competitionId } = useParams()
 	const currentUserPairRef = useRef<{ pair?: PairType; withPair?: boolean; startTime: string }>()
 	const navigate = useNavigate()
 	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
-	const competitionDataExisting = useAppSelector(s => s.competitions.data).find(({ _id }) => _id === competitionId)
-	const competitionDataFetched = useAppSelector(s => s.competition.data)
+	const competitionDataExisting = useAppSelector(existingCompetitionSelector(competitionId))
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
 	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
 	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
 	const authLoading = useAppSelector(state => state.user.authLoading)
-	const competitionData = competitionDataExisting || competitionDataFetched
+	const competitionData = useAppSelector(existingOrFetchedCompetitionSelector(competitionId))
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
 	const isParticipant =
 		competitionData?.participants && competitionData.participants.includes(authorizedUser?._id ?? '')
 	const isRegistrationClosed = competitionData && isPast(competitionData.registrationEndsAt)
+	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate)
 	const isOver = competitionData && Boolean(competitionData.endDate)
 	const participantsTable = participants && tableSchemaParticipants(participants)
 	const requirements = competitionData?.requirements
@@ -71,8 +75,23 @@ export const CompetitionPage = (): ReactElement => {
 		} else {
 			dispatch(setCompetitionData(competitionDataExisting))
 		}
+
+		if (isCompetitionOnGoing) {
+			setInterval(() => {
+				dispatch(fetchCompetitionById(competitionId as string))
+			}, 5000)
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
+
+	useEffect(() => {
+		if (!pollingWasSet && competitionData && isCompetitionOnGoing) {
+			pollingWasSet = true
+			setInterval(() => {
+				dispatch(fetchCompetitionById(competitionId as string))
+			}, 5000)
+		}
+	}, [competitionData, competitionId, dispatch, isCompetitionOnGoing])
 
 	useEffect(() => {
 		if (isRegistrationClosed && !participants) {
@@ -117,8 +136,9 @@ export const CompetitionPage = (): ReactElement => {
 					{competitionData && (
 						<Timer
 							time={competitionData.registrationEndsAt}
-							containerClasses='xl:h-[107px] xl:w-[107px] '
+							containerClasses='xl:h-[107px] xl:w-[107px]'
 							countNumbersClasses='xl:text-[32px] xl:leading-[48px]'
+							countLabelsClasses='text-grey'
 						/>
 					)}
 				</div>
@@ -200,7 +220,7 @@ export const CompetitionPage = (): ReactElement => {
 				{fetchError && <h2>{fetchError}</h2>}
 				{competitionData && (
 					<>
-						<div className='lg:grid lg:grid-cols-[1fr_190px] lg:gap-[0_15px] xl:grid-cols-[1fr_345px] xl:gap-[0_40px]'>
+						<div className='lg:grid lg:grid-cols-[1fr_200px] lg:gap-[0_15px] xl:grid-cols-[1fr_380px] xl:gap-[0_40px]'>
 							<div>
 								<h1 className='mb-[15px] text-heading-4 lg:mb-[10px] xl:mb-[24px] xl:text-heading-1'>
 									{competitionData.name}
@@ -243,8 +263,11 @@ export const CompetitionPage = (): ReactElement => {
 							</div>
 							{participate()}
 							{participant()}
-							{isRegistrationClosed && !isParticipant && <h2>Registration Closed</h2>}
-							{isRegistrationClosed && isParticipant && <h2>Time before start {competitionData.startDate}</h2>}
+							<TimerBeforeParticipantFight currentPair={currentUserPairRef.current?.pair} />
+							{isRegistrationClosed && !isCompetitionOnGoing && !isParticipant && <h2>Registration Closed</h2>}
+							{isRegistrationClosed && !isCompetitionOnGoing && isParticipant && (
+								<h2>Time before start {competitionData.startDate}</h2>
+							)}
 							<div>
 								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
 								<p className='mb-9'>{competitionData.description}</p>

@@ -413,7 +413,7 @@ export const callPairPreparation = async (
       { new: true }
     );
 
-    const ms2minutes10Seconds = 130000;
+    const ms2minutes = 120000;
     setTimeout(async () => {
       const comp = await Competition.findById(competitionId);
 
@@ -446,7 +446,7 @@ export const callPairPreparation = async (
           new: true,
         });
       }
-    }, ms2minutes10Seconds);
+    }, ms2minutes);
 
     return res.status(200).send(newCompetition);
   }
@@ -464,6 +464,7 @@ export const acceptPairFight = async (
 ) => {
   const { competitionId, groupId, pairId, userId } = req.body;
   const competition = await Competition.findById(competitionId);
+
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
 
