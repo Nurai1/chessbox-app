@@ -21,14 +21,19 @@ import {
 	setBreakTimeLocalState,
 	resetBreakTime,
 	resetBreakTimeSuccess,
-	callPairPreparation
+	callPairPreparation,
+	defineWinner,
+	removeValuecallUpTimerRunningIds
 } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsListBreakTime, resetCompetitionsListBreakTime } from 'src/store/slices/competitionsSlice'
 import { isPast } from 'src/helpers/datetime'
+import { DefineWinnerSchema } from 'src/types'
 
 type AlertType = {
 	show: boolean
 } & AlertPropTypes
+
+export type ChooseWinnerType = Omit<DefineWinnerSchema, 'competitionId'>
 
 export const JudgeCompetitionPage = (): ReactElement => {
 	const { competitionId } = useParams()
@@ -40,13 +45,20 @@ export const JudgeCompetitionPage = (): ReactElement => {
 	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
-	const { setBreakTimeSuccess, setBreakTimePending, setBreakTimeError } = useAppSelector(s => s.competition)
+	const {
+		setBreakTimeSuccess,
+		setBreakTimePending,
+		setBreakTimeError,
+		callPairPreparationError,
+		defineWinnerError,
+		callUpTimerRunningIds,
+	} = useAppSelector(s => s.competition)
 	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
 	const breakTime = useAppSelector(s => s.competition.data?.breakTime?.minutes)
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [breakInterval, setBreakInterval] = useState<number | undefined>()
 	const [isTimerOver, setIsTimerOver] = useState(false)
-	const [isCallUpTimerOver, setIsCallUpTimerOver] = useState(false)
+	const [currentPairs, setCurrentPairs] = useState<string[] | []>([])
 	const [alertData, setAlertData] = useState<AlertType>({ show: false })
 
 	useEffect(() => {
@@ -69,6 +81,21 @@ export const JudgeCompetitionPage = (): ReactElement => {
 		if (competitionData && !isPast(competitionData.startDate)) {
 			navigate(`/${AppRoute.Competitions}/${competitionId}`)
 		}
+
+		if (competitionData?.groups?.length) {
+			const currentRoundPairsIds = competitionData?.groups?.reduce((acc, group) => {
+				group.currentRoundPairs?.map(pair => {
+					if (pair.calledForPreparation && !pair.disqualified && !pair.winner) {
+						acc.push(pair._id as string)
+					}
+				})
+
+				return acc
+			}, [] as string[])
+
+			setCurrentPairs(currentRoundPairsIds)
+		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [competitionData])
 
@@ -90,10 +117,24 @@ export const JudgeCompetitionPage = (): ReactElement => {
 	useEffect(() => {
 		if (setBreakTimeError) {
 			setAlertData({ show: true, title: 'Set a break failed', subtitle: setBreakTimeError, type: 'error' })
-			setTimeout(() => setAlertData({ show: false, subtitle: '' }), 3000)
 		}
+
+		if (callPairPreparationError) {
+			setAlertData({
+				show: true,
+				title: 'Call for preparation failed',
+				subtitle: callPairPreparationError,
+				type: 'error'
+			})
+		}
+
+		if (defineWinnerError) {
+			setAlertData({ show: true, title: 'Define winner failed', subtitle: defineWinnerError, type: 'error' })
+		}
+
+		setTimeout(() => setAlertData({ show: false, subtitle: '' }), 3000)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [setBreakTimeError])
+	}, [setBreakTimeError, callPairPreparationError, defineWinnerError])
 
 	useEffect(() => {
 		if (isTimerOver) {
@@ -103,6 +144,20 @@ export const JudgeCompetitionPage = (): ReactElement => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isTimerOver])
+
+
+	useEffect(() => {
+		const pollingInterval = setInterval(() => {
+			if (callUpTimerRunningIds.length) {
+				dispatch(fetchCompetitionById(competitionId as string))
+			} else {
+				clearInterval(pollingInterval)
+			}
+		}, 5000)
+
+		return () => clearInterval(pollingInterval)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [callUpTimerRunningIds])
 
 	const handleBreakTimeInput = (value?: string) => {
 		if (Number(value) > 10) {
@@ -132,9 +187,18 @@ export const JudgeCompetitionPage = (): ReactElement => {
 		dispatch(callPairPreparation({ competitionId: competitionId as string, groupId, pairId }))
 	}
 
-	const handleCallUpTimer = () => {
-		console.log('callup finished');
-		setIsCallUpTimerOver(true)
+	const handleCallUpTimerOver = (pairId: string) => {
+		dispatch(removeValuecallUpTimerRunningIds(pairId))
+		dispatch(fetchCompetitionParticipants(competitionId as string))
+	}
+
+	const handleWinnerChoose = (data: ChooseWinnerType) => {
+		dispatch(
+			defineWinner({
+				...data,
+				competitionId: competitionId as string
+			})
+		)
 	}
 
 	return (
@@ -142,6 +206,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 			<main className='container relative mx-auto grow px-4 py-8 md:py-9 xl:py-14 xl:pl-[6.5rem] xl:pr-[3.125rem]'>
 				<Alert
 					title={alertData.title}
+					subtitle={alertData.subtitle}
 					type={alertData.type}
 					classes={`fixed -right-56 w-56 transition-[right] duration-300 ${alertData.show && 'right-8'}`}
 				/>
@@ -207,7 +272,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 								{breakTime && !isTimerOver ? (
 									<div className='flex items-center justify-between'>
 										<p className='text-heading-2'>Break</p>
-										<BreakTimer minutes={breakTime} isTimeOver={setIsTimerOver} />
+										<BreakTimer minutes={breakTime} onTimeOver={setIsTimerOver} />
 									</div>
 								) : (
 									<Button classes='w-full' onClick={handleModalShow}>
@@ -227,7 +292,10 @@ export const JudgeCompetitionPage = (): ReactElement => {
 								authorizedUser={authorizedUser}
 								isJudgeCompetitionPage
 								onCallPairPreparation={handleCallPairPreparationClick}
-								onCallUpTimer={handleCallUpTimer}
+								onCallUpTimer={handleCallUpTimerOver}
+								onChooseWinner={handleWinnerChoose}
+								maxPairs={2}
+								currentPairs={currentPairs}
 							/>
 						) : (
 							<Loader />

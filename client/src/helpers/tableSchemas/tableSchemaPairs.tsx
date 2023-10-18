@@ -1,21 +1,12 @@
-import { MutableRefObject } from 'react'
+import { MutableRefObject, useState } from 'react'
+import { useAppSelector } from 'src/hooks/redux'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
+import { ReactComponent as GoldMedalIcon } from 'src/assets/medal-gold.svg'
 import { CompetitionSchema, PairSchema, UserSchema } from 'src/types'
 import { getAge, localTZName } from 'src/helpers/datetime'
-import { Button } from 'src/ui'
-import { useTimer } from 'src/hooks/useTimer'
-import { addZero } from '../addZero'
-
-export const getTimeTuplePlusMinutes = (startTimeTuple: string[] | null, minutesPassed: number) => {
-	const [hours, minutes] = startTimeTuple?.map(Number) ?? []
-	const hoursPassed = Math.floor(minutesPassed / 60)
-	const minutesPassedWoHours = minutesPassed - hoursPassed * 60
-	const newMinutes =
-		minutes + minutesPassedWoHours >= 60 ? minutes + minutesPassedWoHours - 60 : minutes + minutesPassedWoHours
-	const newHours = hours + hoursPassed + (minutes + minutesPassedWoHours >= 60 ? 1 : 0)
-
-	return [String(newHours), String(newMinutes).length === 1 ? `0${newMinutes}` : String(newMinutes)]
-}
+import { Button, CallUpTimer, CallUpButton, CheckboxAndRadioButton } from 'src/ui'
+import { ChooseWinnerType } from 'src/routes/JudgeCompetitionPage'
+import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
 
 export type PairType = {
 	blackParticipantData?: UserSchema
@@ -35,7 +26,9 @@ export const tableSchemaPairs = ({
 	groupIndex,
 	groupId,
 	onCallPairPreparation,
-	onCallUpTimer
+	onCallUpTimer,
+	currentPairs,
+	onChooseWinner
 }: {
 	tableData: PairSchema[]
 	participants: UserSchema[]
@@ -51,8 +44,13 @@ export const tableSchemaPairs = ({
 	groupIndex?: number
 	groupId?: string
 	onCallPairPreparation?: (groupId: string, pairId: string) => void
-	onCallUpTimer?: () => void
+	onCallUpTimer?: (pairId: string) => void
+	currentPairs?: string[]
+	onChooseWinner?: (data: ChooseWinnerType) => void
 }) => {
+	const [competitionResult, setCompetitionResult] = useState<Record<string, ChooseWinnerType>>()
+	const { callPairPreparationPending, defineWinnerPending } = useAppSelector(s => s.competition)
+
 	const participantsData = tableData.reduce((acc, pair) => {
 		const blackParticipantData = participants.find(({ _id }) => pair.blackParticipant === _id)
 		const whiteParticipantData = participants.find(({ _id }) => pair.whiteParticipant === _id)
@@ -68,6 +66,8 @@ export const tableSchemaPairs = ({
 			}
 		]
 	}, [] as PairType[])
+
+
 
 	const isFirstGroup = groupIndex === 0
 	const statusStyle =
@@ -88,22 +88,61 @@ export const tableSchemaPairs = ({
 				pair,
 				startTime: currentPairTime
 			}
+		const isTimerOver = () => {
+			if (onCallUpTimer && pair.calledForPreparation) {
+				onCallUpTimer(pair._id as string)
+			}
+		}
 
-		const timer = pair.calledForPreparation ? useTimer({
-			minutes: 2,
-			seconds: 10,
-			isTimeOver: onCallUpTimer
-		}) : null
+		const handleCallPairPreparation = () => {
+			if (onCallPairPreparation) {
+				onCallPairPreparation(groupId as string, pair._id as string)
+			}
+		}
 
-		const inProgressCondition = pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant
-		const waitingCondition =
-			(!pair.acceptedForFight?.blackParticipant || !pair.acceptedForFight?.whiteParticipant) &&
+		const handleWinnerIdChoose = (value?: string, name?: string) => {
+			setCompetitionResult({
+				...competitionResult, 
+				[name as string]: {
+					groupId: groupId as string,
+					pairId: pair._id as string,
+					winnerId: value,
+					loserId: value === pair.blackParticipant ? pair.whiteParticipant : pair.blackParticipant
+				} 
+			})
+		}
+
+		const handleWinnerChoose = () => {
+			if (onChooseWinner && competitionResult) {
+				onChooseWinner(competitionResult[pair._id as string])
+			}
+		}
+
+		const bothParticipantsDisqualified = pair.disqualified?.blackParticipant && pair.disqualified?.whiteParticipant
+		const oneOfParticipantsDisqualified = pair.disqualified?.blackParticipant || pair.disqualified?.whiteParticipant
+		const bothParticipantsAccepted = pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant
+		const oneOfParticipantsNotAccepted =
+			!pair.acceptedForFight?.blackParticipant || !pair.acceptedForFight?.whiteParticipant
+		const showCallupButton = isFirstGroup && isJudgeCompetitionPage && !pair.calledForPreparation
+		const showCallUpTimer =
+			pair.calledForPreparation && isJudgeCompetitionPage && !bothParticipantsAccepted && !oneOfParticipantsDisqualified
+		const showWinnerButton =
+			(isJudgeCompetitionPage && !bothParticipantsDisqualified && oneOfParticipantsDisqualified && !pair.winner) ||
+			(isJudgeCompetitionPage && !bothParticipantsDisqualified && bothParticipantsAccepted && !pair.winner)
+		const finished = pair.winner || bothParticipantsDisqualified
+		const inProgress = pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant
+		const waiting =
+			oneOfParticipantsNotAccepted &&
 			!pair.winner &&
 			pair.calledForPreparation &&
-			!isJudgeCompetitionPage
-		const callUpCondition =
-			isFirstGroup && isJudgeCompetitionPage && onCallPairPreparation && !pair.calledForPreparation
-		const showCallUpTimerCondition = pair.calledForPreparation && timer && isJudgeCompetitionPage
+			!isJudgeCompetitionPage &&
+			!bothParticipantsDisqualified
+
+		const disableCallUpButton = () => {
+			if (maxPairs && currentPairs && maxPairs <= currentPairs?.length) {
+				return true
+			}
+		}
 
 		return {
 			cells: [
@@ -128,40 +167,73 @@ export const tableSchemaPairs = ({
 									Judge: {pair.judgeData?.fullName}
 								</a>
 							</div>
-							{inProgressCondition && <div className={`text-[#FB9F16] ${statusStyle}`}>IN PROGRESS</div>}
-							{pair.winner && <div className={`text-[#6DDA64] ${statusStyle}`}>FINISHED</div>}
-							{waitingCondition && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
+							{inProgress && !isJudgeCompetitionPage && (
+								<div className={`text-[#FB9F16] ${statusStyle}`}>IN PROGRESS</div>
+							)}
+							{finished && <div className={`text-[#6DDA64] ${statusStyle}`}>FINISHED</div>}
+							{waiting && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
 							<div className='col-start-1 col-end-3 flex justify-between md:col-end-2 xl:col-start-2 xl:col-end-3 xl:row-start-1 xl:row-end-2'>
-								<div className='w-[45%]'>
-									<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
-									<p className='text-xs xl:text-base'>
-										{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight} kg
-									</p>
-								</div>
-								<span className='mx-[2%] w-[6%] text-sm text-black xl:text-base'>VS</span>
-								<div className='w-[45%]'>
-									<div className='ml-auto w-fit'>
-										<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
-										<p className=' text-xs xl:text-base'>
-											{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight}{' '}
+								<div className='flex w-[45%]'>
+									<div>
+										{pair.acceptedForFight?.blackParticipant && isJudgeCompetitionPage && !pair.winner ? (
+											<CheckboxAndRadioButton
+												name={pair._id as string}
+												value={pair.blackParticipant}
+												type='radio'
+												title={pair.blackParticipantData?.fullName}
+												classes='mb-2 -ml-8'
+												onChange={handleWinnerIdChoose}
+												checked={competitionResult?.[pair._id as string]?.winnerId === pair.blackParticipantData?._id}
+											/>
+										) : (
+											<p className='mb-2 text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
+										)}
+
+										<p className='text-xs xl:text-base'>
+											{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight}{' '}
 											kg
 										</p>
+										{pair.disqualified?.blackParticipant && <p className='mt-1 text-error-red'>Disqualification</p>}
+									</div>
+									{pair.winner === pair.blackParticipant && <GoldMedalIcon className='ml-2.5 w-5 h-6'/>}
+								</div>
+								<span className='mx-[2%] w-[6%] text-sm text-black xl:text-base'>VS</span>
+								<div className='flex w-[45%]'>
+									<div className='flex ml-auto w-fit xl:ml-10'>
+										<div>
+											{pair.acceptedForFight?.whiteParticipant && isJudgeCompetitionPage && !pair.winner ? (
+												<CheckboxAndRadioButton
+													name={pair._id as string}
+													value={pair.whiteParticipant}
+													type='radio'
+													title={pair.whiteParticipantData?.fullName}
+													classes='mb-2 -ml-8'
+													onChange={handleWinnerIdChoose}
+													checked={competitionResult?.[pair._id as string]?.winnerId  === pair.whiteParticipantData?._id}
+												/>
+											) : (
+												<p className='mb-2 text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
+											)}
+											<p className=' text-xs xl:text-base'>
+												{getAge(pair.whiteParticipantData?.birthDate as string)} age,{' '}
+												{pair.whiteParticipantData?.weight} kg
+											</p>
+											{pair.disqualified?.whiteParticipant && <p className='mt-1 text-error-red'>Disqualification</p>}
+										</div>
+										{pair.winner === pair.whiteParticipant && <GoldMedalIcon className='ml-2.5 w-5 h-6'/>}
 									</div>
 								</div>
 							</div>
-							{callUpCondition && (
-								<Button
-									onClick={() => onCallPairPreparation(groupId as string, pair._id as string)}
-									disabled={Boolean(breakTime)}
-								>
-									Call up
-								</Button>
+							{showCallupButton && (
+								<CallUpButton
+									onCallPairPreparation={handleCallPairPreparation}
+									breakTime={Boolean(breakTime)}
+									callPairPreparationPending={callPairPreparationPending}
+									disable={disableCallUpButton()}
+								/>
 							)}
-							{showCallUpTimerCondition && (
-								<Button type='outlined' disabled>
-									{addZero(String(timer.minutes))}:{addZero(String(timer.seconds))}
-								</Button>
-							)}
+							{showCallUpTimer && <CallUpTimer onTimeOver={isTimerOver} minutes={2} seconds={10} id={pair._id}/>}
+							{onChooseWinner && showWinnerButton && <Button onClick={handleWinnerChoose} loading={defineWinnerPending}>Winner</Button>}
 						</div>
 					),
 					classes: 'pl-0'
@@ -170,4 +242,3 @@ export const tableSchemaPairs = ({
 		}
 	})
 }
-// as MouseEventHandler<HTMLButtonElement>

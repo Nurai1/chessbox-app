@@ -581,9 +581,6 @@ export const defineWinner = async (
 
   const competition = await Competition.findOne({
     _id: competitionId,
-  }).populate({
-    path: 'groups',
-    populate: 'nextRoundParticipants',
   });
 
   if (!competition)
@@ -604,7 +601,7 @@ export const defineWinner = async (
 
   competitionGroup.nextRoundParticipants = [
     ...competitionGroup.nextRoundParticipants,
-    winner,
+    winnerId,
   ];
 
   const passedPair = competitionGroup.currentRoundPairs.find(
@@ -618,8 +615,18 @@ export const defineWinner = async (
 
   competitionGroup.passedPairs = [
     ...(competitionGroup.passedPairs ?? []),
-    { ...passedPair, passed: true, winner },
+    { ...passedPair, passed: true, winner: winnerId },
   ];
+
+  competitionGroup.currentRoundPairs = competitionGroup.currentRoundPairs.map(
+    (pair) => {
+      if (pair._id?.toString() === pairId) {
+        return { ...pair, passed: true, winner: winnerId };
+      }
+
+      return pair;
+    }
+  );
 
   if (winner && loser) {
     const { newWinnerRating, newLoserRating } = recalculateRating(
@@ -671,7 +678,7 @@ export const defineWinner = async (
       competition?.save(),
     ]);
 
-    res.sendStatus(200);
+    res.send(competition);
   }
 
   res.status(400).send({ error: "Winner or loser don't exist" });
@@ -693,9 +700,6 @@ export const launchNextGroupRound = async (
 
   const competition = await Competition.findOne({
     _id: competitionId,
-  }).populate({
-    path: 'groups',
-    populate: 'nextRoundParticipants',
   });
 
   if (!competition)
@@ -743,7 +747,7 @@ export const launchNextGroupRound = async (
 
     await competition.save();
 
-    res.sendStatus(200);
+    res.send(competition);
   }
 
   return res

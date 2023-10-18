@@ -73,9 +73,10 @@ competitionRouter.patch(
     */
   /* #swagger.responses[200] = {
             description: 'Winner defined.',
+            schema: { $ref: '#/definitions/Competition' }
     } */
-  UserController.allowIfLoggedin,
-  UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.defineWinner)
 );
 
@@ -102,6 +103,7 @@ competitionRouter.patch(
     */
   /* #swagger.responses[200] = {
             description: 'Next Group Round launched.',
+            schema: { $ref: '#/definitions/Competition' }
     } */
   UserController.allowIfLoggedin,
   UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
