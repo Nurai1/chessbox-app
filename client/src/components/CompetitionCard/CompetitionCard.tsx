@@ -60,17 +60,15 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 				lg:col-start-2 lg:col-end-3 lg:mb-0  lg:flex-col
 				lg:items-start xl:col-start-3 xl:col-end-4'
 			>
-				<div className='flex items-center justify-between gap-4 mb-6 md:mb-3 lg:flex-col lg:items-baseline xl:mb-[1.625rem]'>
-					<h3
-						className='font-bold
-						xl:text-2xl xl:font-semibold'
-					>
-						Registration ends in:
-					</h3>
-					<Timer time={registrationEndsAt} />
-				</div>
-
-				{authorizedUser?.role !== Role.ChiefJudge && (
+				<h3
+					className='mr-1 text-grey
+					lg:mb-3
+					xl:mb-4 xl:text-2xl xl:font-semibold'
+				>
+					Registration ends in:
+				</h3>
+				<Timer time={registrationEndsAt} classes='lg:mb-[20px] 2xl:mb-[26px]' countLabelsClasses='text-grey' />
+				{screenWidth >= BreakPoint.Lg && authorizedUser?.role !== Role.ChiefJudge && (
 					<Button onClick={handleParticipateClick} classes='w-full'>
 						Participate
 					</Button>

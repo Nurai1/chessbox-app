@@ -201,6 +201,9 @@ export const JudgeCompetitionPage = (): ReactElement => {
 		)
 	}
 
+	console.log(currentPairs);
+	
+
 	return (
 		<>
 			<main className='container relative mx-auto grow px-4 py-8 md:py-9 xl:py-14 xl:pl-[6.5rem] xl:pr-[3.125rem]'>
@@ -275,7 +278,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 										<BreakTimer minutes={breakTime} onTimeOver={setIsTimerOver} />
 									</div>
 								) : (
-									<Button classes='w-full' onClick={handleModalShow}>
+									<Button classes='w-full' onClick={handleModalShow} disabled={Boolean(currentPairs.length)}>
 										Take a break
 									</Button>
 								)}
