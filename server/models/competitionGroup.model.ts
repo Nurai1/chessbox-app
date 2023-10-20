@@ -35,6 +35,7 @@ export const competitionGroupSchema = new Schema<ICompetitionGroup>(
     ],
     passedPairs: [pairSchema],
     currentRoundPairs: [pairSchema],
+    isCompleted: { type: Boolean, default: false },
   },
   { versionKey: false }
 );
