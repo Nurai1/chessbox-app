@@ -600,10 +600,20 @@ export const defineWinner = async (
     User.findById(loserId),
   ]);
 
-  competitionGroup.nextRoundParticipants = [
-    ...competitionGroup.nextRoundParticipants,
-    winnerId,
-  ];
+  const isGroupCompleted =
+    competitionGroup?.nextRoundParticipants?.length === 0 &&
+    competitionGroup?.currentRoundPairs?.length === 1;
+
+  if (isGroupCompleted) {
+    competitionGroup.isCompleted = true;
+  }
+
+  if (!isGroupCompleted) {
+    competitionGroup.nextRoundParticipants = [
+      ...competitionGroup.nextRoundParticipants,
+      winnerId,
+    ];
+  }
 
   const passedPair = competitionGroup.currentRoundPairs.find(
     (pair) => pair._id?.toString() === pairId
@@ -619,15 +629,15 @@ export const defineWinner = async (
     { ...passedPair, passed: true, winner: winnerId },
   ];
 
-  competitionGroup.currentRoundPairs = competitionGroup.currentRoundPairs.map(
-    (pair) => {
-      if (pair._id?.toString() === pairId) {
-        return { ...pair, passed: true, winner: winnerId };
-      }
+  competitionGroup.currentRoundPairs = isGroupCompleted
+    ? []
+    : competitionGroup.currentRoundPairs.map((pair) => {
+        if (pair._id?.toString() === pairId) {
+          return { ...pair, passed: true, winner: winnerId };
+        }
 
-      return pair;
-    }
-  );
+        return pair;
+      });
 
   if (winner && loser) {
     const { newWinnerRating, newLoserRating } = recalculateRating(

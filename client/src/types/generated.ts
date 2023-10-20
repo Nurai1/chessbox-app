@@ -2937,6 +2937,7 @@ export interface components {
 					judge?: string
 					_id?: string
 				}[]
+				isCompleted?: boolean
 				_id?: string
 			}[]
 			price?: {
@@ -3053,6 +3054,7 @@ export interface components {
 				judge?: string
 				_id?: string
 			}[]
+			isCompleted?: boolean
 			_id?: string
 		}
 		/** Pair */
@@ -3132,6 +3134,7 @@ export interface components {
 					}
 					judge?: string
 				}[]
+				isCompleted?: boolean
 			}[]
 			price?: {
 				currentValue?: number
@@ -3243,6 +3246,7 @@ export interface components {
 				}
 				judge?: string
 			}[]
+			isCompleted?: boolean
 		}
 		/** Pair */
 		PairBody: {
