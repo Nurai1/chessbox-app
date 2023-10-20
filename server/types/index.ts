@@ -100,4 +100,5 @@ export interface ICompetitionGroup {
   currentRoundNumber: number;
   order?: number;
   nextRoundParticipants: PopulatedDoc<IUser & Document>[];
+  isCompleted?: boolean;
 }
