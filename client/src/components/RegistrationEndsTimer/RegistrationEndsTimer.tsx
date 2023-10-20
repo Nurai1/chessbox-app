@@ -25,6 +25,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType>  = ({
                     time={time}
                     containerClasses='lg:w-14 lg:h-14 xl:h-[6.5rem] xl:min-w-[6.5rem] xl:p-4'
                     countNumbersClasses='xl:text-[2rem]'
+                    countLabelsClasses='text-grey'
                 />
             </div>
             <div className='flex flex-col gap-[15px] md:flex-row md:gap-[20px] lg:flex-col lg:gap-[10px]'>

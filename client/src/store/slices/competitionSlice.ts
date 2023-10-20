@@ -1,18 +1,19 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
+	AcceptPairFightBodySchema,
+	AddNewParticipantSchema,
+	CompetitionGroupSchema,
+	CompetitionGroupsOrdersSchema,
 	CompetitionSchema,
+	DeleteCompetitionGroupSchema,
 	ErrorPayload,
-	UserSchema,
+	ParticipantSchema,
 	SetCompetitionJudgesSchema,
 	SetJudgesToPairsSchema,
-	CompetitionGroupsOrdersSchema,
-	CompetitionGroupSchema,
-	ParticipantSchema,
-	DeleteCompetitionGroupSchema,
-	AddNewParticipantSchema,
 	CallPairPreparationSchema,
 	AcceptPairFightSchema,
-	DefineWinnerSchema
+	DefineWinnerSchema,
+	UserSchema
 } from 'src/types'
 import {
 	getCompetitionByIdApi,
@@ -27,8 +28,10 @@ import {
 	setBreakTimeApi,
 	callPairPreparationApi,
 	acceptPairFightApi,
-	defineWinnerApi
+	defineWinnerApi,
+	acceptForFightApi,
 } from 'src/api/requests/competitions'
+
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
 	const response = await getCompetitionByIdApi(id)
@@ -160,6 +163,17 @@ export const defineWinner = createAsyncThunk(
 	'competition/defineWinner',
 	async (winnerData: DefineWinnerSchema, thunkApi) => {
 		const response = await defineWinnerApi(winnerData)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
+export const acceptForFight = createAsyncThunk(
+	'competition/acceptForFight',
+	async (body: AcceptPairFightBodySchema, thunkApi) => {
+		const response = await acceptForFightApi(body)
 		if (response.error)
 			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
 
@@ -430,6 +444,17 @@ export const competitionSlice = createSlice({
 			state.defineWinnerPending = false
 			state.defineWinnerError = action.payload.errorMessage
 		},
+		[acceptForFight.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.loading = false
+			state.data = action.payload
+		},
+		[acceptForFight.pending.type]: state => {
+			state.loading = true
+		},
+		[acceptForFight.rejected.type]: (state, action: PayloadAction<string>) => {
+			state.loading = false
+			state.error = action.payload
+		}
 	}
 })
 

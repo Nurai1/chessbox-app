@@ -41,50 +41,110 @@ export const getEndTime = (endTime: string) => {
 	const days = Math.floor(timeDiff / 86400000)
 	const hours = Math.floor((timeDiff % 86400000) / 3600000)
 	const minutes = Math.floor(((timeDiff % 86400000) % 3600000) / 60000)
+	const seconds = Math.floor((((timeDiff % 86400000) % 3600000) % 60000) / 1000)
 
-	return { days, hours, minutes }
+	return { days, hours, minutes, seconds }
 }
 
-export const calcTime = (params: { minutes: number; hours: number; days: number }) => {
+export const getEndTimeBySeconds = (secondsLeft: number) => {
+	const days = Math.floor(secondsLeft / 86400000)
+	const hours = Math.floor((secondsLeft % 86400000) / 3600000)
+	const minutes = Math.floor(((secondsLeft % 86400000) % 3600000) / 60000)
+	const seconds = Math.floor((((secondsLeft % 86400000) % 3600000) % 60000) / 1000)
+
+	return { days, hours, minutes, seconds }
+}
+
+export const calcTime = ({
+	time,
+	perMinute = true
+}: {
+	time: {
+		minutes: number
+		hours: number
+		days: number
+		seconds: number
+	}
+	perMinute?: boolean
+}) => {
 	const getMinutes = () => {
-		if (params.minutes === 0) {
+		if (!perMinute) {
+			if (time.minutes > 0 && time.seconds === 0) {
+				return time.minutes - 1
+			}
+
+			if (time.minutes === 0 && time.seconds === 0) {
+				return 59
+			}
+
+			return time.minutes
+		}
+
+		if (time.minutes === 0) {
 			return 59
 		}
 
-		return params.minutes - 1
+		return time.minutes - 1
 	}
 
 	const getHours = () => {
-		if (params.minutes === 0 && params.hours === 0) {
+		if (!perMinute) {
+			if (time.seconds === 0 && time.minutes === 0 && time.hours > 0) {
+				return time.hours - 1
+			}
+
+			return time.hours
+		}
+
+		if (time.minutes === 0 && time.hours === 0) {
 			return 23
 		}
 
-		if (params.minutes === 0 && params.hours !== 0) {
-			return params.hours - 1
+		if (time.minutes === 0 && time.hours > 0) {
+			return time.hours - 1
 		}
 
-		return params.hours
+		return time.hours
 	}
 
 	const getDays = () => {
-		if (params.minutes === 0 && params.hours === 0 && params.days !== 0) {
-			return params.days - 1
+		if (!perMinute) {
+			return 0
 		}
 
-		return params.days
+		if (time.minutes === 0 && time.hours === 0 && time.days > 0) {
+			return time.days - 1
+		}
+
+		return time.days
 	}
 
-	if (params.minutes === 0 && params.hours === 0 && params.days === 0) {
-		params.minutes = 0
-		params.hours = 0
-		params.days = 0
-		return params
+	const getSeconds = () => {
+		if (perMinute) {
+			return 0
+		}
+
+		if (time.seconds === 0) {
+			return 59
+		}
+
+		return time.seconds - 1
+	}
+
+	if (time.minutes === 0 && time.hours === 0 && time.days === 0 && time.seconds === 0) {
+		return {
+			minutes: 0,
+			hours: 0,
+			days: 0,
+			seconds: 0
+		}
 	}
 
 	return {
 		minutes: getMinutes(),
 		hours: getHours(),
-		days: getDays()
+		days: getDays(),
+		seconds: getSeconds()
 	}
 }
 

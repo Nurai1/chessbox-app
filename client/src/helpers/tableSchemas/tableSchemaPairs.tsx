@@ -34,8 +34,8 @@ export const tableSchemaPairs = ({
 	participants: UserSchema[]
 	judges: UserSchema[]
 	startTimeTuple: string[]
-	currentUser: {
-		currentUserPairRef: MutableRefObject<undefined | { pair?: PairType; startTime: string }>
+	currentUser?: {
+		currentUserPairRef?: MutableRefObject<undefined | { pair?: PairType; startTime: string }>
 		authorizedUserId?: string
 	}
 	breakTime?: CompetitionSchema['breakTime']
@@ -67,8 +67,6 @@ export const tableSchemaPairs = ({
 		]
 	}, [] as PairType[])
 
-
-
 	const isFirstGroup = groupIndex === 0
 	const statusStyle =
 		'uppercase text-sm md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3 xl:row-auto xl:col-start-3 xl:col-end-4 xl:text-base xl:font-bold text-right md:pr-6'
@@ -81,8 +79,8 @@ export const tableSchemaPairs = ({
 		).join(':')
 
 		if (
-			pair.blackParticipant === currentUser.authorizedUserId ||
-			pair.whiteParticipant === currentUser.authorizedUserId
+			currentUser?.currentUserPairRef && pair.blackParticipant === currentUser.authorizedUserId ||
+			currentUser?.currentUserPairRef && pair.whiteParticipant === currentUser?.authorizedUserId
 		)
 			currentUser.currentUserPairRef.current = {
 				pair,
@@ -131,12 +129,13 @@ export const tableSchemaPairs = ({
 			(isJudgeCompetitionPage && !bothParticipantsDisqualified && bothParticipantsAccepted && !pair.winner)
 		const finished = pair.winner || bothParticipantsDisqualified
 		const inProgress = pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant
-		const waiting =
+		const waitingCompetitonPage =
 			oneOfParticipantsNotAccepted &&
 			!pair.winner &&
 			pair.calledForPreparation &&
 			!isJudgeCompetitionPage &&
 			!bothParticipantsDisqualified
+		const waitingJudgeCompetitonPage = isJudgeCompetitionPage && !isFirstGroup
 
 		const disableCallUpButton = () => {
 			if (maxPairs && currentPairs && maxPairs <= currentPairs?.length) {
@@ -171,7 +170,8 @@ export const tableSchemaPairs = ({
 								<div className={`text-[#FB9F16] ${statusStyle}`}>IN PROGRESS</div>
 							)}
 							{finished && <div className={`text-[#6DDA64] ${statusStyle}`}>FINISHED</div>}
-							{waiting && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
+							{waitingCompetitonPage && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
+							{waitingJudgeCompetitonPage && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
 							<div className='col-start-1 col-end-3 flex justify-between md:col-end-2 xl:col-start-2 xl:col-end-3 xl:row-start-1 xl:row-end-2'>
 								<div className='flex w-[45%]'>
 									<div>

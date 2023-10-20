@@ -1,4 +1,4 @@
-import { FC, Fragment, useRef } from 'react'
+import { FC, Fragment, MutableRefObject, useEffect } from 'react'
 import { TableBody, Loader } from 'src/ui'
 import { CompetitionSchema, ParticipantSchema, UserSchema } from 'src/types'
 import { getGroupPairsLen } from 'src/helpers/getGroupPairsLen'
@@ -12,6 +12,7 @@ type CompetitionParticipantsTablePropsType = {
     participants: ParticipantSchema[]
     judges: UserSchema[]
     authorizedUser: UserSchema
+	currentUserPairRef?: MutableRefObject<undefined | { pair?: PairType; startTime: string }>
 	isJudgeCompetitionPage?: boolean
 	onCallPairPreparation?: (groupId: string, pairId: string) => void
 	isBreakTime?: boolean
@@ -26,9 +27,9 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 	participants, 
 	judges, 
 	authorizedUser,
+	currentUserPairRef,
 	...rest
 }) => {
-    const currentUserPairRef = useRef<{ pair?: PairType; withPair?: boolean; startTime: string }>()
     const startPointTimeTuple =
     competitionData?.startDate && Number(new Date(competitionData?.startDate)) - Date.now() > 0
         ? getFormattedDate(competitionData.startDate, 'HH:mm').split(':')
@@ -109,7 +110,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 									? participants.find(({ _id: pId }) => pId === participantId)
 									: null
 
-								if (participantId === authorizedUser?._id) {
+								if (currentUserPairRef && participantId === authorizedUser?._id) {
 									currentUserPairRef.current = {
 										startTime: nextRoundParticipantsStartTime,
 										pair: {
