@@ -27,9 +27,6 @@ export const pairSchema = new Schema<IPair>(
     passed: {
       type: Boolean,
     },
-    order: {
-      type: Number,
-    },
     calledForPreparation: {
       type: Boolean,
     },

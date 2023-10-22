@@ -48,7 +48,6 @@ export interface IPair {
   whiteParticipant?: PopulatedDoc<IUser & Document>;
   winner?: PopulatedDoc<IUser & Document>;
   passed: boolean;
-  order?: number;
   calledForPreparation?: boolean;
   acceptedForFight?: {
     blackParticipant?: boolean;

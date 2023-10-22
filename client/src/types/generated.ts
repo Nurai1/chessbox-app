@@ -2906,7 +2906,6 @@ export interface components {
 					whiteParticipant?: string
 					winner?: string
 					passed?: boolean
-					order?: number
 					calledForPreparation?: boolean
 					acceptedForFight?: {
 						blackParticipant?: boolean
@@ -2924,7 +2923,6 @@ export interface components {
 					whiteParticipant?: string
 					winner?: string
 					passed?: boolean
-					order?: number
 					calledForPreparation?: boolean
 					acceptedForFight?: {
 						blackParticipant?: boolean
@@ -3023,7 +3021,6 @@ export interface components {
 				whiteParticipant?: string
 				winner?: string
 				passed?: boolean
-				order?: number
 				calledForPreparation?: boolean
 				acceptedForFight?: {
 					blackParticipant?: boolean
@@ -3041,7 +3038,6 @@ export interface components {
 				whiteParticipant?: string
 				winner?: string
 				passed?: boolean
-				order?: number
 				calledForPreparation?: boolean
 				acceptedForFight?: {
 					blackParticipant?: boolean
@@ -3063,7 +3059,6 @@ export interface components {
 			whiteParticipant?: string
 			winner?: string
 			passed?: boolean
-			order?: number
 			calledForPreparation?: boolean
 			acceptedForFight?: {
 				blackParticipant?: boolean
@@ -3105,7 +3100,6 @@ export interface components {
 					whiteParticipant?: string
 					winner?: string
 					passed?: boolean
-					order?: number
 					calledForPreparation?: boolean
 					acceptedForFight?: {
 						blackParticipant?: boolean
@@ -3122,7 +3116,6 @@ export interface components {
 					whiteParticipant?: string
 					winner?: string
 					passed?: boolean
-					order?: number
 					calledForPreparation?: boolean
 					acceptedForFight?: {
 						blackParticipant?: boolean
@@ -3217,7 +3210,6 @@ export interface components {
 				whiteParticipant?: string
 				winner?: string
 				passed?: boolean
-				order?: number
 				calledForPreparation?: boolean
 				acceptedForFight?: {
 					blackParticipant?: boolean
@@ -3234,7 +3226,6 @@ export interface components {
 				whiteParticipant?: string
 				winner?: string
 				passed?: boolean
-				order?: number
 				calledForPreparation?: boolean
 				acceptedForFight?: {
 					blackParticipant?: boolean
@@ -3254,7 +3245,6 @@ export interface components {
 			whiteParticipant?: string
 			winner?: string
 			passed?: boolean
-			order?: number
 			calledForPreparation?: boolean
 			acceptedForFight?: {
 				blackParticipant?: boolean

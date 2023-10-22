@@ -1,4 +1,4 @@
-const FIXED_RATING_CHANGING_NUM = 5;
+export const FIXED_RATING_CHANGING_NUM = 5;
 
 export function recalculateRating(winnerRating: number, loserRating: number) {
   const diff = winnerRating - loserRating;
