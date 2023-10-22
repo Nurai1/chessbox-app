@@ -9488,9 +9488,6 @@
                       "passed": {
                         "type": "boolean"
                       },
-                      "order": {
-                        "type": "number"
-                      },
                       "calledForPreparation": {
                         "type": "boolean"
                       },
@@ -9546,9 +9543,6 @@
                       },
                       "passed": {
                         "type": "boolean"
-                      },
-                      "order": {
-                        "type": "number"
                       },
                       "calledForPreparation": {
                         "type": "boolean"
@@ -9877,9 +9871,6 @@
                 "passed": {
                   "type": "boolean"
                 },
-                "order": {
-                  "type": "number"
-                },
                 "calledForPreparation": {
                   "type": "boolean"
                 },
@@ -9935,9 +9926,6 @@
                 },
                 "passed": {
                   "type": "boolean"
-                },
-                "order": {
-                  "type": "number"
                 },
                 "calledForPreparation": {
                   "type": "boolean"
@@ -10000,9 +9988,6 @@
           },
           "passed": {
             "type": "boolean"
-          },
-          "order": {
-            "type": "number"
           },
           "calledForPreparation": {
             "type": "boolean"
@@ -10134,9 +10119,6 @@
                       "passed": {
                         "type": "boolean"
                       },
-                      "order": {
-                        "type": "number"
-                      },
                       "calledForPreparation": {
                         "type": "boolean"
                       },
@@ -10189,9 +10171,6 @@
                       },
                       "passed": {
                         "type": "boolean"
-                      },
-                      "order": {
-                        "type": "number"
                       },
                       "calledForPreparation": {
                         "type": "boolean"
@@ -10508,9 +10487,6 @@
                 "passed": {
                   "type": "boolean"
                 },
-                "order": {
-                  "type": "number"
-                },
                 "calledForPreparation": {
                   "type": "boolean"
                 },
@@ -10563,9 +10539,6 @@
                 },
                 "passed": {
                   "type": "boolean"
-                },
-                "order": {
-                  "type": "number"
                 },
                 "calledForPreparation": {
                   "type": "boolean"
@@ -10622,9 +10595,6 @@
           },
           "passed": {
             "type": "boolean"
-          },
-          "order": {
-            "type": "number"
           },
           "calledForPreparation": {
             "type": "boolean"
