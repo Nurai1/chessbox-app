@@ -3,7 +3,10 @@ import { NextFunction, Request, Response } from 'express';
 import { Competition, User } from '../models/index';
 import { ICompetition, ICompetitionGroup, IPair } from '../types/index';
 import { getParticipantsAmountForFirstRound } from '../utils/getParticipantsAmountForFirstRound';
-import { recalculateRating } from '../utils/recalculateRating';
+import {
+  FIXED_RATING_CHANGING_NUM,
+  recalculateRating,
+} from '../utils/recalculateRating';
 import { getPairsWithJudges } from '../utils/competition';
 
 export const getCompetitions = async (
@@ -413,39 +416,93 @@ export const callPairPreparation = async (
       { new: true }
     );
 
-    const ms2minutes = 120000;
+    // const ms2minutes = 120000;
+    const ms2minutes = 5000;
     setTimeout(async () => {
-      const comp = await Competition.findById(competitionId);
+      const currentCompetition = await Competition.findById(competitionId);
 
-      const groups = comp?.groups.map((group) => {
-        if (group._id?.toString() === groupId) {
-          return {
-            ...group,
-            currentRoundPairs: group.currentRoundPairs.map((pair) => {
-              if (pair._id?.toString() === pairId) {
-                const pairAcceptedForFight = pair.acceptedForFight;
+      const currentGroup = currentCompetition?.groups.find(
+        (group) => group._id?.toString() === groupId
+      );
 
-                return {
-                  ...pair,
-                  disqualified: {
-                    whiteParticipant: !pairAcceptedForFight?.whiteParticipant,
-                    blackParticipant: !pairAcceptedForFight?.blackParticipant,
-                  },
-                };
-              }
-              return pair;
-            }),
-          };
+      const currentPair = currentGroup?.currentRoundPairs.find(
+        (pair) => pair._id?.toString() === pairId
+      );
+      if (currentGroup && currentPair) {
+        const pairAcceptedForFight = currentPair.acceptedForFight;
+        const whiteDisqualified = !pairAcceptedForFight?.whiteParticipant;
+        const blackDisqualified = !pairAcceptedForFight?.blackParticipant;
+
+        const pairPassed = whiteDisqualified && blackDisqualified;
+
+        currentPair.passed = pairPassed;
+        currentPair.disqualified = {
+          whiteParticipant: whiteDisqualified,
+          blackParticipant: blackDisqualified,
+        };
+        if (pairPassed) {
+          currentGroup?.passedPairs.push(currentPair);
+
+          // because defineWinner won't be called
+          const isGroupCompleted =
+            currentGroup?.nextRoundParticipants?.length === 0 &&
+            currentGroup?.currentRoundPairs?.length === 1;
+
+          if (isGroupCompleted) {
+            currentGroup.isCompleted = true;
+            currentGroup.currentRoundPairs = [];
+          }
         }
-        return group;
-      });
 
-      if (comp && groups) {
-        comp.groups = groups;
-        await Competition.findByIdAndUpdate(competitionId, comp, {
-          new: true,
-        });
+        let wasPartnerDisqualified = false;
+        if (blackDisqualified) {
+          wasPartnerDisqualified = true;
+          await User.findByIdAndUpdate(currentPair.blackParticipant, {
+            $inc: {
+              ratingNumber: -FIXED_RATING_CHANGING_NUM,
+            },
+            $push: {
+              competitionsHistory: {
+                competitionId,
+                groupId,
+                placeNumber:
+                  currentGroup.allParticipants.length -
+                  (currentGroup.passedPairs.length - 1),
+              },
+            },
+          });
+          if (!whiteDisqualified) {
+            currentGroup.nextRoundParticipants.push(
+              currentPair.whiteParticipant
+            );
+          }
+        }
+        if (whiteDisqualified) {
+          await User.findByIdAndUpdate(currentPair.whiteParticipant, {
+            $inc: {
+              ratingNumber: -FIXED_RATING_CHANGING_NUM,
+            },
+            $push: {
+              competitionsHistory: {
+                competitionId,
+                groupId,
+                placeNumber:
+                  currentGroup.allParticipants.length -
+                  (currentGroup.passedPairs.length -
+                    1 -
+                    (wasPartnerDisqualified ? 1 : 0)),
+              },
+            },
+          });
+          if (!blackDisqualified) {
+            currentGroup.nextRoundParticipants.push(
+              currentPair.blackParticipant
+            );
+          }
+        }
       }
+
+      await currentCompetition?.save();
     }, ms2minutes);
 
     return res.status(200).send(newCompetition);
@@ -541,21 +598,12 @@ export const setCompetitionGroupsOrders = async (
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
 
-  let currentPairOrder = 0;
-  const newGroups = competition?.groups.map((g) => ({
-    ...g,
-    order: orders.find((order) => order.groupId === g._id?.toString())?.order,
-    currentRoundPairs: g.currentRoundPairs
-      .map((pair) => ({
-        ...pair,
-        order: ++currentPairOrder,
-      }))
-      .sort(
-        (a, b) =>
-          // always true on that stage
-          a.order - b.order
-      ),
-  }));
+  const newGroups = competition?.groups
+    .map((g) => ({
+      ...g,
+      order: orders.find((order) => order.groupId === g._id?.toString())?.order,
+    }))
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
   competition.groups = newGroups;
   await competition.save();
@@ -647,7 +695,7 @@ export const defineWinner = async (
 
     const loserPlaceNumber =
       competitionGroup.allParticipants.length -
-      (competitionGroup.passedPairs.length + 1);
+      (competitionGroup.passedPairs.length - 1);
 
     await Promise.all([
       User.findOneAndUpdate(
@@ -673,14 +721,13 @@ export const defineWinner = async (
         { _id: loserId },
         {
           ratingNumber: newLoserRating,
+          // TODO: rewrite with both disqualified case, passedPairs length not enough
           competitionsHistory: [
             ...loser.competitionsHistory,
             {
               competitionId,
               groupId,
-              placeNumber:
-                competitionGroup.allParticipants.length -
-                (competitionGroup.passedPairs.length + 1),
+              placeNumber: loserPlaceNumber,
             },
           ],
         },
@@ -719,6 +766,7 @@ export const launchNextGroupRound = async (
   const competitionGroup = competition?.groups.find(
     (group) => group._id?.toString() === groupId
   );
+  const judges = competition?.judges;
 
   const nextRoundPairs: any[] = [];
 
@@ -727,11 +775,16 @@ export const launchNextGroupRound = async (
     competitionGroup?.nextRoundParticipants &&
     competitionGroup?.currentRoundPairs
   ) {
-    for (let i = 0; i < competitionGroup.nextRoundParticipants.length; i += 2) {
+    for (
+      let i = 0, j = 0;
+      i < competitionGroup.nextRoundParticipants.length;
+      i += 2, j++
+    ) {
       nextRoundPairs.push({
         blackParticipant: competitionGroup.nextRoundParticipants[i + 1],
         whiteParticipant: competitionGroup.nextRoundParticipants[i],
         passed: false,
+        judge: judges?.[j % judges.length],
       });
     }
 
