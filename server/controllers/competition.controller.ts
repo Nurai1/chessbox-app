@@ -415,37 +415,32 @@ export const callPairPreparation = async (
 
     const ms2minutes = 120000;
     setTimeout(async () => {
-      const comp = await Competition.findById(competitionId);
+      const currentCompetition = await Competition.findById(competitionId);
 
-      const groups = comp?.groups.map((group) => {
-        if (group._id?.toString() === groupId) {
-          return {
-            ...group,
-            currentRoundPairs: group.currentRoundPairs.map((pair) => {
-              if (pair._id?.toString() === pairId) {
-                const pairAcceptedForFight = pair.acceptedForFight;
+      const currentGroup = currentCompetition?.groups.find(
+        (group) => group._id?.toString() === groupId
+      );
 
-                return {
-                  ...pair,
-                  disqualified: {
-                    whiteParticipant: !pairAcceptedForFight?.whiteParticipant,
-                    blackParticipant: !pairAcceptedForFight?.blackParticipant,
-                  },
-                };
-              }
-              return pair;
-            }),
-          };
+      const currentPair = currentGroup?.currentRoundPairs.find(
+        (pair) => pair._id?.toString() === pairId
+      );
+      if (currentPair) {
+        const pairAcceptedForFight = currentPair.acceptedForFight;
+        const pairPassed =
+          !pairAcceptedForFight?.whiteParticipant ||
+          !pairAcceptedForFight?.blackParticipant;
+
+        currentPair.passed = pairPassed;
+        currentPair.disqualified = {
+          whiteParticipant: !pairAcceptedForFight?.whiteParticipant,
+          blackParticipant: !pairAcceptedForFight?.blackParticipant,
+        };
+        if (pairPassed) {
+          currentGroup?.passedPairs.push(currentPair);
         }
-        return group;
-      });
-
-      if (comp && groups) {
-        comp.groups = groups;
-        await Competition.findByIdAndUpdate(competitionId, comp, {
-          new: true,
-        });
       }
+
+      await currentCompetition?.save();
     }, ms2minutes);
 
     return res.status(200).send(newCompetition);
