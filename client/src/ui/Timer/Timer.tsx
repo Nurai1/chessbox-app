@@ -57,6 +57,7 @@ const Timer: FC<TimerPropsType> = memo(
 				},
 				showDays ? 60000 : 1000
 			)
+			// eslint-disable-next-line consistent-return
 			return () => clearInterval(timer)
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [time])

@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react'
+import { FC } from 'react'
 import { addZero } from 'src/helpers/addZero'
 import { useTimer } from 'src/hooks/useTimer'
 

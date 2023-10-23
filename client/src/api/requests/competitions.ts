@@ -7,9 +7,9 @@ import {
 	DeleteCompetitionGroupSchema,
 	AddNewParticipantSchema,
 	CallPairPreparationSchema,
-	AcceptPairFightSchema,
 	DefineWinnerSchema,
-	AcceptPairFightBodySchema
+	AcceptPairFightBodySchema, 
+	LaunchNextGroupRoundApiSchema
 } from 'src/types'
 
 export const getCompetitionsApi = async () => {
@@ -147,14 +147,6 @@ export const callPairPreparationApi = async (callPairPreparationData: CallPairPr
 	return result
 }
 
-export const acceptPairFightApi = async (acceptPairFightData: AcceptPairFightSchema) => {
-	const result = await patch('/api/competition/acceptPairFight', {
-		body: acceptPairFightData
-	})
-
-	return result
-}
-
 export const defineWinnerApi = async (winnerData: DefineWinnerSchema) => {
 	const result = await patch('/api/competition/defineWinner', {
 		body: winnerData
@@ -165,6 +157,12 @@ export const defineWinnerApi = async (winnerData: DefineWinnerSchema) => {
 
 export const acceptForFightApi = async (body: AcceptPairFightBodySchema) => {
 	const result = await patch('/api/competition/acceptPairFight', { body })
+
+	return result
+}
+
+export const launchNextGroupRoundApi = async (body: LaunchNextGroupRoundApiSchema) => {
+	const result = await patch('/api/competition/launchNextGroupRound', { body })
 
 	return result
 }

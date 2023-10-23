@@ -10,8 +10,8 @@ import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { AppRoute } from 'src/constants/appRoute'
 import { Tag, Button, Modal, Input, Alert, BreakTimer, Loader } from 'src/ui'
 import { AlertPropTypes } from 'src/ui/Alert/Alert'
-import { CompetitionRequirements, CompetitionParticipantsTable } from 'src/components'
-import { getFormattedDate } from 'src/helpers/datetime'
+import { CompetitionRequirements, CompetitionParticipantsTable, CompetitonIsOver } from 'src/components'
+import { getFormattedDate, isPast } from 'src/helpers/datetime'
 import {
 	fetchCompetitionById,
 	setCompetitionData,
@@ -26,7 +26,6 @@ import {
 	removeValuecallUpTimerRunningIds
 } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsListBreakTime, resetCompetitionsListBreakTime } from 'src/store/slices/competitionsSlice'
-import { isPast } from 'src/helpers/datetime'
 import { DefineWinnerSchema } from 'src/types'
 
 type AlertType = {
@@ -52,6 +51,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 		callPairPreparationError,
 		defineWinnerError,
 		callUpTimerRunningIds,
+		launchNextGroupRoundError
 	} = useAppSelector(s => s.competition)
 	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
 	const breakTime = useAppSelector(s => s.competition.data?.breakTime?.minutes)
@@ -60,6 +60,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 	const [isTimerOver, setIsTimerOver] = useState(false)
 	const [currentPairs, setCurrentPairs] = useState<string[] | []>([])
 	const [alertData, setAlertData] = useState<AlertType>({ show: false })
+	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
 
 	useEffect(() => {
 		if (!competitionDataExisting) {
@@ -88,6 +89,8 @@ export const JudgeCompetitionPage = (): ReactElement => {
 					if (pair.calledForPreparation && !pair.disqualified && !pair.winner) {
 						acc.push(pair._id as string)
 					}
+
+					return false
 				})
 
 				return acc
@@ -132,9 +135,18 @@ export const JudgeCompetitionPage = (): ReactElement => {
 			setAlertData({ show: true, title: 'Define winner failed', subtitle: defineWinnerError, type: 'error' })
 		}
 
+		if (launchNextGroupRoundError) {
+			setAlertData({
+				show: true,
+				title: 'Launch next group failed',
+				subtitle: launchNextGroupRoundError,
+				type: 'error'
+			})
+		}
+
 		setTimeout(() => setAlertData({ show: false, subtitle: '' }), 3000)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [setBreakTimeError, callPairPreparationError, defineWinnerError])
+	}, [setBreakTimeError, callPairPreparationError, defineWinnerError, launchNextGroupRoundError])
 
 	useEffect(() => {
 		if (isTimerOver) {
@@ -144,7 +156,6 @@ export const JudgeCompetitionPage = (): ReactElement => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isTimerOver])
-
 
 	useEffect(() => {
 		const pollingInterval = setInterval(() => {
@@ -200,9 +211,6 @@ export const JudgeCompetitionPage = (): ReactElement => {
 			})
 		)
 	}
-
-	console.log(currentPairs);
-	
 
 	return (
 		<>
@@ -267,22 +275,25 @@ export const JudgeCompetitionPage = (): ReactElement => {
 									</div>
 								</div>
 							</div>
-							<div>
-								<div className='relative mb-9 h-fit rounded-2xl border-2 p-10 text-heading-3'>
-									The competition is on!
-									<TwoStarsIcon className='absolute top-[7rem] right-[3.5rem] w-10' />
-								</div>
-								{breakTime && !isTimerOver ? (
-									<div className='flex items-center justify-between'>
-										<p className='text-heading-2'>Break</p>
-										<BreakTimer minutes={breakTime} onTimeOver={setIsTimerOver} />
+							{!isCompetitionOver && (
+								<div>
+									<div className='relative mb-9 h-fit rounded-2xl border-2 p-10 text-heading-3'>
+										The competition is on!
+										<TwoStarsIcon className='absolute top-[7rem] right-[3.5rem] w-10' />
 									</div>
-								) : (
-									<Button classes='w-full' onClick={handleModalShow} disabled={Boolean(currentPairs.length)}>
-										Take a break
-									</Button>
-								)}
-							</div>
+									{breakTime && !isTimerOver ? (
+										<div className='flex items-center justify-between'>
+											<p className='text-heading-2'>Break</p>
+											<BreakTimer minutes={breakTime} onTimeOver={setIsTimerOver} />
+										</div>
+									) : (
+										<Button classes='w-full' onClick={handleModalShow} disabled={Boolean(currentPairs.length)}>
+											Take a break
+										</Button>
+									)}
+								</div>
+							)}
+							{isCompetitionOver && <CompetitonIsOver/>}
 						</div>
 						<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
 							Competition schedule
@@ -332,6 +343,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 							<Button
 								onClick={handleSetBreakTimeClick}
 								classes='w-full'
+								// eslint-disable-next-line no-extra-boolean-cast
 								disabled={!Boolean(breakInterval) || setBreakTimePending}
 								loading={setBreakTimePending}
 							>

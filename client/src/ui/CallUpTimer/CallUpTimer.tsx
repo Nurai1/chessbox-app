@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { useAppDispatch } from 'src/hooks/redux'
 import { addValuecallUpTimerRunningIds, removeValuecallUpTimerRunningIds } from 'src/store/slices/competitionSlice'
-import { Button } from '../Button'
+import { Button } from 'src/ui/Button'
 import { addZero } from 'src/helpers/addZero'
 import { useTimer } from 'src/hooks/useTimer'
 
@@ -43,6 +43,7 @@ export const CallUpTimer: FC<CallUpTimerPropsType> = ({minutes = 0, seconds, onT
                 dispatch(removeValuecallUpTimerRunningIds(id))
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isRuning])
 
     return (

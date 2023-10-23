@@ -416,8 +416,8 @@ export const callPairPreparation = async (
       { new: true }
     );
 
-    // const ms2minutes = 120000;
-    const ms2minutes = 5000;
+    const ms2minutes = 120000;
+    // const ms2minutes = 5000;
     setTimeout(async () => {
       const currentCompetition = await Competition.findById(competitionId);
 

@@ -70,6 +70,7 @@ export const Input: FC<InputPropsType> = ({
 							classes
 						)}
 						id={name}
+						// eslint-disable-next-line jsx-a11y/no-autofocus
 						autoFocus={autoFocus}
 					/>
 				</div>
@@ -96,6 +97,7 @@ export const Input: FC<InputPropsType> = ({
 						)}
 						type={type}
 						id={name}
+						// eslint-disable-next-line jsx-a11y/no-autofocus
 						autoFocus={autoFocus}
 					/>
 					{isSearch && loopPosition === 'right' && <BigSearchLoopIcon className='absolute right-5 z-20' />}
