@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 
-type useTimerPropsType = {
+type UseTimerPropsType = {
     minutes: number
     seconds?: number
     onTimeOver?: (isOver: boolean) => void
 }
 
-export const useTimer = ({minutes, seconds = 0, onTimeOver}: useTimerPropsType) => {
+export const useTimer = ({minutes, seconds = 0, onTimeOver}: UseTimerPropsType) => {
     const [time, setTime] = useState({
         minutes,
         seconds

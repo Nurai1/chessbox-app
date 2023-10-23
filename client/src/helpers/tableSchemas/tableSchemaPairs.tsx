@@ -14,7 +14,7 @@ export type PairType = {
 	judgeData?: UserSchema
 } & PairSchema
 
-export const tableSchemaPairs = ({
+export const TableSchemaPairs = ({
 	tableData,
 	participants,
 	judges,
@@ -28,7 +28,8 @@ export const tableSchemaPairs = ({
 	onCallPairPreparation,
 	onCallUpTimer,
 	currentPairs,
-	onChooseWinner
+	onChooseWinner,
+	currentGroupIndex
 }: {
 	tableData: PairSchema[]
 	participants: UserSchema[]
@@ -47,6 +48,7 @@ export const tableSchemaPairs = ({
 	onCallUpTimer?: (pairId: string) => void
 	currentPairs?: string[]
 	onChooseWinner?: (data: ChooseWinnerType) => void
+	currentGroupIndex?: number 
 }) => {
 	const [competitionResult, setCompetitionResult] = useState<Record<string, ChooseWinnerType>>()
 	const { callPairPreparationPending, defineWinnerPending } = useAppSelector(s => s.competition)
@@ -67,7 +69,6 @@ export const tableSchemaPairs = ({
 		]
 	}, [] as PairType[])
 
-	const isFirstGroup = groupIndex === 0
 	const statusStyle =
 		'uppercase text-sm md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3 xl:row-auto xl:col-start-3 xl:col-end-4 xl:text-base xl:font-bold text-right md:pr-6'
 
@@ -116,32 +117,29 @@ export const tableSchemaPairs = ({
 			}
 		}
 
+		const currentFightingGroupIndex = currentGroupIndex === groupIndex
 		const bothParticipantsDisqualified = pair.disqualified?.blackParticipant && pair.disqualified?.whiteParticipant
 		const oneOfParticipantsDisqualified = pair.disqualified?.blackParticipant || pair.disqualified?.whiteParticipant
 		const bothParticipantsAccepted = pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant
 		const oneOfParticipantsNotAccepted =
 			!pair.acceptedForFight?.blackParticipant || !pair.acceptedForFight?.whiteParticipant
-		const showCallupButton = isFirstGroup && isJudgeCompetitionPage && !pair.calledForPreparation
+		const showCallupButton = isJudgeCompetitionPage && !pair.calledForPreparation && currentFightingGroupIndex && !pair.passed
 		const showCallUpTimer =
 			pair.calledForPreparation && isJudgeCompetitionPage && !bothParticipantsAccepted && !oneOfParticipantsDisqualified
 		const showWinnerButton =
 			(isJudgeCompetitionPage && !bothParticipantsDisqualified && oneOfParticipantsDisqualified && !pair.winner) ||
 			(isJudgeCompetitionPage && !bothParticipantsDisqualified && bothParticipantsAccepted && !pair.winner)
 		const finished = pair.winner || bothParticipantsDisqualified
-		const inProgress = pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant
+		const inProgress = pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant && !pair.winner 
 		const waitingCompetitonPage =
 			oneOfParticipantsNotAccepted &&
 			!pair.winner &&
-			pair.calledForPreparation &&
+			!pair.calledForPreparation &&
 			!isJudgeCompetitionPage &&
 			!bothParticipantsDisqualified
-		const waitingJudgeCompetitonPage = isJudgeCompetitionPage && !isFirstGroup
+		const waitingJudgeCompetitonPage = isJudgeCompetitionPage && !pair.calledForPreparation && !currentFightingGroupIndex
 
-		const disableCallUpButton = () => {
-			if (maxPairs && currentPairs && maxPairs <= currentPairs?.length) {
-				return true
-			}
-		}
+		const disableCallUpButton = Boolean(maxPairs && currentPairs && maxPairs <= currentPairs?.length)
 
 		return {
 			cells: [
@@ -229,10 +227,10 @@ export const tableSchemaPairs = ({
 									onCallPairPreparation={handleCallPairPreparation}
 									breakTime={Boolean(breakTime)}
 									callPairPreparationPending={callPairPreparationPending}
-									disable={disableCallUpButton()}
+									disable={disableCallUpButton}
 								/>
 							)}
-							{showCallUpTimer && <CallUpTimer onTimeOver={isTimerOver} minutes={2} seconds={10} id={pair._id}/>}
+							{showCallUpTimer && <CallUpTimer onTimeOver={isTimerOver} minutes={1} seconds={59} id={pair._id}/>}
 							{onChooseWinner && showWinnerButton && <Button onClick={handleWinnerChoose} loading={defineWinnerPending}>Winner</Button>}
 						</div>
 					),

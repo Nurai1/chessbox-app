@@ -40,17 +40,6 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({
 		}
 	}
 
-	// const participateMobile = () =>
-	// 	screenWidth < BreakPoint.Lg &&
-	// 	!isRegistrationClosed &&
-	// 	!isParticipant &&
-	// 	!isOver &&
-	// 	authorizedUser?.role !== Role.ChiefJudge && (
-	// 		<Button onClick={handleParticipateClick} classes='w-full mt-[17px] md:mt-[12px]'>
-	// 			YouAreParticipant
-	// 		</Button>
-	// 	)
-
 	const participate = () =>
 		!isRegistrationClosed &&
 		!isParticipant &&

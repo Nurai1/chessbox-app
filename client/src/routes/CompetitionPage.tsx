@@ -14,9 +14,11 @@ import {
 	CompetitionRequirements,
 	YouAreParticipant,
 	RegistrationEndsTimer,
-	CompetitionParticipantsTable
+	CompetitionParticipantsTable,
+	CompetitonIsOver,
+	TimerBeforeParticipantFight
 } from 'src/components'
-import { PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
+import { PairType } from 'src/helpers/tableSchemas/TableSchemaPairs'
 import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
 import {
 	fetchCompetitionById,
@@ -26,7 +28,6 @@ import {
 } from 'src/store/slices/competitionSlice'
 import { Role } from 'src/constants/role'
 import { UserSchema } from 'src/types'
-import { TimerBeforeParticipantFight } from 'src/components/CompetitionPage/TimerBeforeParticipantFight'
 import { existingCompetitionSelector, existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
 
 let pollingWasSet = false
@@ -37,7 +38,6 @@ export const CompetitionPage = (): ReactElement => {
 	const currentUserPairRef = useRef<{ pair?: PairType; startTime: string }>()
 	const navigate = useNavigate()
 	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
-	const [isCurrentUserCompetition, setIsCurrentUserCompetition] = useState(false)
 	const competitionDataExisting = useAppSelector(existingCompetitionSelector(competitionId))
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
@@ -70,7 +70,7 @@ export const CompetitionPage = (): ReactElement => {
 	}, [])
 
 	useEffect(() => {
-		if (!pollingWasSet && competitionData && isCompetitionOnGoing && authorizedUser?.role !== Role.ChiefJudge) {
+		if (!pollingWasSet && competitionData && isCompetitionOnGoing) {
 			pollingWasSet = true
 			setInterval(() => {
 				dispatch(fetchCompetitionById(competitionId as string))
@@ -106,17 +106,6 @@ export const CompetitionPage = (): ReactElement => {
 	useEffect(() => {
 		if (competitionData) {
 			setIsTimeOver(isPast(competitionData.startDate))
-		}
-
-		if (competitionData?.groups?.length) {
-			competitionData.groups[0].currentRoundPairs?.map(pair => {
-				if (
-					(pair.calledForPreparation && pair.blackParticipant === authorizedUser?._id) ||
-					(pair.calledForPreparation && pair.whiteParticipant === authorizedUser?._id)
-				) {
-					setIsCurrentUserCompetition(true)
-				}
-			})
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [competitionData])
@@ -213,11 +202,12 @@ export const CompetitionPage = (): ReactElement => {
 							{isParticipant && !isCompetitionOver && !isRegistrationClosed && (
 								<YouAreParticipant onSideMenuOpen={handleSideMenuOpen} />
 							)}
-							{isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge && (
+							{!isCompetitionOver && isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge && (
 								<h2>Registration Closed</h2>
 							)}
 							{timeBeforeStart()}
 							<TimerBeforeParticipantFight currentPair={currentUserPairRef.current?.pair} />
+							{isCompetitionOver && authorizedUser?.role !== Role.ChiefJudge && <CompetitonIsOver place={66}/>}
 							<div>
 								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
 								<p className='mb-9'>{competitionData.description}</p>

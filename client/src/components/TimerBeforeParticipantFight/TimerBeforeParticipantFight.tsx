@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useParams } from 'react-router-dom'
 import { isPast } from 'src/helpers/datetime'
-import { PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
+import { PairType } from 'src/helpers/tableSchemas/TableSchemaPairs'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
 import { acceptForFight } from 'src/store/slices/competitionSlice'

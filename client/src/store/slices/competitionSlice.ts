@@ -11,9 +11,9 @@ import {
 	SetCompetitionJudgesSchema,
 	SetJudgesToPairsSchema,
 	CallPairPreparationSchema,
-	AcceptPairFightSchema,
 	DefineWinnerSchema,
-	UserSchema
+	UserSchema,
+	LaunchNextGroupRoundApiSchema
 } from 'src/types'
 import {
 	getCompetitionByIdApi,
@@ -27,9 +27,9 @@ import {
 	addNewParticipantApi,
 	setBreakTimeApi,
 	callPairPreparationApi,
-	acceptPairFightApi,
 	defineWinnerApi,
 	acceptForFightApi,
+	launchNextGroupRoundApi
 } from 'src/api/requests/competitions'
 
 
@@ -148,17 +148,6 @@ export const callPairPreparation = createAsyncThunk(
 	}
 )
 
-export const acceptPairFight = createAsyncThunk(
-	'competition/acceptPairFight',
-	async (acceptPairFight: AcceptPairFightSchema, thunkApi) => {
-		const response = await acceptPairFightApi(acceptPairFight)
-		if (response.error)
-			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
-
-		return response.data
-	}
-)
-
 export const defineWinner = createAsyncThunk(
 	'competition/defineWinner',
 	async (winnerData: DefineWinnerSchema, thunkApi) => {
@@ -174,6 +163,17 @@ export const acceptForFight = createAsyncThunk(
 	'competition/acceptForFight',
 	async (body: AcceptPairFightBodySchema, thunkApi) => {
 		const response = await acceptForFightApi(body)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
+export const launchNextGroupRound = createAsyncThunk(
+	'competition/launchNextGroupRound',
+	async (body: LaunchNextGroupRoundApiSchema, thunkApi) => {
+		const response = await launchNextGroupRoundApi(body)
 		if (response.error)
 			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
 
@@ -211,12 +211,12 @@ export interface CompetitionState {
 	callPairPreparationPending?: boolean
 	callPairPreparationSuccess?: boolean
 	callPairPreparationError?: string
-	acceptPairFightPending?: boolean
-	acceptPairFightSuccess?: boolean
-	acceptPairFightError?: string
 	defineWinnerPending?: boolean
 	defineWinnerSuccess?: boolean
 	defineWinnerError?: string
+	launchNextGroupRoundPending?: boolean
+	launchNextGroupRoundSuccess?: boolean
+	launchNextGroupRoundError?: string
 }
 
 const initialState: CompetitionState = {
@@ -418,19 +418,6 @@ export const competitionSlice = createSlice({
 			state.callPairPreparationPending = false
 			state.callPairPreparationError = action.payload.errorMessage
 		},
-		[acceptPairFight.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
-			state.data = action.payload
-			state.acceptPairFightPending = false
-			state.acceptPairFightSuccess = true
-		},
-		[acceptPairFight.pending.type]: state => {
-			state.acceptPairFightPending = true
-			state.acceptPairFightError = undefined
-		},
-		[acceptPairFight.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
-			state.acceptPairFightPending = false
-			state.acceptPairFightError = action.payload.errorMessage
-		},
 		[defineWinner.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.data = action.payload
 			state.defineWinnerPending = false
@@ -454,6 +441,19 @@ export const competitionSlice = createSlice({
 		[acceptForFight.rejected.type]: (state, action: PayloadAction<string>) => {
 			state.loading = false
 			state.error = action.payload
+		},
+		[launchNextGroupRound.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.data = action.payload
+			state.launchNextGroupRoundPending = false
+			state.launchNextGroupRoundSuccess = true
+		},
+		[launchNextGroupRound.pending.type]: state => {
+			state.launchNextGroupRoundPending = true
+			state.launchNextGroupRoundError = undefined
+		},
+		[launchNextGroupRound.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.launchNextGroupRoundPending = false
+			state.launchNextGroupRoundError = action.payload.errorMessage
 		}
 	}
 })
