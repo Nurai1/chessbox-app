@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import { Competition, User } from '../models/index';
 import { ICompetition, ICompetitionGroup, IPair } from '../types/index';
-import { getParticipantsAmountForFirstRound } from '../utils/getParticipantsAmountForFirstRound';
+import { getParticipantsAmountForCurrentRound } from '../utils/getParticipantsAmountForCurrentRound';
 import {
   FIXED_RATING_CHANGING_NUM,
   recalculateRating,
@@ -295,13 +295,13 @@ export const createCompetitionGroup = async (
 
   const { allParticipants } = body;
   const firstRoundPairs: IPair[] = [];
-  const participantsAmountForFirstRound = getParticipantsAmountForFirstRound(
+  const currentRoundParticipantsAmount = getParticipantsAmountForCurrentRound(
     allParticipants.length
   );
 
   const shuffledParticipants = allParticipants.sort(() => Math.random() - 0.5);
 
-  for (let i = 0; i < participantsAmountForFirstRound; i += 2) {
+  for (let i = 0; i < currentRoundParticipantsAmount; i += 2) {
     firstRoundPairs.push({
       blackParticipant: shuffledParticipants[i + 1],
       whiteParticipant: shuffledParticipants[i],
@@ -314,7 +314,7 @@ export const createCompetitionGroup = async (
     currentRoundPairs: firstRoundPairs,
     currentRoundNumber: 1,
     nextRoundParticipants: shuffledParticipants.slice(
-      participantsAmountForFirstRound
+      currentRoundParticipantsAmount
     ),
   };
 
@@ -371,7 +371,7 @@ export const addNewParticipant = async (
   if (competition && user) {
     user.save();
 
-    competition.participants = [...competition.participants, user];
+    competition.participants = [...competition.participants, user._id];
     await competition.save();
   }
   res.send(competition);
@@ -775,11 +775,14 @@ export const launchNextGroupRound = async (
     competitionGroup?.nextRoundParticipants &&
     competitionGroup?.currentRoundPairs
   ) {
-    for (
-      let i = 0, j = 0;
-      i < competitionGroup.nextRoundParticipants.length;
-      i += 2, j++
-    ) {
+    const shuffledParticipants = competitionGroup?.nextRoundParticipants.sort(
+      () => Math.random() - 0.5
+    );
+    const currentRoundParticipantsAmount = getParticipantsAmountForCurrentRound(
+      shuffledParticipants.length
+    );
+
+    for (let i = 0, j = 0; i < currentRoundParticipantsAmount; i += 2, j++) {
       nextRoundPairs.push({
         blackParticipant: competitionGroup.nextRoundParticipants[i + 1],
         whiteParticipant: competitionGroup.nextRoundParticipants[i],
@@ -788,7 +791,9 @@ export const launchNextGroupRound = async (
       });
     }
 
-    competitionGroup.nextRoundParticipants = [];
+    competitionGroup.nextRoundParticipants = shuffledParticipants.slice(
+      currentRoundParticipantsAmount
+    );
     competitionGroup.currentRoundNumber += 1;
     let currentPairOrder = 0;
     competitionGroup.currentRoundPairs = nextRoundPairs
