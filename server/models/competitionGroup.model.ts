@@ -33,6 +33,16 @@ export const competitionGroupSchema = new Schema<ICompetitionGroup>(
         identificator: true,
       },
     ],
+    results: [
+      {
+        userId: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+          identificator: true,
+        },
+        placeNumber: { type: Number, required: true },
+      },
+    ],
     passedPairs: [pairSchema],
     currentRoundPairs: [pairSchema],
     isCompleted: { type: Boolean, default: false },

@@ -417,7 +417,6 @@ export const callPairPreparation = async (
     );
 
     const ms2minutes = 120000;
-    // const ms2minutes = 5000;
     setTimeout(async () => {
       const currentCompetition = await Competition.findById(competitionId);
 
@@ -432,6 +431,43 @@ export const callPairPreparation = async (
         const pairAcceptedForFight = currentPair.acceptedForFight;
         const whiteDisqualified = !pairAcceptedForFight?.whiteParticipant;
         const blackDisqualified = !pairAcceptedForFight?.blackParticipant;
+
+        let wasPartnerDisqualified = false;
+        if (blackDisqualified) {
+          wasPartnerDisqualified = true;
+          await User.findByIdAndUpdate(currentPair.blackParticipant, {
+            $inc: {
+              ratingNumber: -FIXED_RATING_CHANGING_NUM,
+            },
+            $push: {
+              competitionsHistory: {
+                competitionId,
+                groupId,
+                placeNumber:
+                  currentGroup.allParticipants.length -
+                  (currentGroup.passedPairs.length - 1),
+              },
+            },
+          });
+        }
+        if (whiteDisqualified) {
+          await User.findByIdAndUpdate(currentPair.whiteParticipant, {
+            $inc: {
+              ratingNumber: -FIXED_RATING_CHANGING_NUM,
+            },
+            $push: {
+              competitionsHistory: {
+                competitionId,
+                groupId,
+                placeNumber:
+                  currentGroup.allParticipants.length -
+                  (currentGroup.passedPairs.length -
+                    1 -
+                    (wasPartnerDisqualified ? 1 : 0)),
+              },
+            },
+          });
+        }
 
         const pairPassed = whiteDisqualified && blackDisqualified;
 
@@ -451,53 +487,21 @@ export const callPairPreparation = async (
           if (isGroupCompleted) {
             currentGroup.isCompleted = true;
             currentGroup.currentRoundPairs = [];
-          }
-        }
 
-        let wasPartnerDisqualified = false;
-        if (blackDisqualified) {
-          wasPartnerDisqualified = true;
-          await User.findByIdAndUpdate(currentPair.blackParticipant, {
-            $inc: {
-              ratingNumber: -FIXED_RATING_CHANGING_NUM,
-            },
-            $push: {
-              competitionsHistory: {
-                competitionId,
-                groupId,
-                placeNumber:
-                  currentGroup.allParticipants.length -
-                  (currentGroup.passedPairs.length - 1),
-              },
-            },
-          });
-          if (!whiteDisqualified) {
-            currentGroup.nextRoundParticipants.push(
-              currentPair.whiteParticipant
-            );
-          }
-        }
-        if (whiteDisqualified) {
-          await User.findByIdAndUpdate(currentPair.whiteParticipant, {
-            $inc: {
-              ratingNumber: -FIXED_RATING_CHANGING_NUM,
-            },
-            $push: {
-              competitionsHistory: {
-                competitionId,
-                groupId,
-                placeNumber:
-                  currentGroup.allParticipants.length -
-                  (currentGroup.passedPairs.length -
-                    1 -
-                    (wasPartnerDisqualified ? 1 : 0)),
-              },
-            },
-          });
-          if (!blackDisqualified) {
-            currentGroup.nextRoundParticipants.push(
-              currentPair.blackParticipant
-            );
+            const groupParticipants = await User.find({
+              currentGroupId: currentGroup._id,
+            });
+
+            const groupResults = groupParticipants
+              .map((gp) => ({
+                userId: gp._id,
+                placeNumber: gp.competitionsHistory?.find(
+                  (gpHistPoint) => gpHistPoint.competitionId === competitionId
+                )?.placeNumber as number,
+              }))
+              .sort((a, b) => (a.placeNumber ?? 0) - (b.placeNumber ?? 0));
+
+            currentGroup.results = groupResults;
           }
         }
       }
@@ -736,7 +740,24 @@ export const defineWinner = async (
       competition?.save(),
     ]);
 
-    res.send(competition);
+    if (isGroupCompleted) {
+      const groupParticipants = await User.find({
+        currentGroupId: competitionGroup._id,
+      });
+
+      const groupResults = groupParticipants
+        .map((gp) => ({
+          userId: gp._id,
+          placeNumber: gp.competitionsHistory?.find(
+            (gpHistPoint) => gpHistPoint.competitionId === competitionId
+          )?.placeNumber as number,
+        }))
+        .sort((a, b) => (a.placeNumber ?? 0) - (b.placeNumber ?? 0));
+
+      competitionGroup.results = groupResults;
+    }
+
+    return res.send(competition);
   }
 
   res.status(400).send({ error: "Winner or loser don't exist" });

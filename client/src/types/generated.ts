@@ -2901,6 +2901,10 @@ export interface components {
 				order?: number
 				nextRoundParticipants?: string[]
 				allParticipants?: string[]
+				results?: {
+					userId?: string
+					placeNumber: number
+				}[]
 				passedPairs?: {
 					blackParticipant?: string
 					whiteParticipant?: string
@@ -3016,6 +3020,10 @@ export interface components {
 			order?: number
 			nextRoundParticipants?: string[]
 			allParticipants?: string[]
+			results?: {
+				userId?: string
+				placeNumber: number
+			}[]
 			passedPairs?: {
 				blackParticipant?: string
 				whiteParticipant?: string
@@ -3095,6 +3103,10 @@ export interface components {
 				order?: number
 				nextRoundParticipants?: string[]
 				allParticipants?: string[]
+				results?: {
+					userId?: string
+					placeNumber: number
+				}[]
 				passedPairs?: {
 					blackParticipant?: string
 					whiteParticipant?: string
@@ -3205,6 +3217,10 @@ export interface components {
 			order?: number
 			nextRoundParticipants?: string[]
 			allParticipants?: string[]
+			results?: {
+				userId?: string
+				placeNumber: number
+			}[]
 			passedPairs?: {
 				blackParticipant?: string
 				whiteParticipant?: string
