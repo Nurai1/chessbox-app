@@ -32,9 +32,7 @@ export const JudgeAssignPage = (): ReactElement => {
 	const competitionData = useAppSelector(s => s.competition.data)
 	const judges = useAppSelector(s => s.competition.judges[competitionId as string])
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
-	const pairJudgesAssignPending = useAppSelector(s => s.competition.setPairJudgesPending)
-	const pairJudgesAssignSuccess = useAppSelector(s => s.competition.setPairJudgesSuccess)
-	const pairJudgesAssignError = useAppSelector(s => s.competition.setPairJudgesError)
+	const {setPairJudgesError, setPairJudgesSuccess, setPairJudgesPending} = useAppSelector(s => s.competition)
 
 	if (judges?.length === 0) {
 		navigate(`../${AppRoute.JudgeChoice}`)
@@ -83,12 +81,12 @@ export const JudgeAssignPage = (): ReactElement => {
 	}, [groups])
 
 	useEffect(() => {
-		if (pairJudgesAssignSuccess) {
+		if (setPairJudgesSuccess) {
 			navigate(`/${AppRoute.Competitions}/${competitionId}`)
 			dispatch(resetPairJudgeAssignStatus())
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [pairJudgesAssignSuccess])
+	}, [setPairJudgesSuccess])
 
 	const handleJudgeSelect = (updatedJudgeData: SelectedJudge) => {
 		const newSelectJudge = selectedJudges?.judgesByGroups?.map(group => {
@@ -201,11 +199,11 @@ export const JudgeAssignPage = (): ReactElement => {
 					<Button
 						classes='min-w-[8rem] xl:min-w-[15.625rem]'
 						onClick={handleDoneClick}
-						loading={pairJudgesAssignPending}
+						loading={setPairJudgesPending}
 					>
 						Done
 					</Button>
-					{pairJudgesAssignError && <Alert type='error' subtitle={pairJudgesAssignError} />}
+					{setPairJudgesError && <Alert type='error' subtitle={setPairJudgesError} />}
 				</div>
 			</BottomFixedContainer>
 		</main>

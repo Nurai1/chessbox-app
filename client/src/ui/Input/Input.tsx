@@ -9,6 +9,7 @@ export type InputPropsType = {
 	label?: string
 	onChange: (value: string | undefined, name: string | undefined) => void
 	onFocus?: () => void
+	autoFocus?: boolean
 	value?: string
 	name?: string
 	type?: 'text' | 'number' | 'password'
@@ -38,6 +39,7 @@ export const Input: FC<InputPropsType> = ({
 	loopPosition = 'left',
 	validationErrorText,
 	onFocus,
+	autoFocus,
 	disabled,
 	isControlledValue = true,
 	classes,
@@ -68,6 +70,8 @@ export const Input: FC<InputPropsType> = ({
 							classes
 						)}
 						id={name}
+						// eslint-disable-next-line jsx-a11y/no-autofocus
+						autoFocus={autoFocus}
 					/>
 				</div>
 			) : (
@@ -93,6 +97,8 @@ export const Input: FC<InputPropsType> = ({
 						)}
 						type={type}
 						id={name}
+						// eslint-disable-next-line jsx-a11y/no-autofocus
+						autoFocus={autoFocus}
 					/>
 					{isSearch && loopPosition === 'right' && <BigSearchLoopIcon className='absolute right-5 z-20' />}
 					{showPasswordIcon && (

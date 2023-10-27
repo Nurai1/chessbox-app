@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, memo } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { calcTime, getEndTime, getEndTimeBySeconds } from '../../helpers/datetime'
+import { calcTime, getEndTime, getEndTimeBySeconds, isPast } from '../../helpers/datetime'
 import { addZero } from '../../helpers/addZero'
 
 type TimerPropsType = (
@@ -18,9 +18,10 @@ type TimerPropsType = (
 	countNumbersClasses?: string
 	countLabelsClasses?: string
 	showDays?: boolean
+	handleTimeOver?: () => void
 }
 const Timer: FC<TimerPropsType> = memo(
-	({ time, secondsLeft, classes, containerClasses, countNumbersClasses, countLabelsClasses, showDays = true }) => {
+	({ time, secondsLeft, classes, containerClasses, countNumbersClasses, countLabelsClasses, showDays = true, handleTimeOver }) => {
 		const [endTime, setEndTime] = useState<{
 			seconds: number
 			minutes: number
@@ -34,16 +35,29 @@ const Timer: FC<TimerPropsType> = memo(
 		})
 
 		useEffect(() => {
+			if (time && isPast(time)) {
+				return
+			}
+
 			const currentParsedTime = time ? getEndTime(time) : getEndTimeBySeconds(secondsLeft as number)
 
 			setEndTime(currentParsedTime)
 
 			const timer = setInterval(
 				() => {
+					if (time && isPast(time)) {
+						if (handleTimeOver) {
+							handleTimeOver()
+						}
+
+						clearInterval(timer)
+						return
+					}
 					setEndTime(t => calcTime({ time: t, perMinute: showDays }))
 				},
-				showDays ? 3000 : 1000
+				showDays ? 60000 : 1000
 			)
+			// eslint-disable-next-line consistent-return
 			return () => clearInterval(timer)
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [time])
@@ -65,7 +79,7 @@ const Timer: FC<TimerPropsType> = memo(
 						>
 							{endTime ? addZero(endTime.days.toString()) : '0'}
 						</span>
-						<span className={twMerge('block text-xs xl:text-sm', countLabelsClasses)}>
+						<span className={twMerge('block text-xs font-normal xl:text-sm xl:mt-2', countLabelsClasses)}>
 							{endTime?.days === 1 ? 'day' : 'days'}
 						</span>
 					</li>
@@ -84,7 +98,7 @@ const Timer: FC<TimerPropsType> = memo(
 					>
 						{endTime ? addZero(endTime.hours.toString()) : 0}
 					</span>
-					<span className={twMerge('block text-xs font-normal xl:text-sm', countLabelsClasses)}>
+					<span className={twMerge('block text-xs font-normal xl:text-sm xl:mt-2', countLabelsClasses)}>
 						{endTime?.hours === 1 ? 'hour' : 'hours'}
 					</span>
 				</li>
@@ -102,7 +116,7 @@ const Timer: FC<TimerPropsType> = memo(
 					>
 						{endTime ? addZero(endTime.minutes.toString()) : 0}
 					</span>
-					<span className={twMerge('block text-xs font-normal xl:text-sm', countLabelsClasses)}>
+					<span className={twMerge('block text-xs font-normal xl:text-sm xl:mt-2', countLabelsClasses)}>
 						{endTime?.minutes === 1 ? 'minute' : 'minutes'}
 					</span>
 				</li>
@@ -121,7 +135,7 @@ const Timer: FC<TimerPropsType> = memo(
 						>
 							{endTime ? addZero(endTime.seconds.toString()) : '0'}
 						</span>
-						<span className={twMerge('block text-xs font-normal xl:text-sm', countLabelsClasses)}>
+						<span className={twMerge('block text-xs font-normal xl:text-sm xl:mt-2', countLabelsClasses)}>
 							{endTime?.seconds === 1 ? 'second' : 'seconds'}
 						</span>
 					</li>

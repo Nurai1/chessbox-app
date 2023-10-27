@@ -10,11 +10,11 @@ type TagPropsType = {
 }
 
 const tag = tv({
-	base: 'inline-flex items-center gap-[9px] rounded-2xl py-1 px-4 whitespace-nowrap text-sm xl:text-base',
+	base: 'inline-flex items-center gap-2 rounded-2xl py-1 px-4 whitespace-nowrap text-sm xl:text-base',
 	variants: {
 		tagType: {
-			primary: 'bg-light-grey text-grey',
-			search: 'bg-black text-pale-white gap-[13px]'
+			primary: 'p-0  text-grey lg:bg-light-grey lg:px-4',
+			search: 'bg-black text-pale-white gap-3'
 		}
 	}
 })

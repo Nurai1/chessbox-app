@@ -1,0 +1,248 @@
+import { FC, MutableRefObject } from 'react'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { useParams } from 'react-router-dom'
+import { TableBody, Loader, Button, Accordion } from 'src/ui'
+import { CompetitionSchema, ParticipantSchema, UserSchema, AgeCategorySchema, WeightCategorySchema } from 'src/types'
+import { getGroupPairsLen } from 'src/helpers/getGroupPairsLen'
+import { TableSchemaPairs, PairType } from 'src/helpers/tableSchemas/TableSchemaPairs'
+import { ChooseWinnerType } from 'src/routes/JudgeCompetitionPage'
+import { getFormattedDate, getAge } from 'src/helpers/datetime'
+import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
+import { launchNextGroupRound } from 'src/store/slices/competitionSlice'
+
+type CompetitionParticipantsTablePropsType = {
+	competitionData: CompetitionSchema
+	participants: ParticipantSchema[]
+	judges: UserSchema[]
+	authorizedUser: UserSchema
+	currentUserPairRef?: MutableRefObject<undefined | { pair?: PairType; startTime: string }>
+	isJudgeCompetitionPage?: boolean
+	onCallPairPreparation?: (groupId: string, pairId: string) => void
+	isBreakTime?: boolean
+	onCallUpTimer?: (pairId: string) => void
+	maxPairs?: number
+	currentPairs?: string[]
+	onChooseWinner?: (data: ChooseWinnerType) => void
+}
+
+export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsType> = ({
+	competitionData,
+	participants,
+	judges,
+	authorizedUser,
+	currentUserPairRef,
+	isJudgeCompetitionPage,
+	...rest
+}) => {
+	const dispatch = useAppDispatch()
+	const { competitionId } = useParams()
+	const { launchNextGroupRoundPending } = useAppSelector(s => s.competition)
+	const currentGroupIndex = competitionData.groups?.findIndex(group => group.isCompleted === false)
+	const startPointTimeTuple =
+		competitionData?.startDate && Number(new Date(competitionData?.startDate)) - Date.now() > 0
+			? getFormattedDate(competitionData.startDate, 'HH:mm').split(':')
+			: getFormattedDate(new Date().toISOString(), 'HH:mm').split(':')
+	const groupsAllPairsLen = competitionData?.groups?.map(group =>
+		getGroupPairsLen({
+			currentPairsLen: group.currentRoundPairs?.length ?? 0,
+			nextRoundParticipantsLen: group.nextRoundParticipants?.length ?? 0
+		})
+	)
+
+	const getTitle = ({
+		gender,
+		ageCategory,
+		weightCategory,
+		pairsBeforeLen,
+		competitionJudgesLen,
+		classes
+	}: {
+		pairsBeforeLen: number
+		competitionJudgesLen: number
+		gender: string
+		ageCategory: AgeCategorySchema
+		weightCategory: WeightCategorySchema
+		classes?: string
+	}) => (
+		<h3 className={`font-bold xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px] ${classes}`}>
+			{getTimeTuplePlusMinutes(
+				startPointTimeTuple,
+				(pairsBeforeLen * 10) / competitionJudgesLen + (competitionData?.breakTime?.minutes ?? 0)
+			).join(':')}
+			<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}- {ageCategory?.to} age,{' '}
+			{weightCategory?.from}-{weightCategory?.to}kg
+		</h3>
+	)
+
+	const noPairsForFightInGroup = competitionData.groups?.reduce((acc, group) => {
+		if (group.currentRoundPairs?.every(pair => pair.passed)) {
+			return {
+				...acc,
+				[group._id as string]: true
+			}
+		}
+		return acc
+	}, {} as Record<string, boolean>)
+
+	const handleLaunchNextGroupRound = (groupId: string) => {
+		dispatch(launchNextGroupRound({ competitionId: competitionId as string, groupId }))
+	}
+
+	return (
+		<div className='xl:px[50px] flex grow flex-col lg:rounded-3xl lg:border lg:border-[#DADADA] lg:px-[40px] lg:pt-[33px] xl:pt-9'>
+			{competitionData.groups?.map(
+				(
+					{ _id, gender, ageCategory, weightCategory, currentRoundPairs, nextRoundParticipants, isCompleted },
+					groupIndex
+				) => {
+					const currentRoundPairsLen = currentRoundPairs?.length ?? 0
+					const competitionJudgesLen = competitionData?.judges?.length ?? 1
+
+					let pairsBeforeLen = 0
+					for (let i = 0; i < groupIndex; i += 1) {
+						pairsBeforeLen += groupsAllPairsLen?.[i] ?? 0
+					}
+
+					pairsBeforeLen =
+						pairsBeforeLen % competitionJudgesLen === 0
+							? pairsBeforeLen
+							: pairsBeforeLen + (pairsBeforeLen % competitionJudgesLen)
+
+					const nextRoundParticipantsStartTime = getTimeTuplePlusMinutes(
+						startPointTimeTuple,
+						((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen +
+							(competitionData?.breakTime?.minutes ?? 0)
+					).join(':')
+
+					const tableData = () => (
+						// eslint-disable-next-line react/jsx-no-useless-fragment
+						<>
+							{currentRoundPairs ? (
+								<>
+									<TableBody
+										rows={TableSchemaPairs({
+											tableData: currentRoundPairs,
+											participants,
+											judges,
+											startTimeTuple: getTimeTuplePlusMinutes(
+												startPointTimeTuple,
+												(pairsBeforeLen * 10) / competitionJudgesLen + (competitionData?.breakTime?.minutes ?? 0)
+											),
+											currentUser: { currentUserPairRef, authorizedUserId: authorizedUser?._id },
+											breakTime: competitionData?.breakTime,
+											groupIndex,
+											groupId: _id,
+											currentGroupIndex,
+											isJudgeCompetitionPage,
+											...rest
+										})}
+									/>
+									{isJudgeCompetitionPage && noPairsForFightInGroup && noPairsForFightInGroup[_id as string] && (
+										<Button
+											classes='mb-2.5 w-[14.25rem]'
+											loading={launchNextGroupRoundPending}
+											onClick={() => handleLaunchNextGroupRound(_id as string)}
+										>
+											To the next round
+										</Button>
+									)}
+									{!!nextRoundParticipants?.length &&
+										getTitle({
+											gender,
+											ageCategory,
+											weightCategory,
+											pairsBeforeLen,
+											competitionJudgesLen,
+											classes: 'mb-4 md:mb-8'
+										})}
+									{nextRoundParticipants &&
+										nextRoundParticipants?.map((participantId, participantIdx) => {
+											const nextRoundParticipant = participants
+												? participants.find(({ _id: pId }) => pId === participantId)
+												: null
+
+											if (currentUserPairRef && participantId === authorizedUser?._id) {
+												currentUserPairRef.current = {
+													startTime: nextRoundParticipantsStartTime,
+													pair: {
+														whiteParticipant: participantId,
+														whiteParticipantData: nextRoundParticipant ?? undefined
+													}
+												}
+											}
+
+											return (
+												<div key={nextRoundParticipant?._id} className='flex h-20 w-full items-center py-3 md:pr-6'>
+													<div className='h-full w-[50px] font-bold'>{participantIdx + 1}</div>
+													<div className='flex h-full grow flex-col'>
+														<div className='mb-[7px] text-sm text-black xl:text-base'>
+															{nextRoundParticipant?.fullName}
+														</div>
+														<div className='text-[#6C6A6C]'>
+															{getAge(nextRoundParticipant?.birthDate as string)} age, {nextRoundParticipant?.weight} kg
+														</div>
+													</div>
+													<div>
+														<span className='text-sm uppercase text-[#4565D9] md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3 xl:col-start-3 xl:col-end-4 xl:row-auto xl:text-base xl:font-bold'>
+															WAITING
+														</span>
+													</div>
+												</div>
+											)
+										})}
+								</>
+							) : (
+								<Loader />
+							)}
+						</>
+					)
+
+
+					return (
+						<div key={_id} className={`${isCompleted ? 'hidden' : ''}`}>
+							{isJudgeCompetitionPage && (
+								// eslint-disable-next-line react/jsx-no-useless-fragment
+								<>
+									{currentGroupIndex === groupIndex ? (
+										<>
+											{getTitle({
+												gender,
+												ageCategory,
+												weightCategory,
+												pairsBeforeLen,
+												competitionJudgesLen,
+												classes: 'mb-4 md:mb-8'
+											})}
+											{tableData()}
+										</>
+									) : (
+										<Accordion
+											title={getTitle({ gender, ageCategory, weightCategory, pairsBeforeLen, competitionJudgesLen })}
+											isOpenDefault={currentGroupIndex === groupIndex}
+											classes=' border-t '
+										>
+											{tableData()}
+										</Accordion>
+									)}
+								</>
+							)}
+							{!isJudgeCompetitionPage && (
+								<>
+									{getTitle({
+										gender,
+										ageCategory,
+										weightCategory,
+										pairsBeforeLen,
+										competitionJudgesLen,
+										classes: 'mb-4 md:mb-8'
+									})}
+									{tableData()}
+								</>
+							)}
+						</div>
+					)
+				}
+			)}
+		</div>
+	)
+}

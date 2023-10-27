@@ -1,1 +1,1 @@
-export { UsersSearch } from './UsersSearch '
+export { UsersSearch } from 'src/components/UsersSearch/UsersSearch'

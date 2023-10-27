@@ -3,6 +3,8 @@ import { components, paths } from './generated'
 export type UserSchema = components['schemas']['User']
 export type CompetitionSchema = components['schemas']['Competition']
 export type CompetitionGroupSchema = components['schemas']['CompetitionGroup']
+export type AgeCategorySchema = components['schemas']['CompetitionGroup']['ageCategory']
+export type WeightCategorySchema = components['schemas']['CompetitionGroup']['weightCategory']
 export type PairSchema = components['schemas']['Pair']
 export type CompetitionRequirementsSchema = components['schemas']['Competition']['requirements']
 export type SignUpDataSchema = paths['/api/signup']['post']['requestBody']['content']['application/json']
@@ -23,8 +25,16 @@ export type DeleteCompetitionGroupSchema =
 	paths['/api/competition/{id}/group']['delete']['requestBody']['content']['application/json']
 export type AddNewParticipantSchema =
 	paths['/api/competition/{id}/addNewParticipant']['patch']['requestBody']['content']['application/json']
+export type SetBreakTimeSchema =
+	paths['/api/competition/{id}/setCompetitionBreakTime']['patch']['requestBody']['content']['application/json']
+export type CallPairPreparationSchema =
+	paths['/api/competition/callPairPreparation']['patch']['requestBody']['content']['application/json']
+export type DefineWinnerSchema =
+	paths['/api/competition/defineWinner']['patch']['requestBody']['content']['application/json']
 export type AcceptPairFightBodySchema =
 	paths['/api/competition/acceptPairFight']['patch']['requestBody']['content']['application/json']
+export type LaunchNextGroupRoundApiSchema =
+	paths['/api/competition/launchNextGroupRound']['patch']['requestBody']['content']['application/json']
 
 export type ErrorPayload = { errorMessage: string; response: Response }
 export type CompetitionSchemaJudge = Omit<CompetitionSchema, 'judges'> & {

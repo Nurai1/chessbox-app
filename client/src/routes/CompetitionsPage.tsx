@@ -22,7 +22,6 @@ export const CompetitionsPage = (): ReactElement => {
 		competitionsData: []
 	})
 	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
-
 	const allCompetitions = useAppSelector(selectCompetitions)
 	const competitionsActive = useAppSelector(activeCompetitionsSelector)
 	const currentUserCompetitions = useAppSelector(currentUserCompetitionsSelector(authorizedUserId))
