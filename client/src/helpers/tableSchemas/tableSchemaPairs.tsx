@@ -1,11 +1,9 @@
-import { MutableRefObject, useState } from 'react'
-import { useAppSelector } from 'src/hooks/redux'
+import { MutableRefObject } from 'react'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
-import { ReactComponent as GoldMedalIcon } from 'src/assets/medal-gold.svg'
-import { CompetitionSchema, PairSchema, UserSchema } from 'src/types'
-import { getAge, localTZName } from 'src/helpers/datetime'
-import { Button, CallUpTimer, CallUpButton, CheckboxAndRadioButton } from 'src/ui'
-import { ChooseWinnerType } from 'src/routes/JudgeCompetitionPage'
+import { CompetitionSchema, PairSchema, UserSchema, ChooseWinnerType } from 'src/types'
+import { localTZName } from 'src/helpers/datetime'
+import { Button, CallUpTimer, CallUpButton } from 'src/ui'
+import { ChooseWinner } from 'src/components'
 import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
 
 export type PairType = {
@@ -14,7 +12,7 @@ export type PairType = {
 	judgeData?: UserSchema
 } & PairSchema
 
-export const TableSchemaPairs = ({
+export const tableSchemaPairs = ({
 	tableData,
 	participants,
 	judges,
@@ -29,7 +27,9 @@ export const TableSchemaPairs = ({
 	onCallUpTimer,
 	currentPairs,
 	onChooseWinner,
-	currentGroupIndex
+	currentGroupIndex,
+	defineWinnerPending,
+	onDefineWinner
 }: {
 	tableData: PairSchema[]
 	participants: UserSchema[]
@@ -47,12 +47,11 @@ export const TableSchemaPairs = ({
 	onCallPairPreparation?: (groupId: string, pairId: string) => void
 	onCallUpTimer?: (pairId: string) => void
 	currentPairs?: string[]
-	onChooseWinner?: (data: ChooseWinnerType) => void
-	currentGroupIndex?: number 
+	onChooseWinner?: (data?: Record<string, ChooseWinnerType>) => void
+	currentGroupIndex?: number
+	defineWinnerPending?: boolean
+	onDefineWinner?: (pairId: string) => void
 }) => {
-	const [competitionResult, setCompetitionResult] = useState<Record<string, ChooseWinnerType>>()
-	const { callPairPreparationPending, defineWinnerPending } = useAppSelector(s => s.competition)
-
 	const participantsData = tableData.reduce((acc, pair) => {
 		const blackParticipantData = participants.find(({ _id }) => pair.blackParticipant === _id)
 		const whiteParticipantData = participants.find(({ _id }) => pair.whiteParticipant === _id)
@@ -96,24 +95,6 @@ export const TableSchemaPairs = ({
 		const handleCallPairPreparation = () => {
 			if (onCallPairPreparation) {
 				onCallPairPreparation(groupId as string, pair._id as string)
-			}
-		}
-
-		const handleWinnerIdChoose = (value?: string, name?: string) => {
-			setCompetitionResult({
-				...competitionResult, 
-				[name as string]: {
-					groupId: groupId as string,
-					pairId: pair._id as string,
-					winnerId: value,
-					loserId: value === pair.blackParticipant ? pair.whiteParticipant : pair.blackParticipant
-				} 
-			})
-		}
-
-		const handleWinnerChoose = () => {
-			if (onChooseWinner && competitionResult) {
-				onChooseWinner(competitionResult[pair._id as string])
 			}
 		}
 
@@ -170,68 +151,16 @@ export const TableSchemaPairs = ({
 							{finished && <div className={`text-[#6DDA64] ${statusStyle}`}>FINISHED</div>}
 							{waitingCompetitonPage && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
 							{waitingJudgeCompetitonPage && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
-							<div className='col-start-1 col-end-3 flex justify-between md:col-end-2 xl:col-start-2 xl:col-end-3 xl:row-start-1 xl:row-end-2'>
-								<div className='flex w-[45%]'>
-									<div>
-										{pair.acceptedForFight?.blackParticipant && isJudgeCompetitionPage && !pair.winner ? (
-											<CheckboxAndRadioButton
-												name={pair._id as string}
-												value={pair.blackParticipant}
-												type='radio'
-												title={pair.blackParticipantData?.fullName}
-												classes='mb-2 -ml-8'
-												onChange={handleWinnerIdChoose}
-												checked={competitionResult?.[pair._id as string]?.winnerId === pair.blackParticipantData?._id}
-											/>
-										) : (
-											<p className='mb-2 text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
-										)}
-
-										<p className='text-xs xl:text-base'>
-											{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight}{' '}
-											kg
-										</p>
-										{pair.disqualified?.blackParticipant && <p className='mt-1 text-error-red'>Disqualification</p>}
-									</div>
-									{pair.winner === pair.blackParticipant && <GoldMedalIcon className='ml-2.5 w-5 h-6'/>}
-								</div>
-								<span className='mx-[2%] w-[6%] text-sm text-black xl:text-base'>VS</span>
-								<div className='flex w-[45%]'>
-									<div className='flex ml-auto w-fit xl:ml-10'>
-										<div>
-											{pair.acceptedForFight?.whiteParticipant && isJudgeCompetitionPage && !pair.winner ? (
-												<CheckboxAndRadioButton
-													name={pair._id as string}
-													value={pair.whiteParticipant}
-													type='radio'
-													title={pair.whiteParticipantData?.fullName}
-													classes='mb-2 -ml-8'
-													onChange={handleWinnerIdChoose}
-													checked={competitionResult?.[pair._id as string]?.winnerId  === pair.whiteParticipantData?._id}
-												/>
-											) : (
-												<p className='mb-2 text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
-											)}
-											<p className=' text-xs xl:text-base'>
-												{getAge(pair.whiteParticipantData?.birthDate as string)} age,{' '}
-												{pair.whiteParticipantData?.weight} kg
-											</p>
-											{pair.disqualified?.whiteParticipant && <p className='mt-1 text-error-red'>Disqualification</p>}
-										</div>
-										{pair.winner === pair.whiteParticipant && <GoldMedalIcon className='ml-2.5 w-5 h-6'/>}
-									</div>
-								</div>
-							</div>
+							<ChooseWinner pair={pair} groupId={groupId as string} onChooseWinner={onChooseWinner} isJudgeCompetitionPage/>
 							{showCallupButton && (
 								<CallUpButton
 									onCallPairPreparation={handleCallPairPreparation}
 									breakTime={Boolean(breakTime)}
-									callPairPreparationPending={callPairPreparationPending}
 									disable={disableCallUpButton}
 								/>
 							)}
 							{showCallUpTimer && <CallUpTimer onTimeOver={isTimerOver} minutes={1} seconds={59} id={pair._id}/>}
-							{onChooseWinner && showWinnerButton && <Button onClick={handleWinnerChoose} loading={defineWinnerPending}>Winner</Button>}
+							{onDefineWinner && showWinnerButton && <Button onClick={() => onDefineWinner(pair._id as string)} loading={defineWinnerPending}>Winner</Button>}
 						</div>
 					),
 					classes: 'pl-0'

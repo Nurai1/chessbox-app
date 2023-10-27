@@ -1,0 +1,1 @@
+export { CompetitionInfo } from './CompetitionInfo'
