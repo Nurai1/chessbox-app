@@ -9468,6 +9468,24 @@
                     "identificator": true
                   }
                 },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "string",
+                        "identificator": true
+                      },
+                      "placeNumber": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "placeNumber"
+                    ]
+                  }
+                },
                 "passedPairs": {
                   "type": "array",
                   "items": {
@@ -9851,6 +9869,24 @@
               "identificator": true
             }
           },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "identificator": true
+                },
+                "placeNumber": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "placeNumber"
+              ]
+            }
+          },
           "passedPairs": {
             "type": "array",
             "items": {
@@ -10097,6 +10133,24 @@
                   "items": {
                     "type": "string",
                     "identificator": true
+                  }
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userId": {
+                        "type": "string",
+                        "identificator": true
+                      },
+                      "placeNumber": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "placeNumber"
+                    ]
                   }
                 },
                 "passedPairs": {
@@ -10465,6 +10519,24 @@
             "items": {
               "type": "string",
               "identificator": true
+            }
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "identificator": true
+                },
+                "placeNumber": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "placeNumber"
+              ]
             }
           },
           "passedPairs": {

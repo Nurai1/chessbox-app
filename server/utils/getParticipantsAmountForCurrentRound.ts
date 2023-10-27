@@ -1,4 +1,4 @@
-export const getParticipantsAmountForFirstRound = (
+export const getParticipantsAmountForCurrentRound = (
   participantsLength: number
 ) => {
   if (participantsLength < 1) {
@@ -20,11 +20,11 @@ export const getParticipantsAmountForFirstRound = (
       i *= 2;
     }
   } while (done !== true);
-  const amountForFirstRound = (participantsLength - 2 ** logarithm) * 2;
+  const amountForCurrentRound = (participantsLength - 2 ** logarithm) * 2;
 
-  if (amountForFirstRound === 0) {
+  if (amountForCurrentRound === 0) {
     return participantsLength;
   }
 
-  return amountForFirstRound;
+  return amountForCurrentRound;
 };
