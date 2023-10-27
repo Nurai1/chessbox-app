@@ -99,5 +99,6 @@ export interface ICompetitionGroup {
   currentRoundNumber: number;
   order?: number;
   nextRoundParticipants: PopulatedDoc<IUser & Document>[];
+  results?: { userId: PopulatedDoc<IUser & Document>; placeNumber: number }[];
   isCompleted?: boolean;
 }
