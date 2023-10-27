@@ -75,8 +75,6 @@ competitionRouter.patch(
             description: 'Winner defined.',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  // UserController.allowIfLoggedin,
-  // UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.defineWinner)
 );
 
