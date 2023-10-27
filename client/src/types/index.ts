@@ -44,3 +44,4 @@ export type ParticipantSchema = {
 	group?: string
 	groupOverlap?: boolean
 } & UserSchema
+export type ChooseWinnerType = Omit<DefineWinnerSchema, 'competitionId'>

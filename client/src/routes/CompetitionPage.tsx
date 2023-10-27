@@ -18,7 +18,7 @@ import {
 	CompetitonIsOver,
 	TimerBeforeParticipantFight
 } from 'src/components'
-import { PairType } from 'src/helpers/tableSchemas/TableSchemaPairs'
+import { PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
 import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
 import {
 	fetchCompetitionById,

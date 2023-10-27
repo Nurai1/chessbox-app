@@ -26,13 +26,11 @@ import {
 	removeValuecallUpTimerRunningIds
 } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsListBreakTime, resetCompetitionsListBreakTime } from 'src/store/slices/competitionsSlice'
-import { DefineWinnerSchema } from 'src/types'
+import { ChooseWinnerType } from 'src/types'
 
 type AlertType = {
 	show: boolean
 } & AlertPropTypes
-
-export type ChooseWinnerType = Omit<DefineWinnerSchema, 'competitionId'>
 
 export const JudgeCompetitionPage = (): ReactElement => {
 	const { competitionId } = useParams()
@@ -50,7 +48,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 		setBreakTimeError,
 		callPairPreparationError,
 		defineWinnerError,
-		callUpTimerRunningIds,
+		defineWinnerPending,
 		launchNextGroupRoundError
 	} = useAppSelector(s => s.competition)
 	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
@@ -60,7 +58,9 @@ export const JudgeCompetitionPage = (): ReactElement => {
 	const [isTimerOver, setIsTimerOver] = useState(false)
 	const [currentPairs, setCurrentPairs] = useState<string[] | []>([])
 	const [alertData, setAlertData] = useState<AlertType>({ show: false })
+	const [winnerData, setWinnerData] = useState<Record<string, ChooseWinnerType>>({})
 	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
+	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate) && !isCompetitionOver
 
 	useEffect(() => {
 		if (!competitionDataExisting) {
@@ -89,10 +89,8 @@ export const JudgeCompetitionPage = (): ReactElement => {
 					if (pair.calledForPreparation && !pair.disqualified && !pair.winner) {
 						acc.push(pair._id as string)
 					}
-
 					return false
 				})
-
 				return acc
 			}, [] as string[])
 
@@ -144,7 +142,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 			})
 		}
 
-		setTimeout(() => setAlertData({ show: false, subtitle: '' }), 3000)
+		setTimeout(() => setAlertData({ show: false, subtitle: '' }), 5000)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setBreakTimeError, callPairPreparationError, defineWinnerError, launchNextGroupRoundError])
 
@@ -159,16 +157,15 @@ export const JudgeCompetitionPage = (): ReactElement => {
 
 	useEffect(() => {
 		const pollingInterval = setInterval(() => {
-			if (callUpTimerRunningIds.length) {
+			if (isCompetitionOnGoing) {
 				dispatch(fetchCompetitionById(competitionId as string))
 			} else {
 				clearInterval(pollingInterval)
 			}
 		}, 5000)
-
 		return () => clearInterval(pollingInterval)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [callUpTimerRunningIds])
+	}, [isCompetitionOnGoing])
 
 	const handleBreakTimeInput = (value?: string) => {
 		if (Number(value) > 10) {
@@ -203,10 +200,17 @@ export const JudgeCompetitionPage = (): ReactElement => {
 		dispatch(fetchCompetitionParticipants(competitionId as string))
 	}
 
-	const handleWinnerChoose = (data: ChooseWinnerType) => {
+	const handleWinnerChoose = (data?: Record<string, ChooseWinnerType>) => {
+		setWinnerData(prevState => ({
+			...prevState,
+			...data
+		}))
+	}
+
+	const handleDefineWinner = (pairId: string) => {
 		dispatch(
 			defineWinner({
-				...data,
+				...winnerData[pairId],
 				competitionId: competitionId as string
 			})
 		)
@@ -293,7 +297,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 									)}
 								</div>
 							)}
-							{isCompetitionOver && <CompetitonIsOver/>}
+							{isCompetitionOver && <CompetitonIsOver />}
 						</div>
 						<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
 							Competition schedule
@@ -310,6 +314,8 @@ export const JudgeCompetitionPage = (): ReactElement => {
 								onChooseWinner={handleWinnerChoose}
 								maxPairs={2}
 								currentPairs={currentPairs}
+								defineWinnerPending={defineWinnerPending}
+								onDefineWinner={handleDefineWinner}
 							/>
 						) : (
 							<Loader />
