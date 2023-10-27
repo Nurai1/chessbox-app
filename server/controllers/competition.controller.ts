@@ -416,8 +416,7 @@ export const callPairPreparation = async (
       { new: true }
     );
 
-    // const ms2minutes = 120000;
-    const ms2minutes = 5000;
+    const ms2minutes = 120000;
     setTimeout(async () => {
       const currentCompetition = await Competition.findById(competitionId);
 
@@ -471,11 +470,6 @@ export const callPairPreparation = async (
               },
             },
           });
-          if (!whiteDisqualified) {
-            currentGroup.nextRoundParticipants.push(
-              currentPair.whiteParticipant
-            );
-          }
         }
         if (whiteDisqualified) {
           await User.findByIdAndUpdate(currentPair.whiteParticipant, {
@@ -494,11 +488,6 @@ export const callPairPreparation = async (
               },
             },
           });
-          if (!blackDisqualified) {
-            currentGroup.nextRoundParticipants.push(
-              currentPair.blackParticipant
-            );
-          }
         }
       }
 
