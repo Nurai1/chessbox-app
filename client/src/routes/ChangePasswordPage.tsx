@@ -17,9 +17,7 @@ export const ChangePasswordPage = (): ReactElement => {
 	const [showPassword, setShowPassword] = useState(false)
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
-	const isAuthRequestPending = useAppSelector(state => state.user.authLoading)
-	const passwordError = useAppSelector(state => state.user.passwordError)
-	const passwordChanged = useAppSelector(state => state.user.passwordChanged)
+	const { passwordError, authLoading, passwordChanged } = useAppSelector(state => state.user)
 
 	const onChange = (value?: string, name?: string) => {
 		setFormData({
@@ -74,7 +72,7 @@ export const ChangePasswordPage = (): ReactElement => {
 						onShowPassword={() => setShowPassword(!showPassword)}
 						showPasswordIcon
 					/>
-					<Button loading={isAuthRequestPending} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
+					<Button loading={authLoading} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
 						Change Password
 					</Button>
 				</div>

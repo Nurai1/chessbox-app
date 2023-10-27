@@ -13,7 +13,8 @@ export const Modal: FC<{
 	clearButton?: ReactElement
 	modalType?: 'regular' | 'sideMenu'
 	bottomGradient?: boolean
-}> = ({ isOpen, onClose, title, content, submitButton, clearButton, modalType = 'regular', bottomGradient }) => {
+	classes?: string
+}> = ({ isOpen, onClose, title, content, submitButton, clearButton, modalType = 'regular', bottomGradient, classes }) => {
 	const modalRef = useRef(null)
 
 	useClickOutside({
@@ -46,11 +47,12 @@ export const Modal: FC<{
 						className={twMerge(
 							isOpen ? '-translate-y-1/2 opacity-100 duration-500' : '-translate-y-2/3 opacity-0',
 							'absolute left-1/2 top-1/2 w-[calc(100%-52px)] -translate-x-1/2 shadow-xl transition-all ease-out lg:w-[667px]',
-							submitButton && 'rounded-b-none'
+							submitButton && 'rounded-b-none',
+							classes
 						)}
 					>
 						<div className='relative rounded-[15px] bg-white px-[18px] py-[25px] md:px-[40px]'>
-							<div className='mb-px flex'>
+							<div className='mb-px flex min-h-[1.5rem]'>
 								{clearButton}
 								<button
 									type='button'
@@ -64,8 +66,8 @@ export const Modal: FC<{
 							<h2 className='flex-center mt-[-27px] w-full text-2xl font-semibold leading-none text-gray-800'>
 								{title}
 							</h2>
-							<div className='mt-[30px] mb-[25px] md:mb-[35px]'>{isOpen ? content : null}</div>
-							{submitButton && submitButton}
+							<div className='mt-[30px]'>{isOpen ? content : null}</div>
+							{submitButton && <div className='mt-[25px] md:mt-[35px]'>{submitButton}</div> }
 						</div>
 					</div>
 				</div>
@@ -82,7 +84,8 @@ export const Modal: FC<{
 					<div
 						className={twMerge(
 							'flex h-full max-h-screen flex-col bg-white lg:rounded-l-[24px] lg:border lg:shadow-[0px_16px_60px_0px_rgba(0,0,0,0.25)]',
-							bottomGradient && bottomGradientClass
+							bottomGradient && bottomGradientClass,
+							classes
 						)}
 					>
 						<div className='flex-center min-h-[3.75rem] px-6 py-2 md:py-6 md:px-[1.875rem]'>

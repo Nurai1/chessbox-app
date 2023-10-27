@@ -23,9 +23,7 @@ export const OrdersToGroupAssignPage = (): ReactElement => {
 	const [groups, setGroups] = useState<CompetitionGroupSchema[] | undefined>()
 	const competitionData = useAppSelector(s => s.competition.data)
 	const judges = useAppSelector(s => s.competition.judges[competitionId as string])
-	const groupOrderAssignPending = useAppSelector(s => s.competition.groupOrderAssignPending)
-	const groupOrderAssignSuccess = useAppSelector(s => s.competition.groupOrderAssignSuccess)
-	const groupOrderAssignError = useAppSelector(s => s.competition.groupOrderAssignError)
+	const { groupOrderAssignPending, groupOrderAssignSuccess, groupOrderAssignError } = useAppSelector(s => s.competition)
 
 	useEffect(() => {
 		if (!competitionData) {

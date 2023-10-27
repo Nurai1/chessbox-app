@@ -2,7 +2,7 @@ import { ReactComponent as MedalGold } from 'src/assets/medal-gold.svg'
 import { ReactComponent as MedalSilver } from 'src/assets/medal-silver.svg'
 import { ReactComponent as MedalBronze } from 'src/assets/medal-bronze.svg'
 import { UserSchema } from 'src/types'
-import { getAge } from './datetime'
+import { getAge } from '../datetime'
 
 export const tableSchemaRating = (tableData: UserSchema[]) => {
 	const renderMedal = (index: number) => {
