@@ -432,27 +432,6 @@ export const callPairPreparation = async (
         const whiteDisqualified = !pairAcceptedForFight?.whiteParticipant;
         const blackDisqualified = !pairAcceptedForFight?.blackParticipant;
 
-        const pairPassed = whiteDisqualified && blackDisqualified;
-
-        currentPair.passed = pairPassed;
-        currentPair.disqualified = {
-          whiteParticipant: whiteDisqualified,
-          blackParticipant: blackDisqualified,
-        };
-        if (pairPassed) {
-          currentGroup?.passedPairs.push(currentPair);
-
-          // because defineWinner won't be called
-          const isGroupCompleted =
-            currentGroup?.nextRoundParticipants?.length === 0 &&
-            currentGroup?.currentRoundPairs?.length === 1;
-
-          if (isGroupCompleted) {
-            currentGroup.isCompleted = true;
-            currentGroup.currentRoundPairs = [];
-          }
-        }
-
         let wasPartnerDisqualified = false;
         if (blackDisqualified) {
           wasPartnerDisqualified = true;
@@ -488,6 +467,42 @@ export const callPairPreparation = async (
               },
             },
           });
+        }
+
+        const pairPassed = whiteDisqualified && blackDisqualified;
+
+        currentPair.passed = pairPassed;
+        currentPair.disqualified = {
+          whiteParticipant: whiteDisqualified,
+          blackParticipant: blackDisqualified,
+        };
+        if (pairPassed) {
+          currentGroup?.passedPairs.push(currentPair);
+
+          // because defineWinner won't be called
+          const isGroupCompleted =
+            currentGroup?.nextRoundParticipants?.length === 0 &&
+            currentGroup?.currentRoundPairs?.length === 1;
+
+          if (isGroupCompleted) {
+            currentGroup.isCompleted = true;
+            currentGroup.currentRoundPairs = [];
+
+            const groupParticipants = await User.find({
+              currentGroupId: currentGroup._id,
+            });
+
+            const groupResults = groupParticipants
+              .map((gp) => ({
+                userId: gp._id,
+                placeNumber: gp.competitionsHistory?.find(
+                  (gpHistPoint) => gpHistPoint.competitionId === competitionId
+                )?.placeNumber as number,
+              }))
+              .sort((a, b) => (a.placeNumber ?? 0) - (b.placeNumber ?? 0));
+
+            currentGroup.results = groupResults;
+          }
         }
       }
 
@@ -725,7 +740,24 @@ export const defineWinner = async (
       competition?.save(),
     ]);
 
-    res.send(competition);
+    if (isGroupCompleted) {
+      const groupParticipants = await User.find({
+        currentGroupId: competitionGroup._id,
+      });
+
+      const groupResults = groupParticipants
+        .map((gp) => ({
+          userId: gp._id,
+          placeNumber: gp.competitionsHistory?.find(
+            (gpHistPoint) => gpHistPoint.competitionId === competitionId
+          )?.placeNumber as number,
+        }))
+        .sort((a, b) => (a.placeNumber ?? 0) - (b.placeNumber ?? 0));
+
+      competitionGroup.results = groupResults;
+    }
+
+    return res.send(competition);
   }
 
   res.status(400).send({ error: "Winner or loser don't exist" });
