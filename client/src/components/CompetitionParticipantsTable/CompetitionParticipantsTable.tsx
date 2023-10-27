@@ -2,10 +2,9 @@ import { FC, MutableRefObject } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { useParams } from 'react-router-dom'
 import { TableBody, Loader, Button, Accordion } from 'src/ui'
-import { CompetitionSchema, ParticipantSchema, UserSchema, AgeCategorySchema, WeightCategorySchema } from 'src/types'
+import { CompetitionSchema, ParticipantSchema, UserSchema, AgeCategorySchema, WeightCategorySchema, ChooseWinnerType } from 'src/types'
 import { getGroupPairsLen } from 'src/helpers/getGroupPairsLen'
-import { TableSchemaPairs, PairType } from 'src/helpers/tableSchemas/TableSchemaPairs'
-import { ChooseWinnerType } from 'src/routes/JudgeCompetitionPage'
+import { tableSchemaPairs, PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
 import { getFormattedDate, getAge } from 'src/helpers/datetime'
 import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
 import { launchNextGroupRound } from 'src/store/slices/competitionSlice'
@@ -22,7 +21,9 @@ type CompetitionParticipantsTablePropsType = {
 	onCallUpTimer?: (pairId: string) => void
 	maxPairs?: number
 	currentPairs?: string[]
-	onChooseWinner?: (data: ChooseWinnerType) => void
+	onChooseWinner?: (data?: Record<string, ChooseWinnerType>) => void
+	defineWinnerPending?: boolean,
+	onDefineWinner?: (pairId: string) => void
 }
 
 export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsType> = ({
@@ -120,7 +121,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 							{currentRoundPairs ? (
 								<>
 									<TableBody
-										rows={TableSchemaPairs({
+										rows={tableSchemaPairs({
 											tableData: currentRoundPairs,
 											participants,
 											judges,
