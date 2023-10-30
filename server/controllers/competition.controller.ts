@@ -701,6 +701,23 @@ export const defineWinner = async (
       competitionGroup.allParticipants.length -
       (competitionGroup.passedPairs.length - 1);
 
+    if (isGroupCompleted) {
+      const groupParticipants = await User.find({
+        currentGroupId: competitionGroup._id,
+      });
+
+      const groupResults = groupParticipants
+        .map((gp) => ({
+          userId: gp._id,
+          placeNumber: gp.competitionsHistory?.find(
+            (gpHistPoint) => gpHistPoint.competitionId === competitionId
+          )?.placeNumber as number,
+        }))
+        .sort((a, b) => (a.placeNumber ?? 0) - (b.placeNumber ?? 0));
+
+      competitionGroup.results = groupResults;
+    }
+
     await Promise.all([
       User.findOneAndUpdate(
         { _id: winnerId },
@@ -739,23 +756,6 @@ export const defineWinner = async (
       ),
       competition?.save(),
     ]);
-
-    if (isGroupCompleted) {
-      const groupParticipants = await User.find({
-        currentGroupId: competitionGroup._id,
-      });
-
-      const groupResults = groupParticipants
-        .map((gp) => ({
-          userId: gp._id,
-          placeNumber: gp.competitionsHistory?.find(
-            (gpHistPoint) => gpHistPoint.competitionId === competitionId
-          )?.placeNumber as number,
-        }))
-        .sort((a, b) => (a.placeNumber ?? 0) - (b.placeNumber ?? 0));
-
-      competitionGroup.results = groupResults;
-    }
 
     return res.send(competition);
   }
