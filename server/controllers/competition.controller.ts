@@ -489,7 +489,9 @@ export const callPairPreparation = async (
             currentGroup.currentRoundPairs = [];
 
             const groupParticipants = await User.find({
-              currentGroupId: currentGroup._id,
+              _id: {
+                $in: currentGroup.allParticipants,
+              },
             });
 
             const groupResults = groupParticipants
@@ -703,7 +705,9 @@ export const defineWinner = async (
 
     if (isGroupCompleted) {
       const groupParticipants = await User.find({
-        currentGroupId: competitionGroup._id,
+        _id: {
+          $in: competitionGroup.allParticipants,
+        },
       });
 
       const groupResults = groupParticipants
