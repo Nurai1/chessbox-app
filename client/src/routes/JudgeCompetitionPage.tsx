@@ -27,6 +27,7 @@ import {
 } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsListBreakTime, resetCompetitionsListBreakTime } from 'src/store/slices/competitionsSlice'
 import { ChooseWinnerType } from 'src/types'
+import { existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
 
 type AlertType = {
 	show: boolean
@@ -36,9 +37,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 	const { competitionId } = useParams()
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
-	const competitionDataExisting = useAppSelector(s => s.competitions.data).find(({ _id }) => _id === competitionId)
-	const competitionDataFetched = useAppSelector(s => s.competition.data)
-	const competitionData = competitionDataExisting || competitionDataFetched
+	const competitionData = useAppSelector(existingOrFetchedCompetitionSelector(competitionId))
 	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
@@ -63,10 +62,10 @@ export const JudgeCompetitionPage = (): ReactElement => {
 	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate) && !isCompetitionOver
 
 	useEffect(() => {
-		if (!competitionDataExisting) {
+		if (!competitionData) {
 			dispatch(fetchCompetitionById(competitionId as string))
 		} else {
-			dispatch(setCompetitionData(competitionDataExisting))
+			dispatch(setCompetitionData(competitionData))
 		}
 		if (!judges) {
 			dispatch(fetchCompetitionJudges(competitionId as string))

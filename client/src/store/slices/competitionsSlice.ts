@@ -25,7 +25,10 @@ export const competitionsSlice = createSlice({
 	name: 'competitions',
 	initialState,
 	reducers: {
-		updateCompetitionsListJudges: (state, action: PayloadAction<{ selectedJudges: string[]; competitionId: string }>) => {
+		updateCompetitionsListJudges: (
+			state,
+			action: PayloadAction<{ selectedJudges: string[]; competitionId: string }>
+		) => {
 			if (state.data.length) {
 				const competition = state.data.find(({ _id }) => _id === action.payload.competitionId)
 				if (competition) {
@@ -33,7 +36,10 @@ export const competitionsSlice = createSlice({
 				}
 			}
 		},
-		updateCompetitionsListBreakTime: (state, action: PayloadAction<{ breakTimeMinutes: number; competitionId: string }>) => {
+		updateCompetitionsListBreakTime: (
+			state,
+			action: PayloadAction<{ breakTimeMinutes: number; competitionId: string }>
+		) => {
 			if (state.data.length) {
 				const competitionIndex = state.data.findIndex(({ _id }) => _id === action.payload.competitionId)
 				state.data[competitionIndex] = {
@@ -52,6 +58,15 @@ export const competitionsSlice = createSlice({
 					breakTime: undefined
 				}
 			}
+		},
+		updateCompetitionsListParticipants: (
+			state,
+			action: PayloadAction<{ newParticipant: string; competitionId: string }>
+		) => {
+			if (state.data.length) {
+				const competitionIndex = state.data.findIndex(({ _id }) => _id === action.payload.competitionId)
+				state.data[competitionIndex].participants?.push(action.payload.newParticipant)
+			}
 		}
 	},
 	extraReducers: {
@@ -69,6 +84,11 @@ export const competitionsSlice = createSlice({
 	}
 })
 
-export const { updateCompetitionsListJudges, updateCompetitionsListBreakTime, resetCompetitionsListBreakTime } = competitionsSlice.actions
+export const {
+	updateCompetitionsListJudges,
+	updateCompetitionsListBreakTime,
+	resetCompetitionsListBreakTime,
+	updateCompetitionsListParticipants
+} = competitionsSlice.actions
 
 export default competitionsSlice.reducer
