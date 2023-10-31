@@ -151,7 +151,7 @@ export const tableSchemaPairs = ({
 							{finished && <div className={`text-[#6DDA64] ${statusStyle}`}>FINISHED</div>}
 							{waitingCompetitonPage && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
 							{waitingJudgeCompetitonPage && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
-							<ChooseWinner pair={pair} groupId={groupId as string} onChooseWinner={onChooseWinner} isJudgeCompetitionPage/>
+							<ChooseWinner pair={pair} groupId={groupId as string} onChooseWinner={onChooseWinner} isJudgeCompetitionPage={isJudgeCompetitionPage}/>
 							{showCallupButton && (
 								<CallUpButton
 									onCallPairPreparation={handleCallPairPreparation}
