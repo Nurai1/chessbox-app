@@ -67,6 +67,15 @@ export const competitionsSlice = createSlice({
 				const competitionIndex = state.data.findIndex(({ _id }) => _id === action.payload.competitionId)
 				state.data[competitionIndex].participants?.push(action.payload.newParticipant)
 			}
+		},
+		updateCompetitionsListCompetition: (
+			state,
+			action: PayloadAction<{ competition: CompetitionSchema; competitionId: string }>
+		) => {
+			if (state.data.length) {
+				const competitionIndex = state.data.findIndex(({ _id }) => _id === action.payload.competitionId)
+				state.data[competitionIndex] = action.payload.competition
+			}
 		}
 	},
 	extraReducers: {
@@ -88,7 +97,8 @@ export const {
 	updateCompetitionsListJudges,
 	updateCompetitionsListBreakTime,
 	resetCompetitionsListBreakTime,
-	updateCompetitionsListParticipants
+	updateCompetitionsListParticipants,
+	updateCompetitionsListCompetition
 } = competitionsSlice.actions
 
 export default competitionsSlice.reducer

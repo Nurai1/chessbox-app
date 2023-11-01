@@ -166,8 +166,8 @@ competitionRouter.patch(
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  // UserController.allowIfLoggedin,
-  // UserController.grantAccess(ACTIONS.updateOwn, RESOURCES.PAIR),
+  UserController.allowIfLoggedin,
+  UserController.grantAccess(ACTIONS.updateOwn, RESOURCES.PAIR),
   controllerErrorHandler(CompetitionController.acceptPairFight)
 );
 

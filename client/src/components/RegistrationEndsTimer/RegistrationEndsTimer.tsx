@@ -1,7 +1,7 @@
 import { FC, ReactNode, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { useParams, Link, useNavigate } from 'react-router-dom'
-import { addNewParticipant } from 'src/store/slices/competitionSlice'
+import { useNavigate } from 'react-router-dom'
+import { addNewParticipant, addCompetitionParticipant } from 'src/store/slices/competitionSlice'
 import { Button, Timer } from 'src/ui'
 import { CompetitionSchema, UserSchema } from 'src/types'
 import { AppRoute } from 'src/constants/appRoute'
@@ -38,6 +38,12 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 					competitionId: competitionId as string
 				})
 			)
+			dispatch(
+				addCompetitionParticipant({
+					newParticipant: authorizedUser as UserSchema,
+					competitionId: competitionId as string
+				})
+			)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [addNewParticipantSuccess])
@@ -49,12 +55,6 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 			navigate(`/${AppRoute.SignIn}`)
 		} else {
 			dispatch(addNewParticipant({ userId: authorizedUser._id as string, id: competitionId as string }))
-			dispatch(
-				updateCompetitionsListParticipants({
-					newParticipant: authorizedUser?._id as string,
-					competitionId: competitionId as string
-				})
-			)
 		}
 	}
 
@@ -86,7 +86,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 				{children}
 			</div>
 			{fitCompetitionParametersCheck && (
-				<p className='mt-4 text-error-red md:mt-5 lg:mt-2'>* You don't fit the parameters</p>
+				<p className='mt-4 text-error-red md:mt-5 lg:mt-2'>* You don&#39;t fit the parameters</p>
 			)}
 		</div>
 	)

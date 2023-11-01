@@ -87,6 +87,7 @@ export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ cu
 					<a
 						href={competitionData.zoomLink}
 						target='_blank'
+						rel='noreferrer'
 						className='mx-auto font-medium underline transition hover:opacity-70 xl:mt-6 xl:text-heading-4'
 					>
 						Link to Zoom
