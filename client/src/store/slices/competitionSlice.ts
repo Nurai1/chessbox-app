@@ -286,6 +286,9 @@ export const competitionSlice = createSlice({
 		},
 		removeValuecallUpTimerRunningIds: (state, action: PayloadAction<string>)  => {
 			state.callUpTimerRunningIds = state.callUpTimerRunningIds.filter(item => item !== action.payload)
+		},
+		addCompetitionParticipant: (state, action: PayloadAction<{ newParticipant: UserSchema; competitionId: string }>) => {
+			state.participants[action.payload.competitionId]?.push(action.payload.newParticipant)
 		}
 	},
 	extraReducers: {
@@ -480,7 +483,8 @@ export const {
 	resetBreakTime,
 	resetBreakTimeSuccess,
 	addValuecallUpTimerRunningIds,
-	removeValuecallUpTimerRunningIds
+	removeValuecallUpTimerRunningIds,
+	addCompetitionParticipant
 } = competitionSlice.actions
 
 export default competitionSlice.reducer

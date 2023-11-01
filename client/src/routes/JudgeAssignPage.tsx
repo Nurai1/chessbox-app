@@ -14,6 +14,7 @@ import {
 import { tableSchemaJudgeToPairs } from 'src/helpers/tableSchemas/tableSchemaJudgeToPairs'
 import { SetJudgesToPairsSchema, CompetitionGroupSchema, CompetitionSchema } from 'src/types'
 import { CompetitionCreateHeader } from 'src/components'
+import { updateCompetitionsListCompetition } from 'src/store/slices/competitionsSlice'
 
 export type SelectedJudge = {
 	id: string
@@ -32,7 +33,7 @@ export const JudgeAssignPage = (): ReactElement => {
 	const competitionData = useAppSelector(s => s.competition.data)
 	const judges = useAppSelector(s => s.competition.judges[competitionId as string])
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
-	const {setPairJudgesError, setPairJudgesSuccess, setPairJudgesPending} = useAppSelector(s => s.competition)
+	const { setPairJudgesError, setPairJudgesSuccess, setPairJudgesPending } = useAppSelector(s => s.competition)
 
 	if (judges?.length === 0) {
 		navigate(`../${AppRoute.JudgeChoice}`)
@@ -131,6 +132,13 @@ export const JudgeAssignPage = (): ReactElement => {
 			} as CompetitionSchema)
 		)
 
+		dispatch(
+			updateCompetitionsListCompetition({
+				competition: competitionData as CompetitionSchema,
+				competitionId: competitionId as string
+			})
+		)
+
 		dispatch(setPairJudges(selectedJudges as SetJudgesToPairsSchema))
 	}
 
@@ -196,11 +204,7 @@ export const JudgeAssignPage = (): ReactElement => {
 					<Button type='outlined' onClick={handleBackClick}>
 						Previous step
 					</Button>
-					<Button
-						classes='min-w-[8rem] xl:min-w-[15.625rem]'
-						onClick={handleDoneClick}
-						loading={setPairJudgesPending}
-					>
+					<Button classes='min-w-[8rem] xl:min-w-[15.625rem]' onClick={handleDoneClick} loading={setPairJudgesPending}>
 						Done
 					</Button>
 					{setPairJudgesError && <Alert type='error' subtitle={setPairJudgesError} />}

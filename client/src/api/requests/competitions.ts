@@ -5,7 +5,6 @@ import {
 	CompetitionGroupsOrdersSchema,
 	CompetitionGroupSchema,
 	DeleteCompetitionGroupSchema,
-	AddNewParticipantSchema,
 	CallPairPreparationSchema,
 	DefineWinnerSchema,
 	AcceptPairFightBodySchema, 
