@@ -45,6 +45,15 @@ const competitionSchema = new Schema<ICompetition>(
         identificator: true,
       },
     ],
+    usersPaymentInfo: {
+      type: mongoose.Schema.Types.Map,
+      of: {
+        paid: Boolean,
+        requestedToCheck: Boolean,
+        requestedCount: Number,
+      },
+      default: {},
+    },
     judges: [
       {
         type: Schema.Types.ObjectId,

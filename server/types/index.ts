@@ -86,6 +86,13 @@ export interface ICompetition {
   groups: ICompetitionGroup[];
   participants: PopulatedDoc<IUser & Document>[];
   judges: PopulatedDoc<IUser & Document>[];
+  usersPaymentInfo: {
+    [userId: string]: {
+      paid: boolean;
+      requestedToCheck: boolean;
+      requestedCount: number;
+    };
+  };
 }
 
 export interface ICompetitionGroup {

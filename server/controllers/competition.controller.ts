@@ -908,3 +908,63 @@ export const setCompetitionBreakTime = async (
 
   return res.sendStatus(200);
 };
+
+export const setUserPaymentRequestToCheck = async (
+  req: Request,
+  res: Response
+) => {
+  const { id, userId } = req.params;
+
+  const competition = await Competition.findOne({ _id: id });
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  const requestedCount =
+    competition.usersPaymentInfo?.[userId]?.requestedCount ?? 0;
+
+  if (requestedCount >= 3) {
+    return res.status(400).send({
+      error:
+        'You requested for checking a payment more than 3 times. You can not participate in the competition.',
+    });
+  }
+
+  competition.usersPaymentInfo = {
+    ...competition.usersPaymentInfo,
+    [userId]: {
+      requestedToCheck: true,
+      paid: false,
+      requestedCount:
+        (competition.usersPaymentInfo?.[userId]?.requestedCount ?? 0) + 1,
+    },
+  };
+
+  res.send(competition);
+};
+
+export const setUserPaymentPaid = async (
+  req: Request<{ id: string; userId: string }, any, { paid: boolean }>,
+  res: Response
+) => {
+  const { id, userId } = req.params;
+  const { paid } = req.body;
+
+  const competition = await Competition.findOne({ _id: id });
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  competition.usersPaymentInfo = {
+    ...competition.usersPaymentInfo,
+    [userId]: {
+      ...competition.usersPaymentInfo[userId],
+      requestedToCheck: paid,
+      paid,
+    },
+  };
+
+  competition.save();
+
+  res.send(competition);
+};
