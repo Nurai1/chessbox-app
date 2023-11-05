@@ -452,6 +452,15 @@ competitionRouter.get(
   controllerErrorHandler(CompetitionController.getCompetitionJudges)
 );
 
+competitionRouter.get(
+  '/competition/:id/paymentInfoUsers',
+  /* #swagger.responses[200] = {
+            description: 'Competition\'s Payment Info Users',
+            schema: [{ $ref: '#/definitions/User' }]
+    } */
+  controllerErrorHandler(CompetitionController.getCompetitionPaymentInfoUsers)
+);
+
 competitionRouter.patch(
   '/competition/:id/setCompetitionBreakTime',
   /* #swagger.security = [{
@@ -495,8 +504,8 @@ competitionRouter.patch(
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  UserController.allowIfLoggedin,
-  UserController.grantAccess(ACTIONS.updateOwn, RESOURCES.COMPETITION),
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccess(ACTIONS.updateOwn, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.setUserPaymentRequestToCheck)
 );
 
@@ -526,8 +535,8 @@ competitionRouter.patch(
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  UserController.allowIfLoggedin,
-  UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.setUserPaymentPaid)
 );
 
