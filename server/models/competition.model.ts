@@ -45,6 +45,19 @@ const competitionSchema = new Schema<ICompetition>(
         identificator: true,
       },
     ],
+    usersPaymentInfo: [
+      {
+        userId: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+          // info for swagger
+          identificator: true,
+        },
+        paid: Boolean,
+        requestedToCheck: Boolean,
+        requestedCount: Number,
+      },
+    ],
     judges: [
       {
         type: Schema.Types.ObjectId,
