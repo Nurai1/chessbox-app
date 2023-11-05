@@ -7,7 +7,7 @@ type CompetitionResultType = {
 }
 
 export const getCompetitionResult = (competitionData: CompetitionSchema) => {
-    if (competitionData && competitionData.groups && competitionData.groups[0].results?.length !== 0) {
+    if (competitionData && !!competitionData.groups?.length && !!competitionData.groups[0].results?.length) {
             return competitionData.groups?.reduce(
                 (acc, group) => {
                     if (group.gender === Gender.Woman) {

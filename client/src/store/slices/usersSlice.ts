@@ -69,6 +69,9 @@ export const usersSlice = createSlice({
 		clearUsers: state => {
 			state.data.total = 0
 			state.data.items = []
+		},
+		resetFilter: state => {
+			state.filterState = {}
 		}
 	},
 	extraReducers: {
@@ -102,6 +105,6 @@ export const usersSlice = createSlice({
 	}
 })
 
-export const { setUserFilter, clearUsers } = usersSlice.actions
+export const { setUserFilter, clearUsers, resetFilter } = usersSlice.actions
 
 export default usersSlice.reducer
