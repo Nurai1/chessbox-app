@@ -1,1 +1,0 @@
-export { CompetitonIsOver } from './CompetitonIsOver'

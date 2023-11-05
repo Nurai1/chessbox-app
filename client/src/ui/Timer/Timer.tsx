@@ -67,7 +67,7 @@ const Timer: FC<TimerPropsType> = memo(
 				{showDays && (
 					<li
 						className={twMerge(
-							'flex h-[55px] w-[55px] flex-col justify-center rounded-2xl border-2 border-[#DADADA] py-2 px-0.5 text-center text-base font-bold xl:h-[75px] xl:w-[75px] xl:py-2 xl:px-1',
+							'flex h-14 w-14 flex-col justify-center rounded-2xl border-2 border-[#DADADA] py-2 px-0.5 text-center text-base font-bold lg:h-16 lg:w-16 xl:h-[4.75rem] xl:w-[4.75rem] xl:py-2 xl:px-1',
 							containerClasses
 						)}
 					>
@@ -86,7 +86,7 @@ const Timer: FC<TimerPropsType> = memo(
 				)}
 				<li
 					className={twMerge(
-						'flex h-[55px] w-[55px] flex-col justify-center rounded-2xl border-2 border-[#DADADA] py-2 px-0.5 text-center text-base font-bold xl:h-[75px] xl:w-[75px] xl:py-2 xl:px-1',
+						'flex h-14 w-14 flex-col justify-center rounded-2xl border-2 border-[#DADADA] py-2 px-0.5 text-center text-base font-bold lg:h-16 lg:w-16 xl:h-[4.75rem] xl:w-[4.75rem] xl:py-2 xl:px-1',
 						containerClasses
 					)}
 				>
@@ -104,7 +104,7 @@ const Timer: FC<TimerPropsType> = memo(
 				</li>
 				<li
 					className={twMerge(
-						'flex h-[55px] w-[55px] flex-col justify-center rounded-2xl border-2 border-[#DADADA] py-2 px-0.5 text-center text-base font-bold xl:h-[75px] xl:w-[75px] xl:py-2 xl:px-1',
+						'flex h-14 w-14 flex-col justify-center rounded-2xl border-2 border-[#DADADA] py-2 px-0.5 text-center text-base font-bold lg:h-16 lg:w-16 xl:h-[4.75rem] xl:w-[4.75rem] xl:py-2 xl:px-1',
 						containerClasses
 					)}
 				>
@@ -123,7 +123,7 @@ const Timer: FC<TimerPropsType> = memo(
 				{!showDays && (
 					<li
 						className={twMerge(
-							'flex h-[55px] w-[55px] flex-col justify-center rounded-2xl border-2 border-[#DADADA] py-2 px-0.5 text-center text-base font-bold xl:h-[75px] xl:w-[75px] xl:py-2 xl:px-1',
+							'flex h-14 w-14 flex-col justify-center rounded-2xl border-2 border-[#DADADA] py-2 px-0.5 text-center text-base font-bold lg:h-16 lg:w-16 xl:h-[4.75rem] xl:w-[4.75rem] xl:py-2 xl:px-1',
 							containerClasses
 						)}
 					>

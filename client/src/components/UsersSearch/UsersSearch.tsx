@@ -2,7 +2,7 @@ import { FC, ReactElement, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { ReactComponent as SettingsIcon } from 'src/assets/settings.svg'
 import { useAppDispatch } from 'src/hooks/redux'
-import { setUserFilter } from 'src/store/slices/usersSlice'
+import { setUserFilter, resetFilter } from 'src/store/slices/usersSlice'
 import { Tag, Input, Modal, Button } from 'src/ui'
 import { UserFilter, UserFilterType } from '../UserFilter'
 
@@ -41,6 +41,13 @@ export const UsersSearch: FC<SearchPropsType> = ({ classes }) => {
 		return () => clearTimeout(searchByString)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchValue])
+
+	useEffect(() => {
+		return () => {
+			dispatch(resetFilter())
+		} 
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[])
 
 	const handleFilter = (value?: string | boolean, name?: string) => {
 		setFilterValues({
@@ -140,7 +147,7 @@ export const UsersSearch: FC<SearchPropsType> = ({ classes }) => {
 	return (
 		<div className={twMerge('', classes)}>
 			<div className={twMerge('flex items-center gap-[20px]')}>
-				<Input onChange={handleSearchInput} value={searchValue ?? ''} isSearch placeholder='UsersSearch users' />
+				<Input onChange={handleSearchInput} value={searchValue ?? ''} isSearch placeholder='Search users' />
 				<button
 					onClick={handleModalOpen}
 					className={`relative transition hover:opacity-70 ${
