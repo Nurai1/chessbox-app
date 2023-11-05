@@ -920,25 +920,35 @@ export const setUserPaymentRequestToCheck = async (
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
 
-  const requestedCount =
-    competition.usersPaymentInfo?.[userId]?.requestedCount ?? 0;
+  const requestUserPayInfo = competition.usersPaymentInfo?.find(
+    (p) => p.userId.toString() === userId
+  );
+
+  const requestedCount = requestUserPayInfo?.requestedCount ?? 0;
 
   if (requestedCount >= 3) {
     return res.status(400).send({
       error:
-        'You requested for checking a payment more than 3 times. You can not participate in the competition.',
+        'You requested to check a payment more than 3 times. You can not participate in the competition.',
     });
   }
-
-  competition.usersPaymentInfo = {
-    ...competition.usersPaymentInfo,
-    [userId]: {
-      requestedToCheck: true,
+  if (requestUserPayInfo) {
+    requestUserPayInfo.requestedToCheck = true;
+    requestUserPayInfo.paid = false;
+    requestUserPayInfo.requestedCount = requestedCount + 1;
+  } else {
+    const newUserPayInfo = {
+      userId,
       paid: false,
-      requestedCount:
-        (competition.usersPaymentInfo?.[userId]?.requestedCount ?? 0) + 1,
-    },
-  };
+      requestedToCheck: true,
+      requestedCount: 1,
+    };
+    competition.usersPaymentInfo = competition.usersPaymentInfo
+      ? [...competition.usersPaymentInfo, newUserPayInfo]
+      : [newUserPayInfo];
+  }
+
+  await competition.save();
 
   res.send(competition);
 };
@@ -955,16 +965,43 @@ export const setUserPaymentPaid = async (
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
 
-  competition.usersPaymentInfo = {
-    ...competition.usersPaymentInfo,
-    [userId]: {
-      ...competition.usersPaymentInfo[userId],
-      requestedToCheck: paid,
-      paid,
-    },
-  };
+  const paidUserPayInfo = competition.usersPaymentInfo?.find(
+    (p) => p.userId.toString() === userId
+  );
 
-  competition.save();
+  if (!paidUserPayInfo) {
+    return res.status(404).send({ error: "User Pay Info wasn't found" });
+  }
+
+  paidUserPayInfo.requestedToCheck = paid;
+  paidUserPayInfo.paid = paid;
+
+  await competition.save();
 
   res.send(competition);
+};
+
+export const getCompetitionPaymentInfoUsers = async (
+  req: Request,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const competition = await Competition.findOne({ _id: id });
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  const paymentInfoUsersIds = competition.usersPaymentInfo?.map(
+    (p) => p.userId
+  );
+
+  if (paymentInfoUsersIds) {
+    const paymentInfoUsers = await User.find({
+      _id: { $in: paymentInfoUsersIds },
+    });
+
+    return res.send(paymentInfoUsers);
+  }
+
+  res.send([]);
 };

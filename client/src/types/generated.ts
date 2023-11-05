@@ -2779,6 +2779,91 @@ export interface paths {
 			}
 		}
 	}
+	'/api/competition/{id}/paymentInfoUsers': {
+		get: {
+			parameters: {
+				path: {
+					id: string
+				}
+			}
+			responses: {
+				/** @description Competition's Payment Info Users */
+				200: {
+					content: {
+						'application/json': components['schemas']['User'][]
+						'application/xml': components['schemas']['User'][]
+					}
+				}
+				/** @description Client error. */
+				400: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+							data?: Record<string, never>
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+							data?: Record<string, never>
+						}
+					}
+				}
+				/** @description Unauthorized error. */
+				401: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Permissions error. */
+				403: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Not Found error. */
+				404: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+				/** @description Internal server error. */
+				500: {
+					content: {
+						'application/json': {
+							/** @example string */
+							error?: string
+						}
+						'application/xml': {
+							/** @example string */
+							error?: string
+						}
+					}
+				}
+			}
+		}
+	}
 	'/api/competition/{id}/setCompetitionBreakTime': {
 		patch: {
 			parameters: {
@@ -3145,14 +3230,11 @@ export interface components {
 			}
 			participants?: string[]
 			usersPaymentInfo?: {
-				[key: string]:
-					| {
-							paid?: boolean
-							requestedToCheck?: boolean
-							requestedCount?: number
-					  }
-					| undefined
-			}
+				userId?: string
+				paid?: boolean
+				requestedToCheck?: boolean
+				requestedCount?: number
+			}[]
 			judges?: string[]
 			_id?: string
 		}
@@ -3353,14 +3435,11 @@ export interface components {
 			}
 			participants?: string[]
 			usersPaymentInfo?: {
-				[key: string]:
-					| {
-							paid?: boolean
-							requestedToCheck?: boolean
-							requestedCount?: number
-					  }
-					| undefined
-			}
+				userId?: string
+				paid?: boolean
+				requestedToCheck?: boolean
+				requestedCount?: number
+			}[]
 			judges?: string[]
 		}
 		/** User */
