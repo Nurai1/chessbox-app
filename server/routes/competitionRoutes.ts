@@ -452,6 +452,15 @@ competitionRouter.get(
   controllerErrorHandler(CompetitionController.getCompetitionJudges)
 );
 
+competitionRouter.get(
+  '/competition/:id/paymentInfoUsers',
+  /* #swagger.responses[200] = {
+            description: 'Competition\'s Payment Info Users',
+            schema: [{ $ref: '#/definitions/User' }]
+    } */
+  controllerErrorHandler(CompetitionController.getCompetitionPaymentInfoUsers)
+);
+
 competitionRouter.patch(
   '/competition/:id/setCompetitionBreakTime',
   /* #swagger.security = [{
@@ -484,6 +493,51 @@ competitionRouter.patch(
   allowIfLoggedin,
   grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.setCompetitionBreakTime)
+);
+
+competitionRouter.patch(
+  '/competition/:id/setUserPaymentRequestToCheck/:userId',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccess(ACTIONS.updateOwn, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.setUserPaymentRequestToCheck)
+);
+
+competitionRouter.patch(
+  '/competition/:id/setUserPaymentPaid/:userId',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
+  /*	#swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                      type: "object",
+                      properties: {
+                        paid: {
+                          type: "boolean",
+                        },
+                      },
+                      required: ["paid"]
+                    }
+                },
+            }
+        } 
+    */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+  // UserController.allowIfLoggedin,
+  // UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.setUserPaymentPaid)
 );
 
 routerMockForSwaggerGenerator.use(
