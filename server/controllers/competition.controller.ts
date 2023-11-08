@@ -910,10 +910,11 @@ export const setCompetitionBreakTime = async (
 };
 
 export const setUserPaymentRequestToCheck = async (
-  req: Request,
+  req: Request<{ id: string; userId: string }, any, { message?: string }>,
   res: Response
 ) => {
   const { id, userId } = req.params;
+  const { message } = req.body;
 
   const competition = await Competition.findOne({ _id: id });
 
@@ -936,12 +937,14 @@ export const setUserPaymentRequestToCheck = async (
     requestUserPayInfo.requestedToCheck = true;
     requestUserPayInfo.paid = false;
     requestUserPayInfo.requestedCount = requestedCount + 1;
+    requestUserPayInfo.message = message;
   } else {
     const newUserPayInfo = {
       userId,
       paid: false,
       requestedToCheck: true,
       requestedCount: 1,
+      message,
     };
     competition.usersPaymentInfo = competition.usersPaymentInfo
       ? [...competition.usersPaymentInfo, newUserPayInfo]

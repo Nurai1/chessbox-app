@@ -500,6 +500,22 @@ competitionRouter.patch(
   /* #swagger.security = [{
       "apiKeyAuth": []
   }] */
+  /*	#swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                      type: "object",
+                      properties: {
+                        message: {
+                          type: "string",
+                        },
+                      },
+                    }
+                },
+            }
+        } 
+    */
   /* #swagger.responses[200] = {
             description: '',
             schema: { $ref: '#/definitions/Competition' }
