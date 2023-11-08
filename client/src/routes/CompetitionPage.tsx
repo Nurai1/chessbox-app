@@ -1,11 +1,12 @@
-import { ReactElement, useEffect, useRef, useState } from 'react'
+import { ReactElement, useEffect, useRef, useState, ReactNode } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Button, Loader, Modal, TableBody, Tag, Timer } from 'src/ui'
+import { Button, Loader, Modal, TableBody, Tag } from 'src/ui'
 import { ReactComponent as BanknoteIcon } from 'src/assets/banknote.svg'
 import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
 import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
 import { ReactComponent as ArrowRightIcon } from 'src/assets/arrow-right-long.svg'
 import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
+import { ReactComponent as HourGlass } from 'src/assets/hourglass.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { AppRoute } from 'src/constants/appRoute'
 import { getFormattedDate, isPast } from 'src/helpers/datetime'
@@ -16,7 +17,10 @@ import {
 	RegistrationEndsTimer,
 	CompetitionParticipantsTable,
 	CompetitonIsOver,
-	TimerBeforeParticipantFight
+	TimerBeforeParticipantFight,
+	TimerBeforeCompetitionStarts,
+	CompetitionInfo,
+	CompetitionResultList
 } from 'src/components'
 import { PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
 import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
@@ -27,55 +31,55 @@ import {
 	setCompetitionData
 } from 'src/store/slices/competitionSlice'
 import { Role } from 'src/constants/role'
-import { UserSchema } from 'src/types'
-import { existingCompetitionSelector, existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
-
-let pollingWasSet = false
+import { existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
+import { getCompetitionResult } from 'src/helpers/getCompetitionResult'
+import { getSortedRuseltParticipants } from 'src/helpers/getSortedRuseltParticipants'
+import { CompetitionGroupSchema, CompetitionSchema, ParticipantSchema } from 'src/types'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
 	const { competitionId } = useParams()
 	const currentUserPairRef = useRef<{ pair?: PairType; startTime: string }>()
 	const navigate = useNavigate()
-	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
-	const competitionDataExisting = useAppSelector(existingCompetitionSelector(competitionId))
+	const [isSideMenuParticipantsOpen, setIsSideMenuParticipantsOpen] = useState(false)
+	const [isSideMenuResultOpen, setIsSideMenuResultOpen] = useState(false)
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
 	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
-	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
-	const authLoading = useAppSelector(state => state.user.authLoading)
+	const { authorizedUser, authLoading } = useAppSelector(state => state.user)
 	const competitionData = useAppSelector(existingOrFetchedCompetitionSelector(competitionId))
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
 	const isParticipant =
 		competitionData?.participants && competitionData.participants.includes(authorizedUser?._id ?? '')
-	const isRegistrationClosed = competitionData && isPast(competitionData.registrationEndsAt)
 	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
-	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate)
+	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate) && !isCompetitionOver
 	const participantsTable = participants && tableSchemaParticipants(participants)
 	const [isTimeOver, setIsTimeOver] = useState(competitionData && isPast(competitionData.startDate))
+	const [isRegistrationClosed, setIsRegistrationClosed] = useState(false)
+	const [resultModalData, setResultModalData] = useState<{ title: ReactNode; data: typeof participantsTable }>()
+	const currentUserGroup = competitionData?.groups?.find(group => {
+		return group.allParticipants?.find(participant => participant === authorizedUser?._id)
+	})
 
 	useEffect(() => {
-		if (!competitionDataExisting) {
+		if (!competitionData) {
 			dispatch(fetchCompetitionById(competitionId as string))
 		} else {
-			dispatch(setCompetitionData(competitionDataExisting))
-		}
-
-		if (isCompetitionOnGoing) {
-			setInterval(() => {
-				dispatch(fetchCompetitionById(competitionId as string))
-			}, 5000)
+			dispatch(setCompetitionData(competitionData))
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	useEffect(() => {
-		if (!pollingWasSet && competitionData && isCompetitionOnGoing) {
-			pollingWasSet = true
-			setInterval(() => {
+		const pollingInterval = setInterval(() => {
+			if (isCompetitionOnGoing && isParticipant) {
 				dispatch(fetchCompetitionById(competitionId as string))
-			}, 5000)
-		}
+			} else {
+				clearInterval(pollingInterval)
+			}
+		}, 5000)
+		return () => clearInterval(pollingInterval)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [competitionData, competitionId, dispatch, isCompetitionOnGoing])
 
 	useEffect(() => {
@@ -90,11 +94,11 @@ export const CompetitionPage = (): ReactElement => {
 	}, [isRegistrationClosed])
 
 	useEffect(() => {
-		if (!participants && isSideMenuOpen) {
+		if (!participants && isSideMenuParticipantsOpen) {
 			dispatch(fetchCompetitionParticipants(competitionId as string))
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isSideMenuOpen])
+	}, [isSideMenuParticipantsOpen])
 
 	useEffect(() => {
 		if (currentUserPairRef) {
@@ -106,56 +110,58 @@ export const CompetitionPage = (): ReactElement => {
 	useEffect(() => {
 		if (competitionData) {
 			setIsTimeOver(isPast(competitionData.startDate))
+			setIsRegistrationClosed(isPast(competitionData.registrationEndsAt))
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [competitionData])
 
-	const handleSideMenuOpen = () => {
-		setIsSideMenuOpen(!isSideMenuOpen)
+	const yourPlace = authorizedUser?.competitionsHistory?.find(
+		competition => competition.competitionId === competitionId
+	)?.placeNumber
+	const competitionResult = getCompetitionResult(competitionData as CompetitionSchema)
+
+	const handleSideMenuParticipantsOpen = () => {
+		setIsSideMenuParticipantsOpen(!isSideMenuParticipantsOpen)
 	}
 
-	const handleParticipateClick = () => {
-		if (!authorizedUser) {
-			navigate(`/${AppRoute.SignIn}`)
-		} else {
-			// eslint-disable-next-line no-console
-			console.log('participate')
+	const getModalData = (group?: CompetitionGroupSchema) => {
+		setIsSideMenuResultOpen(true)
+		if(Array.isArray(participants)) {
+			const resultParticipants = getSortedRuseltParticipants(participants, group)
+			setResultModalData({
+				title: (
+					<>
+						Result <span className='capitalize'>{group?.gender}</span>, <br /> {group?.ageCategory?.from}-
+						{group?.ageCategory?.to} age, {group?.weightCategory?.from} - {group?.weightCategory?.to} kg
+					</>
+				),
+				data: tableSchemaParticipants(resultParticipants as ParticipantSchema[])
+			})
 		}
 	}
 
-	const timeBeforeStart = () =>
-		((isRegistrationClosed && isParticipant && !currentUserPairRef.current?.pair?.calledForPreparation) || (isRegistrationClosed && authorizedUser?.role === Role.ChiefJudge)) && (
-			<div>
-				<div
-					className='mb-5 flex items-center justify-between rounded-2xl border-2 p-3
-                            md:py-4 md:px-9
-                            lg:h-fit lg:flex-col lg:justify-start lg:gap-6 lg:p-4
-                            xl:items-baseline xl:p-7'
-				>
-					<div>
-						<h3 className='mr-1 mb-2 text-sm xl:text-heading-3 xl:text-grey'>Approximate time start before match:</h3>
-						{competitionData && (
-							<Timer
-								time={competitionData.startDate}
-								classes='gap-1.5 lg:gap-3'
-								containerClasses='lg:w-14 lg:h-14 xl:h-[6.5rem] xl:min-w-[6.5rem] xl:p-4'
-								countNumbersClasses='xl:text-[2rem]'
-								handleTimeOver={() => setIsTimeOver(true)}
-							/>
-						)}
-					</div>
-				</div>
-				{authorizedUser?.role === Role.ChiefJudge && isTimeOver && (
-					<Button classes='w-full mb-[1.25rem]' onClick={() => navigate(AppRoute.JudgeCompetition)}>
-						To competition
-					</Button>
-				)}
-			</div>
-		)
+	const handleSideMenuResultOpen = (group?: CompetitionGroupSchema) => {
+		getModalData(group)
+	}
+
+	const handleSideMenuResultOpenCurrentUser = () => {
+		getModalData(currentUserGroup)
+	}
+
+	const timeBeforeStart =
+		(isRegistrationClosed &&
+			isParticipant &&
+			!currentUserPairRef.current?.pair?.calledForPreparation &&
+			!isCompetitionOver) ||
+		(isRegistrationClosed && !isCompetitionOver && authorizedUser?.role === Role.ChiefJudge)
+	const registrationClosed =
+		!isCompetitionOver && isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge
+	const showRegistrationEndsTimer = !isRegistrationClosed && !isCompetitionOnGoing
+	const showYouAreParticipant = isParticipant && !isCompetitionOver && !isRegistrationClosed
 
 	return (
 		<>
-			<main className='container relative mx-auto grow px-4 py-8 md:py-9 xl:py-14 xl:pl-[6.5rem] xl:pr-[3.125rem]'>
+			<main className='container relative mx-auto grow px-4 pt-8 pb-24 md:py-9 xl:py-14 xl:pl-[6.5rem] xl:pr-[3.125rem]'>
 				<Link
 					to={`/${AppRoute.Competitions}`}
 					className='hidden transition hover:opacity-70 xl:absolute xl:left-[38px] xl:top-[77px] xl:block'
@@ -191,23 +197,59 @@ export const CompetitionPage = (): ReactElement => {
 								</div>
 								<CompetitionRequirements competitionRequirements={competitionData.requirements} classes='mb-6' />
 							</div>
-							{!isRegistrationClosed && !isParticipant && !isCompetitionOver && (
+							{showRegistrationEndsTimer && (
 								<RegistrationEndsTimer
-									time={competitionData.registrationEndsAt}
-									authorizedUser={authorizedUser as UserSchema}
-									onParticipateClick={handleParticipateClick}
-									onSideMenuOpen={handleSideMenuOpen}
+									competitionData={competitionData}
+									onTimeOver={() => setIsRegistrationClosed(true)}
+									classes={isParticipant ? 'hidden' : ''}
+									competitionId={competitionId as string}
+								>
+									<Button
+										onClick={handleSideMenuParticipantsOpen}
+										type='outlined'
+										classes='md:w-full lg:font-normal lg:text-sm xl:max-w-[21rem] xl:text-base xl:font-bold'
+									>
+										Check out participants
+									</Button>
+								</RegistrationEndsTimer>
+							)}
+							{showYouAreParticipant && <YouAreParticipant onSideMenuOpen={handleSideMenuParticipantsOpen} />}
+							{registrationClosed && (
+								<CompetitionInfo
+									title={<span className='block lg:mt-2 xl:mt-0'>Registration Closed</span>}
+									img={
+										<HourGlass className='h-7 w-7 lg:absolute lg:right-6 lg:bottom-6 lg:h-10 lg:w-10 xl:right-10 xl:bottom-10 xl:h-16 xl:w-16' />
+									}
 								/>
 							)}
-							{isParticipant && !isCompetitionOver && !isRegistrationClosed && (
-								<YouAreParticipant onSideMenuOpen={handleSideMenuOpen} />
+							{timeBeforeStart && (
+								<div>
+									<TimerBeforeCompetitionStarts
+										competitionData={competitionData}
+										onTimeOver={() => setIsTimeOver(true)}
+									/>
+									{authorizedUser?.role === Role.ChiefJudge && isTimeOver && (
+										<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:p-0 lg:shadow-none'>
+											<Button classes='w-full lg:mb-[1.25rem]' onClick={() => navigate(AppRoute.JudgeCompetition)}>
+												To competition
+											</Button>
+										</div>
+									)}
+								</div>
 							)}
-							{!isCompetitionOver && isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge && (
-								<h2>Registration Closed</h2>
-							)}
-							{timeBeforeStart()}
 							<TimerBeforeParticipantFight currentPair={currentUserPairRef.current?.pair} />
-							{isCompetitionOver && authorizedUser?.role !== Role.ChiefJudge && <CompetitonIsOver place={66}/>}
+							{isCompetitionOver && (
+								<div>
+									<CompetitonIsOver place={yourPlace} />
+									{authorizedUser?.role !== Role.ChiefJudge && currentUserGroup && (
+										<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:mt-5 lg:p-0 lg:shadow-none'>
+											<Button classes='w-full' onClick={handleSideMenuResultOpenCurrentUser} type='outlined'>
+												Competition results
+											</Button>
+										</div>
+									)}
+								</div>
+							)}
 							<div>
 								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
 								<p className='mb-9'>{competitionData.description}</p>
@@ -230,7 +272,7 @@ export const CompetitionPage = (): ReactElement => {
 								)}
 							</div>
 						</div>
-						{isRegistrationClosed && (
+						{isRegistrationClosed && competitionData.groups?.every(group => !group.isCompleted) && (
 							<>
 								{isParticipant && currentUserPairRef.current?.pair && (
 									<>
@@ -245,19 +287,43 @@ export const CompetitionPage = (): ReactElement => {
 										/>
 									</>
 								)}
-								<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
-									Competition schedule
-								</h2>
+
 								{competitionData.groups?.length !== 0 && participants && judges && authorizedUser ? (
-									<CompetitionParticipantsTable
-										competitionData={competitionData}
-										participants={participants}
-										judges={judges}
-										authorizedUser={authorizedUser}
-										currentUserPairRef={currentUserPairRef}
-									/>
+									<>
+										<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
+											Competition schedule
+										</h2>
+										<CompetitionParticipantsTable
+											competitionData={competitionData}
+											participants={participants}
+											judges={judges}
+											authorizedUser={authorizedUser}
+											currentUserPairRef={currentUserPairRef}
+										/>
+									</>
 								) : (
-									<Loader />
+									authorizedUser?.role !== Role.ChiefJudge && <Loader />
+								)}
+							</>
+						)}
+						{competitionData.groups && !!competitionData?.groups[0]?.results?.length && (
+							<>
+								{!!competitionResult?.man.length && (
+									<>
+										<h2 className='mb-4 text-heading-6 font-semibold xl:mb-7 xl:text-heading-2'>Results / Man</h2>
+										<CompetitionResultList competitionData={competitionResult.man} onClick={handleSideMenuResultOpen} />
+									</>
+								)}
+								{!!competitionResult?.woman.length && (
+									<>
+										<h2 className='mb-4 mt-7 text-heading-6 font-semibold xl:my-14 xl:mb-7 xl:text-heading-2'>
+											Results / Woman
+										</h2>
+										<CompetitionResultList
+											competitionData={competitionResult.woman}
+											onClick={handleSideMenuResultOpen}
+										/>
+									</>
 								)}
 							</>
 						)}
@@ -265,8 +331,8 @@ export const CompetitionPage = (): ReactElement => {
 				)}
 			</main>
 			<Modal
-				isOpen={isSideMenuOpen}
-				onClose={handleSideMenuOpen}
+				isOpen={isSideMenuParticipantsOpen}
+				onClose={handleSideMenuParticipantsOpen}
 				title='Participants'
 				modalType='sideMenu'
 				bottomGradient
@@ -277,6 +343,23 @@ export const CompetitionPage = (): ReactElement => {
 						{participantsTable && (
 							<div className='p-6 md:py-6 md:px-[1.875rem]'>
 								<TableBody rows={participantsTable} />
+							</div>
+						)}
+					</>
+				}
+			/>
+			<Modal
+				isOpen={isSideMenuResultOpen}
+				onClose={() => setIsSideMenuResultOpen(false)}
+				title={resultModalData?.title}
+				modalType='sideMenu'
+				bottomGradient
+				content={
+					// eslint-disable-next-line react/jsx-no-useless-fragment
+					<>
+						{resultModalData?.data && (
+							<div className='p-6 md:py-6 md:px-[1.875rem]'>
+								<TableBody rows={resultModalData?.data} />
 							</div>
 						)}
 					</>

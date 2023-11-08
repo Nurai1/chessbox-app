@@ -5,7 +5,6 @@ import {
 	CompetitionGroupsOrdersSchema,
 	CompetitionGroupSchema,
 	DeleteCompetitionGroupSchema,
-	AddNewParticipantSchema,
 	CallPairPreparationSchema,
 	DefineWinnerSchema,
 	AcceptPairFightBodySchema, 
@@ -109,9 +108,11 @@ export const deleteCompetitionGroupApi = async (groupId: DeleteCompetitionGroupS
 	return result
 }
 
-export const addNewParticipantApi = async (userId: AddNewParticipantSchema, id: string) => {
+export const addNewParticipantApi = async (userId: string, id: string) => {
 	const result = await patch('/api/competition/{id}/addNewParticipant', {
-		body: userId,
+		body: {
+			userId
+		},
 		params: {
 			path: {
 				id

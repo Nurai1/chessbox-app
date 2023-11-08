@@ -1,7 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
 	AcceptPairFightBodySchema,
-	AddNewParticipantSchema,
 	CompetitionGroupSchema,
 	CompetitionGroupsOrdersSchema,
 	CompetitionSchema,
@@ -117,7 +116,7 @@ export const deleteCompetitionGroup = createAsyncThunk(
 
 export const addNewParticipant = createAsyncThunk(
 	'competition/addNewParticipant',
-	async ({ userId, id }: { userId: AddNewParticipantSchema; id: string }, thunkApi) => {
+	async ({ userId, id }: { userId: string; id: string }, thunkApi) => {
 		const response = await addNewParticipantApi(userId, id)
 		if (response.error)
 			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
@@ -205,6 +204,7 @@ export interface CompetitionState {
 	groupDeleteError?: string
 	addNewParticipantPending?: boolean
 	addNewParticipantError?: string
+	addNewParticipantSuccess?: boolean
 	setBreakTimePending?: boolean
 	setBreakTimeSuccess?: boolean
 	setBreakTimeError?: string
@@ -217,6 +217,9 @@ export interface CompetitionState {
 	launchNextGroupRoundPending?: boolean
 	launchNextGroupRoundSuccess?: boolean
 	launchNextGroupRoundError?: string
+	acceptForFightPending?: boolean
+	acceptForFightSuccess?: boolean
+	acceptForFightError?: string
 }
 
 const initialState: CompetitionState = {
@@ -283,6 +286,9 @@ export const competitionSlice = createSlice({
 		},
 		removeValuecallUpTimerRunningIds: (state, action: PayloadAction<string>)  => {
 			state.callUpTimerRunningIds = state.callUpTimerRunningIds.filter(item => item !== action.payload)
+		},
+		addCompetitionParticipant: (state, action: PayloadAction<{ newParticipant: UserSchema; competitionId: string }>) => {
+			state.participants[action.payload.competitionId]?.push(action.payload.newParticipant)
 		}
 	},
 	extraReducers: {
@@ -386,9 +392,15 @@ export const competitionSlice = createSlice({
 			state.groupDeletePending = false
 			state.groupDeleteError = action.payload.errorMessage
 		},
-		// доделать добавление участника
+		[addNewParticipant.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.data = action.payload
+			state.addNewParticipantPending = false
+			state.addNewParticipantSuccess = true
+		},
 		[addNewParticipant.pending.type]: state => {
 			state.addNewParticipantPending = true
+			state.addNewParticipantError = undefined
+			state.addNewParticipantSuccess = undefined
 		},
 		[addNewParticipant.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.addNewParticipantPending = false
@@ -432,15 +444,17 @@ export const competitionSlice = createSlice({
 			state.defineWinnerError = action.payload.errorMessage
 		},
 		[acceptForFight.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
-			state.loading = false
+			state.acceptForFightPending = false
+			state.acceptForFightSuccess = true
 			state.data = action.payload
 		},
 		[acceptForFight.pending.type]: state => {
-			state.loading = true
+			state.acceptForFightPending = true
+			state.acceptForFightSuccess = undefined
 		},
 		[acceptForFight.rejected.type]: (state, action: PayloadAction<string>) => {
-			state.loading = false
-			state.error = action.payload
+			state.acceptForFightPending = false
+			state.acceptForFightError = action.payload
 		},
 		[launchNextGroupRound.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.data = action.payload
@@ -469,7 +483,8 @@ export const {
 	resetBreakTime,
 	resetBreakTimeSuccess,
 	addValuecallUpTimerRunningIds,
-	removeValuecallUpTimerRunningIds
+	removeValuecallUpTimerRunningIds,
+	addCompetitionParticipant
 } = competitionSlice.actions
 
 export default competitionSlice.reducer

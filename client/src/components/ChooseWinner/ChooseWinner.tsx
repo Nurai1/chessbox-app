@@ -7,9 +7,9 @@ import { ChooseWinnerType } from 'src/types'
 
 type ChooseWinnerPropsType = {
     pair: PairType
-    isJudgeCompetitionPage: boolean
     groupId: string
 	onChooseWinner?: (data?: Record<string, ChooseWinnerType>) => void
+	isJudgeCompetitionPage?: boolean
 }
 
 export const ChooseWinner: FC<ChooseWinnerPropsType> = ({pair, isJudgeCompetitionPage, groupId, onChooseWinner}) => {
