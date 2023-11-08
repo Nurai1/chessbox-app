@@ -8,7 +8,7 @@ export const tableSchemaParticipants = (tableData: UserSchema[]) => {
 				{
 					node: (
 						<div className='text-sm xl:text-base'>
-							<p className='mb-[6px] text-black'>{user.fullName}</p>
+							<p className='mb-[6px] text-black font-bold'>{user.fullName}</p>
 							<p className='mb-[4px] text-grey md:hidden'>
 								{user.address?.country}
 								{user.address?.country ? ',' : ''} {user.address?.city}

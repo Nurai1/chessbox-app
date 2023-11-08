@@ -78,7 +78,7 @@ export const Modal: FC<{
 					ref={modalRef}
 					className={twMerge(
 						isOpen ? 'right-0' : 'right-[-100%]',
-						'inset absolute z-30 h-full w-full transition-all duration-500 lg:w-[516px] xl:w-[587px]'
+						'inset fixed z-30 h-full w-full transition-all duration-500 lg:w-[516px] xl:w-[587px]'
 					)}
 				>
 					<div
