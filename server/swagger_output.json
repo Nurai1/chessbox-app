@@ -9955,7 +9955,22 @@
           {
             "apiKeyAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/competition/{id}/setUserPaymentPaid/{userId}": {
@@ -10574,6 +10589,9 @@
                 },
                 "requestedCount": {
                   "type": "number"
+                },
+                "message": {
+                  "type": "string"
                 }
               },
               "required": []
@@ -11254,6 +11272,9 @@
                 },
                 "requestedCount": {
                   "type": "number"
+                },
+                "message": {
+                  "type": "string"
                 }
               },
               "required": []

@@ -56,6 +56,7 @@ const competitionSchema = new Schema<ICompetition>(
         paid: Boolean,
         requestedToCheck: Boolean,
         requestedCount: Number,
+        message: String,
       },
     ],
     judges: [
