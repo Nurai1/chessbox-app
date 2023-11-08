@@ -65,7 +65,9 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const accessToken = req.headers['x-access-token'];
 
-    if (accessToken) {
+    const isReqForNewToken =
+      req.url === '/api/login' || req.url === '/api/signup';
+    if (accessToken && !isReqForNewToken) {
       let userId;
 
       try {
