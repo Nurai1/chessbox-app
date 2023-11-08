@@ -29,21 +29,31 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 	const { width: screenWidth } = useWindowSize()
 	const calledForPreparation = !!competition.groups?.find(group => {
 		return group.currentRoundPairs?.find(pair => {
-			if (pair.blackParticipant === authorizedUser?._id && pair.calledForPreparation || pair.whiteParticipant === authorizedUser?._id && pair.calledForPreparation ) {
+			if (
+				(pair.blackParticipant === authorizedUser?._id && pair.calledForPreparation) ||
+				(pair.whiteParticipant === authorizedUser?._id && pair.calledForPreparation)
+			) {
 				return true
 			}
 			return false
 		})
 	})
 
+	const yourPlace = authorizedUser?.competitionsHistory?.find(
+		competitionData => competitionData.competitionId === _id
+	)?.placeNumber
+
 	const showRegistrationEndsTimer = !isRegistrationClosed && !isParticipant && !isCompetitionOver
-	const timeBeforeStart = isRegistrationClosed && isParticipant && !calledForPreparation && !isCompetitionOver || (isRegistrationClosed && !isCompetitionOver && authorizedUser?.role === Role.ChiefJudge)
-	const registrationClosed = !isCompetitionOver && isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge
+	const timeBeforeStart =
+		(isRegistrationClosed && isParticipant && !calledForPreparation && !isCompetitionOver) ||
+		(isRegistrationClosed && !isCompetitionOver && authorizedUser?.role === Role.ChiefJudge)
+	const registrationClosed =
+		!isCompetitionOver && isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge
 	const showYouAreParticipant = isParticipant && !isCompetitionOver && !isRegistrationClosed
 
 	return (
 		<article
-			className='pt-5 pb-[1.875rem] grid gap-4 lg:grid-cols-[auto_18.25rem]
+			className='grid gap-4 pt-5 pb-[1.875rem] lg:grid-cols-[auto_18.25rem]
 		lg:gap-[25px] lg:pt-[25px] xl:grid-cols-[37%_32%_17.3rem] xl:gap-7
 		xl:px-[23px] xl:py-[41px] 2xl:px-[26px]
 		 2xl:pt-[68px] 2xl:pb-[44px] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-b-[#DADADA]'
@@ -106,10 +116,15 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 					title={<p className='lg:w-[13rem]'>This competition is&nbsp;over</p>}
 					img={<Place className='h-7 w-7 lg:absolute lg:bottom-6 lg:right-6 lg:h-[2.375rem] lg:w-[2.375rem]' />}
 					classes='lg:max-h-[9.375rem]'
+					place={yourPlace}
 				/>
 			)}
 			{timeBeforeStart && (
-				<CompetitionCardTimer competitionData={competition} title={<span>Approximate time start&nbsp;before&nbsp;match:</span>} classes='mt-2'/>
+				<CompetitionCardTimer
+					competitionData={competition}
+					title={<span>Approximate time start&nbsp;before&nbsp;match:</span>}
+					classes='mt-2'
+				/>
 			)}
 		</article>
 	)
