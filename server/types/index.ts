@@ -91,6 +91,7 @@ export interface ICompetition {
     paid: boolean;
     requestedToCheck: boolean;
     requestedCount: number;
+    message?: string;
   }[];
 }
 

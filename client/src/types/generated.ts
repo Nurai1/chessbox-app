@@ -2964,6 +2964,13 @@ export interface paths {
 					userId: string
 				}
 			}
+			requestBody: {
+				content: {
+					'application/json': {
+						message?: string
+					}
+				}
+			}
 			responses: {
 				/** @description OK */
 				200: {
@@ -3234,6 +3241,7 @@ export interface components {
 				paid?: boolean
 				requestedToCheck?: boolean
 				requestedCount?: number
+				message?: string
 			}[]
 			judges?: string[]
 			_id?: string
@@ -3439,6 +3447,7 @@ export interface components {
 				paid?: boolean
 				requestedToCheck?: boolean
 				requestedCount?: number
+				message?: string
 			}[]
 			judges?: string[]
 		}
