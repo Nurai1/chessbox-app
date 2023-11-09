@@ -6,11 +6,12 @@ import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
 import { ReactComponent as TwoStarsIcon } from 'src/assets/two-stars.svg'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 import { ReactComponent as WarniniIcon } from 'src/assets/warning.svg'
+import { ReactComponent as Place } from 'src/assets/place.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { AppRoute } from 'src/constants/appRoute'
 import { Tag, Button, Modal, Input, Alert, BreakTimer, Loader } from 'src/ui'
 import { AlertPropTypes } from 'src/ui/Alert/Alert'
-import { CompetitionRequirements, CompetitionParticipantsTable, CompetitonIsOver } from 'src/components'
+import { CompetitionRequirements, CompetitionParticipantsTable, CompetitionInfo } from 'src/components'
 import { getFormattedDate, isPast } from 'src/helpers/datetime'
 import {
 	fetchCompetitionById,
@@ -296,7 +297,15 @@ export const JudgeCompetitionPage = (): ReactElement => {
 									)}
 								</div>
 							)}
-							{isCompetitionOver && <CompetitonIsOver />}
+							{isCompetitionOver && (
+								<CompetitionInfo
+									title={<p className='font-bold xl:text-heading-3'>This competition is&nbsp;over</p>}
+									img={
+										<Place className='h-7 w-7 lg:absolute lg:right-6 lg:bottom-6 lg:h-10 lg:w-10 xl:right-10 xl:bottom-10 xl:h-16 xl:w-16' />
+									}
+									isCompetitionPage
+								/>
+							)}
 						</div>
 						<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
 							Competition schedule
