@@ -7,6 +7,7 @@ import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
 import { ReactComponent as ArrowRightIcon } from 'src/assets/arrow-right-long.svg'
 import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
 import { ReactComponent as HourGlass } from 'src/assets/hourglass.svg'
+import { ReactComponent as Place } from 'src/assets/place.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { AppRoute } from 'src/constants/appRoute'
 import { getFormattedDate, isPast } from 'src/helpers/datetime'
@@ -16,7 +17,6 @@ import {
 	YouAreParticipant,
 	RegistrationEndsTimer,
 	CompetitionParticipantsTable,
-	CompetitonIsOver,
 	TimerBeforeParticipantFight,
 	TimerBeforeCompetitionStarts,
 	CompetitionInfo,
@@ -34,7 +34,7 @@ import { Role } from 'src/constants/role'
 import { existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
 import { getCompetitionResult } from 'src/helpers/getCompetitionResult'
 import { getSortedRuseltParticipants } from 'src/helpers/getSortedRuseltParticipants'
-import { CompetitionGroupSchema, CompetitionSchema, ParticipantSchema } from 'src/types'
+import { CompetitionGroupSchema, ParticipantSchema } from 'src/types'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
@@ -118,7 +118,7 @@ export const CompetitionPage = (): ReactElement => {
 	const yourPlace = authorizedUser?.competitionsHistory?.find(
 		competition => competition.competitionId === competitionId
 	)?.placeNumber
-	const competitionResult = getCompetitionResult(competitionData as CompetitionSchema)
+	const competitionResult = competitionData && getCompetitionResult(competitionData)
 
 	const handleSideMenuParticipantsOpen = () => {
 		setIsSideMenuParticipantsOpen(!isSideMenuParticipantsOpen)
@@ -126,7 +126,7 @@ export const CompetitionPage = (): ReactElement => {
 
 	const getModalData = (group?: CompetitionGroupSchema) => {
 		setIsSideMenuResultOpen(true)
-		if(Array.isArray(participants)) {
+		if (Array.isArray(participants)) {
 			const resultParticipants = getSortedRuseltParticipants(participants, group)
 			setResultModalData({
 				title: (
@@ -202,24 +202,35 @@ export const CompetitionPage = (): ReactElement => {
 									competitionData={competitionData}
 									onTimeOver={() => setIsRegistrationClosed(true)}
 									classes={isParticipant ? 'hidden' : ''}
-									competitionId={competitionId as string}
+									isCompetitonPage
 								>
 									<Button
 										onClick={handleSideMenuParticipantsOpen}
 										type='outlined'
-										classes='md:w-full lg:font-normal lg:text-sm xl:max-w-[21rem] xl:text-base xl:font-bold'
+										classes='w-full lg:font-normal lg:text-sm xl:w-[84%] xl:text-base xl:font-bold'
 									>
 										Check out participants
 									</Button>
 								</RegistrationEndsTimer>
 							)}
-							{showYouAreParticipant && <YouAreParticipant onSideMenuOpen={handleSideMenuParticipantsOpen} />}
+							{showYouAreParticipant && (
+								<YouAreParticipant
+									onSideMenuOpen={handleSideMenuParticipantsOpen}
+									classes='my-9 lg:m-0'
+									isCompetitionPage
+								/>
+							)}
 							{registrationClosed && (
 								<CompetitionInfo
-									title={<span className='block lg:mt-2 xl:mt-0'>Registration Closed</span>}
+									title={
+										<span className='block lg:mt-2 lg:text-heading-4 xl:mt-0 xl:max-w-[15rem] xl:text-heading-3'>
+											Registration Closed
+										</span>
+									}
 									img={
 										<HourGlass className='h-7 w-7 lg:absolute lg:right-6 lg:bottom-6 lg:h-10 lg:w-10 xl:right-10 xl:bottom-10 xl:h-16 xl:w-16' />
 									}
+									isCompetitionPage
 								/>
 							)}
 							{timeBeforeStart && (
@@ -240,7 +251,14 @@ export const CompetitionPage = (): ReactElement => {
 							<TimerBeforeParticipantFight currentPair={currentUserPairRef.current?.pair} />
 							{isCompetitionOver && (
 								<div>
-									<CompetitonIsOver place={yourPlace} />
+									<CompetitionInfo
+										title={<p className='font-bold xl:text-heading-3'>This competition is&nbsp;over</p>}
+										place={yourPlace}
+										img={
+											<Place className='h-7 w-7 lg:absolute lg:right-6 lg:bottom-6 lg:h-10 lg:w-10 xl:right-10 xl:bottom-10 xl:h-16 xl:w-16' />
+										}
+										isCompetitionPage
+									/>
 									{authorizedUser?.role !== Role.ChiefJudge && currentUserGroup && (
 										<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:mt-5 lg:p-0 lg:shadow-none'>
 											<Button classes='w-full' onClick={handleSideMenuResultOpenCurrentUser} type='outlined'>
