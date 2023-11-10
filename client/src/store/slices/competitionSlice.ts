@@ -31,7 +31,6 @@ import {
 	launchNextGroupRoundApi
 } from 'src/api/requests/competitions'
 
-
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
 	const response = await getCompetitionByIdApi(id)
 	if (response.error)
@@ -254,12 +253,12 @@ export const competitionSlice = createSlice({
 		},
 		resetDeleteCompetitionGroupStatus: state => {
 			state.groupDeleteSuccess = undefined
-		}, 
+		},
 		setBreakTimeLocalState: (state, action: PayloadAction<number>) => {
 			return {
 				...state,
 				data: {
-					...state.data as CompetitionSchema,
+					...(state.data as CompetitionSchema),
 					breakTime: {
 						...state.data?.breakTime,
 						minutes: action.payload
@@ -273,7 +272,7 @@ export const competitionSlice = createSlice({
 				setBreakTimeError: undefined,
 				setBreakTimeSuccess: undefined,
 				data: {
-					...state.data as CompetitionSchema,
+					...(state.data as CompetitionSchema),
 					breakTime: undefined
 				}
 			}
@@ -284,10 +283,13 @@ export const competitionSlice = createSlice({
 		addValuecallUpTimerRunningIds: (state, action: PayloadAction<string>) => {
 			state.callUpTimerRunningIds.push(action.payload)
 		},
-		removeValuecallUpTimerRunningIds: (state, action: PayloadAction<string>)  => {
+		removeValuecallUpTimerRunningIds: (state, action: PayloadAction<string>) => {
 			state.callUpTimerRunningIds = state.callUpTimerRunningIds.filter(item => item !== action.payload)
 		},
-		addCompetitionParticipant: (state, action: PayloadAction<{ newParticipant: UserSchema; competitionId: string }>) => {
+		addCompetitionParticipant: (
+			state,
+			action: PayloadAction<{ newParticipant: UserSchema; competitionId: string }>
+		) => {
 			state.participants[action.payload.competitionId]?.push(action.payload.newParticipant)
 		}
 	},
@@ -417,7 +419,7 @@ export const competitionSlice = createSlice({
 			state.setBreakTimePending = false
 			state.setBreakTimeError = action.payload.errorMessage
 		},
-		[callPairPreparation.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>)  => {
+		[callPairPreparation.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.data = action.payload
 			state.callPairPreparationSuccess = true
 			state.callPairPreparationPending = false
