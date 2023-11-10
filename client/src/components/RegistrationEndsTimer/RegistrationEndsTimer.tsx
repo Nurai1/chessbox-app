@@ -85,14 +85,22 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 				</h3>
 				<Timer
 					time={competitionData.registrationEndsAt}
-					containerClasses={`${isCompetitonPage ? 'xl:h-[6.5rem] xl:min-w-[6.5rem] xl:p-4' : 'lg:w-full lg:h-[4.7rem]'}`}
+					containerClasses={`${
+						isCompetitonPage ? 'xl:h-[6.5rem] xl:min-w-[6.5rem] xl:p-4' : 'lg:w-full lg:h-[4.7rem]'
+					}`}
 					countNumbersClasses={`${isCompetitonPage ? 'xl:text-[2rem]' : 'lg:text-2xl'}`}
 					countLabelsClasses='text-grey'
 					handleTimeOver={onTimeOver}
 					classes={`${isCompetitonPage ? '' : 'lg:grid lg:grid-cols-3 lg:w-full xl:w-auto'}`}
 				/>
 			</div>
-			<div className={`${isCompetitonPage ? 'fixed inset-x-0 bottom-0 bg-white py-6 px-4 shadow-[0px_1px_18px_5px_rgba(34,60,80,0.2)] lg:static lg:p-0 lg:shadow-none' : ''}`}>
+			<div
+				className={`${
+					isCompetitonPage
+						? 'fixed inset-x-0 bottom-0 bg-white py-6 px-4 shadow-[0px_1px_18px_5px_rgba(34,60,80,0.2)] lg:static lg:p-0 lg:shadow-none'
+						: ''
+				}`}
+			>
 				{authorizedUser?.role !== Role.ChiefJudge && (
 					<div className='flex gap-2 lg:flex-col lg:gap-3'>
 						<Button
@@ -110,9 +118,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 				)}
 			</div>
 			{fitCompetitionParametersCheck && authorizedUser?.role !== Role.ChiefJudge && (
-				<p className='mt-4 text-error-red md:mt-5 lg:mt-2'>
-					* You don&#39;t fit the parameters
-				</p>
+				<p className='mt-4 text-error-red md:mt-5 lg:mt-2'>* You don&#39;t fit the parameters</p>
 			)}
 		</div>
 	)
