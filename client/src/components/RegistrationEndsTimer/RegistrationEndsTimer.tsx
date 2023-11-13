@@ -42,7 +42,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 	}
 
 	return (
-		<>
+		<div className={`${isCompetitonPage ? 'w-fit' : 'w-full lg:w-fit'}`}>
 			<div
 				className={`${
 					isCompetitonPage
@@ -88,9 +88,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 						<div className='flex gap-2 lg:flex-col lg:gap-3'>
 							<Button
 								onClick={handleParticipateClick}
-								classes={`${
-									isCompetitonPage ? 'md:w-full xl:w-[84%]' : 'w-full xl:w-[80%] mt-5 2xl:w-[97%] 2xl:mt-[1.625rem]'
-								}`}
+								classes={`${isCompetitonPage ? 'md:w-full' : 'w-full mt-5 2xl:mt-[1.625rem]'}`}
 								disabled={fitCompetitionParametersCheck}
 								loading={addNewParticipantPending}
 							>
@@ -118,6 +116,6 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 					/>
 				}
 			/>
-		</>
+		</div>
 	)
 }
