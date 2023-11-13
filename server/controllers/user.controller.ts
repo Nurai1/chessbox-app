@@ -148,15 +148,14 @@ export const signup = async (
   });
 };
 
-export const login = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-  if (!user) return next(new Error('Email does not exist'));
+  if (!user)
+    return res
+      .status(400)
+      .send({ error: 'User with the email does not exist.' });
 
   const validPassword = await validatePassword(password, user.hashedPassword);
   if (!validPassword)
@@ -364,13 +363,19 @@ export const getUser = async (
 };
 
 export const createUser = async (
-  req: Request<any, any, IUser>,
+  req: Request<any, any, { user: IUser; password: string }>,
   res: Response,
   next: NextFunction
 ) => {
   if (!req.body) return res.sendStatus(400);
 
-  const user = new User(req.body);
+  const hashedPassword = await hashPassword(req.body.password);
+
+  const newUser = {
+    ...req.body.user,
+    hashedPassword,
+  };
+  const user = new User(newUser);
 
   await user.save();
 

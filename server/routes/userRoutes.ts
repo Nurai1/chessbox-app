@@ -266,7 +266,19 @@ userRouter.post(
           required: true,
           content: {
               "application/json": {
-                  schema: { $ref: "#/definitions/UserBody" }
+                  schema: { 
+                    type: "object",
+                      properties: {
+                        password: {  
+                          type: "string",
+                        },
+                        user: {
+                          $ref: "#/definitions/UserBody"
+                        }
+                      },
+                      required: ["password", "user"]
+                    }
+                  }
               },
           }
       } 
