@@ -109,7 +109,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 				onClose={() => setIsModalOpen(false)}
 				modalType={screenWidth > BreakPoint.Lg ? 'regular' : 'sideMenu'}
 				showModalHeader={screenWidth > BreakPoint.Lg}
-				classes='lg:max-w-[23rem] xl:max-w-[24.375rem]'
+				classes='lg:max-w-[26rem] xl:max-w-[29.375rem]'
 				content={
 					<CompetitionPayment
 						price={competitionData.price?.currentValue}

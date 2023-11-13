@@ -105,19 +105,54 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 	}
 
 	return (
-		<div className='relative grid gap-[1.56rem] px-6 pb-12 pt-14 text-sm sm:px-[3.75rem] sm:pt-[1.875rem] lg:-mt-7 lg:px-0 lg:pt-0 lg:pb-6 xl:text-base'>
+		<div className='relative grid gap-[1rem] px-6 pb-12 pt-14 text-sm sm:px-[3.75rem] sm:pt-[1.875rem] lg:-mt-7 lg:px-0 lg:pt-0 lg:pb-6 xl:text-base'>
 			<button className='absolute top-5 left-3 lg:hidden' onClick={onClose} type='button'>
 				<ArrowLeftIcon className='w-[1.375rem]' />
 			</button>
-			{price && <p className=' text-grey'>Payment: {price} $</p>}
-			<p>Transfer by card number:</p>
-			<div className='flex items-center justify-center gap-1'>
-				<span className='font-medium lg:font-bold' ref={cardNumber}>
-					4242 4242 4242 4242
-				</span>
-				<button type='button' onClick={() => handleCopy(cardNumber as unknown as MutableRefObject<HTMLElement>)}>
-					<CopyIcon className='w-[1.375rem]' />
-				</button>
+			{price && <p className=' text-grey'>Payment: {price} ₽</p>}
+			<p>Transfer from Russia on bank account:</p>
+			<div>
+				<div className='flex flex-col items-center justify-center gap-1'>
+					<span className='font-medium text-gray-500 lg:font-bold' ref={cardNumber}>
+						Расчетный счет(Р/С):
+					</span>
+					<span className='inline-flex-center font-medium lg:font-bold' ref={cardNumber}>
+						40703810238000016464
+						<button type='button' onClick={() => handleCopy(cardNumber as unknown as MutableRefObject<HTMLElement>)}>
+							<CopyIcon className='w-[1.375rem]' />
+						</button>
+					</span>
+				</div>
+				<div className='flex flex-col items-center justify-center gap-1'>
+					<span className='text-center font-medium text-gray-500 lg:font-bold' ref={cardNumber}>
+						Банковский идентификационный код (БИК):
+					</span>
+					<span className='inline-flex-center font-medium lg:font-bold' ref={cardNumber}>
+						044525225
+						{/* TODO: FIX COPY, DO IT WITHOUT REF */}
+						<button type='button' onClick={() => handleCopy(cardNumber as unknown as MutableRefObject<HTMLElement>)}>
+							<CopyIcon className='w-[1.375rem]' />
+						</button>
+					</span>
+				</div>
+				<div className='flex flex-col items-center justify-center gap-1'>
+					<span className='text-center font-medium text-gray-500 lg:font-bold' ref={cardNumber}>
+						Идентификационный номер налогоплательщика (ИНН):
+					</span>
+
+					<span className='inline-flex-center font-medium lg:font-bold' ref={cardNumber}>
+						7727445492
+						{/* TODO: FIX COPY, DO IT WITHOUT REF */}
+						<button type='button' onClick={() => handleCopy(cardNumber as unknown as MutableRefObject<HTMLElement>)}>
+							<CopyIcon className='w-[1.375rem]' />
+						</button>
+					</span>
+				</div>
+				<div className='flex items-center justify-center'>
+					<a href='file' download className='underline'>
+						Download additional info
+					</a>
+				</div>
 			</div>
 			<Input onChange={handleMessage} value={message} isTextarea />
 			<div>
@@ -127,7 +162,7 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 					loading={seTuserPaymentRequestToCheckPending}
 					disabled={currentUserRequestData?.requestedCount === 3}
 				>
-					Transfered!
+					Transferred!
 				</Button>
 				<p className='mt-2 text-center text-sm'>You can request check payment only 3 times.</p>
 				{currentUserRequestData?.requestedCount && currentUserRequestData.requestedCount < 3 && (
@@ -144,16 +179,16 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 			<p className='text-center '>If you have any questions, please contact:</p>
 			<div>
 				<a
-					href={`https://wa.me/${'+7 953 216 46 18'}`}
+					href={`https://wa.me/${'+74957891500'}`}
 					target='_blank'
 					rel='noreferrer'
 					className='flex items-center justify-center gap-3 '
 				>
-					<WhatsappIcon className='h-6 w-6' /> +7 953 216 46 18
+					<WhatsappIcon className='h-6 w-6' /> +7 495 789 15 00
 				</a>
 				<div className='mt-2 flex items-center justify-center gap-1'>
 					<span className='text-center' ref={mail}>
-						chessboxing@mail.ru
+						chessboxrus@mail.ru
 					</span>
 					<button type='button' onClick={() => handleCopy(mail as unknown as MutableRefObject<HTMLElement>)}>
 						<CopyIcon className='w-[1.375rem]' />
