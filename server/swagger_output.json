@@ -2808,7 +2808,19 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserBody"
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  },
+                  "user": {
+                    "$ref": "#/components/schemas/UserBody"
+                  }
+                },
+                "required": [
+                  "password",
+                  "user"
+                ]
               }
             }
           }
@@ -10617,11 +10629,7 @@
           "firstName",
           "lastName",
           "fullName",
-          "role",
-          "birthDate",
-          "gender",
-          "ratingNumber",
-          "weight"
+          "role"
         ],
         "properties": {
           "email": {
@@ -11297,11 +11305,7 @@
           "firstName",
           "lastName",
           "fullName",
-          "role",
-          "birthDate",
-          "gender",
-          "ratingNumber",
-          "weight"
+          "role"
         ],
         "properties": {
           "email": {
