@@ -20,7 +20,8 @@ import {
 	TimerBeforeParticipantFight,
 	TimerBeforeCompetitionStarts,
 	CompetitionInfo,
-	CompetitionResultList
+	CompetitionResultList,
+	RequestAwaitAcception
 } from 'src/components'
 import { PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
 import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
@@ -34,7 +35,7 @@ import { Role } from 'src/constants/role'
 import { existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
 import { getCompetitionResult } from 'src/helpers/getCompetitionResult'
 import { getSortedRuseltParticipants } from 'src/helpers/getSortedRuseltParticipants'
-import { CompetitionGroupSchema, ParticipantSchema } from 'src/types'
+import { CompetitionGroupSchema, ParticipantSchema, UserPaymentInfo } from 'src/types'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
@@ -43,6 +44,7 @@ export const CompetitionPage = (): ReactElement => {
 	const navigate = useNavigate()
 	const [isSideMenuParticipantsOpen, setIsSideMenuParticipantsOpen] = useState(false)
 	const [isSideMenuResultOpen, setIsSideMenuResultOpen] = useState(false)
+	const [currentUserRequestData, setCurrentUserRequestData] = useState<UserPaymentInfo>()
 	const fetchError = useAppSelector(s => s.competition.error)
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
 	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
@@ -111,6 +113,9 @@ export const CompetitionPage = (): ReactElement => {
 		if (competitionData) {
 			setIsTimeOver(isPast(competitionData.startDate))
 			setIsRegistrationClosed(isPast(competitionData.registrationEndsAt))
+			setCurrentUserRequestData(
+				competitionData.usersPaymentInfo?.find(paymentInfo => paymentInfo.userId === authorizedUser?._id)
+			)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [competitionData])
@@ -156,8 +161,9 @@ export const CompetitionPage = (): ReactElement => {
 		(isRegistrationClosed && !isCompetitionOver && authorizedUser?.role === Role.ChiefJudge)
 	const registrationClosed =
 		!isCompetitionOver && isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge
-	const showRegistrationEndsTimer = !isRegistrationClosed && !isCompetitionOnGoing
+	const showRegistrationEndsTimer = !isRegistrationClosed && !isCompetitionOnGoing && !currentUserRequestData
 	const showYouAreParticipant = isParticipant && !isCompetitionOver && !isRegistrationClosed
+	const requestAwaitAcception = !isParticipant && currentUserRequestData
 
 	return (
 		<>
@@ -209,9 +215,28 @@ export const CompetitionPage = (): ReactElement => {
 										type='outlined'
 										classes='w-full lg:font-normal lg:text-sm xl:w-[84%] xl:text-base xl:font-bold'
 									>
-										Check out participants
+										<span>
+											Check out <span className='hidden xl:inline'>other</span>
+											&nbsp;participants
+										</span>
 									</Button>
 								</RegistrationEndsTimer>
+							)}
+							{requestAwaitAcception && (
+								<RequestAwaitAcception isCompetitionPage>
+									<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:w-full lg:p-0 lg:shadow-none'>
+										<Button
+											classes='w-full lg:text-xs lg:font-normal xl:font-bold xl:text-base'
+											type='outlined'
+											onClick={handleSideMenuParticipantsOpen}
+										>
+											<span>
+												Check out <span className='hidden xl:inline'>other</span>
+												&nbsp;participants
+											</span>
+										</Button>
+									</div>
+								</RequestAwaitAcception>
 							)}
 							{showYouAreParticipant && (
 								<YouAreParticipant

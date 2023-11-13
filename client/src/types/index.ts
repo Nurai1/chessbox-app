@@ -35,6 +35,15 @@ export type AcceptPairFightBodySchema =
 	paths['/api/competition/acceptPairFight']['patch']['requestBody']['content']['application/json']
 export type LaunchNextGroupRoundApiSchema =
 	paths['/api/competition/launchNextGroupRound']['patch']['requestBody']['content']['application/json']
+export type SeTuserPaymentRequestToCheckApiSchema =
+	paths['/api/competition/{id}/setUserPaymentRequestToCheck/{userId}']['patch']['requestBody']['content']['application/json']
+export type UserPaymentInfo = {
+	userId?: string | undefined
+	paid?: boolean | undefined
+	requestedToCheck?: boolean | undefined
+	requestedCount?: number | undefined
+	message?: string | undefined
+}
 
 export type ErrorPayload = { errorMessage: string; response: Response }
 export type CompetitionSchemaJudge = Omit<CompetitionSchema, 'judges'> & {

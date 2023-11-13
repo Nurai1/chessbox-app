@@ -1,0 +1,1 @@
+export { CompetitionPayment } from './CompetitionPayment'

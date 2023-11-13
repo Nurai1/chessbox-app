@@ -14,7 +14,19 @@ export const Modal: FC<{
 	modalType?: 'regular' | 'sideMenu'
 	bottomGradient?: boolean
 	classes?: string
-}> = ({ isOpen, onClose, title, content, submitButton, clearButton, modalType = 'regular', bottomGradient, classes }) => {
+	showModalHeader?: boolean
+}> = ({
+	isOpen,
+	onClose,
+	title,
+	content,
+	submitButton,
+	clearButton,
+	modalType = 'regular',
+	bottomGradient,
+	classes,
+	showModalHeader = true
+}) => {
 	const modalRef = useRef(null)
 
 	useClickOutside({
@@ -56,18 +68,19 @@ export const Modal: FC<{
 								{clearButton}
 								<button
 									type='button'
-									className='ml-auto focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white'
+									className='z-10 ml-auto focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white'
 									onClick={onClose}
 								>
 									<span className='sr-only'>Close</span>
 									<XmarkIcon onClick={onClose} className='transition hover:opacity-70' />
 								</button>
 							</div>
+
 							<h2 className='flex-center mt-[-27px] w-full text-2xl font-semibold leading-none text-gray-800'>
 								{title}
 							</h2>
 							<div className='mt-[30px]'>{isOpen ? content : null}</div>
-							{submitButton && <div className='mt-[25px] md:mt-[35px]'>{submitButton}</div> }
+							{submitButton && <div className='mt-[25px] md:mt-[35px]'>{submitButton}</div>}
 						</div>
 					</div>
 				</div>
@@ -78,7 +91,7 @@ export const Modal: FC<{
 					ref={modalRef}
 					className={twMerge(
 						isOpen ? 'right-0' : 'right-[-100%]',
-						'inset fixed z-30 h-full w-full transition-all duration-500 lg:w-[516px] xl:w-[587px]'
+						'inset fixed top-0 z-30 h-full w-full transition-all duration-500 lg:w-[516px] xl:w-[587px]'
 					)}
 				>
 					<div
@@ -88,17 +101,19 @@ export const Modal: FC<{
 							classes
 						)}
 					>
-						<div className='flex-center min-h-[3.75rem] px-6 py-2 md:py-6 md:px-[1.875rem]'>
-							<h2 className='text-2xl font-bold xl:text-4xl'>{title}</h2>
-							<button
-								type='button'
-								className='ml-auto focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white'
-								onClick={onClose}
-							>
-								<span className='sr-only'>Close</span>
-								<XmarkIconBig onClick={onClose} className='w-[20px] transition hover:opacity-70' />
-							</button>
-						</div>
+						{showModalHeader && (
+							<div className='flex-center min-h-[3.75rem] px-6 py-2 md:py-6 md:px-[1.875rem]'>
+								<h2 className='text-2xl font-bold xl:text-4xl'>{title}</h2>
+								<button
+									type='button'
+									className='ml-auto focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white'
+									onClick={onClose}
+								>
+									<span className='sr-only'>Close</span>
+									<XmarkIconBig onClick={onClose} className='w-[20px] transition hover:opacity-70' />
+								</button>
+							</div>
+						)}
 						<div className='scroll-custom grow overflow-y-auto'>{isOpen ? content : null}</div>
 					</div>
 				</div>

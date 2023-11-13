@@ -14,6 +14,8 @@ import {
 	UserSchema,
 	LaunchNextGroupRoundApiSchema
 } from 'src/types'
+import { CompetitionPaymentDataType } from 'src/components/CompetitionPayment/CompetitionPayment'
+
 import {
 	getCompetitionByIdApi,
 	getCompetitionParticipantsApi,
@@ -28,7 +30,8 @@ import {
 	callPairPreparationApi,
 	defineWinnerApi,
 	acceptForFightApi,
-	launchNextGroupRoundApi
+	launchNextGroupRoundApi,
+	seTuserPaymentRequestToCheckApi
 } from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
@@ -179,6 +182,18 @@ export const launchNextGroupRound = createAsyncThunk(
 	}
 )
 
+export const seTuserPaymentRequestToCheck = createAsyncThunk(
+	'payment/seTuserPaymentRequestToCheck',
+	async (competitionPaymentData: CompetitionPaymentDataType, thunkApi) => {
+		const { path, body } = competitionPaymentData
+		const response = await seTuserPaymentRequestToCheckApi(body, path)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
 export interface CompetitionState {
 	data: CompetitionSchema | null
 	participants: Record<string, ParticipantSchema[] | null>
@@ -219,6 +234,9 @@ export interface CompetitionState {
 	acceptForFightPending?: boolean
 	acceptForFightSuccess?: boolean
 	acceptForFightError?: string
+	seTuserPaymentRequestToCheckPending?: boolean
+	seTuserPaymentRequestToCheckSuccess?: boolean
+	seTuserPaymentRequestToCheckError?: string
 }
 
 const initialState: CompetitionState = {
@@ -286,6 +304,7 @@ export const competitionSlice = createSlice({
 		removeValuecallUpTimerRunningIds: (state, action: PayloadAction<string>) => {
 			state.callUpTimerRunningIds = state.callUpTimerRunningIds.filter(item => item !== action.payload)
 		},
+		// delete if unused
 		addCompetitionParticipant: (
 			state,
 			action: PayloadAction<{ newParticipant: UserSchema; competitionId: string }>
@@ -470,6 +489,18 @@ export const competitionSlice = createSlice({
 		[launchNextGroupRound.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.launchNextGroupRoundPending = false
 			state.launchNextGroupRoundError = action.payload.errorMessage
+		},
+		[seTuserPaymentRequestToCheck.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.data = action.payload
+			state.seTuserPaymentRequestToCheckPending = false
+			state.seTuserPaymentRequestToCheckSuccess = true
+		},
+		[seTuserPaymentRequestToCheck.pending.type]: state => {
+			state.seTuserPaymentRequestToCheckPending = true
+		},
+		[seTuserPaymentRequestToCheck.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.seTuserPaymentRequestToCheckPending = false
+			state.seTuserPaymentRequestToCheckError = action.payload.errorMessage
 		}
 	}
 })
