@@ -11,7 +11,13 @@ import { Tag } from 'src/ui'
 import { getFormattedDate, isPast } from 'src/helpers/datetime'
 import { BreakPoint } from 'src/constants/breakPoints'
 import style from 'src/components/CompetitionCard/CompetitionCard.module.css'
-import { RegistrationEndsTimer, CompetitionInfo, YouAreParticipant, CompetitionCardTimer } from 'src/components'
+import {
+	RegistrationEndsTimer,
+	CompetitionInfo,
+	YouAreParticipant,
+	CompetitionCardTimer,
+	RequestAwaitAcception
+} from 'src/components'
 import { Role } from 'src/constants/role'
 
 type CompetitionPropsType = {
@@ -43,13 +49,18 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 		competitionData => competitionData.competitionId === _id
 	)?.placeNumber
 
-	const showRegistrationEndsTimer = !isRegistrationClosed && !isParticipant && !isCompetitionOver
+	const currentUserRequestData =
+		competition && competition.usersPaymentInfo?.find(paymentInfo => paymentInfo.userId === authorizedUser?._id)
+
+	const showRegistrationEndsTimer =
+		!isRegistrationClosed && !isParticipant && !isCompetitionOver && !currentUserRequestData
 	const timeBeforeStart =
 		(isRegistrationClosed && isParticipant && !calledForPreparation && !isCompetitionOver) ||
 		(isRegistrationClosed && !isCompetitionOver && authorizedUser?.role === Role.ChiefJudge)
 	const registrationClosed =
 		!isCompetitionOver && isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge
 	const showYouAreParticipant = isParticipant && !isCompetitionOver && !isRegistrationClosed
+	const requestAwaitAcception = !isParticipant && currentUserRequestData
 
 	return (
 		<article
@@ -103,6 +114,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 				)}
 			</div>
 			{showRegistrationEndsTimer && <RegistrationEndsTimer competitionData={competition} />}
+			{requestAwaitAcception && <RequestAwaitAcception />}
 			{showYouAreParticipant && <YouAreParticipant />}
 			{registrationClosed && (
 				<CompetitionInfo

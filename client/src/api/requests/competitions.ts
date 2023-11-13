@@ -7,8 +7,9 @@ import {
 	DeleteCompetitionGroupSchema,
 	CallPairPreparationSchema,
 	DefineWinnerSchema,
-	AcceptPairFightBodySchema, 
-	LaunchNextGroupRoundApiSchema
+	AcceptPairFightBodySchema,
+	LaunchNextGroupRoundApiSchema,
+	SeTuserPaymentRequestToCheckApiSchema
 } from 'src/types'
 
 export const getCompetitionsApi = async () => {
@@ -164,6 +165,20 @@ export const acceptForFightApi = async (body: AcceptPairFightBodySchema) => {
 
 export const launchNextGroupRoundApi = async (body: LaunchNextGroupRoundApiSchema) => {
 	const result = await patch('/api/competition/launchNextGroupRound', { body })
+
+	return result
+}
+
+export const seTuserPaymentRequestToCheckApi = async (
+	body: SeTuserPaymentRequestToCheckApiSchema,
+	path: { id: string; userId: string }
+) => {
+	const result = await patch('/api/competition/{id}/setUserPaymentRequestToCheck/{userId}', {
+		body,
+		params: {
+			path
+		}
+	})
 
 	return result
 }
