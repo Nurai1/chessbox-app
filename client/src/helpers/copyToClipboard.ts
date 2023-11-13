@@ -1,12 +1,11 @@
-import { MutableRefObject } from 'react'
 import { AlertPropTypes } from 'src/ui/Alert/Alert'
 
 type AlerType = Pick<AlertPropTypes, 'type' | 'title'>
 
-export const copyToClipboard = (ref: MutableRefObject<HTMLElement>): AlerType => {
+export const copyToClipboard = (copy: string): AlerType => {
 	// return object for alert
 	try {
-		navigator.clipboard.writeText(ref.current?.innerText)
+		navigator.clipboard.writeText(copy)
 		return {
 			type: 'success',
 			title: 'Copied!'

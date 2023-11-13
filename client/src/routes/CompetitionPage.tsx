@@ -213,7 +213,7 @@ export const CompetitionPage = (): ReactElement => {
 									<Button
 										onClick={handleSideMenuParticipantsOpen}
 										type='outlined'
-										classes='w-full lg:font-normal lg:text-sm xl:w-[84%] xl:text-base xl:font-bold'
+										classes='w-full lg:font-normal lg:text-sm xl:text-base xl:font-bold'
 									>
 										<span>
 											Check out <span className='hidden xl:inline'>other</span>

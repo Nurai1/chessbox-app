@@ -1,4 +1,4 @@
-import { FC, useState, useRef, MutableRefObject, useEffect } from 'react'
+import { FC, useState, useEffect } from 'react'
 import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
 import { ReactComponent as CopyIcon } from 'src/assets/copy.svg'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
@@ -43,9 +43,6 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 	})
 	const { width: screenWidth } = useWindowSize()
 	const dispatch = useAppDispatch()
-
-	const cardNumber = useRef(null)
-	const mail = useRef(null)
 	const { authorizedUser } = useAppSelector(state => state.user)
 
 	const {
@@ -75,7 +72,7 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [competitionDataStore])
 
-	const handleCopy = (ref: MutableRefObject<HTMLElement>) => {
+	const handleCopy = (ref: string) => {
 		const { type, title } = copyToClipboard(ref)
 		setCopyAlertData({ show: true, type, title })
 		setTimeout(() => setCopyAlertData({ show: false, type: copyAlertData.type }), 3000)
@@ -111,45 +108,45 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 			</button>
 			{price && <p className=' text-grey'>Payment: {price} ₽</p>}
 			<p>Transfer from Russia on bank account:</p>
-			<div>
+			<div className='grid gap-2'>
 				<div className='flex flex-col items-center justify-center gap-1'>
-					<span className='font-medium text-gray-500 lg:font-bold' ref={cardNumber}>
-						Расчетный счет(Р/С):
-					</span>
-					<span className='inline-flex-center font-medium lg:font-bold' ref={cardNumber}>
+					<span className='font-medium text-gray-500 lg:font-bold'>Расчетный счет(Р/С):</span>
+					<span className='inline-flex-center gap-1 font-medium lg:font-bold'>
 						40703810238000016464
-						<button type='button' onClick={() => handleCopy(cardNumber as unknown as MutableRefObject<HTMLElement>)}>
+						<button
+							type='button'
+							className='transition hover:opacity-70'
+							onClick={() => handleCopy('40703810238000016464')}
+						>
 							<CopyIcon className='w-[1.375rem]' />
 						</button>
 					</span>
 				</div>
 				<div className='flex flex-col items-center justify-center gap-1'>
-					<span className='text-center font-medium text-gray-500 lg:font-bold' ref={cardNumber}>
+					<span className='text-center font-medium text-gray-500 lg:font-bold'>
 						Банковский идентификационный код (БИК):
 					</span>
-					<span className='inline-flex-center font-medium lg:font-bold' ref={cardNumber}>
+					<span className='inline-flex-center gap-1 font-medium lg:font-bold'>
 						044525225
-						{/* TODO: FIX COPY, DO IT WITHOUT REF */}
-						<button type='button' onClick={() => handleCopy(cardNumber as unknown as MutableRefObject<HTMLElement>)}>
+						<button type='button' className='transition hover:opacity-70' onClick={() => handleCopy('044525225')}>
 							<CopyIcon className='w-[1.375rem]' />
 						</button>
 					</span>
 				</div>
 				<div className='flex flex-col items-center justify-center gap-1'>
-					<span className='text-center font-medium text-gray-500 lg:font-bold' ref={cardNumber}>
+					<span className='text-center font-medium text-gray-500 lg:font-bold'>
 						Идентификационный номер налогоплательщика (ИНН):
 					</span>
 
-					<span className='inline-flex-center font-medium lg:font-bold' ref={cardNumber}>
+					<span className='inline-flex-center gap-1 font-medium lg:font-bold'>
 						7727445492
-						{/* TODO: FIX COPY, DO IT WITHOUT REF */}
-						<button type='button' onClick={() => handleCopy(cardNumber as unknown as MutableRefObject<HTMLElement>)}>
+						<button type='button' className='transition hover:opacity-70' onClick={() => handleCopy('7727445492')}>
 							<CopyIcon className='w-[1.375rem]' />
 						</button>
 					</span>
 				</div>
 				<div className='flex items-center justify-center'>
-					<a href='file' download className='underline'>
+					<a href='/public/для оплаты.docx' download className='underline transition hover:opacity-70'>
 						Download additional info
 					</a>
 				</div>
@@ -182,15 +179,17 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 					href={`https://wa.me/${'+74957891500'}`}
 					target='_blank'
 					rel='noreferrer'
-					className='flex items-center justify-center gap-3 '
+					className='flex items-center justify-center gap-3 transition hover:opacity-70'
 				>
 					<WhatsappIcon className='h-6 w-6' /> +7 495 789 15 00
 				</a>
 				<div className='mt-2 flex items-center justify-center gap-1'>
-					<span className='text-center' ref={mail}>
-						chessboxrus@mail.ru
-					</span>
-					<button type='button' onClick={() => handleCopy(mail as unknown as MutableRefObject<HTMLElement>)}>
+					<span className='text-center'>chessboxrus@mail.ru</span>
+					<button
+						type='button'
+						className='transition hover:opacity-70'
+						onClick={() => handleCopy('chessboxrus@mail.ru')}
+					>
 						<CopyIcon className='w-[1.375rem]' />
 					</button>
 				</div>
