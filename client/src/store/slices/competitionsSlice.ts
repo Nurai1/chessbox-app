@@ -59,6 +59,7 @@ export const competitionsSlice = createSlice({
 				}
 			}
 		},
+		// delete if unused
 		updateCompetitionsListParticipants: (
 			state,
 			action: PayloadAction<{ newParticipant: string; competitionId: string }>

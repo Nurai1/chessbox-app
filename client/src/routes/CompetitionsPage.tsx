@@ -13,7 +13,7 @@ import { CompetitionSchema } from 'src/types'
 
 export const CompetitionsPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
-	const isLoading = useAppSelector(state => state.competitions.loading)
+	const { data: competitionData, loading: isLoading } = useAppSelector(state => state.competitions)
 	const [competitions, setCompetitions] = useState<{
 		activeIndex: number
 		competitionsData: CompetitionSchema[] | []
@@ -38,7 +38,7 @@ export const CompetitionsPage = (): ReactElement => {
 			competitionsData: competitionsActive
 		})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isLoading])
+	}, [isLoading, competitionData])
 
 	return (
 		<main className='container m-auto grow px-[17px] pt-[15px] md:px-7 md:pt-[25px] lg:px-10 lg:pt-[33px] 2xl:px-[40px]'>
