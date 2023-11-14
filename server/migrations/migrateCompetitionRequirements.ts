@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { Competition, User } from '../models';
 import dotenv from 'dotenv';
+import { Competition, User } from '../models';
 
 dotenv.config({ path: '../.env' });
 

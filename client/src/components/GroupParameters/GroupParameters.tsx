@@ -99,16 +99,16 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 				'ageTo',
 				'ageMessage',
 				'Age',
-				requirements.ageCategory?.from || 10,
-				requirements.ageCategory?.to || 99
+				requirements.ageCategory?.from || 0,
+				requirements.ageCategory?.to || 119
 			)
 			validate(
 				'weightFrom',
 				'weightTo',
 				'weightMessage',
 				'Weight',
-				requirements.weightCategory?.from || 40,
-				requirements.weightCategory?.to || 199
+				requirements.weightCategory?.from || 0,
+				requirements.weightCategory?.to || 299
 			)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

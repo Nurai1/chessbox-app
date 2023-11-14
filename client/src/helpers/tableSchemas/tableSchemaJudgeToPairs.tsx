@@ -41,8 +41,6 @@ export const tableSchemaJudgeToPairs = ({
 		]
 	}, [] as PairType[])
 
-	// console.log(selectedJudges)
-
 	return participantsData.map((pair, i) => {
 		const handleSelectJudge = (judgeId: string, pairData: PairType) => {
 			const index = selectedJudges?.pairs.findIndex(({ id: pairId }) => pairId === pairData._id)

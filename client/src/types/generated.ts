@@ -777,7 +777,10 @@ export interface paths {
 		post: {
 			requestBody: {
 				content: {
-					'application/json': components['schemas']['UserBody']
+					'application/json': {
+						password: string
+						user: components['schemas']['UserBody']
+					}
 				}
 			}
 			responses: {
@@ -3221,6 +3224,7 @@ export interface components {
 				}[]
 			}
 			zoomLink?: string
+			chiefJudgeEndedConfiguration?: boolean
 			breakTime?: {
 				minutes?: number
 			}
@@ -3266,14 +3270,14 @@ export interface components {
 			/** @enum {string} */
 			role: 'participant' | 'judge' | 'chief_judge' | 'admin'
 			/** Format: date-time */
-			birthDate: string
+			birthDate?: string
 			socialNetworks?: {
 				whatsup?: string
 			}
 			/** @enum {string} */
-			gender: 'woman' | 'man'
-			ratingNumber: number
-			weight: number
+			gender?: 'woman' | 'man'
+			ratingNumber?: number
+			weight?: number
 			passwordResetCode?: number
 			currentGroupId?: string
 			competitionsHistory?: {
@@ -3427,6 +3431,7 @@ export interface components {
 				}[]
 			}
 			zoomLink?: string
+			chiefJudgeEndedConfiguration?: boolean
 			breakTime?: {
 				minutes?: number
 			}
@@ -3471,14 +3476,14 @@ export interface components {
 			/** @enum {string} */
 			role: 'participant' | 'judge' | 'chief_judge' | 'admin'
 			/** Format: date-time */
-			birthDate: string
+			birthDate?: string
 			socialNetworks?: {
 				whatsup?: string
 			}
 			/** @enum {string} */
-			gender: 'woman' | 'man'
-			ratingNumber: number
-			weight: number
+			gender?: 'woman' | 'man'
+			ratingNumber?: number
+			weight?: number
 			passwordResetCode?: number
 			currentGroupId?: string
 			competitionsHistory?: {

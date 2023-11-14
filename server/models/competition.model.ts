@@ -23,6 +23,7 @@ const competitionSchema = new Schema<ICompetition>(
       ],
     },
     zoomLink: String,
+    chiefJudgeEndedConfiguration: { type: Boolean },
     breakTime: {
       minutes: { type: Number },
     },

@@ -11,7 +11,7 @@ export default defineConfig(() => ({
 		disabled: false
 	},
 	build: {
-		sourcemap: false,
+		sourcemap: true,
 		commonjsOptions: {
 			include: []
 		}
