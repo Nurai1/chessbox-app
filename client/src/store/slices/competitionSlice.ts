@@ -348,7 +348,8 @@ export const competitionSlice = createSlice({
 			state.setCompetitionJudgesPending = false
 			state.setCompetitionJudgesError = action.payload.errorMessage
 		},
-		[setPairJudges.fulfilled.type]: state => {
+		[setPairJudges.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.data = action.payload
 			state.setPairJudgesPending = false
 			state.setPairJudgesSuccess = true
 		},

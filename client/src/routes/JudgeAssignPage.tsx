@@ -86,6 +86,12 @@ export const JudgeAssignPage = (): ReactElement => {
 		if (setPairJudgesSuccess) {
 			navigate(`/${AppRoute.Competitions}/${competitionId}`)
 			dispatch(resetPairJudgeAssignStatus())
+			dispatch(
+				updateCompetitionsListCompetition({
+					competition: competitionData as CompetitionSchema,
+					competitionId: competitionId as string
+				})
+			)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setPairJudgesSuccess])
@@ -137,20 +143,6 @@ export const JudgeAssignPage = (): ReactElement => {
 	}
 
 	const handleDoneClick = () => {
-		dispatch(
-			setCompetitionData({
-				...competitionData,
-				groups: groups as CompetitionGroupSchema[]
-			} as CompetitionSchema)
-		)
-
-		dispatch(
-			updateCompetitionsListCompetition({
-				competition: competitionData as CompetitionSchema,
-				competitionId: competitionId as string
-			})
-		)
-
 		dispatch(setPairJudges(selectedJudges as SetJudgesToPairsSchema))
 	}
 
