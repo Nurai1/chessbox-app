@@ -15,7 +15,6 @@ const userSchema = new Schema<IUser>(
     chessPlatform: {
       username: {
         type: String,
-        required: true,
       },
     },
     hashedPassword: {
@@ -38,19 +37,19 @@ const userSchema = new Schema<IUser>(
       country: { type: String, required: true },
       city: { type: String, required: true },
     },
-    fightClub: { name: { type: String, required: true } },
+    fightClub: { name: { type: String } },
     role: {
       type: String,
       required: true,
       enum: ['participant', 'judge', 'chief_judge', 'admin'],
     },
-    birthDate: { type: Date, required: true },
+    birthDate: { type: Date },
     socialNetworks: {
       whatsup: String,
     },
-    gender: { type: String, required: true, enum: ['woman', 'man'] },
-    ratingNumber: { type: Number, required: true },
-    weight: { type: Number, required: true },
+    gender: { type: String, enum: ['woman', 'man'] },
+    ratingNumber: { type: Number },
+    weight: { type: Number },
     passwordResetCode: { type: Number },
     currentGroupId: String,
     competitionsHistory: [

@@ -2808,7 +2808,19 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserBody"
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  },
+                  "user": {
+                    "$ref": "#/components/schemas/UserBody"
+                  }
+                },
+                "required": [
+                  "password",
+                  "user"
+                ]
               }
             }
           }
@@ -10527,6 +10539,9 @@
           "zoomLink": {
             "type": "string"
           },
+          "chiefJudgeEndedConfiguration": {
+            "type": "boolean"
+          },
           "breakTime": {
             "type": "object",
             "properties": {
@@ -10617,11 +10632,7 @@
           "firstName",
           "lastName",
           "fullName",
-          "role",
-          "birthDate",
-          "gender",
-          "ratingNumber",
-          "weight"
+          "role"
         ],
         "properties": {
           "email": {
@@ -11210,6 +11221,9 @@
           "zoomLink": {
             "type": "string"
           },
+          "chiefJudgeEndedConfiguration": {
+            "type": "boolean"
+          },
           "breakTime": {
             "type": "object",
             "properties": {
@@ -11297,11 +11311,7 @@
           "firstName",
           "lastName",
           "fullName",
-          "role",
-          "birthDate",
-          "gender",
-          "ratingNumber",
-          "weight"
+          "role"
         ],
         "properties": {
           "email": {

@@ -69,10 +69,10 @@ export const CreateGroupPage = (): ReactElement => {
 	const getFilterCondition = (participant: ParticipantSchema, filterParameters: CompetitionRequirementsSchema) => {
 		return (
 			participant.gender === filterParameters?.gender &&
-			(getAge(participant.birthDate) as number) >= (filterParameters.ageCategory?.from as number) &&
-			(getAge(participant.birthDate) as number) <= (filterParameters.ageCategory?.to as number) &&
-			participant.weight >= (filterParameters.weightCategory?.from as number) &&
-			participant.weight <= (filterParameters.weightCategory?.to as number)
+			(getAge(participant.birthDate) as number) >= (filterParameters?.ageCategory?.from as number) &&
+			(getAge(participant.birthDate) as number) <= (filterParameters?.ageCategory?.to as number) &&
+			(participant?.weight ?? 0) >= (filterParameters?.weightCategory?.from as number) &&
+			(participant?.weight ?? 0) <= (filterParameters?.weightCategory?.to as number)
 		)
 	}
 
@@ -191,20 +191,20 @@ export const CreateGroupPage = (): ReactElement => {
 		if (sortType === SortType.Age) {
 			sortedParticipants.inGroup = sortBy(
 				[...participants.inGroup],
-				[participant => new Date(participant.birthDate).getFullYear(), sortOrder as SortOrder]
+				[participant => new Date(participant.birthDate as string).getFullYear(), sortOrder as SortOrder]
 			)
 			sortedParticipants.outGroup = sortBy(
 				[...participants.outGroup],
-				[participant => new Date(participant.birthDate).getFullYear(), sortOrder as SortOrder]
+				[participant => new Date(participant.birthDate as string).getFullYear(), sortOrder as SortOrder]
 			)
 		} else {
 			sortedParticipants.inGroup = sortBy(
 				[...participants.inGroup],
-				[participant => participant[sortType as SortType], sortOrder as SortOrder]
+				[participant => participant[sortType as SortType] as string, sortOrder as SortOrder]
 			)
 			sortedParticipants.outGroup = sortBy(
 				[...participants.outGroup],
-				[participant => participant[sortType as SortType], sortOrder as SortOrder]
+				[participant => participant[sortType as SortType] as string, sortOrder as SortOrder]
 			)
 		}
 		setParticipants(sortedParticipants)

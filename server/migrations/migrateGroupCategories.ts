@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { Competition, User } from '../models';
 import dotenv from 'dotenv';
+import { Competition, User } from '../models';
 
 dotenv.config({ path: '../.env' });
 
@@ -26,7 +26,7 @@ export const migrateGroupCategories = async () => {
     const promises: any[] = [];
     const competitions = await Competition.find({});
 
-    competitions.forEach(function (competition) {
+    competitions.forEach((competition) => {
       const groups = competition.groups.map((group, idx) => {
         const ageCat = group.ageCategory;
 
