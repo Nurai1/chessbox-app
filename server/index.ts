@@ -13,8 +13,6 @@ export const app = express();
 
 const { TokenExpiredError } = jwt;
 
-dotenv.config();
-
 const remoteMongoUri = process.env.MONGO_URI;
 const { JWT_SECRET_KEY, ENVIRONMENT } = process.env;
 

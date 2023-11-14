@@ -157,6 +157,7 @@ export const setJudgesToPairs = async (
   });
 
   competition.groups = newGroups;
+  competition.chiefJudgeEndedConfiguration = true;
 
   await competition.save();
   res.send(competition);

@@ -3224,6 +3224,7 @@ export interface components {
 				}[]
 			}
 			zoomLink?: string
+			chiefJudgeEndedConfiguration?: boolean
 			breakTime?: {
 				minutes?: number
 			}
@@ -3430,6 +3431,7 @@ export interface components {
 				}[]
 			}
 			zoomLink?: string
+			chiefJudgeEndedConfiguration?: boolean
 			breakTime?: {
 				minutes?: number
 			}
