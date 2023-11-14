@@ -7,7 +7,7 @@ import {
 	DeleteCompetitionGroupSchema,
 	CallPairPreparationSchema,
 	DefineWinnerSchema,
-	AcceptPairFightBodySchema, 
+	AcceptPairFightBodySchema,
 	LaunchNextGroupRoundApiSchema
 } from 'src/types'
 
