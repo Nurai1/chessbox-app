@@ -115,6 +115,7 @@ export const OrdersToGroupAssignPage = (): ReactElement => {
 								)}
 							>
 								<DragIcon className='mr-5' />
+								<h3 className='mr-2 font-bold text-grey xl:text-2xl'>{i + 1}</h3>
 								<h3 className='font-bold xl:text-2xl'>
 									<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
 									{weightCategory?.from}-{weightCategory?.to}kg
