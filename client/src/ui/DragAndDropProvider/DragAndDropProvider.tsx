@@ -10,6 +10,8 @@ type DragSortItemPropsType = {
 }
 
 export const DragAndDropProvider: FC<DragSortItemPropsType> = ({ children }): ReactElement => {
-	const { width: screenWidth } = useWindowSize()
+	const { width } = useWindowSize()
+	const screenWidth = width || window.outerWidth
+
 	return <DndProvider backend={screenWidth < BreakPoint.Lg ? TouchBackend : HTML5Backend}>{children}</DndProvider>
 }

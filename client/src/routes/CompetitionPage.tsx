@@ -183,7 +183,7 @@ export const CompetitionPage = (): ReactElement => {
 									{competitionData.price && (
 										<Tag
 											img={<BanknoteIcon className='max-5 mr-2' />}
-											text={`Price ${competitionData.price.currentValue} $`}
+											text={`Price ${competitionData.price.currentValue} ₽`}
 										/>
 									)}
 									{competitionData.participants && (
@@ -271,7 +271,7 @@ export const CompetitionPage = (): ReactElement => {
 							<div>
 								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
 								<p className='mb-9'>{competitionData.description}</p>
-								{authorizedUser?.role === 'chief_judge' && competitionData.groups?.length === 0 && (
+								{authorizedUser?.role === 'chief_judge' && !competitionData.chiefJudgeEndedConfiguration && (
 									<div className={`${!isRegistrationClosed && 'pointer-events-none opacity-30'}`}>
 										<Link
 											to={AppRoute.JudgeChoice}

@@ -241,7 +241,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 									{competitionData.price && (
 										<Tag
 											img={<BanknoteIcon className='max-5 mr-2' />}
-											text={`Price ${competitionData.price.currentValue} $`}
+											text={`Price ${competitionData.price.currentValue} ₽`}
 										/>
 									)}
 									{competitionData.participants && (
