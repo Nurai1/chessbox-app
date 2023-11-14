@@ -28,6 +28,7 @@ export const JudgeAssignPage = (): ReactElement => {
 	const { competitionId } = useParams()
 	const [selectedJudges, setSelectedJudges] = useState<SetJudgesToPairsSchema>()
 	const [groups, setGroups] = useState<CompetitionGroupSchema[] | undefined>()
+	const [errorInfo, setErrorInfo] = useState<string | undefined>()
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
 	const competitionData = useAppSelector(s => s.competition.data)
@@ -122,6 +123,17 @@ export const JudgeAssignPage = (): ReactElement => {
 			competitionId: competitionId as string,
 			judgesByGroups: newSelectJudge
 		})
+
+		setErrorInfo('')
+		newSelectJudge?.forEach(groupInfo =>
+			groupInfo.pairs.forEach((pair, i, pairs) => {
+				if (pairs[i + 1]) {
+					if (pair.judgeId === pairs[i + 1].judgeId) {
+						setErrorInfo("There shouldn't be two similar judge in a row.")
+					}
+				}
+			})
+		)
 	}
 
 	const handleDoneClick = () => {
@@ -204,10 +216,16 @@ export const JudgeAssignPage = (): ReactElement => {
 					<Button type='outlined' onClick={handleBackClick}>
 						Previous step
 					</Button>
-					<Button classes='min-w-[8rem] xl:min-w-[15.625rem]' onClick={handleDoneClick} loading={setPairJudgesPending}>
+					<Button
+						classes='min-w-[8rem] xl:min-w-[15.625rem]'
+						onClick={handleDoneClick}
+						loading={setPairJudgesPending}
+						disabled={!!errorInfo}
+					>
 						Done
 					</Button>
 					{setPairJudgesError && <Alert type='error' subtitle={setPairJudgesError} />}
+					{errorInfo && <Alert type='error' subtitle={errorInfo} />}
 				</div>
 			</BottomFixedContainer>
 		</main>
