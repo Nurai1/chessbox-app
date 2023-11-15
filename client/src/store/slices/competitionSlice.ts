@@ -31,7 +31,8 @@ import {
 	defineWinnerApi,
 	acceptForFightApi,
 	launchNextGroupRoundApi,
-	seTuserPaymentRequestToCheckApi
+	seTuserPaymentRequestToCheckApi,
+	startCompetitionApi
 } from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
@@ -71,6 +72,14 @@ export const setCompetitionJudges = createAsyncThunk(
 		return response.data
 	}
 )
+
+export const startCompetition = createAsyncThunk('competition/startCompetition', async (id: string, thunkApi) => {
+	const response = await startCompetitionApi(id)
+	if (response.error)
+		return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+	return response.data
+})
 
 export const setPairJudges = createAsyncThunk(
 	'competition/setPairJudges',

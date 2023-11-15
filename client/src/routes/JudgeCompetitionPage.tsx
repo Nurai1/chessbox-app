@@ -12,7 +12,7 @@ import { AppRoute } from 'src/constants/appRoute'
 import { Tag, Button, Modal, Input, Alert, BreakTimer, Loader } from 'src/ui'
 import { AlertPropTypes } from 'src/ui/Alert/Alert'
 import { CompetitionRequirements, CompetitionParticipantsTable, CompetitionInfo } from 'src/components'
-import { getFormattedDate, isPast } from 'src/helpers/datetime'
+import { getFormattedDate, isPast, subtractMinutes } from 'src/helpers/datetime'
 import {
 	fetchCompetitionById,
 	setCompetitionData,
@@ -60,7 +60,8 @@ export const JudgeCompetitionPage = (): ReactElement => {
 	const [alertData, setAlertData] = useState<AlertType>({ show: false })
 	const [winnerData, setWinnerData] = useState<Record<string, ChooseWinnerType>>({})
 	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
-	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate) && !isCompetitionOver
+	const isCompetitionOnGoing =
+		competitionData && isPast(subtractMinutes(competitionData.startDate, 60)) && !isCompetitionOver
 
 	useEffect(() => {
 		if (!competitionData) {

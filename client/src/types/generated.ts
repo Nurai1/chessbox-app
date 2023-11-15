@@ -3224,6 +3224,7 @@ export interface components {
 				}[]
 			}
 			zoomLink?: string
+			started?: boolean
 			chiefJudgeEndedConfiguration?: boolean
 			breakTime?: {
 				minutes?: number
@@ -3431,6 +3432,7 @@ export interface components {
 				}[]
 			}
 			zoomLink?: string
+			started?: boolean
 			chiefJudgeEndedConfiguration?: boolean
 			breakTime?: {
 				minutes?: number

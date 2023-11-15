@@ -2,12 +2,33 @@ import { FC, MutableRefObject } from 'react'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { useParams } from 'react-router-dom'
 import { TableBody, Loader, Button, Accordion } from 'src/ui'
-import { CompetitionSchema, ParticipantSchema, UserSchema, AgeCategorySchema, WeightCategorySchema, ChooseWinnerType } from 'src/types'
+import {
+	CompetitionSchema,
+	ParticipantSchema,
+	UserSchema,
+	AgeCategorySchema,
+	WeightCategorySchema,
+	ChooseWinnerType
+} from 'src/types'
 import { getGroupPairsLen } from 'src/helpers/getGroupPairsLen'
 import { tableSchemaPairs, PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
 import { getFormattedDate, getAge } from 'src/helpers/datetime'
 import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
 import { launchNextGroupRound } from 'src/store/slices/competitionSlice'
+import { TIME_FOR_PAIR } from '../../constants/time'
+
+const getStartPointTimeTuple = (competitionData: CompetitionSchema) => {
+	if (!competitionData.started && competitionData.startDate) {
+		return Number(new Date(competitionData.startDate)) - Date.now() > 0
+			? getFormattedDate(competitionData.startDate, 'HH:mm').split(':')
+			: getFormattedDate(new Date().toISOString(), 'HH:mm').split(':')
+	}
+	if (competitionData.started && competitionData.startDate) {
+		return getFormattedDate(competitionData.startDate, 'HH:mm').split(':')
+	}
+
+	return []
+}
 
 type CompetitionParticipantsTablePropsType = {
 	competitionData: CompetitionSchema
@@ -22,7 +43,7 @@ type CompetitionParticipantsTablePropsType = {
 	maxPairs?: number
 	currentPairs?: string[]
 	onChooseWinner?: (data?: Record<string, ChooseWinnerType>) => void
-	defineWinnerPending?: boolean,
+	defineWinnerPending?: boolean
 	onDefineWinner?: (pairId: string) => void
 }
 
@@ -39,10 +60,8 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 	const { competitionId } = useParams()
 	const { launchNextGroupRoundPending } = useAppSelector(s => s.competition)
 	const currentGroupIndex = competitionData.groups?.findIndex(group => group.isCompleted === false)
-	const startPointTimeTuple =
-		competitionData?.startDate && Number(new Date(competitionData?.startDate)) - Date.now() > 0
-			? getFormattedDate(competitionData.startDate, 'HH:mm').split(':')
-			: getFormattedDate(new Date().toISOString(), 'HH:mm').split(':')
+	const startPointTimeTuple = getStartPointTimeTuple(competitionData)
+
 	const groupsAllPairsLen = competitionData?.groups?.map(group =>
 		getGroupPairsLen({
 			currentPairsLen: group.currentRoundPairs?.length ?? 0,
@@ -55,11 +74,14 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 		ageCategory,
 		weightCategory,
 		pairsBeforeLen,
+		// for nextRoundParticipants calculation
+		currentRoundPairsLen = 0,
 		competitionJudgesLen,
 		classes
 	}: {
 		pairsBeforeLen: number
 		competitionJudgesLen: number
+		currentRoundPairsLen?: number
 		gender: string
 		ageCategory: AgeCategorySchema
 		weightCategory: WeightCategorySchema
@@ -68,7 +90,11 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 		<h3 className={`font-bold xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px] ${classes}`}>
 			{getTimeTuplePlusMinutes(
 				startPointTimeTuple,
-				(pairsBeforeLen * 10) / competitionJudgesLen + (competitionData?.breakTime?.minutes ?? 0)
+				((pairsBeforeLen + currentRoundPairsLen) * TIME_FOR_PAIR) / competitionJudgesLen +
+					((pairsBeforeLen + currentRoundPairsLen) % competitionJudgesLen === 0
+						? 0
+						: TIME_FOR_PAIR / competitionJudgesLen) +
+					(competitionData?.breakTime?.minutes ?? 0)
 			).join(':')}
 			<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}- {ageCategory?.to} age,{' '}
 			{weightCategory?.from}-{weightCategory?.to}kg
@@ -111,7 +137,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 
 					const nextRoundParticipantsStartTime = getTimeTuplePlusMinutes(
 						startPointTimeTuple,
-						((pairsBeforeLen + currentRoundPairsLen) * 10) / competitionJudgesLen +
+						((pairsBeforeLen + currentRoundPairsLen) * TIME_FOR_PAIR) / competitionJudgesLen +
 							(competitionData?.breakTime?.minutes ?? 0)
 					).join(':')
 
@@ -127,7 +153,8 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 											judges,
 											startTimeTuple: getTimeTuplePlusMinutes(
 												startPointTimeTuple,
-												(pairsBeforeLen * 10) / competitionJudgesLen + (competitionData?.breakTime?.minutes ?? 0)
+												(pairsBeforeLen * TIME_FOR_PAIR) / competitionJudgesLen +
+													(competitionData?.breakTime?.minutes ?? 0)
 											),
 											currentUser: { currentUserPairRef, authorizedUserId: authorizedUser?._id },
 											breakTime: competitionData?.breakTime,
@@ -153,6 +180,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 											ageCategory,
 											weightCategory,
 											pairsBeforeLen,
+											currentRoundPairsLen,
 											competitionJudgesLen,
 											classes: 'mb-4 md:mb-8'
 										})}
@@ -197,7 +225,6 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 							)}
 						</>
 					)
-
 
 					return (
 						<div key={_id} className={`${isCompleted ? 'hidden' : ''}`}>

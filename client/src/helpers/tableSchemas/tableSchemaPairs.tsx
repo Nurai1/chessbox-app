@@ -5,6 +5,7 @@ import { localTZName } from 'src/helpers/datetime'
 import { Button, CallUpTimer, CallUpButton } from 'src/ui'
 import { ChooseWinner } from 'src/components'
 import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
+import { TIME_FOR_PAIR } from '../../constants/time'
 
 export type PairType = {
 	blackParticipantData?: UserSchema
@@ -74,13 +75,14 @@ export const tableSchemaPairs = ({
 	return participantsData.map((pair, i) => {
 		const currentPairTime = getTimeTuplePlusMinutes(
 			startTimeTuple,
-			(i % judges.length === 0 ? (i * 10) / judges.length : ((i - (i % judges.length)) * 10) / judges.length) +
-				(breakTime?.minutes ?? 0)
+			(i % judges.length === 0
+				? (i * TIME_FOR_PAIR) / judges.length
+				: ((i - (i % judges.length)) * TIME_FOR_PAIR) / judges.length) + (breakTime?.minutes ?? 0)
 		).join(':')
 
 		if (
-			currentUser?.currentUserPairRef && pair.blackParticipant === currentUser.authorizedUserId ||
-			currentUser?.currentUserPairRef && pair.whiteParticipant === currentUser?.authorizedUserId
+			(currentUser?.currentUserPairRef && pair.blackParticipant === currentUser.authorizedUserId) ||
+			(currentUser?.currentUserPairRef && pair.whiteParticipant === currentUser?.authorizedUserId)
 		)
 			currentUser.currentUserPairRef.current = {
 				pair,
@@ -104,21 +106,24 @@ export const tableSchemaPairs = ({
 		const bothParticipantsAccepted = pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant
 		const oneOfParticipantsNotAccepted =
 			!pair.acceptedForFight?.blackParticipant || !pair.acceptedForFight?.whiteParticipant
-		const showCallupButton = isJudgeCompetitionPage && !pair.calledForPreparation && currentFightingGroupIndex && !pair.passed
+		const showCallupButton =
+			isJudgeCompetitionPage && !pair.calledForPreparation && currentFightingGroupIndex && !pair.passed
 		const showCallUpTimer =
 			pair.calledForPreparation && isJudgeCompetitionPage && !bothParticipantsAccepted && !oneOfParticipantsDisqualified
 		const showWinnerButton =
 			(isJudgeCompetitionPage && !bothParticipantsDisqualified && oneOfParticipantsDisqualified && !pair.winner) ||
 			(isJudgeCompetitionPage && !bothParticipantsDisqualified && bothParticipantsAccepted && !pair.winner)
 		const finished = pair.winner || bothParticipantsDisqualified
-		const inProgress = pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant && !pair.winner 
+		const inProgress =
+			pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant && !pair.winner
 		const waitingCompetitonPage =
 			oneOfParticipantsNotAccepted &&
 			!pair.winner &&
 			!pair.calledForPreparation &&
 			!isJudgeCompetitionPage &&
 			!bothParticipantsDisqualified
-		const waitingJudgeCompetitonPage = isJudgeCompetitionPage && !pair.calledForPreparation && !currentFightingGroupIndex
+		const waitingJudgeCompetitonPage =
+			isJudgeCompetitionPage && !pair.calledForPreparation && !currentFightingGroupIndex
 
 		const disableCallUpButton = Boolean(maxPairs && currentPairs && maxPairs <= currentPairs?.length)
 
@@ -151,16 +156,25 @@ export const tableSchemaPairs = ({
 							{finished && <div className={`text-[#6DDA64] ${statusStyle}`}>FINISHED</div>}
 							{waitingCompetitonPage && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
 							{waitingJudgeCompetitonPage && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
-							<ChooseWinner pair={pair} groupId={groupId as string} onChooseWinner={onChooseWinner} isJudgeCompetitionPage={isJudgeCompetitionPage}/>
+							<ChooseWinner
+								pair={pair}
+								groupId={groupId as string}
+								onChooseWinner={onChooseWinner}
+								isJudgeCompetitionPage={isJudgeCompetitionPage}
+							/>
 							{showCallupButton && (
 								<CallUpButton
 									onCallPairPreparation={handleCallPairPreparation}
-									breakTime={Boolean(breakTime)}
+									breakTime={Boolean(breakTime?.minutes)}
 									disable={disableCallUpButton}
 								/>
 							)}
-							{showCallUpTimer && <CallUpTimer onTimeOver={isTimerOver} minutes={1} seconds={59} id={pair._id}/>}
-							{onDefineWinner && showWinnerButton && <Button onClick={() => onDefineWinner(pair._id as string)} loading={defineWinnerPending}>Winner</Button>}
+							{showCallUpTimer && <CallUpTimer onTimeOver={isTimerOver} minutes={1} seconds={59} id={pair._id} />}
+							{onDefineWinner && showWinnerButton && (
+								<Button onClick={() => onDefineWinner(pair._id as string)} loading={defineWinnerPending}>
+									Winner
+								</Button>
+							)}
 						</div>
 					),
 					classes: 'pl-0'

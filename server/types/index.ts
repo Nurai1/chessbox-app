@@ -75,6 +75,7 @@ export interface ICompetition {
     }[];
   };
   zoomLink?: string;
+  started?: boolean;
   chiefJudgeEndedConfiguration?: boolean;
   breakTime?: {
     minutes?: number;

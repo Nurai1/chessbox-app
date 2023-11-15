@@ -163,45 +163,6 @@ export const setJudgesToPairs = async (
   res.send(competition);
 };
 
-export const startCompetition = async (
-  req: Request<{ id: string }>,
-  res: Response,
-  next: NextFunction
-) => {
-  const { params } = req;
-  if (!params.id) return res.sendStatus(400);
-
-  const competition = await Competition.findById(params.id)
-    .populate('participants')
-    .populate('judges');
-  if (!competition)
-    return res.status(404).send({ error: "Competition wasn't found" });
-
-  if (competition) {
-    if (!competition?.judges) {
-      res.status(500).send({ error: 'No judges in competition.' });
-    }
-
-    if (!competition.groups) {
-      res.status(500).send({ error: 'No groups in competition.' });
-    }
-
-    const orderedGroups = competition.groups.sort((a, b) => {
-      // always true on that stage
-      if (a.order && b.order) {
-        return a.order - b.order;
-      }
-      return 0;
-    });
-
-    competition.groups = orderedGroups;
-    await competition?.save();
-
-    res.sendStatus(200);
-  }
-  res.status(500).send({ error: 'No competition with this id.' });
-};
-
 export const deleteCompetition = async (
   req: Request,
   res: Response,
@@ -334,7 +295,7 @@ export const createCompetitionGroup = async (
   const groupId = competition.groups[0]._id;
 
   await User.updateMany(
-    { _id: { $in: allParticipants.map((p) => p._id) } },
+    { _id: { $in: allParticipants } },
     { currentGroupId: groupId }
   );
 
@@ -906,6 +867,47 @@ export const setCompetitionBreakTime = async (
   setTimeout(async () => {
     await Competition.findOneAndUpdate({ _id: id }, { breakTime: null });
   }, breakTimeInMs);
+
+  return res.sendStatus(200);
+};
+
+export const startCompetition = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const competition = await Competition.findById(id);
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  competition.started = true;
+
+  if (
+    new Date().getTime() - new Date(competition.startDate).getTime() >
+    60000
+  ) {
+    // @ts-ignore
+    competition.startDate = new Date().toISOString();
+  }
+
+  return res.sendStatus(200);
+};
+
+export const endCompetition = async (
+  req: Request<{ id: string }, any, { startDate: string }>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const competition = await Competition.findById(id);
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  // @ts-ignore
+  competition.endDate = new Date().toISOString();
 
   return res.sendStatus(200);
 };

@@ -10,7 +10,7 @@ import { ReactComponent as HourGlass } from 'src/assets/hourglass.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { AppRoute } from 'src/constants/appRoute'
-import { getFormattedDate, isPast } from 'src/helpers/datetime'
+import { getFormattedDate, isPast, subtractMinutes } from 'src/helpers/datetime'
 import {
 	PairInfo,
 	CompetitionRequirements,
@@ -29,7 +29,8 @@ import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
 	fetchCompetitionParticipants,
-	setCompetitionData
+	setCompetitionData,
+	startCompetition
 } from 'src/store/slices/competitionSlice'
 import { Role } from 'src/constants/role'
 import { existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
@@ -54,7 +55,8 @@ export const CompetitionPage = (): ReactElement => {
 	const isParticipant =
 		competitionData?.participants && competitionData.participants.includes(authorizedUser?._id ?? '')
 	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
-	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate) && !isCompetitionOver
+	const isCompetitionOnGoing =
+		competitionData && isPast(subtractMinutes(competitionData.startDate, 60)) && !isCompetitionOver
 	const participantsTable = participants && tableSchemaParticipants(participants)
 	const [isTimeOver, setIsTimeOver] = useState(competitionData && isPast(competitionData.startDate))
 	const [isRegistrationClosed, setIsRegistrationClosed] = useState(false)
@@ -74,7 +76,7 @@ export const CompetitionPage = (): ReactElement => {
 
 	useEffect(() => {
 		const pollingInterval = setInterval(() => {
-			if (isCompetitionOnGoing && isParticipant) {
+			if (isCompetitionOnGoing) {
 				dispatch(fetchCompetitionById(competitionId as string))
 			} else {
 				clearInterval(pollingInterval)
@@ -266,7 +268,13 @@ export const CompetitionPage = (): ReactElement => {
 									/>
 									{authorizedUser?.role === Role.ChiefJudge && isTimeOver && (
 										<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:p-0 lg:shadow-none'>
-											<Button classes='w-full lg:mb-[1.25rem]' onClick={() => navigate(AppRoute.JudgeCompetition)}>
+											<Button
+												classes='w-full lg:mb-[1.25rem]'
+												onClick={() => {
+													if (competitionId) dispatch(startCompetition(competitionId))
+													navigate(AppRoute.JudgeCompetition)
+												}}
+											>
 												To competition
 											</Button>
 										</div>

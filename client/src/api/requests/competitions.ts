@@ -96,6 +96,18 @@ export const setCompetitionGroupsApi = async (data: CompetitionGroupSchema, id: 
 	return result
 }
 
+export const startCompetitionApi = async (id: string) => {
+	const result = await patch('/api/competition/{id}/start', {
+		params: {
+			path: {
+				id
+			}
+		}
+	})
+
+	return result
+}
+
 export const deleteCompetitionGroupApi = async (groupId: DeleteCompetitionGroupSchema, id: string) => {
 	const result = await del('/api/competition/{id}/group', {
 		body: groupId,
