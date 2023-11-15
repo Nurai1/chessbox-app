@@ -50,7 +50,7 @@ export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ cu
 					{exeptedFight && <h3 className='text-title xl:text-heading-3'>You are in!</h3>}
 				</div>
 				<div className='flex items-baseline lg:flex-col lg:gap-[20px]'>
-					{competitionData && (
+					{!exeptedFight && competitionData && (
 						<Timer
 							showDays={false}
 							secondsLeft={disqualified ? 0 : 110000}

@@ -12,6 +12,7 @@ type CallUpButtonPropsType = {
 export const CallUpButton: FC<CallUpButtonPropsType> = ({ onCallPairPreparation, breakTime, disable }) => {
 	const [isCallpairClicked, setIsCallpairClicked] = useState(false)
 	const { callPairPreparationPending } = useAppSelector(s => s.competition)
+
 	return (
 		<Button
 			onClick={() => {

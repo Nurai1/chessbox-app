@@ -35,6 +35,10 @@ export const getISODateTimeStringFromFormat = (date: string, format = 'MM/DD/YYY
 	return dayjs(date, format).utc().hour(0).format()
 }
 
+export const subtractMinutes = (date: string, minutes: number) => {
+	return dayjs(date).subtract(minutes, 'minutes').utc().format()
+}
+
 export const getEndTime = (endTime: string) => {
 	const registrationEndTime = dayjs(endTime).valueOf()
 	const timeDiff = registrationEndTime - Date.now()
