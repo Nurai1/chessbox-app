@@ -1,6 +1,6 @@
 import createClient from 'openapi-fetch'
 import { paths } from 'src/types/generated'
-import { getToken } from 'src/helpers/tokenLocalStorage'
+import { getToken } from 'src/helpers/tokenStorage'
 import configEnv from 'src/configEnv'
 
 export const {
