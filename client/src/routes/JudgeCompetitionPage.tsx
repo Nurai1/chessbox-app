@@ -28,7 +28,7 @@ import {
 } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsListBreakTime, resetCompetitionsListBreakTime } from 'src/store/slices/competitionsSlice'
 import { ChooseWinnerType } from 'src/types'
-import { existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
+import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
 
 type AlertType = {
 	show: boolean
@@ -38,7 +38,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 	const { competitionId } = useParams()
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
-	const competitionData = useAppSelector(existingOrFetchedCompetitionSelector(competitionId))
+	const competitionData = useAppSelector(fetchedOrExistingCompetitionSelector(competitionId))
 	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')

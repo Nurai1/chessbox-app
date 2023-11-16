@@ -63,6 +63,7 @@ export interface IPair {
 export interface ICompetition {
   _id: Types.ObjectId;
   startDate: Date;
+  baseDate: Date;
   endDate?: Date;
   registrationEndsAt: Date;
   name: string;

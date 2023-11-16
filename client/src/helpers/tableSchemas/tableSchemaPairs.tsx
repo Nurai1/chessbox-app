@@ -75,9 +75,9 @@ export const tableSchemaPairs = ({
 	return participantsData.map((pair, i) => {
 		const currentPairTime = getTimeTuplePlusMinutes(
 			startTimeTuple,
-			(i % judges.length === 0
+			i % judges.length === 0
 				? (i * TIME_FOR_PAIR) / judges.length
-				: ((i - (i % judges.length)) * TIME_FOR_PAIR) / judges.length) + (breakTime?.minutes ?? 0)
+				: ((i - (i % judges.length)) * TIME_FOR_PAIR) / judges.length
 		).join(':')
 
 		if (

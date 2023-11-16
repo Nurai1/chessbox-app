@@ -20,5 +20,5 @@ export const expiredCompetitionsSelector = createSelector(selectCompetitions, co
 export const existingCompetitionSelector = (competitionId?: string) =>
 	createSelector(selectCompetitions, competitions => competitions.find(({ _id }) => _id === competitionId))
 
-export const existingOrFetchedCompetitionSelector = (competitionId?: string) => (state: RootState) =>
-	existingCompetitionSelector(competitionId)(state) || selectCompetition(state)
+export const fetchedOrExistingCompetitionSelector = (competitionId?: string) => (state: RootState) =>
+	selectCompetition(state) || existingCompetitionSelector(competitionId)(state)

@@ -322,6 +322,17 @@ export const competitionSlice = createSlice({
 		}
 	},
 	extraReducers: {
+		[startCompetition.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.loading = false
+			state.data = action.payload
+		},
+		[startCompetition.pending.type]: state => {
+			state.loading = true
+		},
+		[startCompetition.rejected.type]: (state, action: PayloadAction<string>) => {
+			state.loading = false
+			state.error = action.payload
+		},
 		[fetchCompetitionById.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.loading = false
 			state.data = action.payload
