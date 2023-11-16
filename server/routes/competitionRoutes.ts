@@ -308,6 +308,7 @@ competitionRouter.patch(
   }] */
   /* #swagger.responses[200] = {
             description: '',
+            schema: { $ref: '#/definitions/Competition' }
     } */
   UserController.allowIfLoggedin,
   UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),

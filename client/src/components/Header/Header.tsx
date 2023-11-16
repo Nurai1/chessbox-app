@@ -1,5 +1,5 @@
 import { ReactElement, useState } from 'react'
-import { Link, useLocation, NavLink } from 'react-router-dom'
+import { Link, useLocation, NavLink, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { useWindowSize } from 'usehooks-ts'
 import { twMerge } from 'tailwind-merge'
@@ -15,6 +15,7 @@ export const Header = (): ReactElement => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const dispatch = useAppDispatch()
 	const { pathname } = useLocation()
+	const navigate = useNavigate()
 	const isRatingPage = pathname.includes(AppRoute.Rating)
 	const { width: screenWidth } = useWindowSize()
 	const authorizationStatus = useAppSelector(state => state.user.authorizationStatus)
@@ -28,6 +29,7 @@ export const Header = (): ReactElement => {
 		if (screenWidth < BreakPoint.Xl) {
 			setIsMenuOpen(!isMenuOpen)
 		}
+		navigate(`/${AppRoute.SignIn}`)
 	}
 
 	const activeLink = ({ isActive }: { isActive: boolean }) => (isActive ? { textDecoration: 'underline' } : {})

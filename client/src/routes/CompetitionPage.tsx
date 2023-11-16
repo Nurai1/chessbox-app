@@ -33,7 +33,7 @@ import {
 	startCompetition
 } from 'src/store/slices/competitionSlice'
 import { Role } from 'src/constants/role'
-import { existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
+import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
 import { getCompetitionResult } from 'src/helpers/getCompetitionResult'
 import { getSortedRuseltParticipants } from 'src/helpers/getSortedRuseltParticipants'
 import { CompetitionGroupSchema, ParticipantSchema, UserPaymentInfo } from 'src/types'
@@ -50,8 +50,9 @@ export const CompetitionPage = (): ReactElement => {
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
 	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
 	const { authorizedUser, authLoading } = useAppSelector(state => state.user)
-	const competitionData = useAppSelector(existingOrFetchedCompetitionSelector(competitionId))
+	const competitionData = useAppSelector(fetchedOrExistingCompetitionSelector(competitionId))
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
+
 	const isParticipant =
 		competitionData?.participants && competitionData.participants.includes(authorizedUser?._id ?? '')
 	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
@@ -271,7 +272,7 @@ export const CompetitionPage = (): ReactElement => {
 											<Button
 												classes='w-full lg:mb-[1.25rem]'
 												onClick={() => {
-													if (competitionId) dispatch(startCompetition(competitionId))
+													if (competitionId && !competitionData?.started) dispatch(startCompetition(competitionId))
 													navigate(AppRoute.JudgeCompetition)
 												}}
 											>

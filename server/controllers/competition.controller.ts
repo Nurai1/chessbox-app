@@ -854,13 +854,18 @@ export const setCompetitionBreakTime = async (
     return res.status(400).send({ error: 'No break time provided' });
   }
 
-  const competition = await Competition.findOneAndUpdate(
-    { _id: id },
-    { breakTime }
-  );
+  const competition = await Competition.findOne({ _id: id });
 
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
+
+  new Date(new Date().getTime() + 2 * 60000).toISOString();
+
+  // recalculate time for competition pairs depending on baseDate
+  // @ts-ignore
+  competition.baseDate = new Date(
+    new Date(competition.baseDate).getTime() + (breakTime?.minutes ?? 0) * 60000
+  ).toISOString();
 
   const breakTimeInMs = (breakTime?.minutes ?? 0) * 60 * 1000;
 
@@ -890,13 +895,16 @@ export const startCompetition = async (
   ) {
     // @ts-ignore
     competition.startDate = new Date().toISOString();
+    // @ts-ignore
+    competition.baseDate = new Date().toISOString();
   }
+  await competition.save();
 
-  return res.sendStatus(200);
+  return res.send(competition);
 };
 
 export const endCompetition = async (
-  req: Request<{ id: string }, any, { startDate: string }>,
+  req: Request<{ id: string }>,
   res: Response
 ) => {
   const { id } = req.params;

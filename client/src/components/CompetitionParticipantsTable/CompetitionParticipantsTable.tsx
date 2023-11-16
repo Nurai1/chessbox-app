@@ -18,13 +18,13 @@ import { launchNextGroupRound } from 'src/store/slices/competitionSlice'
 import { TIME_FOR_PAIR } from '../../constants/time'
 
 const getStartPointTimeTuple = (competitionData: CompetitionSchema) => {
-	if (!competitionData.started && competitionData.startDate) {
-		return Number(new Date(competitionData.startDate)) - Date.now() > 0
-			? getFormattedDate(competitionData.startDate, 'HH:mm').split(':')
+	if (!competitionData.started && competitionData.baseDate) {
+		return Number(new Date(competitionData.baseDate)) - Date.now() > 0
+			? getFormattedDate(competitionData.baseDate, 'HH:mm').split(':')
 			: getFormattedDate(new Date().toISOString(), 'HH:mm').split(':')
 	}
-	if (competitionData.started && competitionData.startDate) {
-		return getFormattedDate(competitionData.startDate, 'HH:mm').split(':')
+	if (competitionData.started && competitionData.baseDate) {
+		return getFormattedDate(competitionData.baseDate, 'HH:mm').split(':')
 	}
 
 	return []
@@ -93,8 +93,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 				((pairsBeforeLen + currentRoundPairsLen) * TIME_FOR_PAIR) / competitionJudgesLen +
 					((pairsBeforeLen + currentRoundPairsLen) % competitionJudgesLen === 0
 						? 0
-						: TIME_FOR_PAIR / competitionJudgesLen) +
-					(competitionData?.breakTime?.minutes ?? 0)
+						: TIME_FOR_PAIR / competitionJudgesLen)
 			).join(':')}
 			<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}- {ageCategory?.to} age,{' '}
 			{weightCategory?.from}-{weightCategory?.to}kg
@@ -137,8 +136,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 
 					const nextRoundParticipantsStartTime = getTimeTuplePlusMinutes(
 						startPointTimeTuple,
-						((pairsBeforeLen + currentRoundPairsLen) * TIME_FOR_PAIR) / competitionJudgesLen +
-							(competitionData?.breakTime?.minutes ?? 0)
+						((pairsBeforeLen + currentRoundPairsLen) * TIME_FOR_PAIR) / competitionJudgesLen
 					).join(':')
 
 					const tableData = () => (
@@ -153,8 +151,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 											judges,
 											startTimeTuple: getTimeTuplePlusMinutes(
 												startPointTimeTuple,
-												(pairsBeforeLen * TIME_FOR_PAIR) / competitionJudgesLen +
-													(competitionData?.breakTime?.minutes ?? 0)
+												(pairsBeforeLen * TIME_FOR_PAIR) / competitionJudgesLen
 											),
 											currentUser: { currentUserPairRef, authorizedUserId: authorizedUser?._id },
 											breakTime: competitionData?.breakTime,

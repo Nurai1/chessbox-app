@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { isPast } from 'src/helpers/datetime'
 import { PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
+import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
 import { acceptForFight } from 'src/store/slices/competitionSlice'
 import { Button, Timer } from 'src/ui'
 
@@ -11,7 +11,7 @@ export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ cu
 	const { competitionId } = useParams()
 	const dispatch = useAppDispatch()
 
-	const competitionData = useAppSelector(existingOrFetchedCompetitionSelector(competitionId))
+	const competitionData = useAppSelector(fetchedOrExistingCompetitionSelector(competitionId))
 	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
 	const { acceptForFightPending, acceptForFightSuccess } = useAppSelector(state => state.competition)
 	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate)

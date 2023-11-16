@@ -6844,7 +6844,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competition"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competition"
+                }
+              }
+            }
           },
           "400": {
             "description": "Client error.",
@@ -10295,11 +10307,16 @@
         "title": "Competition",
         "required": [
           "startDate",
+          "baseDate",
           "registrationEndsAt",
           "name"
         ],
         "properties": {
           "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "baseDate": {
             "type": "string",
             "format": "date-time"
           },
@@ -10989,11 +11006,16 @@
         "title": "Competition",
         "required": [
           "startDate",
+          "baseDate",
           "registrationEndsAt",
           "name"
         ],
         "properties": {
           "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "baseDate": {
             "type": "string",
             "format": "date-time"
           },

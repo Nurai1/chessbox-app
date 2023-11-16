@@ -2092,7 +2092,12 @@ export interface paths {
 			}
 			responses: {
 				/** @description OK */
-				200: never
+				200: {
+					content: {
+						'application/json': components['schemas']['Competition']
+						'application/xml': components['schemas']['Competition']
+					}
+				}
 				/** @description Client error. */
 				400: {
 					content: {
@@ -3156,6 +3161,8 @@ export interface components {
 			/** Format: date-time */
 			startDate: string
 			/** Format: date-time */
+			baseDate: string
+			/** Format: date-time */
 			endDate?: string
 			/** Format: date-time */
 			registrationEndsAt: string
@@ -3366,6 +3373,8 @@ export interface components {
 		CompetitionBody: {
 			/** Format: date-time */
 			startDate: string
+			/** Format: date-time */
+			baseDate: string
 			/** Format: date-time */
 			endDate?: string
 			/** Format: date-time */
