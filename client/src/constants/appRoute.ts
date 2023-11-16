@@ -14,5 +14,6 @@ export const AppRoute = {
 	OrdersGroupAssign: 'orders-group-assign',
 	JudgeAssign: 'judge-assign',
 	JudgeCompetition: 'judge-competition',
+	VerifyPayment: 'verify-payment',
 	NotFound: '*'
 }
