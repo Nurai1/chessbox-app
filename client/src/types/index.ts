@@ -37,6 +37,10 @@ export type LaunchNextGroupRoundApiSchema =
 	paths['/api/competition/launchNextGroupRound']['patch']['requestBody']['content']['application/json']
 export type SeTuserPaymentRequestToCheckApiSchema =
 	paths['/api/competition/{id}/setUserPaymentRequestToCheck/{userId}']['patch']['requestBody']['content']['application/json']
+export type SetUserPaymentPaidApiSchema =
+	paths['/api/competition/{id}/setUserPaymentPaid/{userId}']['patch']['requestBody']['content']['application/json']
+type PaymentParamsSchema = paths['/api/competition/{id}/setUserPaymentPaid/{userId}']['patch']['parameters']['path']
+
 export type UserPaymentInfo = {
 	userId?: string | undefined
 	paid?: boolean | undefined
@@ -54,3 +58,13 @@ export type ParticipantSchema = {
 	groupOverlap?: boolean
 } & UserSchema
 export type ChooseWinnerType = Omit<DefineWinnerSchema, 'competitionId'>
+
+export type CompetitionPaymentDataType = {
+	path: PaymentParamsSchema
+	body: SeTuserPaymentRequestToCheckApiSchema
+}
+
+export type CompetitionPaymentPaidType = {
+	path: PaymentParamsSchema
+	body: SetUserPaymentPaidApiSchema
+}

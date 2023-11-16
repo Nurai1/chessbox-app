@@ -8,7 +8,7 @@ import { copyToClipboard } from 'src/helpers/copyToClipboard'
 import { useWindowSize } from 'usehooks-ts'
 import { twMerge } from 'tailwind-merge'
 import { BreakPoint } from 'src/constants/breakPoints'
-import { SeTuserPaymentRequestToCheckApiSchema, CompetitionSchema } from 'src/types'
+import { CompetitionSchema, CompetitionPaymentDataType } from 'src/types'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { seTuserPaymentRequestToCheck } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsListCompetition } from 'src/store/slices/competitionsSlice'
@@ -22,14 +22,6 @@ type CompetitionPaymentPropsType = {
 type AlertType = {
 	show: boolean
 } & AlertPropTypes
-
-export type CompetitionPaymentDataType = {
-	path: {
-		id: string
-		userId: string
-	}
-	body: SeTuserPaymentRequestToCheckApiSchema
-}
 
 // stores users entered data, to prevent loose users input data if accidentally close modal
 let userInput = ''

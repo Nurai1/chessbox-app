@@ -1,0 +1,1 @@
+export const MAX_PAYMENT_REQUEST_COUNT = 3
