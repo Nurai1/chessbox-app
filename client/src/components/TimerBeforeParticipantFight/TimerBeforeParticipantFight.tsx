@@ -25,6 +25,7 @@ export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ cu
 	const calledForFight = !exeptedFight && !disqualified && !acceptForFightSuccess
 
 	const showComponent = isCompetitionOnGoing && currentPair?.calledForPreparation
+
 	if (!showComponent) {
 		return null
 	}

@@ -56,7 +56,7 @@ export const CompetitionPage = (): ReactElement => {
 	const isParticipant =
 		competitionData?.participants && competitionData.participants.includes(authorizedUser?._id ?? '')
 	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
-	const isCompetitionOnGoing =
+	const isCompetitionStartsWithinAnHour =
 		competitionData && isPast(subtractMinutes(competitionData.startDate, 60)) && !isCompetitionOver
 	const participantsTable = participants && tableSchemaParticipants(participants)
 	const [isTimeOver, setIsTimeOver] = useState(competitionData && isPast(competitionData.startDate))
@@ -77,7 +77,7 @@ export const CompetitionPage = (): ReactElement => {
 
 	useEffect(() => {
 		const pollingInterval = setInterval(() => {
-			if (isCompetitionOnGoing) {
+			if (isCompetitionStartsWithinAnHour) {
 				dispatch(fetchCompetitionById(competitionId as string))
 			} else {
 				clearInterval(pollingInterval)
@@ -85,7 +85,7 @@ export const CompetitionPage = (): ReactElement => {
 		}, 5000)
 		return () => clearInterval(pollingInterval)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [competitionData, competitionId, dispatch, isCompetitionOnGoing])
+	}, [competitionData, competitionId, dispatch, isCompetitionStartsWithinAnHour])
 
 	useEffect(() => {
 		if (isRegistrationClosed && !participants) {
@@ -164,7 +164,7 @@ export const CompetitionPage = (): ReactElement => {
 		(isRegistrationClosed && !isCompetitionOver && authorizedUser?.role === Role.ChiefJudge)
 	const registrationClosed =
 		!isCompetitionOver && isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge
-	const showRegistrationEndsTimer = !isRegistrationClosed && !isCompetitionOnGoing && !currentUserRequestData
+	const showRegistrationEndsTimer = !isRegistrationClosed && !isCompetitionStartsWithinAnHour && !currentUserRequestData
 	const showYouAreParticipant = isParticipant && !isCompetitionOver && !isRegistrationClosed
 	const requestAwaitAcception = !isParticipant && currentUserRequestData
 
@@ -305,7 +305,7 @@ export const CompetitionPage = (): ReactElement => {
 							<div>
 								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
 								<p className='mb-9'>{competitionData.description}</p>
-								{authorizedUser?.role === 'chief_judge' && !competitionData.chiefJudgeEndedConfiguration && (
+								{authorizedUser?.role === Role.ChiefJudge && !competitionData.chiefJudgeEndedConfiguration && (
 									<div className={`${!isRegistrationClosed && 'pointer-events-none opacity-30'}`}>
 										<Link
 											to={AppRoute.JudgeChoice}
@@ -324,7 +324,7 @@ export const CompetitionPage = (): ReactElement => {
 								)}
 							</div>
 						</div>
-						{isRegistrationClosed && competitionData.groups?.every(group => !group.isCompleted) && (
+						{isRegistrationClosed && (
 							<>
 								{isParticipant && currentUserPairRef.current?.pair && (
 									<>
@@ -340,7 +340,7 @@ export const CompetitionPage = (): ReactElement => {
 									</>
 								)}
 
-								{competitionData.groups?.length !== 0 && participants && judges && authorizedUser ? (
+								{competitionData.groups?.length !== 0 && participants && judges && (
 									<>
 										<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
 											Competition schedule
@@ -353,12 +353,10 @@ export const CompetitionPage = (): ReactElement => {
 											currentUserPairRef={currentUserPairRef}
 										/>
 									</>
-								) : (
-									authorizedUser?.role !== Role.ChiefJudge && <Loader />
 								)}
 							</>
 						)}
-						{competitionData.groups && !!competitionData?.groups[0]?.results?.length && (
+						{competitionData.groups && competitionData.groups?.every(group => group.isCompleted) && (
 							<>
 								{!!competitionResult?.man.length && (
 									<>
