@@ -394,6 +394,10 @@ export const callPairPreparation = async (
         const whiteDisqualified = !pairAcceptedForFight?.whiteParticipant;
         const blackDisqualified = !pairAcceptedForFight?.blackParticipant;
 
+        let loserPlaceNumber = currentGroup.lastPlaceNumber
+          ? currentGroup.lastPlaceNumber - 1
+          : currentGroup.allParticipants.length;
+
         let wasPartnerDisqualified = false;
         if (blackDisqualified) {
           wasPartnerDisqualified = true;
@@ -405,14 +409,16 @@ export const callPairPreparation = async (
               competitionsHistory: {
                 competitionId,
                 groupId,
-                placeNumber:
-                  currentGroup.allParticipants.length -
-                  (currentGroup.passedPairs.length - 1),
+                placeNumber: loserPlaceNumber,
               },
             },
           });
         }
         if (whiteDisqualified) {
+          if (wasPartnerDisqualified) {
+            loserPlaceNumber -= 1;
+          }
+
           await User.findByIdAndUpdate(currentPair.whiteParticipant, {
             $inc: {
               ratingNumber: -FIXED_RATING_CHANGING_NUM,
@@ -421,11 +427,7 @@ export const callPairPreparation = async (
               competitionsHistory: {
                 competitionId,
                 groupId,
-                placeNumber:
-                  currentGroup.allParticipants.length -
-                  (currentGroup.passedPairs.length -
-                    1 -
-                    (wasPartnerDisqualified ? 1 : 0)),
+                placeNumber: loserPlaceNumber,
               },
             },
           });
@@ -661,10 +663,11 @@ export const defineWinner = async (
       loser.ratingNumber
     );
 
-    const loserPlaceNumber =
-      competitionGroup.allParticipants.length -
-      (competitionGroup.passedPairs.length - 1);
+    const loserPlaceNumber = competitionGroup.lastPlaceNumber
+      ? competitionGroup.lastPlaceNumber - 1
+      : competitionGroup.allParticipants.length;
 
+    competitionGroup.lastPlaceNumber = loserPlaceNumber;
     await Promise.all([
       User.findOneAndUpdate(
         { _id: winnerId },
@@ -701,7 +704,6 @@ export const defineWinner = async (
         },
         { new: true }
       ),
-      competition?.save(),
     ]);
 
     if (isGroupCompleted) {
@@ -719,9 +721,10 @@ export const defineWinner = async (
           )?.placeNumber as number,
         }))
         .sort((a, b) => (a.placeNumber ?? 0) - (b.placeNumber ?? 0));
-
       competitionGroup.results = groupResults;
     }
+
+    await competition?.save();
 
     return res.send(competition);
   }
@@ -859,8 +862,6 @@ export const setCompetitionBreakTime = async (
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
 
-  new Date(new Date().getTime() + 2 * 60000).toISOString();
-
   // recalculate time for competition pairs depending on baseDate
   // @ts-ignore
   competition.baseDate = new Date(
@@ -868,12 +869,34 @@ export const setCompetitionBreakTime = async (
   ).toISOString();
 
   const breakTimeInMs = (breakTime?.minutes ?? 0) * 60 * 1000;
+  competition.breakTime = { minutes: breakTimeInMs };
+
+  await competition.save();
 
   setTimeout(async () => {
     await Competition.findOneAndUpdate({ _id: id }, { breakTime: null });
   }, breakTimeInMs);
 
   return res.sendStatus(200);
+};
+
+export const recalculatePairsTime = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const competition = await Competition.findById(id);
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  // @ts-ignore
+  competition.baseDate = new Date().toISOString();
+
+  await competition.save();
+
+  return res.sendStatus;
 };
 
 export const startCompetition = async (
@@ -916,6 +939,7 @@ export const endCompetition = async (
 
   // @ts-ignore
   competition.endDate = new Date().toISOString();
+  await competition.save();
 
   return res.sendStatus(200);
 };

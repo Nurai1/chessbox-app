@@ -107,6 +107,7 @@ export interface ICompetitionGroup {
   passedPairs: IPair[];
   currentRoundPairs: IPair[];
   currentRoundNumber: number;
+  lastPlaceNumber?: number;
   order?: number;
   nextRoundParticipants: PopulatedDoc<IUser & Document>[];
   results?: { userId: PopulatedDoc<IUser & Document>; placeNumber: number }[];

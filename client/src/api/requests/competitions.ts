@@ -54,6 +54,18 @@ export const getCompetitionJudgesApi = async (id: string) => {
 	return result
 }
 
+export const recalculatePairsTimeApi = async (id: string) => {
+	const result = await patch('/api/competition/{id}/recalculatePairsTime', {
+		params: {
+			path: {
+				id
+			}
+		}
+	})
+
+	return result
+}
+
 export const setCompetitionJudgesApi = async (data: SetCompetitionJudgesSchema) => {
 	const result = await patch('/api/competition/setJudgesToCompetition', {
 		body: data

@@ -60,7 +60,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 	const [alertData, setAlertData] = useState<AlertType>({ show: false })
 	const [winnerData, setWinnerData] = useState<Record<string, ChooseWinnerType>>({})
 	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
-	const isCompetitionOnGoing =
+	const isCompetitionStartsWithinAnHour =
 		competitionData && isPast(subtractMinutes(competitionData.startDate, 60)) && !isCompetitionOver
 
 	useEffect(() => {
@@ -158,7 +158,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 
 	useEffect(() => {
 		const pollingInterval = setInterval(() => {
-			if (isCompetitionOnGoing) {
+			if (isCompetitionStartsWithinAnHour) {
 				dispatch(fetchCompetitionById(competitionId as string))
 			} else {
 				clearInterval(pollingInterval)
@@ -166,7 +166,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 		}, 5000)
 		return () => clearInterval(pollingInterval)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isCompetitionOnGoing])
+	}, [isCompetitionStartsWithinAnHour])
 
 	const handleBreakTimeInput = (value?: string) => {
 		if (Number(value) > 10) {

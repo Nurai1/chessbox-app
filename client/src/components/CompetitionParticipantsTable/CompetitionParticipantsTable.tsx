@@ -34,7 +34,7 @@ type CompetitionParticipantsTablePropsType = {
 	competitionData: CompetitionSchema
 	participants: ParticipantSchema[]
 	judges: UserSchema[]
-	authorizedUser: UserSchema
+	authorizedUser?: UserSchema | null
 	currentUserPairRef?: MutableRefObject<undefined | { pair?: PairType; startTime: string }>
 	isJudgeCompetitionPage?: boolean
 	onCallPairPreparation?: (groupId: string, pairId: string) => void
@@ -62,8 +62,9 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 	const currentGroupIndex = competitionData.groups?.findIndex(group => group.isCompleted === false)
 	const startPointTimeTuple = getStartPointTimeTuple(competitionData)
 
-	const groupsAllPairsLen = competitionData?.groups?.map(group =>
+	const groupsPairsLen = competitionData?.groups?.map(group =>
 		getGroupPairsLen({
+			passedPairsLen: group.passedPairs?.length ?? 0,
 			currentPairsLen: group.currentRoundPairs?.length ?? 0,
 			nextRoundParticipantsLen: group.nextRoundParticipants?.length ?? 0
 		})
@@ -101,7 +102,8 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 	)
 
 	const noPairsForFightInGroup = competitionData.groups?.reduce((acc, group) => {
-		if (group.currentRoundPairs?.every(pair => pair.passed)) {
+		// only pair.passed do not work because flaky 'defineWinner' endpoint set passed 50/50
+		if (group.currentRoundPairs?.every(pair => pair.winner || pair.passed)) {
 			return {
 				...acc,
 				[group._id as string]: true
@@ -118,15 +120,25 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 		<div className='xl:px[50px] flex grow flex-col lg:rounded-3xl lg:border lg:border-[#DADADA] lg:px-[40px] lg:pt-[33px] xl:pt-9'>
 			{competitionData.groups?.map(
 				(
-					{ _id, gender, ageCategory, weightCategory, currentRoundPairs, nextRoundParticipants, isCompleted },
+					{
+						_id,
+						gender,
+						ageCategory,
+						weightCategory,
+						currentRoundPairs,
+						passedPairs,
+						nextRoundParticipants,
+						isCompleted
+					},
 					groupIndex
 				) => {
 					const currentRoundPairsLen = currentRoundPairs?.length ?? 0
 					const competitionJudgesLen = competitionData?.judges?.length ?? 1
 
-					let pairsBeforeLen = 0
+					let pairsBeforeLen = passedPairs?.length ?? 0
 					for (let i = 0; i < groupIndex; i += 1) {
-						pairsBeforeLen += groupsAllPairsLen?.[i] ?? 0
+						const groupPairsLen = groupsPairsLen?.[i].length ?? 0
+						pairsBeforeLen += groupPairsLen + (groupsPairsLen?.[i].passedGroup ? groupPairsLen % 2 : 0)
 					}
 
 					pairsBeforeLen =
