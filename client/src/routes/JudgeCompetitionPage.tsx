@@ -12,7 +12,7 @@ import { AppRoute } from 'src/constants/appRoute'
 import { Tag, Button, Modal, Input, Alert, BreakTimer, Loader } from 'src/ui'
 import { AlertPropTypes } from 'src/ui/Alert/Alert'
 import { CompetitionRequirements, CompetitionParticipantsTable, CompetitionInfo } from 'src/components'
-import { getFormattedDate, isPast } from 'src/helpers/datetime'
+import { getFormattedDate, isPast, subtractMinutes } from 'src/helpers/datetime'
 import {
 	fetchCompetitionById,
 	setCompetitionData,
@@ -28,7 +28,7 @@ import {
 } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsListBreakTime, resetCompetitionsListBreakTime } from 'src/store/slices/competitionsSlice'
 import { ChooseWinnerType } from 'src/types'
-import { existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
+import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
 
 type AlertType = {
 	show: boolean
@@ -38,7 +38,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 	const { competitionId } = useParams()
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
-	const competitionData = useAppSelector(existingOrFetchedCompetitionSelector(competitionId))
+	const competitionData = useAppSelector(fetchedOrExistingCompetitionSelector(competitionId))
 	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
@@ -60,7 +60,8 @@ export const JudgeCompetitionPage = (): ReactElement => {
 	const [alertData, setAlertData] = useState<AlertType>({ show: false })
 	const [winnerData, setWinnerData] = useState<Record<string, ChooseWinnerType>>({})
 	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
-	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate) && !isCompetitionOver
+	const isCompetitionStartsWithinAnHour =
+		competitionData && isPast(subtractMinutes(competitionData.startDate, 60)) && !isCompetitionOver
 
 	useEffect(() => {
 		if (!competitionData) {
@@ -157,7 +158,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 
 	useEffect(() => {
 		const pollingInterval = setInterval(() => {
-			if (isCompetitionOnGoing) {
+			if (isCompetitionStartsWithinAnHour) {
 				dispatch(fetchCompetitionById(competitionId as string))
 			} else {
 				clearInterval(pollingInterval)
@@ -165,7 +166,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 		}, 5000)
 		return () => clearInterval(pollingInterval)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isCompetitionOnGoing])
+	}, [isCompetitionStartsWithinAnHour])
 
 	const handleBreakTimeInput = (value?: string) => {
 		if (Number(value) > 10) {

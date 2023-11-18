@@ -18,6 +18,7 @@ export const competitionGroupSchema = new Schema<ICompetitionGroup>(
     gender: { type: String, required: true },
     currentRoundNumber: { type: Number, required: true },
     order: { type: Number },
+    lastPlaceNumber: Number,
     nextRoundParticipants: [
       {
         type: Schema.Types.ObjectId,

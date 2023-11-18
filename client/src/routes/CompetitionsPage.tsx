@@ -5,8 +5,7 @@ import { fetchCompetitions } from 'src/store/slices/competitionsSlice'
 import {
 	activeCompetitionsSelector,
 	currentUserCompetitionsSelector,
-	expiredCompetitionsSelector,
-	selectCompetitions
+	expiredCompetitionsSelector
 } from 'src/store/selectors/competitions'
 import { CompetitionCard } from 'src/components'
 import { CompetitionSchema } from 'src/types'
@@ -22,13 +21,12 @@ export const CompetitionsPage = (): ReactElement => {
 		competitionsData: []
 	})
 	const authorizedUserId = useAppSelector(state => state.user.authorizedUser?._id)
-	const allCompetitions = useAppSelector(selectCompetitions)
 	const competitionsActive = useAppSelector(activeCompetitionsSelector)
 	const currentUserCompetitions = useAppSelector(currentUserCompetitionsSelector(authorizedUserId))
 	const expiredCompetitions = useAppSelector(expiredCompetitionsSelector)
 
 	useEffect(() => {
-		if (!allCompetitions.length) dispatch(fetchCompetitions())
+		dispatch(fetchCompetitions())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch])
 

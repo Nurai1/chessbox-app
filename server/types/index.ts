@@ -63,6 +63,7 @@ export interface IPair {
 export interface ICompetition {
   _id: Types.ObjectId;
   startDate: Date;
+  baseDate: Date;
   endDate?: Date;
   registrationEndsAt: Date;
   name: string;
@@ -75,6 +76,7 @@ export interface ICompetition {
     }[];
   };
   zoomLink?: string;
+  started?: boolean;
   chiefJudgeEndedConfiguration?: boolean;
   breakTime?: {
     minutes?: number;
@@ -105,6 +107,7 @@ export interface ICompetitionGroup {
   passedPairs: IPair[];
   currentRoundPairs: IPair[];
   currentRoundNumber: number;
+  lastPlaceNumber?: number;
   order?: number;
   nextRoundParticipants: PopulatedDoc<IUser & Document>[];
   results?: { userId: PopulatedDoc<IUser & Document>; placeNumber: number }[];

@@ -3,7 +3,7 @@ import { changePasswordRequest, forgotPasswordRequest, signIn } from 'src/api/re
 import { signUp } from 'src/api/requests/signUp'
 import { editCurrentUser, getCurrentUser, getUserByIdApi } from 'src/api/requests/users'
 import { AuthorizationStatus } from 'src/constants/authorizationStatus'
-import { saveToken, dropToken } from 'src/helpers/tokenLocalStorage'
+import { saveToken, dropToken } from 'src/helpers/tokenStorage'
 import {
 	ChangePasswordDataSchema,
 	ErrorPayload,

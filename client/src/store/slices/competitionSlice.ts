@@ -34,7 +34,9 @@ import {
 	launchNextGroupRoundApi,
 	seTuserPaymentRequestToCheckApi,
 	getPaymentInfoUsersApi,
-	setUserPaymentPaidApi
+	setUserPaymentPaidApi,
+	startCompetitionApi,
+	recalculatePairsTimeApi
 } from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
@@ -64,6 +66,17 @@ export const fetchCompetitionJudges = createAsyncThunk('competition/Judges', asy
 	return { competitionId: id, judges: response.data }
 })
 
+export const recalculatePairsTime = createAsyncThunk(
+	'competition/recalculatePairsTime',
+	async (id: string, thunkApi) => {
+		const response = await recalculatePairsTimeApi(id)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
 export const setCompetitionJudges = createAsyncThunk(
 	'competition/setCompetitionJudges',
 	async (data: SetCompetitionJudgesSchema, thunkApi) => {
@@ -74,6 +87,14 @@ export const setCompetitionJudges = createAsyncThunk(
 		return response.data
 	}
 )
+
+export const startCompetition = createAsyncThunk('competition/startCompetition', async (id: string, thunkApi) => {
+	const response = await startCompetitionApi(id)
+	if (response.error)
+		return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+	return response.data
+})
 
 export const setPairJudges = createAsyncThunk(
 	'competition/setPairJudges',
@@ -346,6 +367,17 @@ export const competitionSlice = createSlice({
 		}
 	},
 	extraReducers: {
+		[startCompetition.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.loading = false
+			state.data = action.payload
+		},
+		[startCompetition.pending.type]: state => {
+			state.loading = true
+		},
+		[startCompetition.rejected.type]: (state, action: PayloadAction<string>) => {
+			state.loading = false
+			state.error = action.payload
+		},
 		[fetchCompetitionById.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.loading = false
 			state.data = action.payload

@@ -1,20 +1,20 @@
 import { ReactElement, useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { useAppSelector, useAppDispatch } from 'src/hooks/redux'
-import { existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
+import { Link, useParams } from 'react-router-dom'
+import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
+import { AppRoute } from 'src/constants/appRoute'
+import { MAX_PAYMENT_REQUEST_COUNT } from 'src/constants/maxRequestCount'
 import { getFormattedDate } from 'src/helpers/datetime'
+import { tableSchemaPaymentCheck } from 'src/helpers/tableSchemas/tableSchemaPaymentCheck'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
 import {
+	addNewParticipant,
 	fetchCompetitionById,
 	getPaymentInfoUsers,
-	setUserPaymentPaid,
-	addNewParticipant
+	setUserPaymentPaid
 } from 'src/store/slices/competitionSlice'
-import { AppRoute } from 'src/constants/appRoute'
-import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
-import { Accordion, TableBody, Loader } from 'src/ui'
-import { tableSchemaPaymentCheck } from 'src/helpers/tableSchemas/tableSchemaPaymentCheck'
-import { UserPaymentInfo, UserSchema, CompetitionPaymentPaidType } from 'src/types'
-import { MAX_PAYMENT_REQUEST_COUNT } from 'src/constants/maxRequestCount'
+import { CompetitionPaymentPaidType, UserPaymentInfo, UserSchema } from 'src/types'
+import { Accordion, TableBody } from 'src/ui'
 
 export type ParticipantsRequestedCheckTable = {
 	userData?: UserSchema
@@ -25,7 +25,7 @@ export const VerifyPaymentPage = (): ReactElement => {
 	const [participantsExcluded, setParticipantsExcluded] = useState<ParticipantsRequestedCheckTable[]>()
 	const [participantsPaid, setParticipantsPaid] = useState<ParticipantsRequestedCheckTable[]>()
 	const { competitionId } = useParams()
-	const competitionData = useAppSelector(existingOrFetchedCompetitionSelector(competitionId))
+	const competitionData = useAppSelector(fetchedOrExistingCompetitionSelector(competitionId))
 	const { paymentInfoUsers, setUserPaymentPaidPending } = useAppSelector(state => state.competition)
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
 	const dispatch = useAppDispatch()

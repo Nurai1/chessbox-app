@@ -10,7 +10,7 @@ import { ReactComponent as HourGlass } from 'src/assets/hourglass.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { AppRoute } from 'src/constants/appRoute'
-import { getFormattedDate, isPast } from 'src/helpers/datetime'
+import { getFormattedDate, isPast, subtractMinutes } from 'src/helpers/datetime'
 import {
 	PairInfo,
 	CompetitionRequirements,
@@ -29,10 +29,11 @@ import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
 	fetchCompetitionParticipants,
-	setCompetitionData
+	setCompetitionData,
+	startCompetition
 } from 'src/store/slices/competitionSlice'
 import { Role } from 'src/constants/role'
-import { existingOrFetchedCompetitionSelector } from 'src/store/selectors/competitions'
+import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
 import { getCompetitionResult } from 'src/helpers/getCompetitionResult'
 import { getSortedRuseltParticipants } from 'src/helpers/getSortedRuseltParticipants'
 import { CompetitionGroupSchema, ParticipantSchema, UserPaymentInfo } from 'src/types'
@@ -49,11 +50,14 @@ export const CompetitionPage = (): ReactElement => {
 	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
 	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
 	const { authorizedUser, authLoading } = useAppSelector(state => state.user)
-	const competitionData = useAppSelector(existingOrFetchedCompetitionSelector(competitionId))
+	const competitionData = useAppSelector(fetchedOrExistingCompetitionSelector(competitionId))
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
+
 	const isParticipant =
 		competitionData?.participants && competitionData.participants.includes(authorizedUser?._id ?? '')
 	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
+	const isCompetitionStartsWithinAnHour =
+		competitionData && isPast(subtractMinutes(competitionData.startDate, 60)) && !isCompetitionOver
 	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate) && !isCompetitionOver
 	const participantsTable = participants && tableSchemaParticipants(participants)
 	const [isTimeOver, setIsTimeOver] = useState(competitionData && isPast(competitionData.startDate))
@@ -74,7 +78,7 @@ export const CompetitionPage = (): ReactElement => {
 
 	useEffect(() => {
 		const pollingInterval = setInterval(() => {
-			if (isCompetitionOnGoing && isParticipant) {
+			if (isCompetitionStartsWithinAnHour) {
 				dispatch(fetchCompetitionById(competitionId as string))
 			} else {
 				clearInterval(pollingInterval)
@@ -82,7 +86,7 @@ export const CompetitionPage = (): ReactElement => {
 		}, 5000)
 		return () => clearInterval(pollingInterval)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [competitionData, competitionId, dispatch, isCompetitionOnGoing])
+	}, [competitionData, competitionId, dispatch, isCompetitionStartsWithinAnHour])
 
 	useEffect(() => {
 		if (isRegistrationClosed && !participants) {
@@ -268,7 +272,13 @@ export const CompetitionPage = (): ReactElement => {
 									/>
 									{authorizedUser?.role === Role.ChiefJudge && isTimeOver && (
 										<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:p-0 lg:shadow-none'>
-											<Button classes='w-full lg:mb-[1.25rem]' onClick={() => navigate(AppRoute.JudgeCompetition)}>
+											<Button
+												classes='w-full lg:mb-[1.25rem]'
+												onClick={() => {
+													if (competitionId && !competitionData?.started) dispatch(startCompetition(competitionId))
+													navigate(AppRoute.JudgeCompetition)
+												}}
+											>
 												To competition
 											</Button>
 										</div>
@@ -298,7 +308,7 @@ export const CompetitionPage = (): ReactElement => {
 							<div>
 								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
 								<p className='mb-9'>{competitionData.description}</p>
-								{authorizedUser?.role === 'chief_judge' && !competitionData.chiefJudgeEndedConfiguration && (
+								{authorizedUser?.role === Role.ChiefJudge && !competitionData.chiefJudgeEndedConfiguration && (
 									<div className={`${!isRegistrationClosed && 'pointer-events-none opacity-30'}`}>
 										<Link
 											to={AppRoute.JudgeChoice}
@@ -329,7 +339,7 @@ export const CompetitionPage = (): ReactElement => {
 								)}
 							</div>
 						</div>
-						{isRegistrationClosed && competitionData.groups?.every(group => !group.isCompleted) && (
+						{isRegistrationClosed && (
 							<>
 								{isParticipant && currentUserPairRef.current?.pair && (
 									<>
@@ -345,7 +355,7 @@ export const CompetitionPage = (): ReactElement => {
 									</>
 								)}
 
-								{competitionData.groups?.length !== 0 && participants && judges && authorizedUser ? (
+								{competitionData.groups?.length !== 0 && participants && judges && (
 									<>
 										<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
 											Competition schedule
@@ -358,12 +368,10 @@ export const CompetitionPage = (): ReactElement => {
 											currentUserPairRef={currentUserPairRef}
 										/>
 									</>
-								) : (
-									authorizedUser?.role !== Role.ChiefJudge && <Loader />
 								)}
 							</>
 						)}
-						{competitionData.groups && !!competitionData?.groups[0]?.results?.length && (
+						{competitionData.groups && competitionData.groups?.every(group => group.isCompleted) && (
 							<>
 								{!!competitionResult?.man.length && (
 									<>
