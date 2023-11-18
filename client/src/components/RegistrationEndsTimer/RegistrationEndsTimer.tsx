@@ -26,7 +26,6 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 	isCompetitonPage
 }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const { addNewParticipantPending } = useAppSelector(s => s.competition)
 	const { authorizedUser } = useAppSelector(state => state.user)
 	const navigate = useNavigate()
 	const { width: screenWidth } = useWindowSize()
@@ -90,7 +89,6 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 								onClick={handleParticipateClick}
 								classes={`${isCompetitonPage ? 'md:w-full' : 'w-full mt-5 2xl:mt-[1.625rem]'}`}
 								disabled={fitCompetitionParametersCheck}
-								loading={addNewParticipantPending}
 							>
 								Participate
 							</Button>

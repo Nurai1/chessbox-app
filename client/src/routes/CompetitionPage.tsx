@@ -58,6 +58,7 @@ export const CompetitionPage = (): ReactElement => {
 	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
 	const isCompetitionStartsWithinAnHour =
 		competitionData && isPast(subtractMinutes(competitionData.startDate, 60)) && !isCompetitionOver
+	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate) && !isCompetitionOver
 	const participantsTable = participants && tableSchemaParticipants(participants)
 	const [isTimeOver, setIsTimeOver] = useState(competitionData && isPast(competitionData.startDate))
 	const [isRegistrationClosed, setIsRegistrationClosed] = useState(false)
@@ -164,9 +165,11 @@ export const CompetitionPage = (): ReactElement => {
 		(isRegistrationClosed && !isCompetitionOver && authorizedUser?.role === Role.ChiefJudge)
 	const registrationClosed =
 		!isCompetitionOver && isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge
-	const showRegistrationEndsTimer = !isRegistrationClosed && !isCompetitionStartsWithinAnHour && !currentUserRequestData
+	const showRegistrationEndsTimer =
+		!isRegistrationClosed && !isCompetitionOnGoing && !currentUserRequestData?.requestedToCheck
 	const showYouAreParticipant = isParticipant && !isCompetitionOver && !isRegistrationClosed
-	const requestAwaitAcception = !isParticipant && currentUserRequestData
+	const requestAwaitAcception = !isParticipant && currentUserRequestData?.requestedToCheck
+	const verifyPayment = competitionData?.usersPaymentInfo && authorizedUser?.role === Role.ChiefJudge
 
 	return (
 		<>
@@ -309,7 +312,7 @@ export const CompetitionPage = (): ReactElement => {
 									<div className={`${!isRegistrationClosed && 'pointer-events-none opacity-30'}`}>
 										<Link
 											to={AppRoute.JudgeChoice}
-											className='b-2.5 flex items-center gap-5 text-lg font-bold transition hover:opacity-70 xl:text-4xl xl:leading-normal'
+											className='b-2.5 inline-flex items-center gap-5 text-lg font-bold transition hover:opacity-70 xl:text-4xl xl:leading-normal'
 										>
 											Set up the competition
 											<ArrowRightIcon className='w-8 xl:w-[3.125rem]' />
@@ -317,9 +320,21 @@ export const CompetitionPage = (): ReactElement => {
 										<div className='mb-5 flex max-w-[40rem] items-center gap-3.5 md:mb-8'>
 											<WarningIcon />
 											<p>
-												You need to assign judges, create groups, connect judges to pairs and assign orders to groups
+												After verify payment you need to assign judges, create groups, connect judges to pairs and
+												assign orders to groups
 											</p>
 										</div>
+									</div>
+								)}
+								{verifyPayment && (
+									<div>
+										<Link
+											to={AppRoute.VerifyPayment}
+											className='b-2.5 inline-flex items-center gap-5 text-lg font-bold transition hover:opacity-70 xl:text-4xl xl:leading-normal'
+										>
+											Verify payment of participants
+											<ArrowRightIcon className='w-8 xl:w-[3.125rem]' />
+										</Link>
 									</div>
 								)}
 							</div>

@@ -12,9 +12,10 @@ import {
 	CallPairPreparationSchema,
 	DefineWinnerSchema,
 	UserSchema,
-	LaunchNextGroupRoundApiSchema
+	LaunchNextGroupRoundApiSchema,
+	CompetitionPaymentDataType,
+	CompetitionPaymentPaidType
 } from 'src/types'
-import { CompetitionPaymentDataType } from 'src/components/CompetitionPayment/CompetitionPayment'
 
 import {
 	getCompetitionByIdApi,
@@ -32,6 +33,8 @@ import {
 	acceptForFightApi,
 	launchNextGroupRoundApi,
 	seTuserPaymentRequestToCheckApi,
+	getPaymentInfoUsersApi,
+	setUserPaymentPaidApi,
 	startCompetitionApi,
 	recalculatePairsTimeApi
 } from 'src/api/requests/competitions'
@@ -215,12 +218,36 @@ export const seTuserPaymentRequestToCheck = createAsyncThunk(
 	}
 )
 
+export const getPaymentInfoUsers = createAsyncThunk(
+	'payment/getPaymentInfoUsers',
+	async (competitionId: string, thunkApi) => {
+		const response = await getPaymentInfoUsersApi(competitionId)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
+export const setUserPaymentPaid = createAsyncThunk(
+	'payment/setUserPaymentPaid',
+	async (userPaymentData: CompetitionPaymentPaidType, thunkApi) => {
+		const { path, body } = userPaymentData
+		const response = await setUserPaymentPaidApi(body, path)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
 export interface CompetitionState {
 	data: CompetitionSchema | null
 	participants: Record<string, ParticipantSchema[] | null>
 	judges: Record<string, UserSchema[] | null>
 	loading: boolean
 	callUpTimerRunningIds: string[]
+	paymentInfoUsers?: UserSchema[]
 	error?: string
 	setCompetitionJudgesSuccess?: boolean
 	setCompetitionJudgesError?: string
@@ -258,6 +285,12 @@ export interface CompetitionState {
 	seTuserPaymentRequestToCheckPending?: boolean
 	seTuserPaymentRequestToCheckSuccess?: boolean
 	seTuserPaymentRequestToCheckError?: string
+	getPaymentInfoUsersPending?: boolean
+	getPaymentInfoUsersSuccess?: boolean
+	getPaymentInfoUsersError?: string
+	setUserPaymentPaidPending?: boolean
+	setUserPaymentPaidSuccess?: boolean
+	setUserPaymentPaidError?: string
 }
 
 const initialState: CompetitionState = {
@@ -446,8 +479,7 @@ export const competitionSlice = createSlice({
 			state.groupDeletePending = false
 			state.groupDeleteError = action.payload.errorMessage
 		},
-		[addNewParticipant.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
-			state.data = action.payload
+		[addNewParticipant.fulfilled.type]: state => {
 			state.addNewParticipantPending = false
 			state.addNewParticipantSuccess = true
 		},
@@ -534,6 +566,30 @@ export const competitionSlice = createSlice({
 		[seTuserPaymentRequestToCheck.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.seTuserPaymentRequestToCheckPending = false
 			state.seTuserPaymentRequestToCheckError = action.payload.errorMessage
+		},
+		[getPaymentInfoUsers.fulfilled.type]: (state, action: PayloadAction<UserSchema[]>) => {
+			state.paymentInfoUsers = action.payload
+			state.getPaymentInfoUsersPending = false
+			state.getPaymentInfoUsersSuccess = true
+		},
+		[getPaymentInfoUsers.pending.type]: state => {
+			state.getPaymentInfoUsersPending = true
+		},
+		[getPaymentInfoUsers.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.getPaymentInfoUsersPending = false
+			state.getPaymentInfoUsersError = action.payload.errorMessage
+		},
+		[setUserPaymentPaid.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.data = action.payload
+			state.setUserPaymentPaidPending = false
+			state.setUserPaymentPaidSuccess = true
+		},
+		[setUserPaymentPaid.pending.type]: state => {
+			state.setUserPaymentPaidPending = true
+		},
+		[setUserPaymentPaid.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.setUserPaymentPaidPending = false
+			state.setUserPaymentPaidError = action.payload.errorMessage
 		}
 	}
 })
