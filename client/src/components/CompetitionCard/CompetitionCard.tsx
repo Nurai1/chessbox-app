@@ -60,7 +60,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 	const registrationClosed =
 		!isCompetitionOver && isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge
 	const showYouAreParticipant = isParticipant && !isCompetitionOver && !isRegistrationClosed
-	const requestAwaitAcception = !isParticipant && currentUserRequestData
+	const requestAwaitAcception = !isParticipant && currentUserRequestData?.requestedToCheck
 
 	return (
 		<article
@@ -134,7 +134,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 			{timeBeforeStart && (
 				<CompetitionCardTimer
 					competitionData={competition}
-					title={<span>Approximate time start&nbsp;before&nbsp;match:</span>}
+					title={<span>Approximate time before&nbsp;To confirm participation press READY! start:</span>}
 					classes='mt-2'
 				/>
 			)}

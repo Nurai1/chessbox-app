@@ -364,6 +364,9 @@ export const competitionSlice = createSlice({
 			action: PayloadAction<{ newParticipant: UserSchema; competitionId: string }>
 		) => {
 			state.participants[action.payload.competitionId]?.push(action.payload.newParticipant)
+		},
+		resetAcceptForFightSuccess: state => {
+			state.acceptForFightSuccess = true
 		}
 	},
 	extraReducers: {
@@ -606,7 +609,8 @@ export const {
 	resetBreakTimeSuccess,
 	addValuecallUpTimerRunningIds,
 	removeValuecallUpTimerRunningIds,
-	addCompetitionParticipant
+	addCompetitionParticipant,
+	resetAcceptForFightSuccess
 } = competitionSlice.actions
 
 export default competitionSlice.reducer
