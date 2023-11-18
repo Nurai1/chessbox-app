@@ -1,5 +1,5 @@
 import { Middleware } from '@reduxjs/toolkit'
-import { dropToken } from 'src/helpers/tokenLocalStorage'
+import { dropToken } from 'src/helpers/tokenStorage'
 import { RootState } from '../rootReducer'
 import { resetAuthStatus } from '../slices/userSlice'
 

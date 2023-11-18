@@ -163,45 +163,6 @@ export const setJudgesToPairs = async (
   res.send(competition);
 };
 
-export const startCompetition = async (
-  req: Request<{ id: string }>,
-  res: Response,
-  next: NextFunction
-) => {
-  const { params } = req;
-  if (!params.id) return res.sendStatus(400);
-
-  const competition = await Competition.findById(params.id)
-    .populate('participants')
-    .populate('judges');
-  if (!competition)
-    return res.status(404).send({ error: "Competition wasn't found" });
-
-  if (competition) {
-    if (!competition?.judges) {
-      res.status(500).send({ error: 'No judges in competition.' });
-    }
-
-    if (!competition.groups) {
-      res.status(500).send({ error: 'No groups in competition.' });
-    }
-
-    const orderedGroups = competition.groups.sort((a, b) => {
-      // always true on that stage
-      if (a.order && b.order) {
-        return a.order - b.order;
-      }
-      return 0;
-    });
-
-    competition.groups = orderedGroups;
-    await competition?.save();
-
-    res.sendStatus(200);
-  }
-  res.status(500).send({ error: 'No competition with this id.' });
-};
-
 export const deleteCompetition = async (
   req: Request,
   res: Response,
@@ -334,7 +295,7 @@ export const createCompetitionGroup = async (
   const groupId = competition.groups[0]._id;
 
   await User.updateMany(
-    { _id: { $in: allParticipants.map((p) => p._id) } },
+    { _id: { $in: allParticipants } },
     { currentGroupId: groupId }
   );
 
@@ -433,6 +394,10 @@ export const callPairPreparation = async (
         const whiteDisqualified = !pairAcceptedForFight?.whiteParticipant;
         const blackDisqualified = !pairAcceptedForFight?.blackParticipant;
 
+        let loserPlaceNumber = currentGroup.lastPlaceNumber
+          ? currentGroup.lastPlaceNumber - 1
+          : currentGroup.allParticipants.length;
+
         let wasPartnerDisqualified = false;
         if (blackDisqualified) {
           wasPartnerDisqualified = true;
@@ -444,14 +409,16 @@ export const callPairPreparation = async (
               competitionsHistory: {
                 competitionId,
                 groupId,
-                placeNumber:
-                  currentGroup.allParticipants.length -
-                  (currentGroup.passedPairs.length - 1),
+                placeNumber: loserPlaceNumber,
               },
             },
           });
         }
         if (whiteDisqualified) {
+          if (wasPartnerDisqualified) {
+            loserPlaceNumber -= 1;
+          }
+
           await User.findByIdAndUpdate(currentPair.whiteParticipant, {
             $inc: {
               ratingNumber: -FIXED_RATING_CHANGING_NUM,
@@ -460,11 +427,7 @@ export const callPairPreparation = async (
               competitionsHistory: {
                 competitionId,
                 groupId,
-                placeNumber:
-                  currentGroup.allParticipants.length -
-                  (currentGroup.passedPairs.length -
-                    1 -
-                    (wasPartnerDisqualified ? 1 : 0)),
+                placeNumber: loserPlaceNumber,
               },
             },
           });
@@ -700,10 +663,11 @@ export const defineWinner = async (
       loser.ratingNumber
     );
 
-    const loserPlaceNumber =
-      competitionGroup.allParticipants.length -
-      (competitionGroup.passedPairs.length - 1);
+    const loserPlaceNumber = competitionGroup.lastPlaceNumber
+      ? competitionGroup.lastPlaceNumber - 1
+      : competitionGroup.allParticipants.length;
 
+    competitionGroup.lastPlaceNumber = loserPlaceNumber;
     await Promise.all([
       User.findOneAndUpdate(
         { _id: winnerId },
@@ -740,7 +704,6 @@ export const defineWinner = async (
         },
         { new: true }
       ),
-      competition?.save(),
     ]);
 
     if (isGroupCompleted) {
@@ -758,9 +721,10 @@ export const defineWinner = async (
           )?.placeNumber as number,
         }))
         .sort((a, b) => (a.placeNumber ?? 0) - (b.placeNumber ?? 0));
-
       competitionGroup.results = groupResults;
     }
+
+    await competition?.save();
 
     return res.send(competition);
   }
@@ -893,19 +857,89 @@ export const setCompetitionBreakTime = async (
     return res.status(400).send({ error: 'No break time provided' });
   }
 
-  const competition = await Competition.findOneAndUpdate(
-    { _id: id },
-    { breakTime }
-  );
+  const competition = await Competition.findOne({ _id: id });
 
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
 
+  // recalculate time for competition pairs depending on baseDate
+  // @ts-ignore
+  competition.baseDate = new Date(
+    new Date(competition.baseDate).getTime() + (breakTime?.minutes ?? 0) * 60000
+  ).toISOString();
+
   const breakTimeInMs = (breakTime?.minutes ?? 0) * 60 * 1000;
+  competition.breakTime = { minutes: breakTimeInMs };
+
+  await competition.save();
 
   setTimeout(async () => {
     await Competition.findOneAndUpdate({ _id: id }, { breakTime: null });
   }, breakTimeInMs);
+
+  return res.sendStatus(200);
+};
+
+export const recalculatePairsTime = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const competition = await Competition.findById(id);
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  // @ts-ignore
+  competition.baseDate = new Date().toISOString();
+
+  await competition.save();
+
+  return res.sendStatus;
+};
+
+export const startCompetition = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const competition = await Competition.findById(id);
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  competition.started = true;
+
+  if (
+    new Date().getTime() - new Date(competition.startDate).getTime() >
+    60000
+  ) {
+    // @ts-ignore
+    competition.startDate = new Date().toISOString();
+    // @ts-ignore
+    competition.baseDate = new Date().toISOString();
+  }
+  await competition.save();
+
+  return res.send(competition);
+};
+
+export const endCompetition = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const competition = await Competition.findById(id);
+
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  // @ts-ignore
+  competition.endDate = new Date().toISOString();
+  await competition.save();
 
   return res.sendStatus(200);
 };

@@ -263,6 +263,16 @@ competitionRouter.patch(
     } */
   controllerErrorHandler(CompetitionController.updateCompetition)
 );
+competitionRouter.patch(
+  '/competition/:id/recalculatePairsTime',
+  // #swagger.description = ''
+  /* #swagger.responses[200] = {
+            description: '',
+    } */
+  UserController.allowIfLoggedin,
+  UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.recalculatePairsTime)
+);
 
 competitionRouter.patch(
   '/competition/:id/setCompetitionGroupsOrders',
@@ -308,6 +318,7 @@ competitionRouter.patch(
   }] */
   /* #swagger.responses[200] = {
             description: '',
+            schema: { $ref: '#/definitions/Competition' }
     } */
   UserController.allowIfLoggedin,
   UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),

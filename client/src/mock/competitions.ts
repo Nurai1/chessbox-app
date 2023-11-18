@@ -2,6 +2,7 @@ export const competitionsMock = [
 	{
 		judges: [],
 		_id: '63f09b7acf01840581661af2',
+		baseDate: '2023-06-27T09:00:00.000Z',
 		startDate: '2023-06-27T09:00:00.000Z',
 		endDate: '2023-06-28T09:00:00.000Z',
 		registrationEndsAt: '2023-06-26T09:00:00.000Z',
@@ -47,6 +48,7 @@ export const competitionsMock = [
 	},
 	{
 		_id: '641492f3a0462b63f09b7acf01840581661af2df071d0b3d',
+		baseDate: '2023-06-27T09:00:00.000Z',
 		startDate: '2023-07-24T09:00:00.000Z',
 		registrationEndsAt: '2023-07-23T09:00:00.000Z',
 		name: 'Championship - march 2023.',
@@ -84,6 +86,7 @@ export const competitionsMock = [
 	{
 		judges: [],
 		_id: '63f09b7acf01840581661a63f09b7acf01840581661af2f2',
+		baseDate: '2023-06-27T09:00:00.000Z',
 		startDate: '2023-07-27T09:00:00.000Z',
 		registrationEndsAt: '2023-06-23T09:00:00.000Z',
 		name: 'Championship of Russian Chessbox Federation - march 2022.',
@@ -130,6 +133,7 @@ export const competitionsMock = [
 	{
 		judges: [],
 		_id: '63f63f09b7acf01840581661af209b7acf01840581661af2',
+		baseDate: '2023-06-27T09:00:00.000Z',
 		startDate: '2023-06-16T09:00:00.000Z',
 		endDate: '2023-06-17T09:00:00.000Z',
 		registrationEndsAt: '2023-06-15T09:00:00.000Z',
@@ -177,6 +181,7 @@ export const competitionsMock = [
 	{
 		judges: [],
 		_id: '63f63f09b7acf018405810581661af2',
+		baseDate: '2023-06-27T09:00:00.000Z',
 		startDate: '2023-10-16T09:00:00.000Z',
 		registrationEndsAt: '2023-09-15T09:00:00.000Z',
 		name: 'Chamdfsdfsdfsd sdfsdf sdfsdfds tion - march 2022.',
@@ -222,6 +227,7 @@ export const competitionsMock = [
 	{
 		judges: [],
 		_id: '63f63f09b7acf018405810581661af2',
+		baseDate: '2023-06-27T09:00:00.000Z',
 		startDate: '2023-06-16T09:00:00.000Z',
 		endDate: '2023-06-27T09:00:00.000Z',
 		registrationEndsAt: '2023-06-15T09:00:00.000Z',
