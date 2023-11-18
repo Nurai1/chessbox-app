@@ -1,10 +1,10 @@
 import { MutableRefObject } from 'react'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
-import { CompetitionSchema, PairSchema, UserSchema, ChooseWinnerType } from 'src/types'
-import { localTZName } from 'src/helpers/datetime'
-import { Button, CallUpTimer, CallUpButton } from 'src/ui'
 import { ChooseWinner } from 'src/components'
+import { localTZName } from 'src/helpers/datetime'
 import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
+import { ChooseWinnerType, CompetitionSchema, PairSchema, UserSchema } from 'src/types'
+import { Button, CallUpButton, CallUpTimer } from 'src/ui'
 import { TIME_FOR_PAIR } from '../../constants/time'
 
 export type PairType = {

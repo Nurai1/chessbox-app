@@ -869,7 +869,7 @@ export const setCompetitionBreakTime = async (
   ).toISOString();
 
   const breakTimeInMs = (breakTime?.minutes ?? 0) * 60 * 1000;
-  competition.breakTime = { minutes: breakTimeInMs };
+  competition.breakTime = { minutes: breakTime?.minutes ?? 0 };
 
   await competition.save();
 

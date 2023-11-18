@@ -6,6 +6,43 @@ import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
 import { acceptForFight } from 'src/store/slices/competitionSlice'
 import { Button, Timer } from 'src/ui'
+import { twMerge } from 'tailwind-merge'
+
+export const ResponseForFight: FC<{ currentPair?: PairType }> = ({ currentPair }) => {
+	const { competitionId } = useParams()
+	const dispatch = useAppDispatch()
+
+	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
+	const { acceptForFightPending, acceptForFightSuccess } = useAppSelector(state => state.competition)
+
+	const participantColor =
+		currentPair?.blackParticipant === authorizedUser?._id ? 'blackParticipant' : 'whiteParticipant'
+
+	const exeptedFight =
+		acceptForFightSuccess || (currentPair?.acceptedForFight && currentPair?.acceptedForFight[participantColor])
+	const disqualified = currentPair?.disqualified && currentPair.disqualified[participantColor] && !acceptForFightSuccess
+	const calledForFight = !exeptedFight && !disqualified && !acceptForFightSuccess
+
+	return calledForFight ? (
+		<Button
+			onClick={() => {
+				if (competitionId && authorizedUser?.currentGroupId && currentPair?._id && authorizedUser?._id)
+					dispatch(
+						acceptForFight({
+							competitionId,
+							groupId: authorizedUser.currentGroupId,
+							pairId: currentPair._id,
+							userId: authorizedUser._id
+						})
+					)
+			}}
+			classes='w-full lg:mt-6'
+			loading={acceptForFightPending}
+		>
+			READY!
+		</Button>
+	) : null
+}
 
 export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ currentPair }) => {
 	const { competitionId } = useParams()
@@ -19,8 +56,7 @@ export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ cu
 	const participantColor =
 		currentPair?.blackParticipant === authorizedUser?._id ? 'blackParticipant' : 'whiteParticipant'
 
-	const exeptedFight =
-		acceptForFightSuccess || (currentPair?.acceptedForFight && currentPair?.acceptedForFight[participantColor])
+	const exeptedFight = currentPair?.acceptedForFight && currentPair?.acceptedForFight[participantColor]
 	const disqualified = currentPair?.disqualified && currentPair.disqualified[participantColor] && !acceptForFightSuccess
 	const calledForFight = !exeptedFight && !disqualified && !acceptForFightSuccess
 
@@ -31,8 +67,13 @@ export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ cu
 	}
 
 	return (
-		<div>
-			<div className='relative mb-[24px] flex w-full justify-between rounded-[12px] border p-[10px] lg:mb-0 lg:block lg:h-fit lg:w-auto xl:p-[25px]'>
+		<div className={twMerge(calledForFight && 'fixed top-10 right-5 bg-white')}>
+			<div
+				className={twMerge(
+					'relative mb-[24px] flex w-full justify-between rounded-[12px] border p-[10px] lg:mb-0 lg:block lg:h-fit lg:w-auto xl:p-[25px]',
+					calledForFight && 'mb-0'
+				)}
+			>
 				<div className='xl:mb-6'>
 					{calledForFight && (
 						<>

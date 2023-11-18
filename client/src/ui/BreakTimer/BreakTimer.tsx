@@ -4,7 +4,7 @@ import { useTimer } from 'src/hooks/useTimer'
 
 type BreakTimerPropsType = {
 	minutes: number
-	onTimeOver: (isOver: boolean) => void
+	onTimeOver?: (isOver: boolean) => void
 }
 
 export const BreakTimer: FC<BreakTimerPropsType> = ({ minutes, onTimeOver }) => {

@@ -121,6 +121,18 @@ export const startCompetitionApi = async (id: string) => {
 	return result
 }
 
+export const endCompetitionApi = async (id: string) => {
+	const result = await patch('/api/competition/{id}/end', {
+		params: {
+			path: {
+				id
+			}
+		}
+	})
+
+	return result
+}
+
 export const deleteCompetitionGroupApi = async (groupId: DeleteCompetitionGroupSchema, id: string) => {
 	const result = await del('/api/competition/{id}/group', {
 		body: groupId,
