@@ -1,20 +1,21 @@
 import { ReactElement, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
-import { AppRoute } from 'src/constants/appRoute'
-import { MAX_PAYMENT_REQUEST_COUNT } from 'src/constants/maxRequestCount'
-import { getFormattedDate } from 'src/helpers/datetime'
-import { tableSchemaPaymentCheck } from 'src/helpers/tableSchemas/tableSchemaPaymentCheck'
-import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { useParams, Link } from 'react-router-dom'
+import { useAppSelector, useAppDispatch } from 'src/hooks/redux'
 import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
+import { getFormattedDate } from 'src/helpers/datetime'
 import {
-	addNewParticipant,
 	fetchCompetitionById,
 	getPaymentInfoUsers,
-	setUserPaymentPaid
+	setUserPaymentPaid,
+	addNewParticipant
 } from 'src/store/slices/competitionSlice'
-import { CompetitionPaymentPaidType, UserPaymentInfo, UserSchema } from 'src/types'
-import { Accordion, TableBody } from 'src/ui'
+import { updateCompetitionsListCompetition } from 'src/store/slices/competitionsSlice'
+import { AppRoute } from 'src/constants/appRoute'
+import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
+import { Accordion, TableBody, Loader } from 'src/ui'
+import { tableSchemaPaymentCheck } from 'src/helpers/tableSchemas/tableSchemaPaymentCheck'
+import { UserPaymentInfo, UserSchema, CompetitionPaymentPaidType, CompetitionSchema } from 'src/types'
+import { MAX_PAYMENT_REQUEST_COUNT } from 'src/constants/maxRequestCount'
 
 export type ParticipantsRequestedCheckTable = {
 	userData?: UserSchema
@@ -26,7 +27,9 @@ export const VerifyPaymentPage = (): ReactElement => {
 	const [participantsPaid, setParticipantsPaid] = useState<ParticipantsRequestedCheckTable[]>()
 	const { competitionId } = useParams()
 	const competitionData = useAppSelector(fetchedOrExistingCompetitionSelector(competitionId))
-	const { paymentInfoUsers, setUserPaymentPaidPending } = useAppSelector(state => state.competition)
+	const { paymentInfoUsers, setUserPaymentPaidPending, competitionPending, setUserPaymentPaidSuccess } = useAppSelector(
+		state => state.competition
+	)
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
 	const dispatch = useAppDispatch()
 
@@ -56,12 +59,13 @@ export const VerifyPaymentPage = (): ReactElement => {
 					participant.requestedToCheck &&
 					participant.requestedCount &&
 					!participant.paid &&
-					participant.requestedCount < MAX_PAYMENT_REQUEST_COUNT
+					participant.requestedCount <= MAX_PAYMENT_REQUEST_COUNT
 			)
 			const participantsExcludedData = allParticipantsRequestedCheck?.filter(
 				participant =>
-					participant.requestedToCheck &&
+					!participant.requestedToCheck &&
 					participant.requestedCount &&
+					!participant.paid &&
 					participant.requestedCount >= MAX_PAYMENT_REQUEST_COUNT
 			)
 			const participantsPaidData = allParticipantsRequestedCheck?.filter(participant => participant.paid)
@@ -72,6 +76,18 @@ export const VerifyPaymentPage = (): ReactElement => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [competitionData, paymentInfoUsers])
+
+	useEffect(() => {
+		if (setUserPaymentPaidSuccess) {
+			dispatch(
+				updateCompetitionsListCompetition({
+					competition: competitionData as CompetitionSchema,
+					competitionId: competitionId as string
+				})
+			)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [setUserPaymentPaidSuccess])
 
 	const handleAcceptPaymentTrue = (payment: CompetitionPaymentPaidType) => {
 		dispatch(setUserPaymentPaid(payment))
@@ -88,13 +104,16 @@ export const VerifyPaymentPage = (): ReactElement => {
 			tableData: participantsRequestCheck,
 			handleAcceptPaymentTrue,
 			handleAcceptPaymentFalse,
-			competitionId,
-			setUserPaymentPaidPending
+			competitionId
 		})
 	const participantExcludedTable = participantsExcluded && tableSchemaPaymentCheck({ tableData: participantsExcluded })
 	const participantsPaidTable = participantsPaid && tableSchemaPaymentCheck({ tableData: participantsPaid })
 
 	const showRequestTable = competitionData?.usersPaymentInfo && paymentInfoUsers?.length !== 0
+
+	if (!competitionData && !paymentInfoUsers && (setUserPaymentPaidPending || competitionPending)) {
+		return <Loader />
+	}
 
 	return (
 		<main className='container mx-auto p-5'>
@@ -110,7 +129,7 @@ export const VerifyPaymentPage = (): ReactElement => {
 
 			{showRequestTable && (
 				<div className='rounded-3xl border border-pale-grey px-8'>
-					{participantRequestedTable && (
+					{participantRequestedTable && participantRequestedTable?.length !== 0 && (
 						<Accordion
 							title={<h3 className='text-heading-4'>These participants request to check payment</h3>}
 							isOpenDefault
@@ -118,7 +137,7 @@ export const VerifyPaymentPage = (): ReactElement => {
 							<TableBody rows={participantRequestedTable} />
 						</Accordion>
 					)}
-					{participantExcludedTable && (
+					{participantExcludedTable && participantExcludedTable?.length !== 0 && (
 						<Accordion
 							title={<h3 className='text-heading-4'>Participants excluded due to 3 incorrect payment request</h3>}
 							isOpenDefault
@@ -126,7 +145,7 @@ export const VerifyPaymentPage = (): ReactElement => {
 							<TableBody rows={participantExcludedTable} />
 						</Accordion>
 					)}
-					{participantsPaidTable && (
+					{participantsPaidTable && participantsPaidTable?.length !== 0 && (
 						<Accordion
 							title={<h3 className='text-heading-4'>Participants admitted to the competition</h3>}
 							isOpenDefault

@@ -1,4 +1,4 @@
-import { FC, useState, useRef, useEffect, ReactNode } from 'react'
+import { FC, useState, ReactNode } from 'react'
 import { ReactComponent as ArrowDownIcon } from 'src/assets/arrow-down-big.svg'
 import { twMerge } from 'tailwind-merge'
 
@@ -18,17 +18,6 @@ export const Accordion: FC<AccordionPropsType> = ({
 	additionalIcon
 }) => {
 	const [isOpen, setIsOpen] = useState(isOpenDefault)
-	const [contentHeight, setContentHeight] = useState<number>()
-	const accordionContentRef = useRef<HTMLDivElement | null>(null)
-
-	useEffect(() => {
-		if (accordionContentRef.current && isOpen) {
-			setTimeout(() => setContentHeight(accordionContentRef.current?.clientHeight))
-		} else {
-			setContentHeight(0)
-		}
-	}, [isOpen, children])
-
 	return (
 		<div
 			className={twMerge(
@@ -43,19 +32,17 @@ export const Accordion: FC<AccordionPropsType> = ({
 					type='button'
 				>
 					{title}
-					<ArrowDownIcon className={twMerge('ml-auto transition', isOpen && 'rotate-180')} />
+					<ArrowDownIcon className={`${isOpen && 'rotate-180'} ml-auto transition`} />
 				</button>
 				{additionalIcon}
 			</div>
 			<div
-				className={twMerge('overflow-hidden transition-[max-height]', isOpen && 'overflow-visible')}
+				className='grid overflow-hidden transition-all'
 				style={{
-					maxHeight: `${contentHeight}px`
+					gridTemplateRows: `${isOpen ? '1fr' : '0fr'}`
 				}}
 			>
-				<div ref={accordionContentRef} className='pt-4 xl:pt-[1.62rem]'>
-					{children}
-				</div>
+				<div className='min-h-0 pt-4 xl:pt-[1.62rem]'>{children}</div>
 			</div>
 		</div>
 	)

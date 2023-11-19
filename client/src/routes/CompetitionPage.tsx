@@ -37,6 +37,7 @@ import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/compet
 import { getCompetitionResult } from 'src/helpers/getCompetitionResult'
 import { getSortedRuseltParticipants } from 'src/helpers/getSortedRuseltParticipants'
 import { CompetitionGroupSchema, ParticipantSchema, UserPaymentInfo } from 'src/types'
+import { MAX_PAYMENT_REQUEST_COUNT } from 'src/constants/maxRequestCount'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
@@ -55,7 +56,7 @@ export const CompetitionPage = (): ReactElement => {
 	const allGroupsPassed = !competitionData?.groups?.some(group => !group.isCompleted)
 
 	const isParticipant =
-		competitionData?.participants && competitionData.participants.includes(authorizedUser?._id ?? '')
+		competitionData?.participants && authorizedUser?._id && competitionData.participants.includes(authorizedUser?._id)
 	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
 	const isCompetitionStartsWithinAnHour =
 		competitionData && isPast(subtractMinutes(competitionData.startDate, 60)) && !isCompetitionOver
@@ -167,10 +168,18 @@ export const CompetitionPage = (): ReactElement => {
 	const registrationClosed =
 		!isCompetitionOver && isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge
 	const showRegistrationEndsTimer =
-		!isRegistrationClosed && !isCompetitionOnGoing && !currentUserRequestData?.requestedToCheck
+		(authorizedUser?.role === Role.ChiefJudge && !isRegistrationClosed && !isCompetitionOnGoing) ||
+		(!isRegistrationClosed && !isCompetitionOnGoing && !isParticipant && !currentUserRequestData?.requestedToCheck)
 	const showYouAreParticipant = isParticipant && !isCompetitionOver && !isRegistrationClosed
-	const requestAwaitAcception = !isParticipant && currentUserRequestData?.requestedToCheck
-	const verifyPayment = competitionData?.usersPaymentInfo && authorizedUser?.role === Role.ChiefJudge
+	const requestAwaitAcception =
+		authorizedUser?.role !== Role.ChiefJudge &&
+		!isParticipant &&
+		currentUserRequestData?.requestedToCheck &&
+		currentUserRequestData?.requestedCount &&
+		currentUserRequestData?.requestedCount <= MAX_PAYMENT_REQUEST_COUNT
+	const verifyPayment =
+		competitionData?.usersPaymentInfo && authorizedUser?.role === Role.ChiefJudge && !isRegistrationClosed
+	const setupCompetition = authorizedUser?.role === Role.ChiefJudge && !competitionData?.chiefJudgeEndedConfiguration
 
 	return (
 		<>
@@ -309,7 +318,7 @@ export const CompetitionPage = (): ReactElement => {
 							<div>
 								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
 								<p className='mb-9'>{competitionData.description}</p>
-								{authorizedUser?.role === Role.ChiefJudge && !competitionData.chiefJudgeEndedConfiguration && (
+								{setupCompetition && (
 									<div className={`${!isRegistrationClosed && 'pointer-events-none opacity-30'}`}>
 										<Link
 											to={AppRoute.JudgeChoice}

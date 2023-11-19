@@ -1,16 +1,15 @@
-import { Button } from 'src/ui'
 import { ClampedText } from 'src/components/ClampedText/ClampedText'
 import { ParticipantsRequestedCheckTable } from 'src/routes/VerifyPaymentPage'
 import { getAge } from 'src/helpers/datetime'
 import { MAX_PAYMENT_REQUEST_COUNT } from 'src/constants/maxRequestCount'
 import { CompetitionPaymentPaidType } from 'src/types'
+import { SetPaymentButton } from 'src/ui'
 
 type TableSchemaPaymentCheckProps = {
 	tableData: ParticipantsRequestedCheckTable[]
 	handleAcceptPaymentTrue?: (payment: CompetitionPaymentPaidType) => void
 	handleAcceptPaymentFalse?: (payment: CompetitionPaymentPaidType) => void
 	competitionId?: string
-	setUserPaymentPaidPending?: boolean
 }
 
 const setRequestParams = (competitionId: string, userId: string, paid: boolean) => ({
@@ -27,8 +26,7 @@ export const tableSchemaPaymentCheck = ({
 	tableData,
 	handleAcceptPaymentTrue,
 	handleAcceptPaymentFalse,
-	competitionId,
-	setUserPaymentPaidPending
+	competitionId
 }: TableSchemaPaymentCheckProps) => {
 	return tableData.map(({ userData, message, requestedCount }, i) => {
 		return {
@@ -48,34 +46,30 @@ export const tableSchemaPaymentCheck = ({
 										{userData?.gender}, {getAge(userData?.birthDate)} age, {userData?.weight} kg
 									</p>
 								</div>
-								{requestedCount && requestedCount < MAX_PAYMENT_REQUEST_COUNT && (
+								{requestedCount && requestedCount <= MAX_PAYMENT_REQUEST_COUNT && (
 									<div>
 										{handleAcceptPaymentTrue && (
-											<Button
+											<SetPaymentButton
+												name='Paid'
+												classes='w-[11.375rem] mr-2.5'
 												onClick={() =>
 													handleAcceptPaymentTrue(
 														setRequestParams(competitionId as string, userData?._id as string, true)
 													)
 												}
-												loading={setUserPaymentPaidPending}
-												classes='w-[11.375rem] mr-2.5'
-											>
-												Paid
-											</Button>
+											/>
 										)}
 										{handleAcceptPaymentFalse && (
-											<Button
+											<SetPaymentButton
+												name='Not paid'
+												type='outlined'
+												classes='w-[11.375rem]'
 												onClick={() =>
 													handleAcceptPaymentFalse(
 														setRequestParams(competitionId as string, userData?._id as string, false)
 													)
 												}
-												loading={setUserPaymentPaidPending}
-												classes='w-[11.375rem]'
-												type='outlined'
-											>
-												Not paid
-											</Button>
+											/>
 										)}
 									</div>
 								)}

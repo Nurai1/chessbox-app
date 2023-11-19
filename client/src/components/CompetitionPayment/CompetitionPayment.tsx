@@ -12,6 +12,7 @@ import { CompetitionSchema, CompetitionPaymentDataType } from 'src/types'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { seTuserPaymentRequestToCheck } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsListCompetition } from 'src/store/slices/competitionsSlice'
+import { MAX_PAYMENT_REQUEST_COUNT } from 'src/constants/maxRequestCount'
 
 type CompetitionPaymentPropsType = {
 	onClose: () => void
@@ -149,12 +150,12 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 					onClick={handleSubmit}
 					classes='text-base w-full'
 					loading={seTuserPaymentRequestToCheckPending}
-					disabled={currentUserRequestData?.requestedCount === 3}
+					disabled={currentUserRequestData?.requestedCount === MAX_PAYMENT_REQUEST_COUNT}
 				>
 					Transferred!
 				</Button>
 				<p className='mt-2 text-center text-sm'>You can request check payment only 3 times.</p>
-				{currentUserRequestData?.requestedCount && currentUserRequestData.requestedCount < 3 && (
+				{currentUserRequestData?.requestedCount && currentUserRequestData.requestedCount < MAX_PAYMENT_REQUEST_COUNT && (
 					<p className='mt-2 text-center text-sm'>
 						You have requested <strong>{currentUserRequestData?.requestedCount}</strong> times
 					</p>
