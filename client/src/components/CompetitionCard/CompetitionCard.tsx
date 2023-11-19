@@ -19,6 +19,7 @@ import {
 	RequestAwaitAcception
 } from 'src/components'
 import { Role } from 'src/constants/role'
+import { MAX_PAYMENT_REQUEST_COUNT } from 'src/constants/maxRequestCount'
 
 type CompetitionPropsType = {
 	competition: CompetitionSchema
@@ -53,14 +54,18 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 		competition && competition.usersPaymentInfo?.find(paymentInfo => paymentInfo.userId === authorizedUser?._id)
 
 	const showRegistrationEndsTimer =
-		!isRegistrationClosed && !isParticipant && !isCompetitionOver && !currentUserRequestData
+		!isRegistrationClosed && !isParticipant && !isCompetitionOver && !currentUserRequestData?.requestedToCheck
 	const timeBeforeStart =
 		(isRegistrationClosed && isParticipant && !calledForPreparation && !isCompetitionOver) ||
 		(isRegistrationClosed && !isCompetitionOver && authorizedUser?.role === Role.ChiefJudge)
 	const registrationClosed =
 		!isCompetitionOver && isRegistrationClosed && !isParticipant && authorizedUser?.role !== Role.ChiefJudge
 	const showYouAreParticipant = isParticipant && !isCompetitionOver && !isRegistrationClosed
-	const requestAwaitAcception = !isParticipant && currentUserRequestData
+	const requestAwaitAcception =
+		!isParticipant &&
+		currentUserRequestData?.requestedToCheck &&
+		currentUserRequestData?.requestedCount &&
+		currentUserRequestData?.requestedCount <= MAX_PAYMENT_REQUEST_COUNT
 
 	return (
 		<article
@@ -134,7 +139,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 			{timeBeforeStart && (
 				<CompetitionCardTimer
 					competitionData={competition}
-					title={<span>Approximate time start&nbsp;before&nbsp;match:</span>}
+					title={<span>Approximate time before&nbsp;To confirm participation press READY! start:</span>}
 					classes='mt-2'
 				/>
 			)}

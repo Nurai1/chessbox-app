@@ -252,6 +252,9 @@ export interface CompetitionState {
 	setCompetitionJudgesSuccess?: boolean
 	setCompetitionJudgesError?: string
 	setCompetitionJudgesPending?: boolean
+	competitionSuccess?: boolean
+	competitionError?: string
+	competitionPending?: boolean
 	setPairJudgesSuccess?: boolean
 	setPairJudgesError?: string
 	setPairJudgesPending?: boolean
@@ -364,19 +367,22 @@ export const competitionSlice = createSlice({
 			action: PayloadAction<{ newParticipant: UserSchema; competitionId: string }>
 		) => {
 			state.participants[action.payload.competitionId]?.push(action.payload.newParticipant)
+		},
+		resetAcceptForFightSuccess: state => {
+			state.acceptForFightSuccess = true
 		}
 	},
 	extraReducers: {
 		[startCompetition.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
-			state.loading = false
+			state.competitionPending = false
 			state.data = action.payload
 		},
 		[startCompetition.pending.type]: state => {
-			state.loading = true
+			state.competitionPending = true
 		},
 		[startCompetition.rejected.type]: (state, action: PayloadAction<string>) => {
-			state.loading = false
-			state.error = action.payload
+			state.competitionPending = false
+			state.competitionError = action.payload
 		},
 		[fetchCompetitionById.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.loading = false
@@ -562,6 +568,7 @@ export const competitionSlice = createSlice({
 		},
 		[seTuserPaymentRequestToCheck.pending.type]: state => {
 			state.seTuserPaymentRequestToCheckPending = true
+			state.seTuserPaymentRequestToCheckSuccess = undefined
 		},
 		[seTuserPaymentRequestToCheck.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.seTuserPaymentRequestToCheckPending = false
@@ -574,6 +581,7 @@ export const competitionSlice = createSlice({
 		},
 		[getPaymentInfoUsers.pending.type]: state => {
 			state.getPaymentInfoUsersPending = true
+			state.getPaymentInfoUsersSuccess = undefined
 		},
 		[getPaymentInfoUsers.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.getPaymentInfoUsersPending = false
@@ -586,6 +594,7 @@ export const competitionSlice = createSlice({
 		},
 		[setUserPaymentPaid.pending.type]: state => {
 			state.setUserPaymentPaidPending = true
+			state.setUserPaymentPaidSuccess = undefined
 		},
 		[setUserPaymentPaid.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.setUserPaymentPaidPending = false
@@ -606,7 +615,8 @@ export const {
 	resetBreakTimeSuccess,
 	addValuecallUpTimerRunningIds,
 	removeValuecallUpTimerRunningIds,
-	addCompetitionParticipant
+	addCompetitionParticipant,
+	resetAcceptForFightSuccess
 } = competitionSlice.actions
 
 export default competitionSlice.reducer
