@@ -326,6 +326,20 @@ competitionRouter.patch(
 );
 
 competitionRouter.patch(
+  '/competition/:id/end',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+  UserController.allowIfLoggedin,
+  UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.endCompetition)
+);
+
+competitionRouter.patch(
   '/competition/:id/zoomLink',
   /*	#swagger.requestBody = {
           required: true,

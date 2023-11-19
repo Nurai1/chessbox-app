@@ -88,7 +88,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 							<Button
 								onClick={handleParticipateClick}
 								classes={`${isCompetitonPage ? 'md:w-full' : 'w-full mt-5 2xl:mt-[1.625rem]'}`}
-								disabled={fitCompetitionParametersCheck}
+								disabled={!!fitCompetitionParametersCheck}
 							>
 								Participate
 							</Button>

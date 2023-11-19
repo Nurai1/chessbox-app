@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useRef, useState, ReactNode } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Button, Loader, Modal, TableBody, Tag } from 'src/ui'
+import { BreakTimer, Button, Loader, Modal, TableBody, Tag } from 'src/ui'
 import { ReactComponent as BanknoteIcon } from 'src/assets/banknote.svg'
 import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
 import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
@@ -24,7 +24,7 @@ import {
 	RequestAwaitAcception
 } from 'src/components'
 import { PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
-import { tableSchemaParticipants } from 'src/helpers/tableSchemas/tableSchemaParticipants'
+import { tableSchemaParticipants, tableSchemaResults } from 'src/helpers/tableSchemas/tableSchemaParticipants'
 import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
@@ -53,6 +53,7 @@ export const CompetitionPage = (): ReactElement => {
 	const { authorizedUser, authLoading } = useAppSelector(state => state.user)
 	const competitionData = useAppSelector(fetchedOrExistingCompetitionSelector(competitionId))
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
+	const allGroupsPassed = !competitionData?.groups?.some(group => !group.isCompleted)
 
 	const isParticipant =
 		competitionData?.participants && authorizedUser?._id && competitionData.participants.includes(authorizedUser?._id)
@@ -145,7 +146,7 @@ export const CompetitionPage = (): ReactElement => {
 						{group?.ageCategory?.to} age, {group?.weightCategory?.from} - {group?.weightCategory?.to} kg
 					</>
 				),
-				data: tableSchemaParticipants(resultParticipants as ParticipantSchema[])
+				data: tableSchemaResults(resultParticipants as ParticipantSchema[])
 			})
 		}
 	}
@@ -335,7 +336,7 @@ export const CompetitionPage = (): ReactElement => {
 										</div>
 									</div>
 								)}
-								{verifyPayment && (
+								{!isRegistrationClosed && verifyPayment && (
 									<div>
 										<Link
 											to={AppRoute.VerifyPayment}
@@ -348,6 +349,12 @@ export const CompetitionPage = (): ReactElement => {
 								)}
 							</div>
 						</div>
+						{!isCompetitionOver && competitionData.breakTime?.minutes ? (
+							<div className='mb-4 flex items-center gap-x-4'>
+								<p className='text-heading-2'>Break</p>
+								<BreakTimer minutes={competitionData.breakTime.minutes} />
+							</div>
+						) : null}
 						{isRegistrationClosed && (
 							<>
 								{isParticipant && currentUserPairRef.current?.pair && (
@@ -364,7 +371,7 @@ export const CompetitionPage = (): ReactElement => {
 									</>
 								)}
 
-								{competitionData.groups?.length !== 0 && participants && judges && (
+								{!allGroupsPassed && competitionData.groups?.length !== 0 && participants && judges && (
 									<>
 										<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
 											Competition schedule
@@ -380,7 +387,7 @@ export const CompetitionPage = (): ReactElement => {
 								)}
 							</>
 						)}
-						{competitionData.groups && competitionData.groups?.every(group => group.isCompleted) && (
+						{competitionData.groups && allGroupsPassed && (
 							<>
 								{!!competitionResult?.man.length && (
 									<>

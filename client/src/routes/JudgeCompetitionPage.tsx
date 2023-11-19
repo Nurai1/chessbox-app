@@ -1,34 +1,35 @@
 import { ReactElement, useEffect, useState } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
 import { ReactComponent as BanknoteIcon } from 'src/assets/banknote.svg'
 import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
-import { ReactComponent as TwoStarsIcon } from 'src/assets/two-stars.svg'
-import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
-import { ReactComponent as WarniniIcon } from 'src/assets/warning.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
-import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { ReactComponent as TwoStarsIcon } from 'src/assets/two-stars.svg'
+import { ReactComponent as WarniniIcon } from 'src/assets/warning.svg'
+import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
+import { CompetitionInfo, CompetitionParticipantsTable, CompetitionRequirements } from 'src/components'
 import { AppRoute } from 'src/constants/appRoute'
-import { Tag, Button, Modal, Input, Alert, BreakTimer, Loader } from 'src/ui'
-import { AlertPropTypes } from 'src/ui/Alert/Alert'
-import { CompetitionRequirements, CompetitionParticipantsTable, CompetitionInfo } from 'src/components'
 import { getFormattedDate, isPast, subtractMinutes } from 'src/helpers/datetime'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
 import {
-	fetchCompetitionById,
-	setCompetitionData,
-	fetchCompetitionJudges,
-	fetchCompetitionParticipants,
-	setBreakTime,
-	setBreakTimeLocalState,
-	resetBreakTime,
-	resetBreakTimeSuccess,
 	callPairPreparation,
 	defineWinner,
-	removeValuecallUpTimerRunningIds
+	fetchCompetitionById,
+	fetchCompetitionJudges,
+	fetchCompetitionParticipants,
+	removeValuecallUpTimerRunningIds,
+	resetBreakTime,
+	resetBreakTimeSuccess,
+	setBreakTime,
+	setBreakTimeLocalState,
+	setCompetitionData
 } from 'src/store/slices/competitionSlice'
-import { updateCompetitionsListBreakTime, resetCompetitionsListBreakTime } from 'src/store/slices/competitionsSlice'
+import { resetCompetitionsListBreakTime, updateCompetitionsListBreakTime } from 'src/store/slices/competitionsSlice'
 import { ChooseWinnerType } from 'src/types'
-import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
+import { Alert, BreakTimer, Button, Input, Loader, Modal, Tag } from 'src/ui'
+import { AlertPropTypes } from 'src/ui/Alert/Alert'
+import { endCompetitionApi } from '../api/requests/competitions'
 
 type AlertType = {
 	show: boolean
@@ -60,6 +61,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 	const [alertData, setAlertData] = useState<AlertType>({ show: false })
 	const [winnerData, setWinnerData] = useState<Record<string, ChooseWinnerType>>({})
 	const isCompetitionOver = competitionData && Boolean(competitionData.endDate)
+	const allGroupsCompleted = competitionData && !competitionData.groups?.some(g => !g.isCompleted)
 	const isCompetitionStartsWithinAnHour =
 		competitionData && isPast(subtractMinutes(competitionData.startDate, 60)) && !isCompetitionOver
 
@@ -280,7 +282,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 									</div>
 								</div>
 							</div>
-							{!isCompetitionOver && (
+							{!isCompetitionOver && !allGroupsCompleted && (
 								<div>
 									<div className='relative mb-9 h-fit rounded-2xl border-2 p-10 text-heading-3'>
 										The competition is on!
@@ -296,6 +298,22 @@ export const JudgeCompetitionPage = (): ReactElement => {
 											Take a break
 										</Button>
 									)}
+								</div>
+							)}
+							{!isCompetitionOver && allGroupsCompleted && (
+								<div>
+									<div className='relative mb-9 h-fit rounded-2xl border-2 p-10 text-heading-3'>
+										All groups has passed!
+										<TwoStarsIcon className='absolute top-[7rem] right-[3.5rem] w-10' />
+									</div>
+									<Button
+										classes='w-full'
+										onClick={() => {
+											if (competitionId) endCompetitionApi(competitionId)
+										}}
+									>
+										End competition
+									</Button>
 								</div>
 							)}
 							{isCompetitionOver && (

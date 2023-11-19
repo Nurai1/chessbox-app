@@ -10,19 +10,23 @@ type CompetitionRequirementsPropsType = {
 export const CompetitionRequirements: FC<CompetitionRequirementsPropsType> = ({ competitionRequirements, classes }) => {
 	return (
 		<div className={twMerge('flex items-center', classes)}>
-			<p className='max-w-[9.375rem] pr-2 md:pr-4 text-grey xl:font-bold'>Competition requirements:</p>
+			<p className='max-w-[9.375rem] pr-2 text-grey md:pr-4 xl:font-bold'>Competition requirements:</p>
 			<div className='min-w-[6.25rem] border-x px-2 md:px-4'>
 				<p className='mb-2 text-sm xl:text-base'>Age:</p>
 				<p className='whitespace-nowrap font-bold'>
 					{competitionRequirements?.ageCategory?.from} - {competitionRequirements?.ageCategory?.to}{' '}
 				</p>
 			</div>
-			<div className='min-w-[6.25rem] pl-2 md:pl-4'>
+			<div className='min-w-[6.25rem] border-r px-2 md:px-4'>
 				<p className='mb-2 text-sm xl:text-base'>Weight:</p>
 				<p className='whitespace-nowrap font-bold'>
 					{competitionRequirements?.weightCategory?.from} - {competitionRequirements?.weightCategory?.to}
 					<span className='text-grey'> kg</span>
 				</p>
+			</div>
+			<div className='min-w-[6.25rem] pl-2 md:pl-4'>
+				<p className='mb-2 text-sm xl:text-base'>Gender:</p>
+				<p className='whitespace-nowrap font-bold'>{competitionRequirements?.gender}</p>
 			</div>
 		</div>
 	)

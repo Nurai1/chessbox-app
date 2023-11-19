@@ -18,14 +18,13 @@ mongoose.connect(remoteMongoUri ?? '', (err) => {
 
 export const moveStaticDataToEnv = async () => {
   try {
-    const comp = await Competition.findById('6554487f16a0f2ba0a83a9e1');
-    comp?.groups.forEach(async (group) => {
-      await User.updateMany(
-        { _id: { $in: group.allParticipants } },
-        { currentGroupId: group._id?.toString() }
-      );
-      console.log('done');
-    });
+    const users = await User.find({ role: 'participant' });
+    const competition = await Competition.findOneAndUpdate(
+      { _id: '65583064e8c479708981b946' },
+      { participants: users.map((user) => user._id) }
+    );
+    console.log(competition);
+    console.log('done');
   } catch (e) {
     console.error(e);
   }
