@@ -65,7 +65,7 @@ export const SignUpForm = (): ReactElement => {
 				case 'birthDate':
 					return {
 						...acc,
-						[item]: `${formData[item]}Z`
+						[item]: `${formData[item]}`
 					}
 				case 'passwordConfirm':
 					break
