@@ -140,6 +140,8 @@ export const signup = async (
     await newUser.save();
   } catch (err: any) {
     errorUniqueCheck({ err, res });
+
+    throw err;
   }
 
   res.json({
