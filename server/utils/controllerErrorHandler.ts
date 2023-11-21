@@ -6,6 +6,7 @@ export const controllerErrorHandler =
     try {
       await controllerExecutor(req, res, next);
     } catch (err: any) {
+      console.error(err);
       next(err);
     }
   };
