@@ -215,6 +215,11 @@ export const SignUpForm = (): ReactElement => {
 						onShowPassword={() => setShowConfirmPassword(!showConfirmPassword)}
 						showPasswordIcon
 					/>
+					{!!Object.keys(validateErrors).length && (
+						<div className='mt-2'>
+							<Alert subtitle='Check all fields for validation errors.' />
+						</div>
+					)}
 					<Button loading={authLoading} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
 						Sign Up
 					</Button>
