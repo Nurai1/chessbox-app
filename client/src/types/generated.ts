@@ -608,6 +608,7 @@ export interface paths {
 					weightTo?: number
 					withWomen?: boolean
 					withMen?: boolean
+					role?: string
 				}
 			}
 			responses: {

@@ -238,6 +238,10 @@ userRouter.get(
           in: 'query',
           schema: { type: "boolean" }
   } */
+  /*  #swagger.parameters['role'] = {
+          in: 'query',
+          schema: { type: "string" }
+  } */
   /* 
     #swagger.responses[200] = {
             description: '',

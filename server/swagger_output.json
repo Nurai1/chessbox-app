@@ -2005,6 +2005,13 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
