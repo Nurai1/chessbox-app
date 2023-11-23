@@ -19,7 +19,7 @@ export const fetchUsers = createAsyncThunk(
 		},
 		thunkApi
 	) => {
-		const response = await getUsersApi(query)
+		const response = await getUsersApi({ ...query, role: 'participant' })
 		if (response.error)
 			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
 

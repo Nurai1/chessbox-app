@@ -275,6 +275,7 @@ export const getUsers = async (
     weightTo,
     withWomen,
     withMen,
+    role,
   } = req.query;
 
   const getGenderFilter = () => {
@@ -311,6 +312,9 @@ export const getUsers = async (
     },
     weightFrom && {
       weight: { $gte: Number(weightFrom) },
+    },
+    role && {
+      role,
     },
     getGenderFilter(),
     search && {
