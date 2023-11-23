@@ -9,11 +9,11 @@ type UsersTableWithTitlePropsType = {
 } & TablePropsType
 
 const columnsDefault = [
-	{ title: 'Place', classes: 'max-w-[3rem] lg:max-w-[5rem] xl:max-w-[6.875rem]' },
-	{ title: 'Name', classes: 'lg:max-w-none xl:max-w-[15rem]' },
-	{ title: 'Age & Weight', classes: 'max-w-[11rem] hidden xl:flex' },
-	{ title: 'Location', classes: 'hidden lg:flex' },
-	{ title: 'Points', classes: '!grow-0 md:min-w-[6.25rem] lg:min-w-[10rem] xl:min-w-[10.4rem]' }
+	{ node: 'Place', classes: 'max-w-[3rem] lg:max-w-[5rem] xl:max-w-[6.875rem]' },
+	{ node: 'Name', classes: 'lg:max-w-none xl:max-w-[15rem]' },
+	{ node: 'Age & Weight', classes: 'max-w-[11rem] hidden xl:flex' },
+	{ node: 'Location', classes: 'hidden lg:flex' },
+	{ node: 'Points', classes: '!grow-0 md:min-w-[6.25rem] lg:min-w-[10rem] xl:min-w-[10.4rem]' }
 ]
 // sm:min-w-[7.5rem]
 export const UsersTableWithTitle: FC<UsersTableWithTitlePropsType> = ({

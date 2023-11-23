@@ -39,15 +39,14 @@ export const Header = (): ReactElement => {
 			<header className='border-b border-zinc-300'>
 				<div
 					className={twMerge(
-						'container m-auto flex h-[3.75rem] items-center justify-between px-6 py-1 md:h-20 md:px-[1.875rem]',
-						isRatingPage && 'h-[2.5rem] md:h-[2.5rem]'
+						'container m-auto flex h-[3.75rem] items-center justify-between px-6 py-1 md:h-20 md:px-[1.875rem]'
 					)}
 				>
 					{pathname === AppRoute.Root ? (
 						<Logo />
 					) : (
 						<Link to={AppRoute.Root} className='transition hover:opacity-70'>
-							<Logo className={isRatingPage ? 'w-[1.5rem]' : 'w-[3.25rem]'} />
+							<Logo className='w-[3.25rem]' />
 						</Link>
 					)}
 

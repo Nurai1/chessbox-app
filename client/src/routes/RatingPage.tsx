@@ -47,7 +47,7 @@ export const RatingPage = (): ReactElement => {
 	return (
 		<main className='container m-auto flex grow flex-col px-4 pt-4 md:px-7 lg:px-10 2xl:px-[40px]'>
 			<h1 className='mb-3 text-heading-4 xl:mb-5'>Rating</h1>
-			<div className='md:border-pale-grey flex grow flex-col md:rounded-3xl md:border md:px-10 md:pt-5'>
+			<div className='flex grow flex-col md:rounded-3xl md:border md:border-pale-grey md:px-10 md:pt-5'>
 				<UsersSearch classes='mb-2.5 xl:mb-4' />
 				{isLoading && <Loader classes='h-[80vh]' />}
 				{hasUsers && (
