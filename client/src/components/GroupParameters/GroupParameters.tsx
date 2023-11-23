@@ -4,7 +4,7 @@ import { CheckboxAndRadioButton, Input, Button } from 'src/ui'
 import { CompetitionRequirementsSchema } from 'src/types'
 
 export type GroupParametersForm = Omit<Errors, 'weightMessage' | 'ageMessage'> & {
-	sex: string
+	sex?: string
 } & Errors
 
 type GroupParametersPropsType = {
@@ -39,7 +39,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 	resetFilterTrigger,
 	resetFilter
 }) => {
-	const [groupData, setGroupData] = useState<GroupParametersForm>({ sex: 'man' })
+	const [groupData, setGroupData] = useState<GroupParametersForm>({})
 	const [errors, setErrors] = useState<Errors>({})
 
 	const validate = (
@@ -74,7 +74,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 		if (Number(groupData[key1]) < minValue || Number(groupData[key1]) > maxValue) {
 			setErrors(prevSate => ({
 				...prevSate,
-				[key1]: `${groupData.sex} < ${groupData[key1]} ${fieldName === 'Age' ? 'age' : 'kg'}`,
+				[key1]: `${minValue} > ${groupData[key1]} ${fieldName === 'Age' ? 'age' : 'kg'}`,
 				[errorTitle]: `${fieldName} is out of requirements`
 			}))
 		}
@@ -82,7 +82,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 		if (Number(groupData[key2]) > maxValue || Number(groupData[key2]) < minValue) {
 			setErrors(prevSate => ({
 				...prevSate,
-				[key2]: `${groupData.sex} > ${groupData[key2]} ${fieldName === 'Age' ? 'age' : 'kg'}`,
+				[key2]: `${maxValue} < ${groupData[key2]} ${fieldName === 'Age' ? 'age' : 'kg'}`,
 				[errorTitle]: `${fieldName} is out of requirements`
 			}))
 		}
@@ -108,14 +108,14 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 				'weightMessage',
 				'Weight',
 				requirements.weightCategory?.from || 0,
-				requirements.weightCategory?.to || 299
+				requirements.weightCategory?.to || 199
 			)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [groupData])
 
 	useEffect(() => {
-		setGroupData({ sex: 'man' })
+		setGroupData({})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [resetFilterTrigger])
 
@@ -135,26 +135,29 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 
 	return (
 		<div className={twMerge('relative max-w-[16rem]', classes)}>
-			<div className='mb-6 flex h-12 items-center'>
-				<p className='min-w-[4.375rem] font-bold'>Sex:</p>
-				<CheckboxAndRadioButton
-					name='sex'
-					type='radio'
-					onChange={onChange}
-					title='Man'
-					value='man'
-					checked={groupData.sex === 'man'}
-					classes='mr-2.5'
-				/>
-				<CheckboxAndRadioButton
-					name='sex'
-					type='radio'
-					onChange={onChange}
-					title='Woman'
-					value='woman'
-					checked={groupData.sex === 'woman'}
-				/>
-			</div>
+			{!requirements?.gender && (
+				<div className='mb-6 flex h-12 items-center'>
+					<p className='min-w-[4.375rem] font-bold'>Sex:</p>
+					<CheckboxAndRadioButton
+						name='sex'
+						type='radio'
+						onChange={onChange}
+						title='Man'
+						value='man'
+						checked={groupData.sex === 'man'}
+						classes='mr-2.5'
+					/>
+					<CheckboxAndRadioButton
+						name='sex'
+						type='radio'
+						onChange={onChange}
+						title='Woman'
+						value='woman'
+						checked={groupData.sex === 'woman'}
+					/>
+				</div>
+			)}
+
 			<div className='relative mb-9 flex'>
 				<p className='m-auto min-w-[4.375rem] font-bold'>Weight:</p>
 				<Input
@@ -208,7 +211,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 							from: groupData.weightFrom ? Number(groupData.weightFrom) : undefined,
 							to: Number(groupData.weightTo)
 						},
-						gender: groupData.sex
+						gender: requirements?.gender ?? groupData.sex
 					})
 				}}
 			>
@@ -216,7 +219,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 			</Button>
 			<Button
 				onClick={() => {
-					setGroupData({ sex: 'man' })
+					setGroupData({})
 					setErrors({})
 					resetFilter()
 				}}
@@ -225,6 +228,11 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 			>
 				Clean up
 			</Button>
+			{!requirements?.gender && !groupData.sex && (
+				<p className='mt-2 text-xs text-error-red'>
+					Please, choose the sex of group. <br />
+				</p>
+			)}
 			{hasErrors() && (
 				<p className='absolute -bottom-9 text-xs text-error-red'>
 					Group parameters overlap with group <br />

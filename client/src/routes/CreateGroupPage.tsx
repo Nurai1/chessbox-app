@@ -322,30 +322,29 @@ export const CreateGroupPage = (): ReactElement => {
 				competitionData={competitionData}
 				judges={judges}
 			/>
-			{competitionData?.requirements && (
-				<div className='mb-12 grid grid-cols-[16rem_auto] gap-5 overflow-hidden rounded-3xl border border-pale-grey pt-6 pl-6'>
-					<div className='mb-6'>
-						<GroupParameters
-							requirements={competitionData.requirements}
-							getGroupParameters={getParticipantsByFilter}
-							addGroup={handleAddGroup}
-							disableAddGroupBtn={participants?.inGroup?.length === 0 || hasOverlapError.hasError || !showButtonClicked}
-							addGroupRequestPending={groupAddPending}
-							resetFilterTrigger={groupAddSuccess}
-							resetFilter={resetParticipantsList}
-							classes='mb-[3.125rem]'
-						/>
-						{competitionData.requirements && (
-							<CompetitionRequirementsBordered competitionRequirements={competitionData.requirements} />
-						)}
-					</div>
-					{allParticipants ? (
-						<ParticipantsList participants={participants} onSort={handleSort} classes='-mr-px' />
-					) : (
-						<Loader />
+
+			<div className='mb-12 grid grid-cols-[16rem_auto] gap-5 overflow-hidden rounded-3xl border border-pale-grey pt-6 pl-6'>
+				<div className='mb-6'>
+					<GroupParameters
+						requirements={competitionData?.requirements ?? {}}
+						getGroupParameters={getParticipantsByFilter}
+						addGroup={handleAddGroup}
+						disableAddGroupBtn={participants?.inGroup?.length === 0 || hasOverlapError.hasError || !showButtonClicked}
+						addGroupRequestPending={groupAddPending}
+						resetFilterTrigger={groupAddSuccess}
+						resetFilter={resetParticipantsList}
+						classes='mb-[3.125rem]'
+					/>
+					{competitionData?.requirements && (
+						<CompetitionRequirementsBordered competitionRequirements={competitionData.requirements} />
 					)}
 				</div>
-			)}
+				{allParticipants ? (
+					<ParticipantsList participants={participants} onSort={handleSort} classes='-mr-px' />
+				) : (
+					<Loader />
+				)}
+			</div>
 			<h2 className='mb-8 text-heading-3'>Groups</h2>
 			{competitionData?.groups?.length !== 0 && (
 				<RoundedBorderWrapper classes='py-4 !py-2'>
