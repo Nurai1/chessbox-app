@@ -6,7 +6,8 @@ import { ReactComponent as ArrowLeft } from 'src/assets/arrow-left.svg'
 import { validator } from 'src/helpers/validation/validator'
 import { validatorConfigEditUser } from 'src/helpers/validation/validatorConfigEditUser'
 import { UserSchema } from 'src/types'
-import { editUser, forgotPassword } from 'src/store/slices/userSlice'
+import { editUser } from 'src/store/slices/userSlice'
+// import { editUser, forgotPassword } from 'src/store/slices/userSlice'
 import { FormData } from 'src/types/formData'
 import { AppRoute } from 'src/constants/appRoute'
 import { getFormattedDate } from 'src/helpers/datetime'
@@ -14,7 +15,7 @@ import { getFormattedDate } from 'src/helpers/datetime'
 export const EditProfilePage = (): ReactElement => {
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
-	const { authorizedUser, editSuccess, editError, isPasswordLinkSent, authLoading, editLoading } = useAppSelector(
+	const { authorizedUser, editSuccess, editError, isPasswordLinkSent, editLoading } = useAppSelector(
 		state => state.user
 	)
 
@@ -180,7 +181,7 @@ export const EditProfilePage = (): ReactElement => {
 							validationErrorText={validateErrors?.chessPlatformUserName}
 						/>
 						<div className='mt-[22px] flex flex-col-reverse flex-wrap justify-between gap-[16px] sm:flex-row sm:items-center'>
-							<button
+							{/* <button
 								type='button'
 								className='flex items-center font-medium underline transition hover:opacity-70'
 								onClick={() => {
@@ -191,7 +192,7 @@ export const EditProfilePage = (): ReactElement => {
 								{authLoading && (
 									<span className=' ml-2 inline-block h-5 w-5 animate-spin rounded-full border-[4px] border-black border-b-transparent' />
 								)}
-							</button>
+							</button> */}
 							<Button loading={editLoading} classes='w-full font-medium sm:w-[160px]' onClick={handleSubmit}>
 								Save
 							</Button>
