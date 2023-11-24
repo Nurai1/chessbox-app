@@ -1,33 +1,36 @@
 import { FC } from 'react'
-import { useWindowSize } from 'usehooks-ts'
+import { useNavigate } from 'react-router-dom'
 import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
-import { ReactComponent as Persons } from 'src/assets/persons.svg'
 import { ReactComponent as Hourglass } from 'src/assets/hourglass.svg'
+import { ReactComponent as Persons } from 'src/assets/persons.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
-import { Link } from 'react-router-dom'
-import { useAppSelector } from 'src/hooks/redux'
+import {
+	CompetitionCardTimer,
+	CompetitionInfo,
+	RegistrationEndsTimer,
+	RequestAwaitAcception,
+	YouAreParticipant
+} from 'src/components'
+import style from 'src/components/CompetitionCard/CompetitionCard.module.css'
+import { BreakPoint } from 'src/constants/breakPoints'
+import { Role } from 'src/constants/role'
+import { getFormattedDate, isPast } from 'src/helpers/datetime'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { CompetitionSchema } from 'src/types'
 import { Tag } from 'src/ui'
-import { getFormattedDate, isPast } from 'src/helpers/datetime'
-import { BreakPoint } from 'src/constants/breakPoints'
-import style from 'src/components/CompetitionCard/CompetitionCard.module.css'
-import {
-	RegistrationEndsTimer,
-	CompetitionInfo,
-	YouAreParticipant,
-	CompetitionCardTimer,
-	RequestAwaitAcception
-} from 'src/components'
-import { Role } from 'src/constants/role'
+import { useWindowSize } from 'usehooks-ts'
+import { setCompetitionData } from '../../store/slices/competitionSlice'
 
 type CompetitionPropsType = {
 	competition: CompetitionSchema
 }
 
 export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
+	const navigate = useNavigate()
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const { startDate, registrationEndsAt, endDate, name, price, description, participants, _id } = competition
 	const { authorizedUser } = useAppSelector(state => state.user)
+	const dispatch = useAppDispatch()
 	const dateStart = getFormattedDate(startDate, 'MMM D, HH:mm')
 	const isRegistrationClosed = isPast(registrationEndsAt)
 	const isCompetitionOver = Boolean(endDate)
@@ -74,9 +77,16 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 			xl:col-start-auto xl:col-end-auto'
 			>
 				<h2 className='mb-[17px] text-heading-6 lg:mb-0 xl:mb-[22px] xl:text-heading-2'>
-					<Link to={_id as string} className='transition hover:opacity-70'>
+					<button
+						onClick={() => {
+							dispatch(setCompetitionData(competition))
+							navigate(`/competitions/${_id}`)
+						}}
+						type='button'
+						className='underline hover:opacity-70'
+					>
 						{name}
-					</Link>
+					</button>
 				</h2>
 				{screenWidth < BreakPoint.Lg && (
 					<p className='text-sm text-grey xl:text-lg xl:font-medium'>Starts At {dateStart}</p>
