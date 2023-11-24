@@ -180,7 +180,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 											loading={launchNextGroupRoundPending}
 											onClick={() => handleLaunchNextGroupRound(_id as string)}
 										>
-											To the next round
+											Create new pairs
 										</Button>
 									)}
 									{!!nextRoundParticipants?.length &&
