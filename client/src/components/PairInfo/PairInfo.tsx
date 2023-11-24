@@ -47,7 +47,7 @@ export const PairInfo: FC<MatchInfoPropsType> = ({ pairData, zoomLink, startTime
 						href={`https://wa.me/${pairData?.judgeData?.socialNetworks?.whatsup}`}
 					>
 						{pairData?.judgeData?.socialNetworks?.whatsup}
-						<WhatsappIcon className='h-[0.8125rem] w-[0.8125rem] lg:h-[1.125rem] lg:min-w-[1.125rem] xl:h-9 xl:min-w-9' />
+						<WhatsappIcon className='xl:min-w-9 h-[0.8125rem] w-[0.8125rem] lg:h-[1.125rem] lg:min-w-[1.125rem] xl:h-9' />
 					</a>
 				)}
 			</div>
