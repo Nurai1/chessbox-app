@@ -27,8 +27,6 @@ type Errors = {
 	ageTo?: string
 }
 
-const GROUP_DATA_FIELDS_NUMBER = 5
-
 export const GroupParameters: FC<GroupParametersPropsType> = ({
 	requirements,
 	getGroupParameters,
@@ -190,7 +188,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 				)}
 			</div>
 			<Button
-				disabled={disableAddGroupBtn || Object.values(groupData).length !== GROUP_DATA_FIELDS_NUMBER}
+				disabled={disableAddGroupBtn || Object.values(groupData).length !== (requirements?.gender ? 4 : 5)}
 				classes='w-full mb-2'
 				onClick={addGroup}
 				loading={addGroupRequestPending}
