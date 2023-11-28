@@ -260,6 +260,7 @@ export const getUsers = async (
       weightTo?: string;
       withWomen?: string;
       withMen?: string;
+      role?: string;
     }
   >,
   res: Response,
