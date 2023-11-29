@@ -72,12 +72,12 @@ export const SignInForm = (): ReactElement => {
 					<Link to={`/${AppRoute.SignUp}`} className='underline transition hover:opacity-70'>
 						Sign Up
 					</Link>
-					{/* <Link
+					<Link
 						to={`/${AppRoute.ForgotPassword}`}
 						className='h-auto p-0 text-sm font-thin underline transition hover:opacity-70'
 					>
 						Forgot Password
-					</Link> */}
+					</Link>
 				</div>
 				{authError && (
 					<div className='mt-2'>
