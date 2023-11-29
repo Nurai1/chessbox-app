@@ -65,7 +65,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     service: 'Yandex',
     auth: {
       user: 'kroshkaothleba@yandex.ru',
-      pass: 'Zaq!polk',
+      pass: 'aprredyjgoaseghh',
     },
   });
 
@@ -91,7 +91,8 @@ export const forgotPassword = async (req: Request, res: Response) => {
   try {
     await transporter.sendMail(mailOptions);
   } catch (err) {
-    res.status(500).send({ error: 'Email service does not send email.' });
+    console.error(err);
+    return res.status(500).send({ error: 'Email service has not send email.' });
   }
 
   setTimeout(async () => {

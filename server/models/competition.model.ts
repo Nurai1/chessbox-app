@@ -8,7 +8,7 @@ const { Schema } = mongoose;
 const competitionSchema = new Schema<ICompetition>(
   {
     startDate: { type: Date, required: true },
-    baseDate: { type: Date, required: true },
+    baseDate: { type: Date },
     endDate: Date,
     registrationEndsAt: { type: Date, required: true },
     name: { type: String, required: true },

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
+import nodemailer from 'nodemailer';
 import { Competition, User } from '../models/index';
 import { ICompetition, ICompetitionGroup, IPair } from '../types/index';
 import { getParticipantsAmountForCurrentRound } from '../utils/getParticipantsAmountForCurrentRound';
@@ -8,6 +9,8 @@ import {
   recalculateRating,
 } from '../utils/recalculateRating';
 import { getPairsWithJudges } from '../utils/competition';
+
+const { CLIENT_URL } = process.env;
 
 export const getCompetitions = async (
   req: Request,
@@ -989,6 +992,28 @@ export const setUserPaymentRequestToCheck = async (
   await competition.save();
 
   res.send(competition);
+
+  const user = await User.findOne({ _id: userId });
+
+  const transporter = nodemailer.createTransport({
+    service: 'Yandex',
+    auth: {
+      user: 'kroshkaothleba@yandex.ru',
+      pass: 'aprredyjgoaseghh',
+    },
+  });
+  const mailOptions = {
+    from: 'kroshkaothleba@yandex.ru',
+    to: 'sayapov@bk.ru',
+    subject: 'Просьба проверить оплату в chessbox приложении',
+    text: `Пользователь ${user?.fullName} просит проверить оплату в chessbox приложении.\n Ссылка на проверку: ${CLIENT_URL}/#/competition/${id}/verify-payment`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const setUserPaymentPaid = async (
