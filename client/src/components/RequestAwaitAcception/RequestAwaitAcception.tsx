@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react'
-import { ReactComponent as Loader } from 'src/assets/loader.svg'
+// import { ReactComponent as Loader } from 'src/assets/loader.svg'
 import { twMerge } from 'tailwind-merge'
 
 type RequestAwaitAcceptionPropsType = {
@@ -24,12 +24,13 @@ export const RequestAwaitAcception: FC<RequestAwaitAcceptionPropsType> = ({ chil
 				>
 					Your request has been accepted, please await confirmation. <br className='hidden lg:block' /> (about 2 days)
 				</p>
-				<Loader
+				{/* TODO: add loader */}
+				{/* <Loader
 					className={twMerge(
 						'min-h-[3rem] min-w-[3rem] animate-spin lg:ml-auto lg:-mt-12 lg:min-h-[4rem] lg:min-w-[4rem] xl:ml-44 xl:-mt-14 xl:min-h-[6.75rem] xl:min-w-[6.75rem]',
 						!isCompetitionPage && 'lg:mt-0 xl:ml-auto xl:-mt-8 xl:mr-2 xl:min-h-[4rem] xl:min-w-[4rem]'
 					)}
-				/>
+				/> */}
 				{children}
 			</div>
 		</div>
