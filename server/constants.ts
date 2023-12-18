@@ -18,3 +18,13 @@ export const ACTIONS = {
   deleteAny: 'deleteAny',
   createAny: 'createAny',
 } as const;
+
+export const SMTP_USER_MAIL = 'carryitthroughlife@gmail.com';
+
+export const NODEMAILER_TRANSPORT_CONFIG = {
+  service: 'gmail',
+  auth: {
+    user: SMTP_USER_MAIL,
+    pass: process.env.SMTP_SERVICE_PASSKEY,
+  },
+};
