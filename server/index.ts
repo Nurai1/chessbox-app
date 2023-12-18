@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import './utils/dotenvConfig';
+
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
 // eslint-disable-next-line import/no-extraneous-dependencies

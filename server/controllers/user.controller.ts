@@ -1,11 +1,16 @@
 import bcrypt from 'bcryptjs';
-import dotenv from 'dotenv';
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 
 import dayjs from 'dayjs';
-import { ACTIONS, RESOURCES, ROLES } from '../constants';
+import {
+  ACTIONS,
+  NODEMAILER_TRANSPORT_CONFIG,
+  RESOURCES,
+  ROLES,
+  SMTP_USER_MAIL,
+} from '../constants';
 import { User } from '../models/index';
 import ac from '../roles';
 import { IUser } from '../types/index';
@@ -16,8 +21,6 @@ import {
   emailParser,
   passwordParser,
 } from '../utils/validation';
-
-dotenv.config();
 
 const { CLIENT_URL } = process.env;
 
@@ -61,13 +64,7 @@ export const changePassword = async (req: Request, res: Response) => {
 export const forgotPassword = async (req: Request, res: Response) => {
   const { email } = req.body;
 
-  const transporter = nodemailer.createTransport({
-    service: 'Yandex',
-    auth: {
-      user: 'kroshkaothleba@yandex.ru',
-      pass: 'aprredyjgoaseghh',
-    },
-  });
+  const transporter = nodemailer.createTransport(NODEMAILER_TRANSPORT_CONFIG);
 
   const passwordResetCode = Math.floor(Math.random() * 9000 + 1000);
 
@@ -80,7 +77,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     return res.status(404).send({ error: "User wasn't found by email" });
 
   const mailOptions = {
-    from: 'kroshkaothleba@yandex.ru',
+    from: SMTP_USER_MAIL,
     to: email,
     subject: 'Chessboxing Online. Password Reset',
     text: `Follow this link to reset your password: \n${CLIENT_URL}/?email=${encodeURIComponent(
