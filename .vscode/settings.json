@@ -1,8 +1,10 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
+  "editor.codeActionsOnSave": [
+    "source.addMissingImports",
+    "source.fixAll.eslint",
+    "source.sortImports"
+  ],
   "eslint.validate": ["javascript", "typescript"],
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "git.ignoreLimitWarning": true
 }

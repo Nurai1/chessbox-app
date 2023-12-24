@@ -1,30 +1,33 @@
-import { ReactElement, useEffect, useRef, useState, ReactNode } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
-import { BreakTimer, Button, Loader, Modal, TableBody, Tag } from 'src/ui'
-import { ReactComponent as BanknoteIcon } from 'src/assets/banknote.svg'
-import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
+import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
 import { ReactComponent as ArrowRightIcon } from 'src/assets/arrow-right-long.svg'
-import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
+import { ReactComponent as BanknoteIcon } from 'src/assets/banknote.svg'
 import { ReactComponent as HourGlass } from 'src/assets/hourglass.svg'
+import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
-import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { AppRoute } from 'src/constants/appRoute'
-import { getFormattedDate, isPast, subtractMinutes } from 'src/helpers/datetime'
+import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
 import {
-	PairInfo,
-	CompetitionRequirements,
-	YouAreParticipant,
-	RegistrationEndsTimer,
-	CompetitionParticipantsTable,
-	TimerBeforeParticipantFight,
-	TimerBeforeCompetitionStarts,
 	CompetitionInfo,
+	CompetitionParticipantsTable,
+	CompetitionRequirements,
 	CompetitionResultList,
-	RequestAwaitAcception
+	PairInfo,
+	RegistrationEndsTimer,
+	RequestAwaitAcception,
+	TimerBeforeCompetitionStarts,
+	TimerBeforeParticipantFight,
+	YouAreParticipant
 } from 'src/components'
+import { AppRoute } from 'src/constants/appRoute'
+import { Role } from 'src/constants/role'
+import { getFormattedDate, isPast, subtractMinutes } from 'src/helpers/datetime'
+import { getCompetitionResult } from 'src/helpers/getCompetitionResult'
+import { getSortedRuseltParticipants } from 'src/helpers/getSortedRuseltParticipants'
 import { PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
 import { tableSchemaParticipants, tableSchemaResults } from 'src/helpers/tableSchemas/tableSchemaParticipants'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
 import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
@@ -32,11 +35,8 @@ import {
 	setCompetitionData,
 	startCompetition
 } from 'src/store/slices/competitionSlice'
-import { Role } from 'src/constants/role'
-import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
-import { getCompetitionResult } from 'src/helpers/getCompetitionResult'
-import { getSortedRuseltParticipants } from 'src/helpers/getSortedRuseltParticipants'
 import { CompetitionGroupSchema, ParticipantSchema, UserPaymentInfo } from 'src/types'
+import { BreakTimer, Button, Loader, Modal, TableBody, Tag } from 'src/ui'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()

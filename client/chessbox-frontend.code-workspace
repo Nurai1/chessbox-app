@@ -17,7 +17,7 @@
 		"css.lint.unknownAtRules": "ignore",
 		"css.validate": true,
 		"typescript.tsdk": "node_modules/typescript/lib",
-		"cSpell.words": ["twMerge", "Privo"],
+		"cSpell.words": ["twMerge"],
 		"typescript.disableAutomaticTypeAcquisition": true,
 		"editor.foldingImportsByDefault": true,
 		"editor.codeActionsOnSave": ["source.addMissingImports", "source.fixAll.eslint", "source.sortImports"],

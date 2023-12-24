@@ -1,13 +1,14 @@
 import { ReactElement, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Input, Select, Button, Alert } from 'src/ui'
+import { omit } from 'remeda'
+import { AppRoute } from 'src/constants/appRoute'
 import { validator } from 'src/helpers/validation/validator'
 import { validatorConfigSingUp } from 'src/helpers/validation/validatorConfigSingUp'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { signUpUser } from 'src/store/slices/userSlice'
-import { AppRoute } from 'src/constants/appRoute'
 import { SignUpDataSchema } from 'src/types'
 import { FormData } from 'src/types/formData'
+import { Alert, Button, Input, Select } from 'src/ui'
 
 export const SignUpForm = (): ReactElement => {
 	const [formData, setFormData] = useState<FormData>({
@@ -35,6 +36,20 @@ export const SignUpForm = (): ReactElement => {
 			...formData,
 			[name as string]: value as string
 		})
+	}
+
+	const onMomentValidationChange = (value?: string, name?: string) => {
+		onChange(value, name)
+
+		if (name && value) {
+			const errors = validator({ [name]: value }, validatorConfigSingUp)
+
+			if (Object.keys(errors).length) {
+				setValidateErrors({ ...validateErrors, [name]: errors[name] })
+			} else {
+				setValidateErrors(omit(validateErrors, [name]))
+			}
+		}
 	}
 
 	const adaptDataToServer = () => {
@@ -97,7 +112,7 @@ export const SignUpForm = (): ReactElement => {
 				<h1 className='mb-[8px] text-center text-heading-4'>Sign Up</h1>
 				<div className='grid gap-[18px]'>
 					<Input
-						onChange={onChange}
+						onChange={onMomentValidationChange}
 						value={formData?.email}
 						label='Email'
 						name='email'
@@ -106,7 +121,7 @@ export const SignUpForm = (): ReactElement => {
 						validationErrorText={validateErrors?.email}
 					/>
 					<Input
-						onChange={onChange}
+						onChange={onMomentValidationChange}
 						value={formData?.firstName}
 						label='First Name'
 						name='firstName'
@@ -115,7 +130,7 @@ export const SignUpForm = (): ReactElement => {
 						validationErrorText={validateErrors?.firstName}
 					/>
 					<Input
-						onChange={onChange}
+						onChange={onMomentValidationChange}
 						value={formData?.lastName}
 						label='Last Name'
 						name='lastName'
