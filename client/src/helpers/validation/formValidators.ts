@@ -15,6 +15,8 @@ export const invalidUrlStringValidator = z.custom<string>(val => URL_REGEX.test(
 
 export const EMAIL_REGEX = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
 
-export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*\d)(?=.*[^\da-zA-Z]).{3,}$/
+export const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{3,}$/
+// eslint-disable-next-line no-control-regex
+export const IS_ASCII_REGEX = /^[\x00-\x7F]+$/
 export const DIGIT_REGEX = /^[0-9]*$/
 export const DATE_REGEX = /^(0?[1-9]|[12][0-9]|3[01])[.](0?[1-9]|1[012])[.]\d{4}$/

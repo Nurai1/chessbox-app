@@ -2,11 +2,17 @@ export const validatorConfigSingUp = {
 	firstName: {
 		isRequired: {
 			errorMessage: 'First name is required'
+		},
+		latinLettersAllowed: {
+			errorMessage: 'Only latin letters are allowed'
 		}
 	},
 	lastName: {
 		isRequired: {
 			errorMessage: 'Last name is required'
+		},
+		latinLettersAllowed: {
+			errorMessage: 'Only latin letters are allowed'
 		}
 	},
 	weight: {
