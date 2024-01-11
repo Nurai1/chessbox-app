@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 
 import nodemailer from 'nodemailer';
+import { NODEMAILER_TRANSPORT_CONFIG, SMTP_USER_MAIL } from '../constants';
 import { Competition, User } from '../models/index';
 import { ICompetition, ICompetitionGroup, IPair } from '../types/index';
+import { getPairsWithJudges } from '../utils/competition';
 import { getParticipantsAmountForCurrentRound } from '../utils/getParticipantsAmountForCurrentRound';
 import {
   FIXED_RATING_CHANGING_NUM,
   recalculateRating,
 } from '../utils/recalculateRating';
-import { getPairsWithJudges } from '../utils/competition';
-import { NODEMAILER_TRANSPORT_CONFIG, SMTP_USER_MAIL } from '../constants';
 
 const { CLIENT_URL } = process.env;
 
@@ -1002,7 +1002,7 @@ export const setUserPaymentRequestToCheck = async (
     from: SMTP_USER_MAIL,
     to: 'sayapov@bk.ru',
     subject: 'Просьба проверить оплату в chessbox приложении',
-    text: `Пользователь ${user?.fullName} просит проверить оплату в chessbox приложении.\n Ссылка на проверку: ${CLIENT_URL}/#/competition/${id}/verify-payment`,
+    text: `Пользователь ${user?.fullName} просит проверить оплату в chessbox приложении.\n Ссылка на проверку: ${CLIENT_URL}/#/competitions/${id}/verify-payment`,
   };
 
   try {
