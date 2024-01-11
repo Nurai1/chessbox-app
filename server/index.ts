@@ -2,13 +2,13 @@ import express, { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import './utils/dotenvConfig';
 
-import jwt from 'jsonwebtoken';
 import cors from 'cors';
+import jwt from 'jsonwebtoken';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as swaggerUi from 'swagger-ui-express';
-import * as swaggerFile from './swagger_output.json';
 import { User } from './models/index';
 import { competitionRouter, userRouter } from './routes/index';
+import * as swaggerFile from './swagger_output.json';
 
 export const app = express();
 
