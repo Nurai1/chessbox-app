@@ -287,6 +287,12 @@ export const getUsers = async (
     if (withMen === 'true') {
       return { gender: 'man' };
     }
+    if (withWomen === 'false') {
+      return { gender: 'man' };
+    }
+    if (withMen === 'false') {
+      return { gender: 'woman' };
+    }
     return null;
   };
   const currentYear = dayjs().year();

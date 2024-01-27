@@ -1,0 +1,72 @@
+{
+  "price": {
+    "currentValue": 100,
+    "pricesChanges": []
+  },
+  "breakTime": {
+    "minutes": 0
+  },
+  "requirements": {},
+  "startDate": "2024-01-28T13:00:00.000Z",
+  "baseDate": "2024-01-28T13:00:00.000Z",
+  "registrationEndsAt": "2024-01-27T13:00:00.000Z",
+  "name": "Турнир по шахбокс-фит онлайн",
+  "description": "",
+  "zoomLink": "https://us02web.zoom.us/j/3425486200?pwd=dU9qN1FvcWIzQ2FkdDFPbmI2T09wQT09",
+  "started": false,
+  "chiefJudgeEndedConfiguration": false,
+  "participants": [
+    "659a6ee42b35aa5fd90a7786",
+    "659c14a72b35aa5fd90a7b58",
+    "659c1a082b35aa5fd90a7bba",
+    "659d27652b35aa5fd90a8001",
+    "659d9e172b35aa5fd90a8673"
+  ],
+  "usersPaymentInfo": [
+    {
+      "userId": "659a6ee42b35aa5fd90a7786",
+      "paid": true,
+      "requestedToCheck": true,
+      "requestedCount": 1,
+      "message": "",
+      "_id": "659a705d2b35aa5fd90a77ec"
+    },
+    {
+      "userId": "659c14a72b35aa5fd90a7b58",
+      "paid": true,
+      "requestedToCheck": true,
+      "requestedCount": 1,
+      "message": "",
+      "_id": "659c25392b35aa5fd90a7cd6"
+    },
+    {
+      "userId": "659c1a082b35aa5fd90a7bba",
+      "paid": true,
+      "requestedToCheck": true,
+      "requestedCount": 1,
+      "message": "",
+      "_id": "659c1c582b35aa5fd90a7c89"
+    },
+    {
+      "userId": "659d27652b35aa5fd90a8001",
+      "paid": true,
+      "requestedToCheck": true,
+      "requestedCount": 1,
+      "message": "",
+      "_id": "659d28662b35aa5fd90a806e"
+    },
+    {
+      "userId": "659d9e172b35aa5fd90a8673",
+      "paid": true,
+      "requestedToCheck": true,
+      "requestedCount": 1,
+      "message": "",
+      "_id": "659d9ef22b35aa5fd90a86f1"
+    }
+  ],
+  "judges": [
+    "65620cb29bb356e048987c17",
+    "6559c2687ad89162319820e8"
+  ],
+  "groups": []
+}
