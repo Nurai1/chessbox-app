@@ -1,0 +1,1393 @@
+{
+  "items": [
+    {
+      "chessPlatform": {
+        "username": "Vanla"
+      },
+      "address": {
+        "country": "Россия",
+        "city": "Челябинск"
+      },
+      "fightClub": {
+        "name": "Burevestnik"
+      },
+      "_id": "659d93d52b35aa5fd90a81b8",
+      "email": "ivanmilaev2021@gmael.com",
+      "hashedPassword": "$2a$10$50uu0B5LeCH6h3Gd3zXtuOmFKFCD08p1g6U04wZamkE2so61Mzu1O",
+      "firstName": "Ivan",
+      "lastName": "Milaev",
+      "fullName": "Ivan Milaev",
+      "role": "participant",
+      "birthDate": "2015-09-15T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1028,
+      "weight": 30,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 1,
+          "_id": "65a3b204a3c40df9922e4597"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "Seryozha2008"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Chelyabinsk"
+      },
+      "fightClub": {
+        "name": "CHECK & ROUND"
+      },
+      "_id": "65a010f5a3c40df99218d68b",
+      "email": "s89000666298@gmail.com",
+      "hashedPassword": "$2a$10$NkQOVG4n7Y/RwdkBjVWYD.PYbd5.1MRcUf84gk8tvEPpumPhGnaIu",
+      "firstName": "FAIZULLOEV",
+      "lastName": "SERGEI",
+      "fullName": "FAIZULLOEV SERGEI",
+      "role": "participant",
+      "birthDate": "2008-01-31T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1018,
+      "weight": 50,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 2,
+          "_id": "65a3b204a3c40df9922e4599"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "MichaelEr"
+      },
+      "address": {
+        "country": "Russian ",
+        "city": "Chelyabinsk"
+      },
+      "fightClub": {
+        "name": "Shah & Round"
+      },
+      "_id": "655f44d0bc79976005247385",
+      "email": "mishaermak92@gmail.com",
+      "hashedPassword": "$2a$10$NjVN/g7UrczHvh87TZs0me8tqdSX5eFfcZwz11Yh7WNGxY67qRSvu",
+      "firstName": "Mihail",
+      "lastName": "Ermakov ",
+      "fullName": "Mihail Ermakov ",
+      "role": "participant",
+      "birthDate": "2004-06-05T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1017,
+      "weight": 93,
+      "competitionsHistory": [
+        {
+          "competitionId": "655f4727e0f2247e133fa5b7",
+          "groupId": "655f4a09bc799760052475fd",
+          "placeNumber": 3,
+          "_id": "655f4d96bc7997600524845b"
+        },
+        {
+          "competitionId": "6569d0d4743e0abb6d9bab17",
+          "groupId": "656ac14da41100d820e924fb",
+          "placeNumber": 1,
+          "_id": "656ad760a41100d820e99b3a"
+        }
+      ],
+      "currentGroupId": "656ac14da41100d820e924fb"
+    },
+    {
+      "chessPlatform": {
+        "username": "VanyaNaum"
+      },
+      "address": {
+        "country": "Россия",
+        "city": "г Солнечногорск, обл Московская"
+      },
+      "fightClub": {
+        "name": "Буревестник "
+      },
+      "_id": "659fd2f4a3c40df99218cf4b",
+      "email": "naume-maksim@yandex.ru",
+      "hashedPassword": "$2a$10$cZFMJQSZ4VMbkZOUZhB40uglbGskUq6XF1kbYfwMx/vPtdwd8EGWy",
+      "firstName": "Ivan",
+      "lastName": "Naumenko",
+      "fullName": "Ivan Naumenko",
+      "role": "participant",
+      "birthDate": "2013-01-18T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1012,
+      "weight": 37,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 4,
+          "_id": "65a3ae41a3c40df9922d7073"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "Michael_bro"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Moscow"
+      },
+      "fightClub": {
+        "name": "Akopyan team"
+      },
+      "_id": "659a6ee42b35aa5fd90a7786",
+      "email": "Yakunov@mail.ru",
+      "hashedPassword": "$2a$10$fHD72/I8y0k3hwNiXOfokuGNQCJxkLUxhCb10yNw6ToB4ymkx.I1K",
+      "firstName": "Michael",
+      "lastName": "Yakunov",
+      "fullName": "Michael Yakunov",
+      "role": "participant",
+      "birthDate": "2014-09-19T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1006,
+      "weight": 30,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 3,
+          "_id": "65a3ae45a3c40df9922d7211"
+        }
+      ],
+      "passwordResetCode": null,
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "dimaMakum"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Chelyabinsk"
+      },
+      "fightClub": {
+        "name": "Shah & Round"
+      },
+      "_id": "655e2b0abc79976005247352",
+      "email": "dimayfimcev64@gmail.com",
+      "hashedPassword": "$2a$10$YioRA5TgludqFWlycY8m8.OHj4TMfhEnXchhvVat.zXTAwjLeY/Ia",
+      "firstName": "dmitry",
+      "lastName": "ufimtsev",
+      "fullName": "dmitry ufimtsev",
+      "role": "participant",
+      "birthDate": "2003-06-20T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1005,
+      "weight": 73,
+      "competitionsHistory": [
+        {
+          "competitionId": "655f4727e0f2247e133fa5b7",
+          "groupId": "655f4a09bc799760052475fd",
+          "placeNumber": 1,
+          "_id": "655f4ec3bc79976005248eaa"
+        }
+      ],
+      "currentGroupId": "655f4a09bc799760052475fd"
+    },
+    {
+      "chessPlatform": {
+        "username": "Karabanov_Iaroslav"
+      },
+      "address": {
+        "country": "Russian Federation",
+        "city": "Kaliningrad"
+      },
+      "fightClub": {
+        "name": "Georgiy Pobedonosec"
+      },
+      "_id": "659d27652b35aa5fd90a8001",
+      "email": "iaroslav.karabanov@gmail.com",
+      "hashedPassword": "$2a$10$YQd/gcX7t3h9jWdKx1Lw7.sHVd2mHitjZZbp1HeWwoxxHq4r4tB8C",
+      "firstName": "Iaroslav",
+      "lastName": "Karabanov",
+      "fullName": "Iaroslav Karabanov",
+      "role": "participant",
+      "birthDate": "2009-06-22T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1005,
+      "weight": 65,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 7,
+          "_id": "65a3a7c8a3c40df9922b0257"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "TraunDrag"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Chelyabinsk"
+      },
+      "fightClub": {
+        "name": "Shah & Round"
+      },
+      "_id": "655dba89bc7997600524732d",
+      "email": "mikrob.lish1@gmail.com",
+      "hashedPassword": "$2a$10$IOrLgVHzVy62JFw3KGgPlOAiAgRpQy3wM91q6BHd1FjlMsRNHW2Wi",
+      "firstName": "Ilya",
+      "lastName": "Goropashny",
+      "fullName": "Ilya Goropashny",
+      "role": "participant",
+      "birthDate": "2004-05-05T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1002,
+      "weight": 70,
+      "competitionsHistory": [
+        {
+          "competitionId": "6569d0d4743e0abb6d9bab17",
+          "groupId": "656ac14da41100d820e924fb",
+          "placeNumber": 2,
+          "_id": "656ad760a41100d820e99b3c"
+        },
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 5,
+          "_id": "65a3ab96a3c40df9922c59a9"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "Viktorartem"
+      },
+      "address": {
+        "country": "Россия",
+        "city": "Семёнов"
+      },
+      "fightClub": {
+        "name": "Ястреб г.Семёнов"
+      },
+      "_id": "659c177b2b35aa5fd90a7b89",
+      "email": "burdeynyy.15@mail.ru",
+      "hashedPassword": "$2a$10$x1nuGaLGDVaTpjnUMKDy7.6/A6uYHs4wyHt6yGCaDlKgA.TyxuC7K",
+      "firstName": "Viktor",
+      "lastName": "Burdeiniy",
+      "fullName": "Viktor Burdeiniy",
+      "role": "participant",
+      "birthDate": "2015-12-29T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1001,
+      "weight": 24,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 8,
+          "_id": "65a3a762a3c40df9922ad2cd"
+        }
+      ],
+      "passwordResetCode": null,
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "artemburdv"
+      },
+      "address": {
+        "country": "Россия",
+        "city": "Семёнов"
+      },
+      "fightClub": {
+        "name": "Ястреб г.Семёнов"
+      },
+      "_id": "659c1add2b35aa5fd90a7beb",
+      "email": "artemburd@mail.ru",
+      "hashedPassword": "$2a$10$7HmSv2y0bVy/PHYy2VO.z.hFhp8BKm2KpJWft1InKnRempQxSk1pS",
+      "firstName": "Artem",
+      "lastName": "Burdeiniy ",
+      "fullName": "Artem Burdeiniy ",
+      "role": "participant",
+      "birthDate": "1979-08-05T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1001,
+      "weight": 73,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 11,
+          "_id": "65a3a2b7a3c40df9922848b4"
+        }
+      ],
+      "passwordResetCode": null,
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "AleKostya"
+      },
+      "address": {
+        "country": "Russian ",
+        "city": "g.Semenov, s.Ilino-Zaborskoe"
+      },
+      "fightClub": {
+        "name": "Ilino-Zaborskoe"
+      },
+      "_id": "659d9e172b35aa5fd90a8673",
+      "email": "allexburdeiniy@gmail.com",
+      "hashedPassword": "$2a$10$DFFx4o56KFCbARyvo5LT5uzw.uwamCK67qg9Oj53mYqhvMP3irfPy",
+      "firstName": "Konstantin",
+      "lastName": "Burdeyniy",
+      "fullName": "Konstantin Burdeyniy",
+      "role": "participant",
+      "birthDate": "2015-09-26T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1001,
+      "weight": 20,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 6,
+          "_id": "65a3aa21a3c40df9922be112"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "MichaelEr"
+      },
+      "address": {
+        "country": "Россия",
+        "city": "Челябинск "
+      },
+      "fightClub": {
+        "name": "ЮУрГУ \"Шах и Раунд\""
+      },
+      "_id": "655e1ec5bc7997600524734e",
+      "email": "mihail.ermak333@gmail.com",
+      "hashedPassword": "$2a$10$guaelDH2aOy/iNVaC3jif.HMPDOkoS.Vvd09cWI4aBApYgjO1dMTy",
+      "firstName": "Михаил",
+      "lastName": "Ермаков ",
+      "fullName": "Михаил Ермаков ",
+      "role": "participant",
+      "birthDate": "2004-06-05T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 93,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "Aurum_Au"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Нижний Новгород"
+      },
+      "fightClub": {
+        "name": "Полёт"
+      },
+      "_id": "65633735bc7997600524caba",
+      "email": "maka73-73@mail.ru",
+      "hashedPassword": "$2a$10$EfdilZKywh8E1skqD5Bt7upZ3fF2YO3NsSBW.HW0Trty5CXVsOYu6",
+      "firstName": "Konstantin",
+      "lastName": "Makarov",
+      "fullName": "Konstantin Makarov",
+      "role": "participant",
+      "birthDate": "2000-04-03T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 83,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "Vanla"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Chelyabinsk"
+      },
+      "fightClub": {
+        "name": "Burevestnik"
+      },
+      "_id": "656b75e3a41100d820e99d75",
+      "email": "ivanmilaev2021@gmail.com",
+      "hashedPassword": "$2a$10$91DJgxcv2nNlbA2dylH4EeSlkBpAFh114tiehF2ZN/B3y2zCh/AA6",
+      "firstName": "Ivan",
+      "lastName": "Milaev",
+      "fullName": "Ivan Milaev",
+      "role": "participant",
+      "birthDate": "2015-09-15T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 27,
+      "competitionsHistory": [],
+      "passwordResetCode": null
+    },
+    {
+      "chessPlatform": {
+        "username": "kirillov_vadim2010"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Chelyabinsk"
+      },
+      "fightClub": {
+        "name": "Burevestnik"
+      },
+      "_id": "656c4e99a41100d820e9a17f",
+      "email": "vadimka-kirillov10@gmail.ru",
+      "hashedPassword": "$2a$10$K97cqnFIyUISmnDlWEkM0O9AdnD7ZtAhqyw9Oy3PXfQNsyWorhRS2",
+      "firstName": "Vadim",
+      "lastName": "Kirillov",
+      "fullName": "Vadim Kirillov",
+      "role": "participant",
+      "birthDate": "2010-10-25T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 43,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 16,
+          "_id": "65a39e09a3c40df99225c4aa"
+        }
+      ],
+      "passwordResetCode": null,
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "Loxin74"
+      },
+      "address": {
+        "country": "Russia ",
+        "city": "Chelyabinsk "
+      },
+      "fightClub": {
+        "name": "Шах и раунд"
+      },
+      "_id": "656c9a0ca41100d820e9a495",
+      "email": "mr_loxino@mail.ru",
+      "hashedPassword": "$2a$10$4jEW0H3ow2LX8O7RS1/ufuuXqYe1fL/isvsfHrYgQjoK4rHroqbYC",
+      "firstName": "Artem",
+      "lastName": "Konstantinov",
+      "fullName": "Artem Konstantinov",
+      "role": "participant",
+      "birthDate": "2004-10-11T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 65,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "kosterkinegor0706"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Челябинск"
+      },
+      "fightClub": {
+        "name": "Chelyabinsk "
+      },
+      "_id": "656cb80aa41100d820e9a532",
+      "email": "7767560@gmail.com",
+      "hashedPassword": "$2a$10$W0ZHQIG6YF7tXr0xI4OnOOrNCfQa4g2yob6tUcrGjGPr4GFG5/weG",
+      "firstName": "Egor ",
+      "lastName": "Kosterkin",
+      "fullName": "Egor  Kosterkin",
+      "role": "participant",
+      "birthDate": "2012-06-07T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 42,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "kerop"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Rostov|Don"
+      },
+      "fightClub": {
+        "name": "Rostov|Don"
+      },
+      "_id": "658c20aade0c2dfacee75fb7",
+      "email": "gruz1120@mail.ru",
+      "hashedPassword": "$2a$10$Cndl35B4Gqpdm25ub48V0eVZ4Qc8410FdVBO9z5z/uNjB4qTeNYh2",
+      "firstName": "Kerop",
+      "lastName": "Kharaian",
+      "fullName": "Kerop Kharaian",
+      "role": "participant",
+      "birthDate": "1989-10-22T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 75,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "egor_1b"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Nizhniy Novgorod"
+      },
+      "fightClub": {
+        "name": "Polet"
+      },
+      "_id": "658d7cd7de0c2dfacee763a0",
+      "email": "e5283698@yandex.ru",
+      "hashedPassword": "$2a$10$qCMjh95938OA0ilU7DU/oemtYRpKw7LecLsxtiSLsC2/vUAyDok7a",
+      "firstName": "Egor",
+      "lastName": "Vidyaev",
+      "fullName": "Egor Vidyaev",
+      "role": "participant",
+      "birthDate": "2013-10-11T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 28,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "Filipp_Melyokhin"
+      },
+      "address": {
+        "country": "Kazakhstan",
+        "city": "Uralsk"
+      },
+      "fightClub": {
+        "name": "Baiterek"
+      },
+      "_id": "658eca022b35aa5fd90a70d2",
+      "email": "filippmelyokhin@gmail.com",
+      "hashedPassword": "$2a$10$Rqq7d1oQdcPapH6x1nRTe.4BrcAOtIGB8npjsA2tre66sYCiuqsmO",
+      "firstName": "Filipp",
+      "lastName": "Melyokhin",
+      "fullName": "Filipp Melyokhin",
+      "role": "participant",
+      "birthDate": "2009-09-07T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 48,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "Alexander_Smirnov"
+      },
+      "address": {
+        "country": "Россия ",
+        "city": "Семёнов "
+      },
+      "fightClub": {
+        "name": "Сокол"
+      },
+      "_id": "6596ba0a2b35aa5fd90a73f0",
+      "email": "smirsanek1@gmail.com",
+      "hashedPassword": "$2a$10$sVRf4K3WwKmAN3gWqfg0seHkq0m59Gp4PJv/nrMfqn6dgBYnE39fm",
+      "firstName": "Alexander",
+      "lastName": "Smirnov",
+      "fullName": "Alexander Smirnov",
+      "role": "participant",
+      "birthDate": "2008-07-11T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 51,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "Александр Тарасов"
+      },
+      "address": {
+        "country": "Россия",
+        "city": "Семёнов"
+      },
+      "fightClub": {
+        "name": "Сокол"
+      },
+      "_id": "6596fe9e2b35aa5fd90a7479",
+      "email": "sanatara6@gmail.com",
+      "hashedPassword": "$2a$10$ugCYwFUklZXFawnKWLEjI.MBPuayj6QsRgJzFJS8V57saAgfG3Zcm",
+      "firstName": "Alexander",
+      "lastName": "Tarasov",
+      "fullName": "Alexander Tarasov",
+      "role": "participant",
+      "birthDate": "2007-09-28T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 67,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "Stas"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Semenov"
+      },
+      "fightClub": {
+        "name": "Sokol"
+      },
+      "_id": "659c27a12b35aa5fd90a7d3a",
+      "email": "stas110713@mail.ru",
+      "hashedPassword": "$2a$10$RhOrK4wkHpFxilSXyOy/UeRqyXStvjSVm7huidXHYHPo99NADhEG6",
+      "firstName": "Stanislav",
+      "lastName": "Smirnov",
+      "fullName": "Stanislav Smirnov",
+      "role": "participant",
+      "birthDate": "2013-07-11T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 46,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 10,
+          "_id": "65a3a5baa3c40df99229eef6"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "Yan "
+      },
+      "address": {
+        "country": "Россия",
+        "city": "Санкт Петербург"
+      },
+      "fightClub": {
+        "name": "мотиватор"
+      },
+      "_id": "659fa84a2b35aa5fd90a98e1",
+      "email": "rojinpavel90@gmail.com",
+      "hashedPassword": "$2a$10$5R/Lq/ZHW0dk6h7VI3xOieroI/YDNCgetpXN3MJVJKaLLj5MJckBm",
+      "firstName": "Yan",
+      "lastName": "Struchkov",
+      "fullName": "Yan Struchkov",
+      "role": "participant",
+      "birthDate": "2010-05-06T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 43,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "ewrwer@mail.ru"
+      },
+      "address": {
+        "country": "Россия",
+        "city": "Санкт-Петербург г"
+      },
+      "fightClub": {
+        "name": "jjjj"
+      },
+      "_id": "65a03746a3c40df99218f0a7",
+      "email": "ewrwer@mail.ru",
+      "hashedPassword": "$2a$10$FLA.AhOdJX8gp9142VUsS.KWjHRnPMY6lmZuSwGj2pRYCFdAuptQS",
+      "firstName": "ewrwer@mail.ru",
+      "lastName": "ewrwer@mail.ru",
+      "fullName": "ewrwer@mail.ru ewrwer@mail.ru",
+      "role": "participant",
+      "birthDate": "1988-11-11T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 22,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "Tagiro"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Chelyabinsk "
+      },
+      "fightClub": {
+        "name": "Byrevestnik"
+      },
+      "_id": "65a10d38a3c40df9921906ab",
+      "email": "toma-toma22_22@mail.ru",
+      "hashedPassword": "$2a$10$KRGWxtABCmIUr0S8Xnl0tOlw0vIZb45XJHwnxazC7wONxcXJSPN.q",
+      "firstName": "Gleb",
+      "lastName": "Konnov",
+      "fullName": "Gleb Konnov",
+      "role": "participant",
+      "birthDate": "2012-01-30T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 42,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "Tagiro"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Chelyabinsk"
+      },
+      "fightClub": {
+        "name": "CHECK & ROUND"
+      },
+      "_id": "65a16f76a3c40df9921921e7",
+      "email": "Gleb_Alma2012@mail.ru",
+      "hashedPassword": "$2a$10$fgP9MAkuZs.vdttyPSnkkuCHT5pso0htU35U7KfwzPY0Uu53cBopi",
+      "firstName": "Gleb",
+      "lastName": "Konnov",
+      "fullName": "Gleb Konnov",
+      "role": "participant",
+      "birthDate": "2012-01-30T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 30,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 14,
+          "_id": "65a3a186a3c40df992279c61"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "kirillov_vadim2010"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Chelyabinsk"
+      },
+      "fightClub": {
+        "name": "Burevestnik"
+      },
+      "_id": "65a24a0ca3c40df992195224",
+      "email": "vadkir251010@gmail.com",
+      "hashedPassword": "$2a$10$0er2hnkyM/iKWoIBzI2ePuWKDtXAMVfmdjQG1KPei1jKbRDm3QlY6",
+      "firstName": "Vadim",
+      "lastName": "Kirillov",
+      "fullName": "Vadim Kirillov",
+      "role": "participant",
+      "birthDate": "2010-10-25T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 43,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "KirillBurd"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Semenov"
+      },
+      "fightClub": {
+        "name": "Sokol"
+      },
+      "_id": "65a24a98a3c40df9921953de",
+      "email": "burdeynaya.ekaterina89@mail.ru",
+      "hashedPassword": "$2a$10$r9jS3cHCrcqwbOI1QDrcMuuPRI74xKU2syUfjLNvAUcTrkJaSqtmC",
+      "firstName": " Kirill",
+      "lastName": "Burdeinyi",
+      "fullName": " Kirill Burdeinyi",
+      "role": "participant",
+      "birthDate": "2013-11-03T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 28,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "ayzyatulov"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Ulianovsk"
+      },
+      "fightClub": {
+        "name": "Boec"
+      },
+      "_id": "65a62343a3c40df9922fa345",
+      "email": "dayzyatulov@rambler.ru",
+      "hashedPassword": "$2a$10$Xxo2q4MxvMM9qyXMkOoybuzfYmoJ3t0wQ0734XUOFvZSKe7a62Qsa",
+      "firstName": "Dmitrii",
+      "lastName": "Aiziatulov",
+      "fullName": "Dmitrii Aiziatulov",
+      "role": "participant",
+      "birthDate": "1981-10-29T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 1000,
+      "weight": 62,
+      "competitionsHistory": []
+    },
+    {
+      "chessPlatform": {
+        "username": "Konstantin18062018"
+      },
+      "address": {
+        "country": "Россия",
+        "city": "Семёнов"
+      },
+      "fightClub": {
+        "name": "Сокол"
+      },
+      "_id": "6596bbfb2b35aa5fd90a741e",
+      "email": "tolkushkina_olga@mail.ru",
+      "hashedPassword": "$2a$10$gzSJFCmUxdJc/S4UULrdKOqIjdTlEEp2VLMubb4AFjGCAeu5qLZ5y",
+      "firstName": "Konstantin",
+      "lastName": "Tolkushkin",
+      "fullName": "Konstantin Tolkushkin",
+      "role": "participant",
+      "birthDate": "2012-06-18T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 995,
+      "weight": 28,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 22,
+          "_id": "65a39176a3c40df99220537e"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "sem977654"
+      },
+      "address": {
+        "country": "Россия ",
+        "city": "Санкт-Петербург"
+      },
+      "fightClub": {
+        "name": "Мотиватор"
+      },
+      "_id": "659a5c822b35aa5fd90a75ed",
+      "email": "cchockob@gmail.com",
+      "hashedPassword": "$2a$10$7eq09p3X2ZtpQ2I0YtGG4OkEFfF8A6v0VIMSD6FHRwpQVCYqw749e",
+      "firstName": "Simeon",
+      "lastName": "Noskov",
+      "fullName": "Simeon Noskov",
+      "role": "participant",
+      "birthDate": "2016-03-31T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 995,
+      "weight": 31,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 21,
+          "_id": "65a393f8a3c40df99221566e"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "nikoliy2711"
+      },
+      "address": {
+        "country": "Россия",
+        "city": "Семёнов"
+      },
+      "fightClub": {
+        "name": "Ястреб г.Семёнов"
+      },
+      "_id": "659c14a72b35aa5fd90a7b58",
+      "email": "burdeinyi2711@gmail.com",
+      "hashedPassword": "$2a$10$.4puwXk7yR.6ZGQwto5jWuJLP0pf7G1TRSSKE7Kqav3tjJzOl4eGe",
+      "firstName": "Nikolay",
+      "lastName": "Burdeiniy",
+      "fullName": "Nikolay Burdeiniy",
+      "role": "participant",
+      "birthDate": "2012-11-27T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 995,
+      "weight": 38,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 20,
+          "_id": "65a39817a3c40df9922311ba"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "Burdeinyiartem2007"
+      },
+      "address": {
+        "country": "Россия",
+        "city": "Семёнов"
+      },
+      "fightClub": {
+        "name": "Ястреб ,г.Семёнов"
+      },
+      "_id": "659c1a082b35aa5fd90a7bba",
+      "email": "artemburdejniy@yandex.com",
+      "hashedPassword": "$2a$10$JfYFYLYl/5rX6cnVIxhT2.TRZ15YnAjiQyE88yONpzXLpNPQBcWtG",
+      "firstName": "Artem",
+      "lastName": "Burdeiniy",
+      "fullName": "Artem Burdeiniy",
+      "role": "participant",
+      "birthDate": "2007-06-29T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 995,
+      "weight": 70,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 17,
+          "_id": "65a39a1ca3c40df99223d484"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "alexburdeiniy@gmail.com"
+      },
+      "address": {
+        "country": "Russian ",
+        "city": "g.Semenov, s.Ilino-Zaborskoe"
+      },
+      "fightClub": {
+        "name": "Ilino-Zaborskoe"
+      },
+      "_id": "659d21fd2b35aa5fd90a7fcd",
+      "email": "alexburdeiniy@gmail.com",
+      "hashedPassword": "$2a$10$FidkrVvHT2A1PWbhaI4vreR6J7jHsxVadm4/eoYruyY8PDQK/YKhq",
+      "firstName": "Ilya",
+      "lastName": "Kyzmichev",
+      "fullName": "Ilya Kyzmichev",
+      "role": "participant",
+      "birthDate": "2011-09-19T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 995,
+      "weight": 45,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 18,
+          "_id": "65a39826a3c40df9922318b6"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "AlexBurd_2316"
+      },
+      "address": {
+        "country": "Russian ",
+        "city": "g.Semenov, s.Ilino-Zaborskoe"
+      },
+      "fightClub": {
+        "name": "Ilino-Zaborskoe"
+      },
+      "_id": "659db3dc2b35aa5fd90a87a2",
+      "email": "avburdeyniy@iz-school.ru",
+      "hashedPassword": "$2a$10$qMhJGYwvJ7JNZqP4pHvhd.eqWiDpSDmk43mBoAEtamdvRbxONIH6.",
+      "firstName": "Aleksey",
+      "lastName": "Burdeyniy",
+      "fullName": "Aleksey Burdeyniy",
+      "role": "participant",
+      "birthDate": "1981-03-02T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 995,
+      "weight": 65,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 19,
+          "_id": "65a39823a3c40df9922317b4"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "rojinpavel90@gmail.com"
+      },
+      "address": {
+        "country": "Россия",
+        "city": "Санкт Петербург"
+      },
+      "fightClub": {
+        "name": "мотиватор"
+      },
+      "_id": "659e995f2b35aa5fd90a8a9f",
+      "email": "lusia.kornilova@mail.ru",
+      "hashedPassword": "$2a$10$S7dmf3o/m5zdMqWlMIltIuk7LJdHB152ni.4.W7LTtzcIJu09tulC",
+      "firstName": "Yan",
+      "lastName": "Struchkov",
+      "fullName": "Yan Struchkov",
+      "role": "participant",
+      "birthDate": "2010-06-05T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 995,
+      "weight": 45,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 13,
+          "_id": "65a3a1c9a3c40df99227c3fa"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "Nikita"
+      },
+      "address": {
+        "country": "Russia ",
+        "city": "Sant-Petersburg "
+      },
+      "fightClub": {
+        "name": "Motivator"
+      },
+      "_id": "659eda4d2b35aa5fd90a8bb6",
+      "email": "kyfea@rambler.ru",
+      "hashedPassword": "$2a$10$iIzl/ZpENxyNrtFwnT/XVuGmSTUjwokfivDSIBZdGEZY8GvJ7AvS2",
+      "firstName": "Nikita",
+      "lastName": "Sokolskyi ",
+      "fullName": "Nikita Sokolskyi ",
+      "role": "participant",
+      "birthDate": "2016-09-25T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 995,
+      "weight": 34,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 12,
+          "_id": "65a3a2ada3c40df9922841ad"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "Daniil_Kukuskin"
+      },
+      "address": {
+        "country": "Россия",
+        "city": "Семенов"
+      },
+      "fightClub": {
+        "name": "Ястреб Школа №3"
+      },
+      "_id": "659f8ec22b35aa5fd90a925d",
+      "email": "daniilkukuskin17@gmail.com",
+      "hashedPassword": "$2a$10$EvHNANnTg18u03YHTtkJ3ePEoLmTN9wUCkA1.O5I1/CqbiCTcLLEa",
+      "firstName": "Daniil",
+      "lastName": "Kukuskin",
+      "fullName": "Daniil Kukuskin",
+      "role": "participant",
+      "birthDate": "2009-12-25T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 995,
+      "weight": 70,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 25,
+          "_id": "65a38962a3c40df9921d3adf"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "Ivan-Nefedov "
+      },
+      "address": {
+        "country": "Россия ",
+        "city": "Семенов"
+      },
+      "fightClub": {
+        "name": "Ястреб школа 3 "
+      },
+      "_id": "659f8ef42b35aa5fd90a9297",
+      "email": "bq-strike2000redmi@mail.ru",
+      "hashedPassword": "$2a$10$9iex6r6SG0iL4pQdYUrGo.0OK0pqqNTKFP0DrRzbJf7bST9suQYE6",
+      "firstName": "Ivan",
+      "lastName": "Nefedov ",
+      "fullName": "Ivan Nefedov ",
+      "role": "participant",
+      "birthDate": "2009-05-29T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 995,
+      "weight": 68,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 9,
+          "_id": "65a3a5bca3c40df99229f093"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "krin83"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Санкт-Петербург"
+      },
+      "fightClub": {
+        "name": "Motivator "
+      },
+      "_id": "65a01539a3c40df99218d97a",
+      "email": "krin83@mail.ru",
+      "hashedPassword": "$2a$10$I7LFMrIP2572c/pRdL7o1O2L4opZO1EmPYWXRPKiTT0k2/NjCIxLe",
+      "firstName": "Arseny",
+      "lastName": "Romanov",
+      "fullName": "Arseny Romanov",
+      "role": "participant",
+      "birthDate": "2016-09-04T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 995,
+      "weight": 24,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 24,
+          "_id": "65a38965a3c40df9921d3c1a"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "allshahovskiy"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Chelyabinsk"
+      },
+      "fightClub": {
+        "name": "CHECK & ROUND"
+      },
+      "_id": "6569e72ba41100d820e91f3b",
+      "email": "a.shakhovskiy@gmail.com",
+      "hashedPassword": "$2a$10$cUy/jWwt2XJ/lhTPvZht8.CwLvx1eFGyfuA0cdtw4Ty10io2T5sRy",
+      "firstName": "Aleksey",
+      "lastName": "Shahovskiy",
+      "fullName": "Aleksey Shahovskiy",
+      "role": "participant",
+      "birthDate": "1984-03-26T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 990,
+      "weight": 85,
+      "competitionsHistory": [
+        {
+          "competitionId": "6569d0d4743e0abb6d9bab17",
+          "groupId": "656ac14da41100d820e924fb",
+          "placeNumber": 4,
+          "_id": "656ad1afa41100d820e95d29"
+        },
+        {
+          "competitionId": "6569d0d4743e0abb6d9bab17",
+          "groupId": "656ac14da41100d820e924fb",
+          "placeNumber": 4,
+          "_id": "656ad480a41100d820e97674"
+        }
+      ],
+      "currentGroupId": "656ac14da41100d820e924fb"
+    },
+    {
+      "chessPlatform": {
+        "username": "Andriukha2008"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Chelyabinsk"
+      },
+      "fightClub": {
+        "name": "CHECK & ROUND"
+      },
+      "_id": "65a0c8c1a3c40df99218f91c",
+      "email": "89000666298qwertyuiop2008@gmail.com",
+      "hashedPassword": "$2a$10$0PzZMXqhiXgXvEHKQ/V.M.XZfdV/9LnYWB3OKm4APclLuW.Gw/uIO",
+      "firstName": "Andrej",
+      "lastName": "Fajzulloev",
+      "fullName": "Andrej Fajzulloev",
+      "role": "participant",
+      "birthDate": "2008-01-31T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 990,
+      "weight": 60,
+      "competitionsHistory": [
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 23,
+          "_id": "65a38c82a3c40df9921e647f"
+        },
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 23,
+          "_id": "65a38caca3c40df9921e6e44"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec"
+    },
+    {
+      "chessPlatform": {
+        "username": "myrv1n"
+      },
+      "address": {
+        "country": "Russia",
+        "city": "Moscow"
+      },
+      "fightClub": {
+        "name": "1"
+      },
+      "_id": "655ca0ddbc79976005246e2a",
+      "email": "robertsayapov1507@gmail.com",
+      "hashedPassword": "$2a$10$SPDoAET19.e/UNJHe35T4.Lt2wKqa3QiWs/eyN2.9CdJY35G4TxbG",
+      "firstName": "Robert",
+      "lastName": "Saiapov",
+      "fullName": "Robert Saiapov",
+      "role": "participant",
+      "birthDate": "2009-07-15T00:00:00.000Z",
+      "gender": "man",
+      "ratingNumber": 985,
+      "weight": 75,
+      "competitionsHistory": [
+        {
+          "competitionId": "655f4727e0f2247e133fa5b7",
+          "groupId": "655f4a09bc799760052475fd",
+          "placeNumber": 2,
+          "_id": "655f4ebabc79976005248e46"
+        },
+        {
+          "competitionId": "655f4727e0f2247e133fa5b7",
+          "groupId": "655f4a09bc799760052475fd",
+          "placeNumber": 2,
+          "_id": "655f4ec3bc79976005248ead"
+        },
+        {
+          "competitionId": "6569d0d4743e0abb6d9bab17",
+          "groupId": "656ac14da41100d820e924fb",
+          "placeNumber": 3,
+          "_id": "656ad4eca41100d820e97d06"
+        },
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 15,
+          "_id": "65a39f40a3c40df992265da8"
+        },
+        {
+          "competitionId": "6587e2175443c0980a3e20f6",
+          "groupId": "65a20d7da3c40df992192eec",
+          "placeNumber": 15,
+          "_id": "65a3a176a3c40df99227924f"
+        }
+      ],
+      "currentGroupId": "65a20d7da3c40df992192eec",
+      "passwordResetCode": null
+    },
+    {
+      "address": {
+        "country": "Tajikistan",
+        "city": "Dushanbe"
+      },
+      "socialNetworks": {
+        "whatsup": "79000789778"
+      },
+      "_id": "65620cb29bb356e048987c17",
+      "email": "holovsuhrob658@gmail.com",
+      "hashedPassword": "$2a$10$rKLRRxQnfOz1FCBSrtGak.O.Ep0GxWWKFhu23qL/00WCW6A0XmOcG",
+      "firstName": "Sukhrob",
+      "lastName": "Mohmadzada",
+      "fullName": "Sukhrob Mohmadzada",
+      "role": "judge",
+      "gender": "man",
+      "competitionsHistory": []
+    },
+    {
+      "address": {
+        "country": "Russia",
+        "city": "Ryazan"
+      },
+      "socialNetworks": {
+        "whatsup": "79308841033"
+      },
+      "_id": "65620ce79bb356e048987c19",
+      "email": "aleksandr.yurievich.smirnov@mail.ru",
+      "hashedPassword": "$2a$10$Lt1ZeYY5.TXNYr26qk3REu50h.OMtbplvRrDWHNqqTJ7jMOawqRxu",
+      "firstName": "Aleksandr",
+      "lastName": "Smirnov",
+      "fullName": "Aleksandr Smirnov",
+      "role": "judge",
+      "gender": "man",
+      "competitionsHistory": []
+    },
+    {
+      "address": {
+        "country": "Russia",
+        "city": "Surgut"
+      },
+      "socialNetworks": {
+        "whatsup": "79044891748"
+      },
+      "_id": "65620d0b9bb356e048987c1b",
+      "email": "derevnina83@mail.ru",
+      "hashedPassword": "$2a$10$DNs.2CswlAz0RogbGl9MW.7gBaPXS0.h.qC.Cx65vxQT1fiw02/Pq",
+      "firstName": "Azat",
+      "lastName": "Sabbakhov",
+      "fullName": "Azat Sabbakhov",
+      "role": "judge",
+      "gender": "man",
+      "competitionsHistory": []
+    }
+  ],
+  "total": 47
+}
