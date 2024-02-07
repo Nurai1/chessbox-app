@@ -24,14 +24,14 @@ const localConfig: AppConfig = {
 }
 const devConfig: AppConfig = {
 	type: 'dev',
-	publicUrl: '',
+	publicUrl: 'https://chessbox-app.pages.dev',
 	serviceApiUrl: 'https://chessbox-server-268nq.ondigitalocean.app'
 	// serviceApiUrl: 'https://eclectium0iuzdi5t-chessbox.functions.fnc.pl-waw.scw.cloud'
 }
 const prodConfig: AppConfig = {
 	type: 'prod',
-	publicUrl: '',
-	serviceApiUrl: ''
+	publicUrl: 'chessboxingfit.com',
+	serviceApiUrl: 'https://chessbox-server-268nq.ondigitalocean.app'
 }
 
 const getConfig = (): AppConfig => {
