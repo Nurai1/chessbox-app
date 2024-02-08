@@ -16,7 +16,6 @@ export const usersMock: UserSchema[] = [
 		ratingNumber: 1006,
 		birthDate: '1992-07-31T08:33:59.000Z',
 		gender: 'woman',
-		currentGroupId: '641a261ad4b68529d0b287fd',
 		competitionsHistory: []
 	},
 	{
