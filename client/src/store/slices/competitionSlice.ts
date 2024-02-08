@@ -14,7 +14,8 @@ import {
 	UserSchema,
 	LaunchNextGroupRoundApiSchema,
 	CompetitionPaymentDataType,
-	CompetitionPaymentPaidType
+	CompetitionPaymentPaidType,
+	ParticipantsOrdersByGroupSchema
 } from 'src/types'
 
 import {
@@ -36,7 +37,8 @@ import {
 	getPaymentInfoUsersApi,
 	setUserPaymentPaidApi,
 	startCompetitionApi,
-	recalculatePairsTimeApi
+	recalculatePairsTimeApi,
+	setParticipantsOrdersByGroupApi
 } from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
@@ -100,6 +102,17 @@ export const setPairJudges = createAsyncThunk(
 	'competition/setPairJudges',
 	async (data: SetJudgesToPairsSchema, thunkApi) => {
 		const response = await setJudgesToPairsApi(data)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
+export const setParticipantsOrdersByGroup = createAsyncThunk(
+	'competition/setParticipantsOrdersByGroup',
+	async ({ data, id }: { data: ParticipantsOrdersByGroupSchema; id: string }, thunkApi) => {
+		const response = await setParticipantsOrdersByGroupApi(data, id)
 		if (response.error)
 			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
 
@@ -457,6 +470,17 @@ export const competitionSlice = createSlice({
 		[setCompetitionGroupsOrders.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.groupOrderAssignPending = false
 			state.groupOrderAssignError = action.payload.errorMessage
+		},
+		[setParticipantsOrdersByGroup.pending.type]: state => {
+			state.loading = true
+		},
+		[setParticipantsOrdersByGroup.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.loading = true
+			state.data = action.payload
+		},
+		[setParticipantsOrdersByGroup.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.loading = false
+			state.error = action.payload.errorMessage
 		},
 		[setCompetitionGroups.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.data = action.payload

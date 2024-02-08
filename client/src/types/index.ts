@@ -18,6 +18,9 @@ export type SetCompetitionJudgesSchema =
 	paths['/api/competition/setJudgesToCompetition']['patch']['requestBody']['content']['application/json']
 export type SetJudgesToPairsSchema =
 	paths['/api/competition/setJudgesToPairs']['patch']['requestBody']['content']['application/json']
+export type ParticipantsOrdersByGroupSchema =
+	paths['/api/competition/{id}/setParticipantsOrdersByGroup']['patch']['requestBody']['content']['application/json'] &
+		Record<string, string[]>
 export type CompetitionGroupsOrdersSchema =
 	paths['/api/competition/{id}/setCompetitionGroupsOrders']['patch']['requestBody']['content']['application/json']
 export type CompetitionGroupsOrders =

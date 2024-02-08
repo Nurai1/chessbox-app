@@ -1,14 +1,14 @@
 import { ReactElement, useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { CompetitionCreateHeader } from 'src/components'
 import { AppRoute } from 'src/constants/appRoute'
-import { useParams, useNavigate } from 'react-router-dom'
-import { TableBody, Button, Alert } from 'src/ui'
+import { tableSchemaJudges } from 'src/helpers/tableSchemas/tableSchemaJudges'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchCompetitionById, setCompetitionJudges, setJudgesToCompetition } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsListJudges } from 'src/store/slices/competitionsSlice'
 import { fetchAllJudges } from 'src/store/slices/usersSlice'
-import { tableSchemaJudges } from 'src/helpers/tableSchemas/tableSchemaJudges'
 import { UserSchema } from 'src/types'
-import { CompetitionCreateHeader } from 'src/components'
+import { Alert, Button, TableBody } from 'src/ui'
 
 const MAX_JUDGES = 2
 
