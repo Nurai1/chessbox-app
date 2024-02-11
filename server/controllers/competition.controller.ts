@@ -631,7 +631,7 @@ export const defineWinner = async (
   const { olympicGrid } = competitionGroup;
   const newOlympicGrid =
     olympicGrid && changeTreeLeaveWithWinnerId(olympicGrid, winnerId);
-  competitionGroup.olympicGrid = newOlympicGrid;
+  competitionGroup.olympicGrid = { ...newOlympicGrid };
 
   const isGroupCompleted =
     competitionGroup?.nextRoundParticipants?.length === 0 &&

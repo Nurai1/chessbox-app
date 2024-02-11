@@ -72,3 +72,4 @@ export type CompetitionPaymentPaidType = {
 	path: PaymentParamsSchema
 	body: SetUserPaymentPaidApiSchema
 }
+export type OlympicGridTree = { userId?: string; pair?: [OlympicGridTree, OlympicGridTree] }

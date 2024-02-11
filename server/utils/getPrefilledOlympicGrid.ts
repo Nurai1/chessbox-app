@@ -24,14 +24,13 @@ export const getPrefilledOlympicGrid = (
 
   const fillPairsToDepth = (
     gridTreeNode: GridTree,
-    depth: number,
     thisDepth: number,
     canMoveDeeper = true
   ) => {
     const currentDepthLeaves = 2 ** thisDepth;
     currentDepthLeavesLeftByDepth[thisDepth] = currentDepthLeaves;
 
-    if (depth - 1 === thisDepth && nextRoundParticipants.length) {
+    if (circlesAmount - 1 === thisDepth && nextRoundParticipants.length) {
       gridTreeNode.pair = [
         nextRoundParticipants.length
           ? { userId: nextRoundParticipants.shift() }
@@ -42,7 +41,7 @@ export const getPrefilledOlympicGrid = (
       ];
     }
 
-    if (depth === thisDepth) {
+    if (circlesAmount === thisDepth) {
       if (exceptCurrentRoundParticipantsAmount > 0) {
         exceptCurrentRoundParticipantsAmount -= 2;
       } else if (currentRoundParticipants.length) {
@@ -63,7 +62,6 @@ export const getPrefilledOlympicGrid = (
         currentDepthLeavesLeftByDepth[thisDepth] -= 1;
         return fillPairsToDepth(
           pairEntity,
-          depth,
           thisDepth + 1,
           currentDepthLeavesLeftByDepth[thisDepth] === 0
         );
@@ -76,7 +74,7 @@ export const getPrefilledOlympicGrid = (
       functions.forEach((f) => f());
     }
   };
-  fillPairsToDepth(gridTree, circlesAmount, 1);
+  fillPairsToDepth(gridTree, 1);
 
   return gridTree;
 };
@@ -85,8 +83,6 @@ export const changeTreeLeaveWithWinnerId = (
   tree: GridTree,
   winnerId: string
 ) => {
-  const newTree = tree;
-
   let foundWinner = false;
   const checkTree = (gridTreeNode: GridTree) => {
     if (foundWinner) return;
@@ -102,9 +98,9 @@ export const changeTreeLeaveWithWinnerId = (
       checkTree(pairEntity);
     });
   };
-  checkTree(newTree);
+  checkTree(tree);
 
-  return newTree;
+  return tree;
 };
 
 // console.log(
