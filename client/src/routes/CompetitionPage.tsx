@@ -37,6 +37,8 @@ import {
 } from 'src/store/slices/competitionSlice'
 import { CompetitionGroupSchema, ParticipantSchema, UserPaymentInfo } from 'src/types'
 import { BreakTimer, Button, Loader, Modal, TableBody, Tag } from 'src/ui'
+import { generateXlsx } from '../helpers/generateDocsFromDefinition'
+import { getXlsxRowsForGroup } from '../helpers/getXlsxRowsForGroup'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
@@ -47,7 +49,7 @@ export const CompetitionPage = (): ReactElement => {
 	const [isSideMenuResultOpen, setIsSideMenuResultOpen] = useState(false)
 	const [currentUserRequestData, setCurrentUserRequestData] = useState<UserPaymentInfo>()
 	const fetchError = useAppSelector(s => s.competition.error)
-	const participants = useAppSelector(s => competitionId && s.competition.participants[competitionId])
+	const participants = useAppSelector(s => (competitionId && s.competition.participants[competitionId]) || null)
 	const judges = useAppSelector(s => competitionId && s.competition.judges[competitionId])
 	const { authorizedUser, authLoading } = useAppSelector(state => state.user)
 	const competitionData = useAppSelector(fetchedOrExistingCompetitionSelector(competitionId))
@@ -297,6 +299,45 @@ export const CompetitionPage = (): ReactElement => {
 										}
 										isCompetitionPage
 									/>
+									{authorizedUser?.role === Role.ChiefJudge && (
+										<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:mt-5 lg:p-0 lg:shadow-none'>
+											<Button
+												classes='w-full'
+												type='outlined'
+												onClick={async () => {
+													const competitionExcelRows = competitionData.groups?.reduce(
+														(acc, group) => {
+															return [...acc, ...getXlsxRowsForGroup(group, participants)]
+														},
+														[] as (string | undefined)[][]
+													)
+
+													const maxRowLength = competitionExcelRows?.reduce((acc, row) => {
+														return row.length > acc ? row.length : acc
+													}, 0)
+
+													try {
+														if (competitionExcelRows) {
+															const { downloadFile } = await generateXlsx(competitionExcelRows, {
+																columns: Array(maxRowLength)
+																	.fill(null)
+																	?.map(() => ({ wch: 30 }))
+															})
+
+															downloadFile(`${competitionData.name}.xlsx`)
+														}
+													} catch (e) {
+														// eslint-disable-next-line no-console
+														console.log('Error while xlsx generated')
+														// eslint-disable-next-line no-console
+														console.error(e)
+													}
+												}}
+											>
+												Download olympic grid
+											</Button>
+										</div>
+									)}
 									{authorizedUser?.role !== Role.ChiefJudge && currentUserGroup && (
 										<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:mt-5 lg:p-0 lg:shadow-none'>
 											<Button classes='w-full' onClick={handleSideMenuResultOpenCurrentUser} type='outlined'>
