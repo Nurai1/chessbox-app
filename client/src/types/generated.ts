@@ -3327,7 +3327,7 @@ export interface components {
 			/** Format: date-time */
 			startDate: string
 			/** Format: date-time */
-			baseDate: string
+			baseDate?: string
 			/** Format: date-time */
 			endDate?: string
 			/** Format: date-time */
@@ -3392,6 +3392,7 @@ export interface components {
 			}[]
 			price?: {
 				currentValue?: number
+				valueForMembers?: number
 				pricesChanges?: {
 					daysBeforeRegistrationDate: number
 					newValue: number
@@ -3542,7 +3543,7 @@ export interface components {
 			/** Format: date-time */
 			startDate: string
 			/** Format: date-time */
-			baseDate: string
+			baseDate?: string
 			/** Format: date-time */
 			endDate?: string
 			/** Format: date-time */
@@ -3604,6 +3605,7 @@ export interface components {
 			}[]
 			price?: {
 				currentValue?: number
+				valueForMembers?: number
 				pricesChanges?: {
 					daysBeforeRegistrationDate: number
 					newValue: number
