@@ -37,6 +37,7 @@ import {
 } from 'src/store/slices/competitionSlice'
 import { CompetitionGroupSchema, ParticipantSchema, UserPaymentInfo } from 'src/types'
 import { BreakTimer, Button, Loader, Modal, TableBody, Tag } from 'src/ui'
+import { getPriceText } from '../helpers/getPriceText'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
@@ -194,10 +195,7 @@ export const CompetitionPage = (): ReactElement => {
 								<p className='mb-[15px] text-sm text-grey xl:mb-[24px] xl:text-heading-3'>{dateStart}</p>
 								<div className='mb-[35px] flex flex-wrap gap-4 xl:mb-[64px]'>
 									{competitionData.price && (
-										<Tag
-											img={<BanknoteIcon className='max-5 mr-2' />}
-											text={`Price ${competitionData.price.currentValue} ₽`}
-										/>
+										<Tag img={<BanknoteIcon className='max-5 mr-2' />} text={getPriceText(competitionData)} />
 									)}
 									{competitionData.participants && (
 										<Tag

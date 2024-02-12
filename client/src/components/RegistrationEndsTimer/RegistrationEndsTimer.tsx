@@ -1,13 +1,14 @@
 import { FC, ReactNode, useState } from 'react'
-import { useAppSelector } from 'src/hooks/redux'
 import { useNavigate } from 'react-router-dom'
-import { Button, Timer, Modal } from 'src/ui'
-import { CompetitionSchema, UserSchema } from 'src/types'
 import { AppRoute } from 'src/constants/appRoute'
-import { checkParticipantFitRequirements } from 'src/helpers/checkParticipantFitRequirements'
-import { Role } from 'src/constants/role'
-import { useWindowSize } from 'usehooks-ts'
 import { BreakPoint } from 'src/constants/breakPoints'
+import { Role } from 'src/constants/role'
+import { checkParticipantFitRequirements } from 'src/helpers/checkParticipantFitRequirements'
+import { useAppSelector } from 'src/hooks/redux'
+import { CompetitionSchema, UserSchema } from 'src/types'
+import { Button, Modal, Timer } from 'src/ui'
+import { useWindowSize } from 'usehooks-ts'
+import { getPriceText } from '../../helpers/getPriceText'
 import { CompetitionPayment } from '../CompetitionPayment'
 
 type RegistrationEndsTimerPropsType = {
@@ -108,7 +109,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 				classes='lg:max-w-[26rem] xl:max-w-[29.375rem]'
 				content={
 					<CompetitionPayment
-						price={competitionData.price?.currentValue}
+						price={getPriceText(competitionData)}
 						onClose={() => setIsModalOpen(false)}
 						competitionDataProps={competitionData}
 					/>

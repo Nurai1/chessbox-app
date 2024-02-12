@@ -16,6 +16,7 @@ const competitionSchema = new Schema<ICompetition>(
     groups: [competitionGroupSchema],
     price: {
       currentValue: Number,
+      valueForMembers: Number,
       pricesChanges: [
         {
           daysBeforeRegistrationDate: { type: Number, required: true },

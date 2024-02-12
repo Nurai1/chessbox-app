@@ -30,6 +30,7 @@ import { ChooseWinnerType } from 'src/types'
 import { Alert, BreakTimer, Button, Input, Loader, Modal, Tag } from 'src/ui'
 import { AlertPropTypes } from 'src/ui/Alert/Alert'
 import { endCompetitionApi } from '../api/requests/competitions'
+import { getPriceText } from '../helpers/getPriceText'
 
 type AlertType = {
 	show: boolean
@@ -242,10 +243,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 								<p className='mb-6 text-heading-3 text-grey'>{dateStart}</p>
 								<div className='mb-9 flex flex-wrap gap-4'>
 									{competitionData.price && (
-										<Tag
-											img={<BanknoteIcon className='max-5 mr-2' />}
-											text={`Price ${competitionData.price.currentValue} ₽`}
-										/>
+										<Tag img={<BanknoteIcon className='max-5 mr-2' />} text={getPriceText(competitionData)} />
 									)}
 									{competitionData.participants && (
 										<Tag

@@ -1,22 +1,22 @@
-import { FC, useState, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
 import { ReactComponent as CopyIcon } from 'src/assets/copy.svg'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
-import { Input, Alert, Button } from 'src/ui'
-import { AlertPropTypes } from 'src/ui/Alert/Alert'
-import { copyToClipboard } from 'src/helpers/copyToClipboard'
-import { useWindowSize } from 'usehooks-ts'
-import { twMerge } from 'tailwind-merge'
 import { BreakPoint } from 'src/constants/breakPoints'
-import { CompetitionSchema, CompetitionPaymentDataType } from 'src/types'
+import { copyToClipboard } from 'src/helpers/copyToClipboard'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { seTuserPaymentRequestToCheck } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsListCompetition } from 'src/store/slices/competitionsSlice'
+import { CompetitionPaymentDataType, CompetitionSchema } from 'src/types'
+import { Alert, Button, Input } from 'src/ui'
+import { AlertPropTypes } from 'src/ui/Alert/Alert'
+import { twMerge } from 'tailwind-merge'
+import { useWindowSize } from 'usehooks-ts'
 
 type CompetitionPaymentPropsType = {
 	onClose: () => void
 	competitionDataProps?: CompetitionSchema
-	price?: number
+	price?: string
 }
 
 type AlertType = {
@@ -98,7 +98,7 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 			<button className='absolute top-5 left-3 lg:hidden' onClick={onClose} type='button'>
 				<ArrowLeftIcon className='w-[1.375rem]' />
 			</button>
-			{price && <p className=' text-grey'>Payment: {price} ₽</p>}
+			{price && <p className=' text-grey'>{price}</p>}
 			<p>Transfer from Russia on bank account:</p>
 			<div className='grid gap-2'>
 				<div className='flex flex-col items-center justify-center gap-1'>

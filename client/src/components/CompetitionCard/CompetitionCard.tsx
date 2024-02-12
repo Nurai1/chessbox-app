@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { CompetitionSchema } from 'src/types'
 import { Tag } from 'src/ui'
 import { useWindowSize } from 'usehooks-ts'
+import { getPriceText } from '../../helpers/getPriceText'
 import { setCompetitionData } from '../../store/slices/competitionSlice'
 
 type CompetitionPropsType = {
@@ -93,7 +94,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 				)}
 				{screenWidth >= BreakPoint.Xl && (
 					<div className='mt-4 flex flex-wrap gap-4 '>
-						{price?.currentValue && <Tag img={<Banknote className='max-5 mr-2' />} text={price.currentValue} />}
+						{price?.currentValue && <Tag img={<Banknote className='max-5 mr-2' />} text={getPriceText(competition)} />}
 						{participants && (
 							<Tag
 								img={<Persons className='max-5' />}
@@ -113,7 +114,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 				<p className={`${style['competition-card_text-col-limit']} text-[#3A3A40]`}>{description}</p>
 				{screenWidth < BreakPoint.Xl && (
 					<div className='mt-4 flex flex-wrap gap-4 '>
-						{price?.currentValue && <Tag img={<Banknote className='max-5 mr-2' />} text={price.currentValue} />}
+						{price?.currentValue && <Tag img={<Banknote className='max-5 mr-2' />} text={getPriceText(competition)} />}
 						{participants && (
 							<Tag
 								img={<Persons className='max-5 mr-2' />}

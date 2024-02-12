@@ -10851,7 +10851,6 @@
         "title": "Competition",
         "required": [
           "startDate",
-          "baseDate",
           "registrationEndsAt",
           "name"
         ],
@@ -11078,6 +11077,9 @@
             "type": "object",
             "properties": {
               "currentValue": {
+                "type": "number"
+              },
+              "valueForMembers": {
                 "type": "number"
               },
               "pricesChanges": {
@@ -11556,7 +11558,6 @@
         "title": "Competition",
         "required": [
           "startDate",
-          "baseDate",
           "registrationEndsAt",
           "name"
         ],
@@ -11774,6 +11775,9 @@
             "type": "object",
             "properties": {
               "currentValue": {
+                "type": "number"
+              },
+              "valueForMembers": {
                 "type": "number"
               },
               "pricesChanges": {
