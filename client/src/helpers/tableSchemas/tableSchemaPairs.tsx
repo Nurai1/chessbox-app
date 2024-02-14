@@ -111,9 +111,9 @@ export const tableSchemaPairs = ({
 		const showCallUpTimer =
 			pair.calledForPreparation && isJudgeCompetitionPage && !bothParticipantsAccepted && !oneOfParticipantsDisqualified
 		const showWinnerButton =
-			(isJudgeCompetitionPage && !bothParticipantsDisqualified && oneOfParticipantsDisqualified && !pair.winner) ||
-			(isJudgeCompetitionPage && !bothParticipantsDisqualified && bothParticipantsAccepted && !pair.winner)
-		const finished = pair.winner || bothParticipantsDisqualified
+			(isJudgeCompetitionPage && oneOfParticipantsDisqualified && !pair.winner) ||
+			(isJudgeCompetitionPage && bothParticipantsAccepted && !pair.winner)
+		const finished = pair.winner
 		const inProgress =
 			pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant && !pair.winner
 		const waitingCompetitonPage =

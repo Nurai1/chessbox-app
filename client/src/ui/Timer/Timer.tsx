@@ -21,7 +21,16 @@ type TimerPropsType = (
 	handleTimeOver?: () => void
 }
 const Timer: FC<TimerPropsType> = memo(
-	({ time, secondsLeft, classes, containerClasses, countNumbersClasses, countLabelsClasses, showDays = true, handleTimeOver }) => {
+	({
+		time,
+		secondsLeft,
+		classes,
+		containerClasses,
+		countNumbersClasses,
+		countLabelsClasses,
+		showDays = true,
+		handleTimeOver
+	}) => {
 		const [endTime, setEndTime] = useState<{
 			seconds: number
 			minutes: number
@@ -79,7 +88,7 @@ const Timer: FC<TimerPropsType> = memo(
 						>
 							{endTime ? addZero(endTime.days.toString()) : '0'}
 						</span>
-						<span className={twMerge('block text-xs font-normal xl:text-sm xl:mt-2', countLabelsClasses)}>
+						<span className={twMerge('block text-xs font-normal xl:mt-2 xl:text-sm', countLabelsClasses)}>
 							{endTime?.days === 1 ? 'day' : 'days'}
 						</span>
 					</li>
@@ -98,7 +107,7 @@ const Timer: FC<TimerPropsType> = memo(
 					>
 						{endTime ? addZero(endTime.hours.toString()) : 0}
 					</span>
-					<span className={twMerge('block text-xs font-normal xl:text-sm xl:mt-2', countLabelsClasses)}>
+					<span className={twMerge('block text-xs font-normal xl:mt-2 xl:text-sm', countLabelsClasses)}>
 						{endTime?.hours === 1 ? 'hour' : 'hours'}
 					</span>
 				</li>
@@ -116,7 +125,7 @@ const Timer: FC<TimerPropsType> = memo(
 					>
 						{endTime ? addZero(endTime.minutes.toString()) : 0}
 					</span>
-					<span className={twMerge('block text-xs font-normal xl:text-sm xl:mt-2', countLabelsClasses)}>
+					<span className={twMerge('block text-xs font-normal xl:mt-2 xl:text-sm', countLabelsClasses)}>
 						{endTime?.minutes === 1 ? 'minute' : 'minutes'}
 					</span>
 				</li>
@@ -135,7 +144,7 @@ const Timer: FC<TimerPropsType> = memo(
 						>
 							{endTime ? addZero(endTime.seconds.toString()) : '0'}
 						</span>
-						<span className={twMerge('block text-xs font-normal xl:text-sm xl:mt-2', countLabelsClasses)}>
+						<span className={twMerge('block text-xs font-normal xl:mt-2 xl:text-sm', countLabelsClasses)}>
 							{endTime?.seconds === 1 ? 'second' : 'seconds'}
 						</span>
 					</li>
