@@ -5,6 +5,12 @@ export const getEnv = (): EnvType => {
 	if (/.*localhost.*/.test(currentHost) || /.*127.0.0.1.*/.test(currentHost)) {
 		return 'local'
 	}
+
+	// temporary mock for prod while users use this website as production
+	if (currentHost === 'chessbox-app.pages.dev') {
+		return 'prod'
+	}
+
 	if (/.dev/.test(currentHost)) {
 		return 'dev'
 	}
@@ -22,11 +28,12 @@ const localConfig: AppConfig = {
 	publicUrl: 'http://localhost:5173',
 	serviceApiUrl: 'http://localhost:3001'
 }
+
 const devConfig: AppConfig = {
 	type: 'dev',
-	publicUrl: 'https://chessbox-app.pages.dev',
-	serviceApiUrl: 'https://chessbox-server-268nq.ondigitalocean.app'
-	// serviceApiUrl: 'https://eclectium0iuzdi5t-chessbox.functions.fnc.pl-waw.scw.cloud'
+	publicUrl: 'https://develop.chessbox-app.pages.dev',
+	// serviceApiUrl: 'https://chessbox-server-268nq.ondigitalocean.app'
+	serviceApiUrl: 'https://eclectium0iuzdi5t-chessbox.functions.fnc.pl-waw.scw.cloud'
 }
 
 const prodConfig: AppConfig = {
