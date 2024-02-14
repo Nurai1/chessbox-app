@@ -28,6 +28,7 @@ const devConfig: AppConfig = {
 	serviceApiUrl: 'https://chessbox-server-268nq.ondigitalocean.app'
 	// serviceApiUrl: 'https://eclectium0iuzdi5t-chessbox.functions.fnc.pl-waw.scw.cloud'
 }
+
 const prodConfig: AppConfig = {
 	type: 'prod',
 	publicUrl: 'chessboxingfit.com',
