@@ -101,16 +101,19 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 		</h3>
 	)
 
-	const noPairsForFightInGroup = competitionData.groups?.reduce((acc, group) => {
-		// only pair.passed do not work because flaky 'defineWinner' endpoint set passed 50/50
-		if (group.currentRoundPairs?.every(pair => pair.winner || pair.passed)) {
-			return {
-				...acc,
-				[group._id as string]: true
+	const noPairsForFightInGroup = competitionData.groups?.reduce(
+		(acc, group) => {
+			// only pair.passed do not work because flaky 'defineWinner' endpoint set passed 50/50
+			if (group.currentRoundPairs?.every(pair => pair.winner || pair.passed)) {
+				return {
+					...acc,
+					[group._id as string]: true
+				}
 			}
-		}
-		return acc
-	}, {} as Record<string, boolean>)
+			return acc
+		},
+		{} as Record<string, boolean>
+	)
 
 	const handleLaunchNextGroupRound = (groupId: string) => {
 		dispatch(launchNextGroupRound({ competitionId: competitionId as string, groupId }))

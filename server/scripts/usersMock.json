@@ -1387,7 +1387,8 @@
       "role": "judge",
       "gender": "man",
       "competitionsHistory": []
-    }
+    },
+    {"_id":{"$oid":"6559aef216525bce96b52bf1"},"email":"Sayapov@bk.ru","hashedPassword":"$2a$10$SPDoAET19.e/UNJHe35T4.Lt2wKqa3QiWs/eyN2.9CdJY35G4TxbG","firstName":"Rishat","lastName":"Saiapov","fullName":"Rishat Saiapov","address":{"country":"Russia","city":"Moscow"},"role":"chief_judge","socialNetworks":{"whatsup":"+79177520070"},"competitionsHistory":[]}
   ],
-  "total": 47
+  "total": 48
 }

@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 import { Document, PopulatedDoc, Types } from 'mongoose';
+import { GridTree } from '../utils/getPrefilledOlympicGrid';
 
 export type ECoefficients = 1 | 0.75 | 0.5 | 0.25;
 export type GenderType = 'woman' | 'man';
@@ -99,7 +100,7 @@ export interface ICompetition {
 }
 
 export interface ICompetitionGroup {
-  _id?: Types.ObjectId;
+  _id: Types.ObjectId;
   ageCategory: string;
   weightCategory: string;
   gender: GenderType;
@@ -112,4 +113,5 @@ export interface ICompetitionGroup {
   nextRoundParticipants: PopulatedDoc<IUser & Document>[];
   results?: { userId: PopulatedDoc<IUser & Document>; placeNumber: number }[];
   isCompleted?: boolean;
+  olympicGrid?: GridTree;
 }

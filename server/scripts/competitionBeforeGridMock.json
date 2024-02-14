@@ -1,0 +1,105 @@
+{
+  "_id": { "$oid": "65b501c1618b496af1f456ce" },
+  "startDate": { "$date": { "$numberLong": "1706533200000" } },
+  "baseDate": { "$date": { "$numberLong": "1706533200000" } },
+  "registrationEndsAt": { "$date": { "$numberLong": "1706436000000" } },
+  "name": "Турнир по шахбокс-фит онлайн",
+  "description": "",
+  "groups": [
+    {
+      "ageCategory": {
+        "from": { "$numberInt": "0" },
+        "to": { "$numberInt": "100" }
+      },
+      "weightCategory": {
+        "from": { "$numberInt": "0" },
+        "to": { "$numberInt": "100" }
+      },
+      "gender": "man",
+      "currentRoundNumber": { "$numberInt": "1" },
+      "nextRoundParticipants": [
+        { "$oid": "65b4c7fb00a6728bdeaa8306" },
+        { "$oid": "65b4c7fb00a6728bdeaa8308" },
+        { "$oid": "65b4c7fb00a6728bdeaa830d" }
+      ],
+      "allParticipants": [
+        { "$oid": "65b4c7fb00a6728bdeaa8304" },
+        { "$oid": "65b4c7fb00a6728bdeaa830b" },
+        { "$oid": "65b4c7fb00a6728bdeaa8306" },
+        { "$oid": "65b4c7fb00a6728bdeaa8308" },
+        { "$oid": "65b4c7fb00a6728bdeaa830d" }
+      ],
+      "currentRoundPairs": [
+        {
+          "blackParticipant": { "$oid": "65b4c7fb00a6728bdeaa830b" },
+          "whiteParticipant": { "$oid": "65b4c7fb00a6728bdeaa8304" },
+          "passed": false,
+          "judge": { "$oid": "65b4c7fb00a6728bdeaa8354" },
+          "_id": { "$oid": "65b750c11b78b312dcea486c" }
+        }
+      ],
+      "isCompleted": false,
+      "_id": { "$oid": "65b750c11b78b312dcea486b" },
+      "results": [],
+      "passedPairs": []
+    }
+  ],
+  "price": { "currentValue": { "$numberInt": "100" }, "pricesChanges": [] },
+  "zoomLink": "https://us02web.zoom.us/j/3425486200?pwd=dU9qN1FvcWIzQ2FkdDFPbmI2T09wQT09",
+  "started": false,
+  "chiefJudgeEndedConfiguration": false,
+  "breakTime": { "minutes": { "$numberInt": "0" } },
+  "participants": [
+    { "$oid": "65b4c7fb00a6728bdeaa8304" },
+    { "$oid": "65b4c7fb00a6728bdeaa8308" },
+    { "$oid": "65b4c7fb00a6728bdeaa830d" },
+    { "$oid": "65b4c7fb00a6728bdeaa830b" },
+    { "$oid": "65b4c7fb00a6728bdeaa8306" }
+  ],
+  "usersPaymentInfo": [
+    {
+      "userId": { "$oid": "65b4c7fb00a6728bdeaa8304" },
+      "paid": true,
+      "requestedToCheck": true,
+      "requestedCount": { "$numberInt": "1" },
+      "message": "",
+      "_id": { "$oid": "659a705d2b35aa5fd90a77ec" }
+    },
+    {
+      "userId": { "$oid": "65b4c7fb00a6728bdeaa8306" },
+      "paid": true,
+      "requestedToCheck": true,
+      "requestedCount": { "$numberInt": "1" },
+      "message": "",
+      "_id": { "$oid": "659c25392b35aa5fd90a7cd6" }
+    },
+    {
+      "userId": { "$oid": "65b4c7fb00a6728bdeaa8308" },
+      "paid": true,
+      "requestedToCheck": true,
+      "requestedCount": { "$numberInt": "1" },
+      "message": "",
+      "_id": { "$oid": "659c1c582b35aa5fd90a7c89" }
+    },
+    {
+      "userId": { "$oid": "65b4c7fb00a6728bdeaa830b" },
+      "paid": true,
+      "requestedToCheck": true,
+      "requestedCount": { "$numberInt": "1" },
+      "message": "",
+      "_id": { "$oid": "659d28662b35aa5fd90a806e" }
+    },
+    {
+      "userId": { "$oid": "65b4c7fb00a6728bdeaa830d" },
+      "paid": true,
+      "requestedToCheck": true,
+      "requestedCount": { "$numberInt": "1" },
+      "message": "",
+      "_id": { "$oid": "659d9ef22b35aa5fd90a86f1" }
+    }
+  ],
+  "judges": [
+    { "$oid": "65b4c7fb00a6728bdeaa8354" },
+    { "$oid": "65b4c7fb00a6728bdeaa8355" }
+  ]
+}

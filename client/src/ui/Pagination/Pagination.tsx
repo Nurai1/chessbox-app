@@ -76,7 +76,7 @@ export const Pagination: FC<PaginationPropsType> = ({ setOffset, offset, total, 
 							onClick: () => {
 								if (page) setOffset((page - 1) * itemsPerPage)
 							}
-					  }
+						}
 
 				if (isEllipsis) {
 					return (

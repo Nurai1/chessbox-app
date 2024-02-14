@@ -1,9 +1,9 @@
 import express from 'express';
 
-import { allowIfLoggedin, grantAccess } from '../controllers/user.controller';
+import { ACTIONS, RESOURCES } from '../constants';
 import { CompetitionController, UserController } from '../controllers/index';
+import { allowIfLoggedin, grantAccess } from '../controllers/user.controller';
 import { controllerErrorHandler } from '../utils/controllerErrorHandler';
-import { RESOURCES, ACTIONS } from '../constants';
 import { routerMockForSwaggerGenerator } from '../utils/routerMockForSwaggerGenerator';
 
 export const competitionRouter = express.Router();
@@ -272,6 +272,35 @@ competitionRouter.patch(
   UserController.allowIfLoggedin,
   UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.recalculatePairsTime)
+);
+
+competitionRouter.patch(
+  '/competition/:id/setParticipantsOrdersByGroup',
+  /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
+  /*	#swagger.requestBody = {
+          required: true,
+          content: {
+              "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      anyGroupId: { type: "array", items: { type: "string" } },
+                    },
+                  },
+              }
+          },
+          description: 'anyGroupId key means all groupIds here. It is Record JSON',
+      }
+    */
+  /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+  UserController.allowIfLoggedin,
+  UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  controllerErrorHandler(CompetitionController.setParticipantsOrdersByGroup)
 );
 
 competitionRouter.patch(
