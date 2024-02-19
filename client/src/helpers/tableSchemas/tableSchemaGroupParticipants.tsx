@@ -8,7 +8,7 @@ export const tableSchemaGroupParticipants = (
 	return tableData.map(({ fullName, birthDate, weight, userGridPlace, setUserGridPlace }, i) => {
 		return {
 			cells: [
-				userGridPlace && setUserGridPlace
+				setUserGridPlace
 					? {
 							node: <Input value={userGridPlace} onChange={setUserGridPlace} classes='px-2 h-8 w-12' placeholder='№' />,
 							classes: 'flex-center max-w-[8rem] pr-1 text-black'
