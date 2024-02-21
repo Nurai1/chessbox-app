@@ -305,6 +305,7 @@ export const CreateGroupPage = (): ReactElement => {
 		<main className='container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]'>
 			<Alert
 				title={alertData.title}
+				subtitle={alertData.subtitle}
 				type={alertData.type}
 				classes={`fixed -right-56 w-56 transition-[right] duration-300 ${alertData.show && 'right-8'}`}
 			/>
