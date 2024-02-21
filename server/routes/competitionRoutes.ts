@@ -4,6 +4,7 @@ import { ACTIONS, RESOURCES } from '../constants';
 import { CompetitionController, UserController } from '../controllers/index';
 import { allowIfLoggedin, grantAccess } from '../controllers/user.controller';
 import { controllerErrorHandler } from '../utils/controllerErrorHandler';
+import '../utils/dotenvConfig';
 import { routerMockForSwaggerGenerator } from '../utils/routerMockForSwaggerGenerator';
 
 export const competitionRouter = express.Router();
@@ -548,6 +549,24 @@ competitionRouter.patch(
   grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.setCompetitionBreakTime)
 );
+
+if (
+  process.env.ENVIRONMENT === 'staging' ||
+  process.env.ENVIRONMENT === 'development'
+) {
+  competitionRouter.patch(
+    '/competition/:id/allUsersPaymentRequestToCheck',
+    // #swagger.description = 'Только для ускорения тестирования.'
+    /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
+    /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+    controllerErrorHandler(CompetitionController.allUsersPaymentRequestToCheck)
+  );
+}
 
 competitionRouter.patch(
   '/competition/:id/setUserPaymentRequestToCheck/:userId',

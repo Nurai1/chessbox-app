@@ -68,6 +68,7 @@ export const CreatePairsPage = (): ReactElement => {
 		<main className='container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]'>
 			<Alert
 				title={alertData.title}
+				subtitle={alertData.subtitle}
 				type={alertData.type}
 				classes={`fixed -right-56 w-56 transition-[right] duration-300 ${alertData.show && 'right-8'}`}
 			/>
@@ -127,6 +128,21 @@ export const CreatePairsPage = (): ReactElement => {
 						classes='min-w-[8rem] xl:min-w-[15.625rem]'
 						loading={loading}
 						onClick={() => {
+							let someInputNotFilled = false
+							competitionData?.groups?.forEach(group => {
+								const groupParticipants = group.allParticipants
+								groupParticipants?.forEach(groupParticipantId => {
+									if (group._id && !usersOlympicGridPlacesByGroupIds[group._id]?.[groupParticipantId]) {
+										someInputNotFilled = true
+									}
+								})
+							})
+
+							if (someInputNotFilled) {
+								setAlertData({ show: true, type: 'error', subtitle: 'All fields must be filled.' })
+								return
+							}
+
 							if (usersOlympicGridPlacesByGroupIds && competitionId) {
 								const data = Object.entries(usersOlympicGridPlacesByGroupIds).reduce(
 									(acc, [groupId, usersOlympicGridPlaces]) => {

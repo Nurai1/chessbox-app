@@ -629,6 +629,7 @@ export const defineWinner = async (
   ]);
 
   const { olympicGrid } = competitionGroup;
+
   const newOlympicGrid =
     olympicGrid && changeTreeLeaveWithWinnerId(olympicGrid, winnerId);
   competitionGroup.olympicGrid = { ...newOlympicGrid };
@@ -1012,6 +1013,35 @@ export const setUserPaymentRequestToCheck = async (
 
   try {
     await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const allUsersPaymentRequestToCheck = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const competition = await Competition.findOne({ _id: id });
+  const allParticipants = await User.find({
+    role: 'participant',
+  });
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  try {
+    competition.usersPaymentInfo = allParticipants.map((user) => ({
+      userId: String(user._id),
+      paid: false,
+      requestedToCheck: true,
+      requestedCount: 1,
+    }));
+
+    await competition.save();
+
+    res.send(competition);
   } catch (err) {
     console.error(err);
   }
