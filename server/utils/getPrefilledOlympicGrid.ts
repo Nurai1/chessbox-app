@@ -1,6 +1,10 @@
 /* eslint-disable no-param-reassign */
 
-export type GridTree = { userId?: string; pair?: [GridTree, GridTree] };
+export type GridTree = {
+  userId?: string;
+  pair?: [GridTree, GridTree];
+  fieldForModifying?: boolean;
+};
 
 export const getPrefilledOlympicGrid = (
   allParticipants: string[],

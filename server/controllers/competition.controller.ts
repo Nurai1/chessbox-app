@@ -632,7 +632,10 @@ export const defineWinner = async (
 
   const newOlympicGrid =
     olympicGrid && changeTreeLeaveWithWinnerId(olympicGrid, winnerId);
-  competitionGroup.olympicGrid = { ...newOlympicGrid };
+  competitionGroup.olympicGrid = {
+    ...newOlympicGrid,
+    fieldForModifying: !olympicGrid?.fieldForModifying || false,
+  };
 
   const isGroupCompleted =
     competitionGroup?.nextRoundParticipants?.length === 0 &&
@@ -740,6 +743,7 @@ export const defineWinner = async (
       competitionGroup.results = groupResults;
     }
 
+    competition.markModified('olympicGrid.fieldForModifying');
     await competition?.save();
 
     return res.send(competition);
