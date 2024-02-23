@@ -687,6 +687,9 @@ export const defineWinner = async (
       : competitionGroup.allParticipants.length;
 
     competitionGroup.lastPlaceNumber = loserPlaceNumber;
+    const wasLoserDisqualified = loser.competitionsHistory?.find(
+      (compHist) => compHist.competitionId === competitionId
+    );
     await Promise.all([
       User.findOneAndUpdate(
         { _id: winnerId },
@@ -707,22 +710,24 @@ export const defineWinner = async (
         },
         { new: true }
       ),
-      User.findOneAndUpdate(
-        { _id: loserId },
-        {
-          ratingNumber: newLoserRating,
-          // TODO: rewrite with both disqualified case, passedPairs length not enough
-          competitionsHistory: [
-            ...loser.competitionsHistory,
+      wasLoserDisqualified
+        ? User.findOneAndUpdate(
+            { _id: loserId },
             {
-              competitionId,
-              groupId,
-              placeNumber: loserPlaceNumber,
+              ratingNumber: newLoserRating,
+              // TODO: rewrite with both disqualified case, passedPairs length not enough
+              competitionsHistory: [
+                ...loser.competitionsHistory,
+                {
+                  competitionId,
+                  groupId,
+                  placeNumber: loserPlaceNumber,
+                },
+              ],
             },
-          ],
-        },
-        { new: true }
-      ),
+            { new: true }
+          )
+        : null,
     ]);
 
     if (isGroupCompleted) {
