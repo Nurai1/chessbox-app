@@ -1,6 +1,6 @@
-import { useState, FC } from 'react'
-import { Button } from 'src/ui/Button'
+import { FC, useState } from 'react'
 import { useAppSelector } from 'src/hooks/redux'
+import { Button } from 'src/ui/Button'
 
 type CallUpButtonPropsType = {
 	onCallPairPreparation: () => void

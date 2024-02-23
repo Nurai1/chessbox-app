@@ -1,44 +1,44 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import {
 	AcceptPairFightBodySchema,
+	CallPairPreparationSchema,
 	CompetitionGroupSchema,
 	CompetitionGroupsOrdersSchema,
-	CompetitionSchema,
-	DeleteCompetitionGroupSchema,
-	ErrorPayload,
-	ParticipantSchema,
-	SetCompetitionJudgesSchema,
-	SetJudgesToPairsSchema,
-	CallPairPreparationSchema,
-	DefineWinnerSchema,
-	UserSchema,
-	LaunchNextGroupRoundApiSchema,
 	CompetitionPaymentDataType,
 	CompetitionPaymentPaidType,
-	ParticipantsOrdersByGroupSchema
+	CompetitionSchema,
+	DefineWinnerSchema,
+	DeleteCompetitionGroupSchema,
+	ErrorPayload,
+	LaunchNextGroupRoundApiSchema,
+	ParticipantSchema,
+	ParticipantsOrdersByGroupSchema,
+	SetCompetitionJudgesSchema,
+	SetJudgesToPairsSchema,
+	UserSchema
 } from 'src/types'
 
 import {
-	getCompetitionByIdApi,
-	getCompetitionParticipantsApi,
-	getCompetitionJudgesApi,
-	setCompetitionJudgesApi,
-	setJudgesToPairsApi,
-	setCompetitionGroupsOrdersApi,
-	setCompetitionGroupsApi,
-	deleteCompetitionGroupApi,
+	acceptForFightApi,
 	addNewParticipantApi,
-	setBreakTimeApi,
 	callPairPreparationApi,
 	defineWinnerApi,
-	acceptForFightApi,
-	launchNextGroupRoundApi,
-	seTuserPaymentRequestToCheckApi,
+	deleteCompetitionGroupApi,
+	getCompetitionByIdApi,
+	getCompetitionJudgesApi,
+	getCompetitionParticipantsApi,
 	getPaymentInfoUsersApi,
-	setUserPaymentPaidApi,
-	startCompetitionApi,
+	launchNextGroupRoundApi,
 	recalculatePairsTimeApi,
-	setParticipantsOrdersByGroupApi
+	seTuserPaymentRequestToCheckApi,
+	setBreakTimeApi,
+	setCompetitionGroupsApi,
+	setCompetitionGroupsOrdersApi,
+	setCompetitionJudgesApi,
+	setJudgesToPairsApi,
+	setParticipantsOrdersByGroupApi,
+	setUserPaymentPaidApi,
+	startCompetitionApi
 } from 'src/api/requests/competitions'
 
 export const fetchCompetitionById = createAsyncThunk('competition/fetchById', async (id: string, thunkApi) => {
@@ -377,9 +377,6 @@ export const competitionSlice = createSlice({
 			action: PayloadAction<{ newParticipant: UserSchema; competitionId: string }>
 		) => {
 			state.participants[action.payload.competitionId]?.push(action.payload.newParticipant)
-		},
-		resetAcceptForFightSuccess: state => {
-			state.acceptForFightSuccess = true
 		}
 	},
 	extraReducers: {
@@ -550,7 +547,6 @@ export const competitionSlice = createSlice({
 		},
 		[defineWinner.pending.type]: state => {
 			state.defineWinnerPending = true
-			state.defineWinnerError = undefined
 		},
 		[defineWinner.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.defineWinnerPending = false
@@ -558,12 +554,10 @@ export const competitionSlice = createSlice({
 		},
 		[acceptForFight.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.acceptForFightPending = false
-			state.acceptForFightSuccess = true
 			state.data = action.payload
 		},
 		[acceptForFight.pending.type]: state => {
 			state.acceptForFightPending = true
-			state.acceptForFightSuccess = undefined
 		},
 		[acceptForFight.rejected.type]: (state, action: PayloadAction<string>) => {
 			state.acceptForFightPending = false
@@ -633,8 +627,7 @@ export const {
 	resetBreakTimeSuccess,
 	addValuecallUpTimerRunningIds,
 	removeValuecallUpTimerRunningIds,
-	addCompetitionParticipant,
-	resetAcceptForFightSuccess
+	addCompetitionParticipant
 } = competitionSlice.actions
 
 export default competitionSlice.reducer
