@@ -2,7 +2,8 @@
 version: '3.8'
 services:
   gateway:
-    container_name: gateway
+    container_name: gateway-${DENV:-dev}
+    image: europe-north1-docker.pkg.dev/xenon-height-415204/chessboxingfit/gateway-${DENV:-dev}
     build: ./gateway
     restart: always
     ports:
@@ -14,7 +15,8 @@ services:
       - node-network
 
   client:
-    container_name: client
+    container_name: client-${DENV:-dev}
+    image: europe-north1-docker.pkg.dev/xenon-height-415204/chessboxingfit/client-${DENV:-dev}
     build: 
       context: ./client
     restart: always
@@ -22,24 +24,26 @@ services:
       - node-network
 
   server:
-    container_name: server
+    container_name: server-${DENV:-dev}
+    image: europe-north1-docker.pkg.dev/xenon-height-415204/chessboxingfit/server-${DENV:-dev}
     build: ./server
     restart: always
     environment:
-      - MONGO_URI=mongodb://mongodb:27017/main
+      - MONGO_URI=mongodb://mongodb-${DENV:-dev}:27017/db-${DENV:-dev}
       - JWT_SECRET_KEY=CXiG71NGuRfZJ8SLV76e
+      - SMTP_USER_MAIL=$SMTP_USER_MAIL
       - SMTP_SERVICE_PASSKEY=$SMTP_SERVICE_PASSKEY
     depends_on:
-      - mongodb
+      - mongodb${DENV:-dev}
     networks:
       - node-network
 
   mongodb:
-    container_name: mongodb
+    container_name: mongodb-${DENV:-dev}
     image: mongo:6-jammy
     restart: always
     environment:
-      - MONGO_INITDB_DATABASE=main
+      - MONGO_INITDB_DATABASE=db-${DENV:-dev}
     volumes:
       - dbdata6:/data/db
     networks:

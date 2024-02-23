@@ -4,14 +4,48 @@ Project in NodeJs, MongoDB, Express and React. It is the app for business that h
 
 ## Run Docker
 
-First, you need to install docker compose.
+> First of all you need to install `docker compose` and `gcloud`.
 
-And after you need to run this command:
+### Setup the environment
 
 ```bash
-docker-compose up -d --build
+gcloud auth login
+gcloud auth configure-docker europe-north1-docker.pkg.dev
+docker login europe-north1-docker.pkg.dev
+```
 
-# or
+### Select an environment
 
-PROJECT_PORT=8081 SMTP_SERVICE_PASSKEY="..." docker-compose up -d --build
+```bash
+export DENV=dev # or prod
+```
+
+> You need to set the `DENV` variable every time you want to work with docker
+
+### Pull docker images
+
+```bash
+docker-compose pull
+```
+
+### Run the project
+
+```bash
+docker-compose up -d
+```
+
+### Build the project
+
+```bash
+export PROJECT_PORT=80 
+export SMTP_USER_MAIL="..." 
+export SMTP_SERVICE_PASSKEY="..." 
+
+docker-compose build
+```
+
+### Push docker images from google artifacts
+
+```bash
+docker-compose push
 ```
