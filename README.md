@@ -44,7 +44,7 @@ export SMTP_SERVICE_PASSKEY="..."
 docker-compose build
 ```
 
-### Push docker images from google artifacts
+### Push docker images to google artifacts
 
 ```bash
 docker-compose push
