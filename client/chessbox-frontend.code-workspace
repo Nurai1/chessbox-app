@@ -7,11 +7,11 @@
 	"settings": {
 		"typescript.validate.enable": true,
 		"eslint.options": {
-			"overrideConfigFile": "./.eslintrc.json"
+			"overrideConfigFile": "./.eslintrc.js"
 		},
 		"eslint.alwaysShowStatus": true,
 		"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.defaultFormatter": null,
 		"editor.formatOnSave": false,
 		"editor.tabSize": 2,
 		"css.lint.unknownAtRules": "ignore",
@@ -20,7 +20,11 @@
 		"cSpell.words": ["twMerge"],
 		"typescript.disableAutomaticTypeAcquisition": true,
 		"editor.foldingImportsByDefault": true,
-		"editor.codeActionsOnSave": ["source.addMissingImports", "source.fixAll.eslint", "source.sortImports"],
+		"editor.codeActionsOnSave": {
+			"source.addMissingImports": "explicit",
+			// "source.sortImports": "explicit",
+			"source.fixAll.eslint": "explicit"
+		},
 		"files.watcherExclude": {
 			".eslintcache": true,
 			"dist": true,

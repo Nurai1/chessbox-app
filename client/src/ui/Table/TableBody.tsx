@@ -1,11 +1,11 @@
 /* eslint-disable react/no-array-index-key */
 import { FC, ReactNode, useEffect } from 'react'
-import { twMerge } from 'tailwind-merge'
-import InfiniteLoader from 'react-window-infinite-loader'
-import { FixedSizeList } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
-import { useWindowSize } from 'usehooks-ts'
+import { FixedSizeList } from 'react-window'
+import InfiniteLoader from 'react-window-infinite-loader'
 import { BreakPoint } from 'src/constants/breakPoints'
+import { twMerge } from 'tailwind-merge'
+import { useWindowSize } from 'usehooks-ts'
 import { Loader } from '../Loader'
 
 export type TablePropsType =

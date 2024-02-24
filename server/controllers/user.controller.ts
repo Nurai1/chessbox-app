@@ -103,11 +103,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
   res.sendStatus(200);
 };
 
-export const signup = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const signup = async (req: Request, res: Response) => {
   const { password, ...userData } = req.body;
 
   const userValidRes = CreateUserParser.safeParse(req.body);
@@ -261,8 +257,7 @@ export const getUsers = async (
       role?: string;
     }
   >,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const {
     offset,
@@ -360,11 +355,7 @@ export const getUsers = async (
   res.send({ items: users, total: usersCount });
 };
 
-export const getUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   const user = await User.findOne({ _id: id });
 
@@ -375,8 +366,7 @@ export const getUser = async (
 
 export const createUser = async (
   req: Request<any, any, { user: IUser; password: string }>,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   if (!req.body) return res.sendStatus(400);
 
@@ -393,11 +383,7 @@ export const createUser = async (
   res.send(user);
 };
 
-export const deleteUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const user = await User.findByIdAndDelete(id);
@@ -407,11 +393,7 @@ export const deleteUser = async (
   res.send(user);
 };
 
-export const updateCurrentUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateCurrentUser = async (req: Request, res: Response) => {
   if (!req.body) return res.sendStatus(400);
   const result = req.body;
 
@@ -452,11 +434,7 @@ export const updateCurrentUser = async (
   res.send(updatedUser);
 };
 
-export const updateUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateUser = async (req: Request, res: Response) => {
   if (!req.body) return res.sendStatus(400);
   const result = req.body;
 

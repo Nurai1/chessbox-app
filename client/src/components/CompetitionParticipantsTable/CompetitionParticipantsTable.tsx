@@ -1,20 +1,20 @@
 import { FC, MutableRefObject } from 'react'
-import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { useParams } from 'react-router-dom'
-import { TableBody, Loader, Button, Accordion } from 'src/ui'
+import { getAge, getFormattedDate } from 'src/helpers/datetime'
+import { getGroupPairsLen } from 'src/helpers/getGroupPairsLen'
+import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
+import { PairType, tableSchemaPairs } from 'src/helpers/tableSchemas/tableSchemaPairs'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { launchNextGroupRound } from 'src/store/slices/competitionSlice'
 import {
+	AgeCategorySchema,
+	ChooseWinnerType,
 	CompetitionSchema,
 	ParticipantSchema,
 	UserSchema,
-	AgeCategorySchema,
-	WeightCategorySchema,
-	ChooseWinnerType
+	WeightCategorySchema
 } from 'src/types'
-import { getGroupPairsLen } from 'src/helpers/getGroupPairsLen'
-import { tableSchemaPairs, PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
-import { getFormattedDate, getAge } from 'src/helpers/datetime'
-import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
-import { launchNextGroupRound } from 'src/store/slices/competitionSlice'
+import { Accordion, Button, Loader, TableBody } from 'src/ui'
 import { TIME_FOR_PAIR } from '../../constants/time'
 
 const getStartPointTimeTuple = (competitionData: CompetitionSchema) => {
@@ -101,16 +101,19 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 		</h3>
 	)
 
-	const noPairsForFightInGroup = competitionData.groups?.reduce((acc, group) => {
-		// only pair.passed do not work because flaky 'defineWinner' endpoint set passed 50/50
-		if (group.currentRoundPairs?.every(pair => pair.winner || pair.passed)) {
-			return {
-				...acc,
-				[group._id as string]: true
+	const noPairsForFightInGroup = competitionData.groups?.reduce(
+		(acc, group) => {
+			// only pair.passed do not work because flaky 'defineWinner' endpoint set passed 50/50
+			if (group.currentRoundPairs?.every(pair => pair.winner || pair.passed)) {
+				return {
+					...acc,
+					[group._id as string]: true
+				}
 			}
-		}
-		return acc
-	}, {} as Record<string, boolean>)
+			return acc
+		},
+		{} as Record<string, boolean>
+	)
 
 	const handleLaunchNextGroupRound = (groupId: string) => {
 		dispatch(launchNextGroupRound({ competitionId: competitionId as string, groupId }))
@@ -171,6 +174,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 											groupId: _id,
 											currentGroupIndex,
 											isJudgeCompetitionPage,
+											lastPairIndex: (passedPairs?.length ?? 0) - currentRoundPairs.filter(p => p.passed).length,
 											...rest
 										})}
 									/>

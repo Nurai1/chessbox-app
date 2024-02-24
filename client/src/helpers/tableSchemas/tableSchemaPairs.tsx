@@ -30,7 +30,8 @@ export const tableSchemaPairs = ({
 	onChooseWinner,
 	currentGroupIndex,
 	defineWinnerPending,
-	onDefineWinner
+	onDefineWinner,
+	lastPairIndex = 0
 }: {
 	tableData: PairSchema[]
 	participants: UserSchema[]
@@ -52,6 +53,7 @@ export const tableSchemaPairs = ({
 	currentGroupIndex?: number
 	defineWinnerPending?: boolean
 	onDefineWinner?: (pairId: string) => void
+	lastPairIndex?: number
 }) => {
 	const participantsData = tableData.reduce((acc, pair) => {
 		const blackParticipantData = participants.find(({ _id }) => pair.blackParticipant === _id)
@@ -71,6 +73,9 @@ export const tableSchemaPairs = ({
 
 	const statusStyle =
 		'uppercase text-sm md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3 xl:row-auto xl:col-start-3 xl:col-end-4 xl:text-base xl:font-bold text-right md:pr-6'
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	const lastPassedPairIndex = participantsData.findLastIndex(pair => pair.passed)
 
 	return participantsData.map((pair, i) => {
 		const currentPairTime = getTimeTuplePlusMinutes(
@@ -111,9 +116,9 @@ export const tableSchemaPairs = ({
 		const showCallUpTimer =
 			pair.calledForPreparation && isJudgeCompetitionPage && !bothParticipantsAccepted && !oneOfParticipantsDisqualified
 		const showWinnerButton =
-			(isJudgeCompetitionPage && !bothParticipantsDisqualified && oneOfParticipantsDisqualified && !pair.winner) ||
-			(isJudgeCompetitionPage && !bothParticipantsDisqualified && bothParticipantsAccepted && !pair.winner)
-		const finished = pair.winner || bothParticipantsDisqualified
+			(isJudgeCompetitionPage && oneOfParticipantsDisqualified && !pair.winner) ||
+			(isJudgeCompetitionPage && bothParticipantsAccepted && !pair.winner)
+		const finished = pair.winner
 		const inProgress =
 			pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant && !pair.winner
 		const waitingCompetitonPage =
@@ -125,12 +130,14 @@ export const tableSchemaPairs = ({
 		const waitingJudgeCompetitonPage =
 			isJudgeCompetitionPage && !pair.calledForPreparation && !currentFightingGroupIndex
 
-		const disableCallUpButton = Boolean(maxPairs && currentPairs && maxPairs <= currentPairs?.length)
+		const disableCallUpIfNoFirstTwoButtons = lastPassedPairIndex + 3 === i || lastPassedPairIndex + 4 === i
+		const disableCallUpButton =
+			Boolean(maxPairs && currentPairs && maxPairs <= currentPairs?.length) || disableCallUpIfNoFirstTwoButtons
 
 		return {
 			cells: [
 				{
-					node: <span>{i + 1}</span>,
+					node: <span>{lastPairIndex + i + 1}</span>,
 					classes: 'max-w-[20px] text-base xl:font-bold xl:max-w-[50px]'
 				},
 				{

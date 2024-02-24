@@ -1,27 +1,28 @@
 import { useEffect } from 'react'
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { PrivateRoute } from 'src/components/PrivateRoute'
 import { AppRoute } from 'src/constants/appRoute'
 import { Role } from 'src/constants/role'
+import { useAppDispatch } from 'src/hooks/redux'
+import { MainLayout } from 'src/layouts'
 import { Route404 } from 'src/routes/404'
-import { UILibrary } from 'src/routes/UILibrary'
-import { CompetitionsPage } from 'src/routes/CompetitionsPage'
+import { ChangePasswordPage } from 'src/routes/ChangePasswordPage'
 import { CompetitionPage } from 'src/routes/CompetitionPage'
-import { RatingPage } from 'src/routes/RatingPage'
-import { SignUpPage } from 'src/routes/SignUpPage'
-import { SignInPage } from 'src/routes/SignInPage'
+import { CompetitionsPage } from 'src/routes/CompetitionsPage'
+import { CreateGroupPage } from 'src/routes/CreateGroupPage'
+import { CreatePairsPage } from 'src/routes/CreatePairsPage'
 import { EditProfilePage } from 'src/routes/EditProfilePage'
 import { ForgotPasswordPage } from 'src/routes/ForgotPasswordPage'
-import { ChangePasswordPage } from 'src/routes/ChangePasswordPage'
-import { JudgeChoicePage } from 'src/routes/JudgeChoicePage'
-import { CreateGroupPage } from 'src/routes/CreateGroupPage'
-import { PrivateRoute } from 'src/components/PrivateRoute'
 import { JudgeAssignPage } from 'src/routes/JudgeAssignPage'
-import { OrdersToGroupAssignPage } from 'src/routes/OrdersToGroupAssignPage'
+import { JudgeChoicePage } from 'src/routes/JudgeChoicePage'
 import { JudgeCompetitionPage } from 'src/routes/JudgeCompetitionPage'
+import { OrdersToGroupAssignPage } from 'src/routes/OrdersToGroupAssignPage'
+import { RatingPage } from 'src/routes/RatingPage'
+import { SignInPage } from 'src/routes/SignInPage'
+import { SignUpPage } from 'src/routes/SignUpPage'
+import { UILibrary } from 'src/routes/UILibrary'
 import { VerifyPaymentPage } from 'src/routes/VerifyPaymentPage'
-import { useAppDispatch } from 'src/hooks/redux'
 import { checkAuth } from 'src/store/slices/userSlice'
-import { MainLayout } from 'src/layouts'
 
 const App = () => {
 	const dispatch = useAppDispatch()
@@ -29,7 +30,6 @@ const App = () => {
 		dispatch(checkAuth())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
-
 	return (
 		<HashRouter>
 			<Routes>
@@ -53,6 +53,14 @@ const App = () => {
 								element={
 									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
 										<CreateGroupPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path={AppRoute.CreatePairs}
+								element={
+									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+										<CreatePairsPage />
 									</PrivateRoute>
 								}
 							/>

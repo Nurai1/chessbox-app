@@ -13,9 +13,10 @@ module.exports = {
 		'plugin:@typescript-eslint/recommended',
 		'plugin:react/recommended',
 		'plugin:react-hooks/recommended',
-		'prettier'
+		"plugin:prettier/recommended"
 	],
 	rules: {
+		'prettier/prettier': 'error',
 		'no-param-reassign': [2, { props: false }],
 		'prefer-arrow-callback': [2, { allowNamedFunctions: true }],
 		'react/react-in-jsx-scope': 0,

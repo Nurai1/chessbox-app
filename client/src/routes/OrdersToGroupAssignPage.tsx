@@ -1,20 +1,20 @@
 import { ReactElement, useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { twMerge } from 'tailwind-merge'
+import { useNavigate, useParams } from 'react-router-dom'
+import { ReactComponent as DragIcon } from 'src/assets/drag-icon.svg'
+import { CompetitionCreateHeader } from 'src/components'
+import { AppRoute } from 'src/constants/appRoute'
+import { swapArray } from 'src/helpers/swapArray'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
+	resetCompetitionGroupsOrdersStatus,
 	setCompetitionData,
-	setCompetitionGroupsOrders,
-	resetCompetitionGroupsOrdersStatus
+	setCompetitionGroupsOrders
 } from 'src/store/slices/competitionSlice'
-import { RoundedBorderWrapper, BottomFixedContainer, Button, Alert, DragSortItem, DragAndDropProvider } from 'src/ui'
-import { ReactComponent as DragIcon } from 'src/assets/drag-icon.svg'
-import { AppRoute } from 'src/constants/appRoute'
 import { CompetitionGroupSchema, CompetitionGroupsOrders, CompetitionSchema } from 'src/types'
-import { swapArray } from 'src/helpers/swapArray'
-import { CompetitionCreateHeader } from 'src/components'
+import { Alert, BottomFixedContainer, Button, DragAndDropProvider, DragSortItem, RoundedBorderWrapper } from 'src/ui'
+import { twMerge } from 'tailwind-merge'
 
 export const OrdersToGroupAssignPage = (): ReactElement => {
 	const { competitionId } = useParams()
@@ -91,14 +91,14 @@ export const OrdersToGroupAssignPage = (): ReactElement => {
 			} as CompetitionSchema)
 		)
 
-		navigate(`../${AppRoute.CreateGroup}`)
+		navigate(`../${AppRoute.CreatePairs}`)
 	}
 
 	return (
 		<main className='container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]'>
 			<CompetitionCreateHeader
 				title='Assign orders to groups 3/4'
-				backArrowPath={`../${AppRoute.CreateGroup}`}
+				backArrowPath={`../${AppRoute.CreatePairs}`}
 				competitionData={competitionData}
 				judges={judges}
 			/>

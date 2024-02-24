@@ -45,9 +45,9 @@ export const UsersSearch: FC<SearchPropsType> = ({ classes }) => {
 	useEffect(() => {
 		return () => {
 			dispatch(resetFilter())
-		} 
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	},[])
+	}, [])
 
 	const handleFilter = (value?: string | boolean, name?: string) => {
 		setFilterValues({

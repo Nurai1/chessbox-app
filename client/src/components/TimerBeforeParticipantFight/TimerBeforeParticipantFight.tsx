@@ -8,57 +8,21 @@ import { acceptForFight } from 'src/store/slices/competitionSlice'
 import { Button, Timer } from 'src/ui'
 import { twMerge } from 'tailwind-merge'
 
-export const ResponseForFight: FC<{ currentPair?: PairType }> = ({ currentPair }) => {
-	const { competitionId } = useParams()
-	const dispatch = useAppDispatch()
-
-	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
-	const { acceptForFightPending, acceptForFightSuccess } = useAppSelector(state => state.competition)
-
-	const participantColor =
-		currentPair?.blackParticipant === authorizedUser?._id ? 'blackParticipant' : 'whiteParticipant'
-
-	const exeptedFight =
-		acceptForFightSuccess || (currentPair?.acceptedForFight && currentPair?.acceptedForFight[participantColor])
-	const disqualified = currentPair?.disqualified && currentPair.disqualified[participantColor] && !acceptForFightSuccess
-	const calledForFight = !exeptedFight && !disqualified && !acceptForFightSuccess
-
-	return calledForFight ? (
-		<Button
-			onClick={() => {
-				if (competitionId && authorizedUser?.currentGroupId && currentPair?._id && authorizedUser?._id)
-					dispatch(
-						acceptForFight({
-							competitionId,
-							groupId: authorizedUser.currentGroupId,
-							pairId: currentPair._id,
-							userId: authorizedUser._id
-						})
-					)
-			}}
-			classes='w-full lg:mt-6'
-			loading={acceptForFightPending}
-		>
-			READY!
-		</Button>
-	) : null
-}
-
 export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ currentPair }) => {
 	const { competitionId } = useParams()
 	const dispatch = useAppDispatch()
 
 	const competitionData = useAppSelector(fetchedOrExistingCompetitionSelector(competitionId))
 	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
-	const { acceptForFightPending, acceptForFightSuccess } = useAppSelector(state => state.competition)
+	const { acceptForFightPending } = useAppSelector(state => state.competition)
 	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate)
 
 	const participantColor =
 		currentPair?.blackParticipant === authorizedUser?._id ? 'blackParticipant' : 'whiteParticipant'
 
 	const exeptedFight = currentPair?.acceptedForFight && currentPair?.acceptedForFight[participantColor]
-	const disqualified = currentPair?.disqualified && currentPair.disqualified[participantColor] && !acceptForFightSuccess
-	const calledForFight = !exeptedFight && !disqualified && !acceptForFightSuccess
+	const disqualified = currentPair?.disqualified && currentPair.disqualified[participantColor]
+	const calledForFight = currentPair?.calledForPreparation && !exeptedFight && !disqualified
 
 	const showComponent = isCompetitionOnGoing && currentPair?.calledForPreparation
 
@@ -92,7 +56,7 @@ export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ cu
 					{exeptedFight && <h3 className='text-title xl:text-heading-3'>You are in!</h3>}
 				</div>
 				<div className='flex items-baseline lg:flex-col lg:gap-[20px]'>
-					{!exeptedFight && competitionData && (
+					{!exeptedFight && !disqualified && competitionData && (
 						<Timer
 							showDays={false}
 							secondsLeft={disqualified ? 0 : 110000}

@@ -8,6 +8,7 @@ export const getParticipantsAmountForCurrentRound = (
   let done = false;
   let i = 1;
   let logarithm;
+  let circlesAmount = 0;
 
   do {
     logarithm = Math.log2(i);
@@ -16,6 +17,7 @@ export const getParticipantsAmountForCurrentRound = (
       2 ** (logarithm + 1) > participantsLength
     ) {
       done = true;
+      circlesAmount = logarithm + 1;
     } else {
       i *= 2;
     }
@@ -23,8 +25,11 @@ export const getParticipantsAmountForCurrentRound = (
   const amountForCurrentRound = (participantsLength - 2 ** logarithm) * 2;
 
   if (amountForCurrentRound === 0) {
-    return participantsLength;
+    return {
+      amountForCurrentRound: participantsLength,
+      circlesAmount: circlesAmount - 1,
+    };
   }
 
-  return amountForCurrentRound;
+  return { amountForCurrentRound, circlesAmount };
 };
