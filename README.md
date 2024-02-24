@@ -2,7 +2,7 @@
 
 Project in NodeJs, MongoDB, Express and React. It is the app for business that helps organizing sport competition.
 
-## Run Docker
+## Run the Project in docker
 
 > First of all you need to install `docker compose` and `gcloud`.
 
@@ -48,4 +48,36 @@ docker-compose build
 
 ```bash
 docker-compose push
+```
+
+## SSL
+
+To start the project with ssl you need to rebuild `gateway` service and setup `certbot`.
+
+### Start ssl mode
+
+To start the project in ssl mode you need to set `MODE` variable and follow instructions in the [Run the Project in docker](#run-the-project-in-docker) section.
+
+```bash
+export MODE=ssl
+```
+
+### Setup Cerbot
+
+Init a new cert (use it for a new project only)
+
+```bash
+sh setup-certbot.sh  # init new cert
+```
+
+Start cert renewal service
+
+```
+sh start-certbot.sh  # auto renewal
+```
+
+Restart gateway
+
+```bash
+docker-compose exec gateway nginx -s reload
 ```
