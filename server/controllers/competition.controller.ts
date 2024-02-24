@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 import nodemailer from 'nodemailer';
 import { NODEMAILER_TRANSPORT_CONFIG, SMTP_USER_MAIL } from '../constants';
@@ -7,27 +7,23 @@ import { ICompetition, ICompetitionGroup, IPair } from '../types/index';
 import { getPairsWithJudges } from '../utils/competition';
 import { getParticipantsAmountForCurrentRound } from '../utils/getParticipantsAmountForCurrentRound';
 import {
+  changeTreeLeaveWithWinnerId,
+  getPrefilledOlympicGrid,
+} from '../utils/getPrefilledOlympicGrid';
+import {
   FIXED_RATING_CHANGING_NUM,
   recalculateRating,
 } from '../utils/recalculateRating';
 
 const { CLIENT_URL } = process.env;
 
-export const getCompetitions = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getCompetitions = async (req: Request, res: Response) => {
   const competitions = await Competition.find({});
 
   res.send(competitions);
 };
 
-export const getCompetition = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getCompetition = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const competition = await Competition.findOne({ _id: id });
@@ -37,11 +33,7 @@ export const getCompetition = async (
   res.send(competition);
 };
 
-export const createCompetition = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const createCompetition = async (req: Request, res: Response) => {
   if (!req.body) return res.sendStatus(400);
 
   const { body } = req;
@@ -55,8 +47,7 @@ export const createCompetition = async (
 
 export const setJudgesToCompetition = async (
   req: Request<any, any, { judgesIds: string[]; competitionId: string }>,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   if (!req.body) return res.sendStatus(400);
 
@@ -167,11 +158,7 @@ export const setJudgesToPairs = async (
   res.send(competition);
 };
 
-export const deleteCompetition = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const deleteCompetition = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const competition = await Competition.findByIdAndDelete(id);
@@ -207,11 +194,7 @@ export const deleteCompetitionGroup = async (
   res.send(newCompetition);
 };
 
-export const updateCompetition = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateCompetition = async (req: Request, res: Response) => {
   if (!req.body) return res.sendStatus(400);
   const { id } = req.params;
 
@@ -228,8 +211,7 @@ export const updateCompetition = async (
 
 export const updateCompetitionZoomLink = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   if (!req.body.zoomLink) return res.sendStatus(400);
   const { id } = req.params;
@@ -245,10 +227,69 @@ export const updateCompetitionZoomLink = async (
   res.send(competition);
 };
 
+export const setParticipantsOrdersByGroup = async (
+  req: Request<{ id: string }, any, Record<string, string[]>>,
+  res: Response
+) => {
+  if (!req.body) return res.sendStatus(400);
+  const competition = await Competition.findById(req.params.id);
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  const newGroups = competition.groups.map((group) => {
+    const newParticipantsOrders = req.body[group._id.toString()];
+
+    const {
+      amountForCurrentRound: currentRoundParticipantsAmount,
+      circlesAmount,
+    } = getParticipantsAmountForCurrentRound(newParticipantsOrders.length);
+
+    const firstRoundPairs: IPair[] = [];
+    for (let i = 0; i < currentRoundParticipantsAmount; i += 2) {
+      firstRoundPairs.push({
+        blackParticipant: newParticipantsOrders[i + 1],
+        whiteParticipant: newParticipantsOrders[i],
+        passed: false,
+      });
+    }
+
+    const prefilledOlympicGrid = getPrefilledOlympicGrid(
+      newParticipantsOrders,
+      currentRoundParticipantsAmount,
+      circlesAmount
+    );
+
+    const newGroup: ICompetitionGroup = {
+      ...group,
+      currentRoundPairs: firstRoundPairs,
+      currentRoundNumber: 1,
+      nextRoundParticipants: newParticipantsOrders.slice(
+        currentRoundParticipantsAmount
+      ),
+      olympicGrid: prefilledOlympicGrid,
+    };
+
+    const groupWithJudges = {
+      ...newGroup,
+      currentRoundPairs: getPairsWithJudges({
+        pairs: firstRoundPairs,
+        judges: competition?.judges,
+      }),
+    };
+
+    return groupWithJudges;
+  });
+
+  competition.groups = newGroups;
+
+  await competition.save();
+
+  res.send(competition);
+};
+
 export const createCompetitionGroup = async (
   req: Request<{ id: string }, any, ICompetitionGroup>,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   if (!req.body) return res.sendStatus(400);
 
@@ -261,9 +302,8 @@ export const createCompetitionGroup = async (
 
   const { allParticipants } = body;
   const firstRoundPairs: IPair[] = [];
-  const currentRoundParticipantsAmount = getParticipantsAmountForCurrentRound(
-    allParticipants.length
-  );
+  const { amountForCurrentRound: currentRoundParticipantsAmount } =
+    getParticipantsAmountForCurrentRound(allParticipants.length);
 
   const shuffledParticipants = allParticipants.sort(() => Math.random() - 0.5);
 
@@ -321,8 +361,7 @@ export const getCompetitionGroups = async (
 
 export const addNewParticipant = async (
   req: Request<{ id: string }, any, { userId: string }>,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   if (!req.body?.userId && !req.params?.id) return res.sendStatus(400);
   const { userId } = req.body;
@@ -437,43 +476,10 @@ export const callPairPreparation = async (
           });
         }
 
-        const pairPassed = whiteDisqualified && blackDisqualified;
-
-        currentPair.passed = pairPassed;
         currentPair.disqualified = {
           whiteParticipant: whiteDisqualified,
           blackParticipant: blackDisqualified,
         };
-        if (pairPassed) {
-          currentGroup?.passedPairs.push(currentPair);
-
-          // because defineWinner won't be called
-          const isGroupCompleted =
-            currentGroup?.nextRoundParticipants?.length === 0 &&
-            currentGroup?.currentRoundPairs?.length === 1;
-
-          if (isGroupCompleted) {
-            currentGroup.isCompleted = true;
-            currentGroup.currentRoundPairs = [];
-
-            const groupParticipants = await User.find({
-              _id: {
-                $in: currentGroup.allParticipants,
-              },
-            });
-
-            const groupResults = groupParticipants
-              .map((gp) => ({
-                userId: gp._id,
-                placeNumber: gp.competitionsHistory?.find(
-                  (gpHistPoint) => gpHistPoint.competitionId === competitionId
-                )?.placeNumber as number,
-              }))
-              .sort((a, b) => (a.placeNumber ?? 0) - (b.placeNumber ?? 0));
-
-            currentGroup.results = groupResults;
-          }
-        }
       }
 
       await currentCompetition?.save();
@@ -622,6 +628,15 @@ export const defineWinner = async (
     User.findById(loserId),
   ]);
 
+  const { olympicGrid } = competitionGroup;
+
+  const newOlympicGrid =
+    olympicGrid && changeTreeLeaveWithWinnerId(olympicGrid, winnerId);
+  competitionGroup.olympicGrid = {
+    ...newOlympicGrid,
+    fieldForModifying: !olympicGrid?.fieldForModifying || false,
+  };
+
   const isGroupCompleted =
     competitionGroup?.nextRoundParticipants?.length === 0 &&
     competitionGroup?.currentRoundPairs?.length === 1;
@@ -672,6 +687,9 @@ export const defineWinner = async (
       : competitionGroup.allParticipants.length;
 
     competitionGroup.lastPlaceNumber = loserPlaceNumber;
+    const wasLoserDisqualified = loser.competitionsHistory?.find(
+      (compHist) => compHist.competitionId === competitionId
+    );
     await Promise.all([
       User.findOneAndUpdate(
         { _id: winnerId },
@@ -692,22 +710,24 @@ export const defineWinner = async (
         },
         { new: true }
       ),
-      User.findOneAndUpdate(
-        { _id: loserId },
-        {
-          ratingNumber: newLoserRating,
-          // TODO: rewrite with both disqualified case, passedPairs length not enough
-          competitionsHistory: [
-            ...loser.competitionsHistory,
+      wasLoserDisqualified
+        ? User.findOneAndUpdate(
+            { _id: loserId },
             {
-              competitionId,
-              groupId,
-              placeNumber: loserPlaceNumber,
+              ratingNumber: newLoserRating,
+              // TODO: rewrite with both disqualified case, passedPairs length not enough
+              competitionsHistory: [
+                ...loser.competitionsHistory,
+                {
+                  competitionId,
+                  groupId,
+                  placeNumber: loserPlaceNumber,
+                },
+              ],
             },
-          ],
-        },
-        { new: true }
-      ),
+            { new: true }
+          )
+        : null,
     ]);
 
     if (isGroupCompleted) {
@@ -728,6 +748,7 @@ export const defineWinner = async (
       competitionGroup.results = groupResults;
     }
 
+    competition.markModified('olympicGrid.fieldForModifying');
     await competition?.save();
 
     return res.send(competition);
@@ -769,12 +790,10 @@ export const launchNextGroupRound = async (
     competitionGroup?.nextRoundParticipants &&
     competitionGroup?.currentRoundPairs
   ) {
-    const shuffledParticipants = competitionGroup?.nextRoundParticipants.sort(
-      () => Math.random() - 0.5
-    );
-    const currentRoundParticipantsAmount = getParticipantsAmountForCurrentRound(
-      shuffledParticipants.length
-    );
+    const { amountForCurrentRound: currentRoundParticipantsAmount } =
+      getParticipantsAmountForCurrentRound(
+        competitionGroup?.nextRoundParticipants.length
+      );
 
     for (let i = 0, j = 0; i < currentRoundParticipantsAmount; i += 2, j++) {
       nextRoundPairs.push({
@@ -785,9 +804,10 @@ export const launchNextGroupRound = async (
       });
     }
 
-    competitionGroup.nextRoundParticipants = shuffledParticipants.slice(
-      currentRoundParticipantsAmount
-    );
+    competitionGroup.nextRoundParticipants =
+      competitionGroup?.nextRoundParticipants.slice(
+        currentRoundParticipantsAmount
+      );
     competitionGroup.currentRoundNumber += 1;
     let currentPairOrder = 0;
     competitionGroup.currentRoundPairs = nextRoundPairs
@@ -820,8 +840,7 @@ export const launchNextGroupRound = async (
 
 export const getCompetitionParticipants = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const { id } = req.params;
 
@@ -835,11 +854,7 @@ export const getCompetitionParticipants = async (
   res.send(competition?.participants);
 };
 
-export const getCompetitionJudges = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getCompetitionJudges = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const competition = await Competition.findOne({ _id: id }).populate('judges');
@@ -1007,6 +1022,35 @@ export const setUserPaymentRequestToCheck = async (
 
   try {
     await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const allUsersPaymentRequestToCheck = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
+  const { id } = req.params;
+
+  const competition = await Competition.findOne({ _id: id });
+  const allParticipants = await User.find({
+    role: 'participant',
+  });
+  if (!competition)
+    return res.status(404).send({ error: "Competition wasn't found" });
+
+  try {
+    competition.usersPaymentInfo = allParticipants.map((user) => ({
+      userId: String(user._id),
+      paid: false,
+      requestedToCheck: true,
+      requestedCount: 1,
+    }));
+
+    await competition.save();
+
+    res.send(competition);
   } catch (err) {
     console.error(err);
   }

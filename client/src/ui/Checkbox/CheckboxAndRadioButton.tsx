@@ -2,26 +2,27 @@ import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { ReactComponent as CheckMark } from 'src/assets/check-mark.svg'
 
-type CheckboxPropsType = {
-	name: string
-	onChange: (value?: boolean, name?: string) => void
-	type: 'checkbox' 
-	title?: string
-	checked?: boolean
-	value?: string
-	disabled?: boolean
-	classes?: string
-} 
-| {
-	name: string
-	onChange: (value?: string, name?: string) => void
-	type: 'radio'
-	title?: string
-	checked?: boolean
-	value?: string
-	disabled?: boolean
-	classes?: string
-} 
+type CheckboxPropsType =
+	| {
+			name: string
+			onChange: (value?: boolean, name?: string) => void
+			type: 'checkbox'
+			title?: string
+			checked?: boolean
+			value?: string
+			disabled?: boolean
+			classes?: string
+	  }
+	| {
+			name: string
+			onChange: (value?: string, name?: string) => void
+			type: 'radio'
+			title?: string
+			checked?: boolean
+			value?: string
+			disabled?: boolean
+			classes?: string
+	  }
 
 export const CheckboxAndRadioButton: FC<CheckboxPropsType> = ({
 	title,

@@ -10,7 +10,8 @@ import {
 	AcceptPairFightBodySchema,
 	LaunchNextGroupRoundApiSchema,
 	SeTuserPaymentRequestToCheckApiSchema,
-	SetUserPaymentPaidApiSchema
+	SetUserPaymentPaidApiSchema,
+	ParticipantsOrdersByGroupSchema
 } from 'src/types'
 
 export const getCompetitionsApi = async () => {
@@ -78,6 +79,19 @@ export const setCompetitionJudgesApi = async (data: SetCompetitionJudgesSchema) 
 export const setJudgesToPairsApi = async (data: SetJudgesToPairsSchema) => {
 	const result = await patch('/api/competition/setJudgesToPairs', {
 		body: data
+	})
+
+	return result
+}
+
+export const setParticipantsOrdersByGroupApi = async (data: ParticipantsOrdersByGroupSchema, id: string) => {
+	const result = await patch('/api/competition/{id}/setParticipantsOrdersByGroup', {
+		body: data,
+		params: {
+			path: {
+				id
+			}
+		}
 	})
 
 	return result

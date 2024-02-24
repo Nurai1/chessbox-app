@@ -5,14 +5,14 @@ import { CompetitionSchema } from 'src/types'
 
 type CompetitionCardTimerPropsType = {
 	competitionData: CompetitionSchema
-    title: ReactNode
-    classes?: string 
+	title: ReactNode
+	classes?: string
 }
 
 export const CompetitionCardTimer: FC<CompetitionCardTimerPropsType> = ({ competitionData, title, classes }) => {
 	return (
-		<div className={twMerge('flex lg:flex-col lg:p-6 lg:border lg:rounded-3xl', classes)}>
-			<h3 className='mr-4 max-w-[16rem] font-bold lg:mb-6 lg:text-2xl lg:max-w-none lg:mr-0'>{title}</h3>
+		<div className={twMerge('flex lg:flex-col lg:rounded-3xl lg:border lg:p-6', classes)}>
+			<h3 className='mr-4 max-w-[16rem] font-bold lg:mb-6 lg:mr-0 lg:max-w-none lg:text-2xl'>{title}</h3>
 			{competitionData && (
 				<Timer
 					time={competitionData.startDate}

@@ -1,31 +1,32 @@
 import { ReactElement, useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { AppRoute } from 'src/constants/appRoute'
-import { SortOrder } from 'src/constants/sortOrder'
-import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { Button, BottomFixedContainer, Loader, RoundedBorderWrapper, Accordion, TableBody, Alert } from 'src/ui'
+import { useNavigate, useParams } from 'react-router-dom'
+import { sortBy } from 'remeda'
+import { ReactComponent as TrashIcon } from 'src/assets/trash.svg'
 import {
+	CompetitionCreateHeader,
 	CompetitionRequirementsBordered,
 	GroupParameters,
-	CompetitionCreateHeader,
 	ParticipantsList
 } from 'src/components'
+import { ParticipantsListTable, SortType } from 'src/components/ParticipantsList/ParticipantsList'
+import { AppRoute } from 'src/constants/appRoute'
+import { SortOrder } from 'src/constants/sortOrder'
+import { getAge } from 'src/helpers/datetime'
+import { tableSchemaGroupParticipants } from 'src/helpers/tableSchemas/tableSchemaGroupParticipants'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import {
+	deleteCompetitionGroup,
 	fetchCompetitionById,
 	fetchCompetitionJudges,
 	fetchCompetitionParticipants,
-	setCompetitionGroups,
-	deleteCompetitionGroup,
 	resetCompetitionGroupsStatus,
-	resetDeleteCompetitionGroupStatus
+	resetDeleteCompetitionGroupStatus,
+	setCompetitionGroups
 } from 'src/store/slices/competitionSlice'
-import { ReactComponent as TrashIcon } from 'src/assets/trash.svg'
-import { CompetitionRequirementsSchema, UserSchema, ParticipantSchema } from 'src/types'
-import { ParticipantsListTable, SortType } from 'src/components/ParticipantsList/ParticipantsList'
-import { tableSchemaGroupParticipants } from 'src/helpers/tableSchemas/tableSchemaGroupParticipants'
-import { getAge } from 'src/helpers/datetime'
+import { CompetitionRequirementsSchema, ParticipantSchema } from 'src/types'
+import { Accordion, Alert, BottomFixedContainer, Button, Loader, RoundedBorderWrapper, TableBody } from 'src/ui'
 import { AlertPropTypes } from 'src/ui/Alert/Alert'
-import { sortBy } from 'remeda'
+import { getObjectsFromIds } from '../helpers/getObjectFromId'
 
 type AlertType = {
 	show: boolean
@@ -176,15 +177,6 @@ export const CreateGroupPage = (): ReactElement => {
 		dispatch(deleteCompetitionGroup({ groupId: { groupId }, id: competitionUniqId }))
 	}
 
-	const getGroupParticipants = (participantsIds: string[]): UserSchema[] | undefined => {
-		return allParticipants?.reduce((acc, participant) => {
-			if (participantsIds.includes(participant._id as string)) {
-				acc.push(participant)
-			}
-			return acc
-		}, [] as UserSchema[])
-	}
-
 	const handleSort = (sortType: string, sortOrder: string) => {
 		const sortedParticipants: ParticipantsListTable = { inGroup: [], outGroup: [] }
 
@@ -313,6 +305,7 @@ export const CreateGroupPage = (): ReactElement => {
 		<main className='container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]'>
 			<Alert
 				title={alertData.title}
+				subtitle={alertData.subtitle}
 				type={alertData.type}
 				classes={`fixed -right-56 w-56 transition-[right] duration-300 ${alertData.show && 'right-8'}`}
 			/>
@@ -347,9 +340,9 @@ export const CreateGroupPage = (): ReactElement => {
 			</div>
 			<h2 className='mb-8 text-heading-3'>Groups</h2>
 			{competitionData?.groups?.length !== 0 && (
-				<RoundedBorderWrapper classes='py-4 !py-2'>
+				<RoundedBorderWrapper classes='!py-2'>
 					{competitionData?.groups?.map(
-						({ _id, gender, ageCategory, weightCategory, allParticipants: allParticipantsGroup }) => (
+						({ _id, gender, ageCategory, weightCategory, allParticipants: allParticipantsGroupIds }) => (
 							<Accordion
 								key={_id}
 								additionalIcon={
@@ -373,15 +366,13 @@ export const CreateGroupPage = (): ReactElement => {
 									<h3 className='font-bold xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
 										<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
 										{weightCategory?.from}-{weightCategory?.to} kg
-										<span className='text-zinc-400'> {allParticipantsGroup?.length}</span>
+										<span className='text-zinc-400'> {allParticipantsGroupIds?.length}</span>
 									</h3>
 								}
 							>
-								{allParticipants ? (
+								{allParticipants && allParticipantsGroupIds ? (
 									<TableBody
-										rows={tableSchemaGroupParticipants(
-											getGroupParticipants(allParticipantsGroup as string[]) as UserSchema[]
-										)}
+										rows={tableSchemaGroupParticipants(getObjectsFromIds(allParticipantsGroupIds, allParticipants))}
 									/>
 								) : (
 									<Loader />
@@ -401,7 +392,7 @@ export const CreateGroupPage = (): ReactElement => {
 						classes='min-w-[8rem] xl:min-w-[15.625rem]'
 						onClick={() => {
 							if (competitionData?.groups?.length) {
-								navigate(`../${AppRoute.OrdersGroupAssign}`)
+								navigate(`../${AppRoute.CreatePairs}`)
 							}
 						}}
 						disabled={allParticipants?.some(participant => !participant.group)}
