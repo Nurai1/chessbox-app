@@ -25,13 +25,13 @@ export DENV=dev # or prod
 ### Pull docker images
 
 ```bash
-docker-compose pull
+docker compose pull
 ```
 
 ### Run the project
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ### Build the project
@@ -41,13 +41,13 @@ export PROJECT_PORT=80
 export SMTP_USER_MAIL="..." 
 export SMTP_SERVICE_PASSKEY="..." 
 
-docker-compose build
+docker compose build
 ```
 
 ### Push docker images to google artifacts
 
 ```bash
-docker-compose push
+docker compose push
 ```
 
 ## SSL
@@ -79,5 +79,5 @@ sh start-certbot.sh  # auto renewal
 Restart gateway
 
 ```bash
-docker-compose exec gateway nginx -s reload
+docker compose exec gateway nginx -s reload
 ```
