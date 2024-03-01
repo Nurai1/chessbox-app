@@ -38,6 +38,7 @@ docker compose up -d
 
 ```bash
 export PROJECT_PORT=80 
+export PROJECT_SSL_PORT=80 
 export SMTP_USER_MAIL="..." 
 export SMTP_SERVICE_PASSKEY="..." 
 
