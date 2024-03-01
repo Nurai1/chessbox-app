@@ -11,6 +11,7 @@ services:
     restart: always
     ports:
       - ${PROJECT_PORT:-8080}:80
+      - ${PROJECT_SSL_PORT:-443}:443
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
@@ -35,7 +36,7 @@ services:
     build: ./server
     restart: always
     environment:
-      - MONGO_URI=${MONGO_URL:-mongodb://mongodb-${DENV:-dev}:27017/db-${DENV:-dev}}
+      - MONGO_URI=${MONGO_URI:-mongodb://mongodb-${DENV:-dev}:27017/db-${DENV:-dev}}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY:-CXiG71NGuRfZJ8SLV76e}
       - SMTP_USER_MAIL=${SMTP_USER_MAIL:-carryitthroughlife@gmail.com}
       - SMTP_SERVICE_PASSKEY=$SMTP_SERVICE_PASSKEY
