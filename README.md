@@ -37,6 +37,8 @@ docker compose up -d
 ### Build the project
 
 ```bash
+export MODE=ssl
+export MONGO_URI="..."
 export PROJECT_PORT=80 
 export PROJECT_SSL_PORT=443 
 export SMTP_USER_MAIL="..." 
