@@ -38,6 +38,7 @@ docker compose up -d
 
 ```bash
 export MODE=ssl
+export JWT_SECRET_KEY="..."
 export MONGO_URI="..."
 export PROJECT_PORT=80 
 export PROJECT_SSL_PORT=443 
