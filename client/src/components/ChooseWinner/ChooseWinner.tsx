@@ -62,26 +62,25 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 							) : (
 								<p className='mb-1 text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
 							)}
-							{env === 'dev' ||
-								(env === 'local' && (
-									// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-									<div
-										className='flex cursor-pointer gap-x-2 text-black underline hover:opacity-70'
-										onClick={() => {
-											navigator.clipboard.writeText(
-												JSON.stringify({
-													competitionId,
-													groupId,
-													pairId: pair?._id,
-													userId: pair?.whiteParticipantData?._id
-												})
-											)
-										}}
-									>
-										<span>Copy user data</span>
-										<CopyIcon />
-									</div>
-								))}
+							{(env === 'dev' || env === 'local') && (
+								// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+								<div
+									className='flex cursor-pointer gap-x-2 text-black underline hover:opacity-70'
+									onClick={() => {
+										navigator.clipboard.writeText(
+											JSON.stringify({
+												competitionId,
+												groupId,
+												pairId: pair?._id,
+												userId: pair?.whiteParticipantData?._id
+											})
+										)
+									}}
+								>
+									<span>Copy user data</span>
+									<CopyIcon />
+								</div>
+							)}
 							<p className='text-xs xl:text-base'>
 								{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight} kg
 							</p>
@@ -120,26 +119,25 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 								) : (
 									<p className='mb-1 text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
 								)}
-								{env === 'dev' ||
-									(env === 'local' && (
-										// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-										<div
-											className='flex cursor-pointer gap-x-2 text-black underline hover:opacity-70'
-											onClick={() => {
-												navigator.clipboard.writeText(
-													JSON.stringify({
-														competitionId,
-														groupId,
-														pairId: pair?._id,
-														userId: pair?.blackParticipantData?._id
-													})
-												)
-											}}
-										>
-											<span>Copy user data</span>
-											<CopyIcon />
-										</div>
-									))}
+								{(env === 'dev' || env === 'local') && (
+									// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+									<div
+										className='flex cursor-pointer gap-x-2 text-black underline hover:opacity-70'
+										onClick={() => {
+											navigator.clipboard.writeText(
+												JSON.stringify({
+													competitionId,
+													groupId,
+													pairId: pair?._id,
+													userId: pair?.blackParticipantData?._id
+												})
+											)
+										}}
+									>
+										<span>Copy user data</span>
+										<CopyIcon />
+									</div>
+								)}
 								<p className='text-xs xl:text-base'>
 									{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight} kg
 								</p>
