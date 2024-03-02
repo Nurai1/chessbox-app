@@ -19,12 +19,13 @@ export const ACTIONS = {
   createAny: 'createAny',
 } as const;
 
+// TODO: remove it
 export const SMTP_USER_MAIL = 'carryitthroughlife@gmail.com';
 
 export const NODEMAILER_TRANSPORT_CONFIG = {
   service: 'gmail',
   auth: {
-    user: SMTP_USER_MAIL,
+    user: process.env.SMTP_USER_MAIL || SMTP_USER_MAIL,
     pass: process.env.SMTP_SERVICE_PASSKEY,
   },
 };
