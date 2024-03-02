@@ -2,6 +2,7 @@
 version: '3.8'
 services:
   gateway:
+    platform: linux/amd64
     container_name: gateway-${DENV:-dev}-${MODE:-http}
     image: europe-north1-docker.pkg.dev/xenon-height-415204/chessboxingfit/gateway-${DENV:-dev}-${MODE:-http}
     build: 
@@ -22,6 +23,7 @@ services:
       - node-network
 
   client:
+    platform: linux/amd64
     container_name: client-${DENV:-dev}
     image: europe-north1-docker.pkg.dev/xenon-height-415204/chessboxingfit/client-${DENV:-dev}
     build: 
@@ -31,6 +33,7 @@ services:
       - node-network
 
   server:
+    platform: linux/amd64
     container_name: server-${DENV:-dev}
     image: europe-north1-docker.pkg.dev/xenon-height-415204/chessboxingfit/server-${DENV:-dev}
     build: ./server
@@ -46,6 +49,7 @@ services:
       - node-network
 
   mongodb:
+    platform: linux/amd64
     container_name: mongodb-${DENV:-dev}
     image: mongo:6-jammy
     restart: always
