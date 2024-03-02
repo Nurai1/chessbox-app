@@ -3,8 +3,8 @@ import * as customParseFormat from 'dayjs/plugin/customParseFormat'
 import * as isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import * as isYesterday from 'dayjs/plugin/isYesterday'
 import * as relativeTime from 'dayjs/plugin/relativeTime'
-import * as utc from 'dayjs/plugin/utc'
 import * as timezone from 'dayjs/plugin/timezone'
+import * as utc from 'dayjs/plugin/utc'
 
 dayjs.extend(relativeTime)
 dayjs.extend(isYesterday)
@@ -168,5 +168,5 @@ export const max99years = (time: string) => {
 }
 
 export const getAge = (time?: string) => {
-	return time && new Date().getFullYear() - new Date(time).getFullYear()
+	return time && dayjs().diff(time, 'year')
 }

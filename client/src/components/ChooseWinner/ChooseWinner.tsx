@@ -1,4 +1,6 @@
 import { FC, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { ReactComponent as CopyIcon } from 'src/assets/copy.svg'
 import { ReactComponent as GoldMedalIcon } from 'src/assets/medal-gold.svg'
 import { ReactComponent as RookBlack } from 'src/assets/rook-black.svg'
 import { ReactComponent as RookWhite } from 'src/assets/rook-white.svg'
@@ -7,6 +9,9 @@ import { PairType } from 'src/helpers/tableSchemas/tableSchemaPairs'
 import { ChooseWinnerType } from 'src/types'
 import { CheckboxAndRadioButton } from 'src/ui'
 import { twMerge } from 'tailwind-merge'
+import { getEnv } from '../../configEnv'
+
+const env = getEnv()
 
 type ChooseWinnerPropsType = {
 	pair: PairType
@@ -16,6 +21,8 @@ type ChooseWinnerPropsType = {
 }
 
 export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetitionPage, groupId, onChooseWinner }) => {
+	const { competitionId } = useParams()
+
 	const [winner, setWinner] = useState<Record<string, ChooseWinnerType>>()
 	const handleWinnerIdChoose = (value?: string, name?: string) => {
 		const winnerData = {
@@ -55,6 +62,26 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 							) : (
 								<p className='mb-1 text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
 							)}
+							{env === 'dev' ||
+								(env === 'local' && (
+									// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+									<div
+										className='flex cursor-pointer gap-x-2 text-black underline hover:opacity-70'
+										onClick={() => {
+											navigator.clipboard.writeText(
+												JSON.stringify({
+													competitionId,
+													groupId,
+													pairId: pair?._id,
+													userId: pair?.whiteParticipantData?._id
+												})
+											)
+										}}
+									>
+										<span>Copy user data</span>
+										<CopyIcon />
+									</div>
+								))}
 							<p className='text-xs xl:text-base'>
 								{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight} kg
 							</p>
@@ -93,6 +120,26 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 								) : (
 									<p className='mb-1 text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
 								)}
+								{env === 'dev' ||
+									(env === 'local' && (
+										// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+										<div
+											className='flex cursor-pointer gap-x-2 text-black underline hover:opacity-70'
+											onClick={() => {
+												navigator.clipboard.writeText(
+													JSON.stringify({
+														competitionId,
+														groupId,
+														pairId: pair?._id,
+														userId: pair?.blackParticipantData?._id
+													})
+												)
+											}}
+										>
+											<span>Copy user data</span>
+											<CopyIcon />
+										</div>
+									))}
 								<p className='text-xs xl:text-base'>
 									{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight} kg
 								</p>
