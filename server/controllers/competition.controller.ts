@@ -710,7 +710,7 @@ export const defineWinner = async (
         },
         { new: true }
       ),
-      wasLoserDisqualified
+      !wasLoserDisqualified
         ? User.findOneAndUpdate(
             { _id: loserId },
             {
@@ -747,7 +747,6 @@ export const defineWinner = async (
         .sort((a, b) => (a.placeNumber ?? 0) - (b.placeNumber ?? 0));
       competitionGroup.results = groupResults;
     }
-
     competition.markModified('olympicGrid.fieldForModifying');
     await competition?.save();
 
