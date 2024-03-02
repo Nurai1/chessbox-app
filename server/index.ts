@@ -15,6 +15,10 @@ export const app = express();
 const { TokenExpiredError } = jwt;
 
 const remoteMongoUri = process.env.MONGO_URI;
+const mongoEnv = remoteMongoUri?.slice(
+  remoteMongoUri.lastIndexOf('mongodb.net/') + 'mongodb.net/'.length,
+  remoteMongoUri.lastIndexOf('?retryWrites=true&w=majority')
+);
 const { JWT_SECRET_KEY, ENVIRONMENT } = process.env;
 
 const PORT = Number(process.env.PORT) || 8080;
@@ -23,7 +27,7 @@ const HOST = ENVIRONMENT === 'development' ? 'localhost' : '0.0.0.0';
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-if (ENVIRONMENT === 'development')
+if (mongoEnv === 'copy' || mongoEnv === 'staging')
   app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(
@@ -50,10 +54,6 @@ mongoose.connect(remoteMongoUri ?? '', (err) => {
 
 const { connection } = mongoose;
 connection.once('open', () => {
-  const mongoEnv = remoteMongoUri?.slice(
-    remoteMongoUri.lastIndexOf('mongodb.net/') + 'mongodb.net/'.length,
-    remoteMongoUri.lastIndexOf('?retryWrites=true&w=majority')
-  );
   console.log(
     'MongoDB database connection established successfully on mongo env: ',
     mongoEnv
