@@ -12,10 +12,6 @@
     "build": "npm run clean && npx tsc && npm run copy-files",
     "clean": "rm -rf ./dist",
     "copy-files": "cp ./Dockerfile ./dist && cp .dockerignore ./dist && cp ./package.json ./dist && cp ./package-lock.json ./dist",
-    "buildx-scaleway": "cd dist && docker buildx build --platform linux/amd64,linux/arm64 --push -t rg.pl-waw.scw.cloud/funcscweclectium0iuzdi5t/chessbox-server . && cd ../",
-    "buildx-ocean": "cd dist && docker buildx build --platform linux/amd64,linux/arm64 --push -t registry.digitalocean.com/chessbox-server/chessbox . && cd ../",
-    "deploy-scaleway": "npm run build && npm run buildx-scaleway",
-    "deploy-ocean": "npm run build && npm run buildx-ocean",
     "generate-client-types": "npx openapi-typescript ./swagger_output.json -o ../client/src/types/generated.ts"
   },
   "dependencies": {

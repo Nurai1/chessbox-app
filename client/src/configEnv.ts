@@ -1,6 +1,10 @@
-type EnvType = 'local' | 'dev' | 'prod'
+type EnvType = 'local' | 'dev' | 'prod' | 'docker'
 
 export const getEnv = (): EnvType => {
+	if (import.meta.env.VITE_ENVIRONMENT === 'docker') {
+		return 'docker'
+	}
+
 	const currentHost = window.location.hostname
 	if (/.*localhost.*/.test(currentHost) || /.*127.0.0.1.*/.test(currentHost)) {
 		return 'local'
@@ -14,11 +18,12 @@ export const getEnv = (): EnvType => {
 	if (/.dev/.test(currentHost)) {
 		return 'dev'
 	}
+
 	return 'prod'
 }
 
 export interface AppConfig {
-	type: 'local' | 'dev' | 'int' | 'test' | 'staging' | 'prod'
+	type: 'local' | 'dev' | 'int' | 'test' | 'docker' | 'staging' | 'prod'
 	publicUrl: string
 	serviceApiUrl: string
 }
@@ -38,8 +43,14 @@ const devConfig: AppConfig = {
 
 const prodConfig: AppConfig = {
 	type: 'prod',
-	publicUrl: 'chessboxingfit.com',
-	serviceApiUrl: 'https://chessbox-server-268nq.ondigitalocean.app'
+	publicUrl: 'https://chessboxingfit.com',
+	serviceApiUrl: 'https://chessboxingfit.com'
+}
+
+const dockerConfig: AppConfig = {
+	type: 'docker',
+	publicUrl: `/`,
+	serviceApiUrl: `/`
 }
 
 const getConfig = (): AppConfig => {
@@ -47,6 +58,8 @@ const getConfig = (): AppConfig => {
 	switch (env) {
 		case 'local':
 			return localConfig
+		case 'docker':
+			return dockerConfig
 		case 'dev':
 			return devConfig
 		case 'prod':
