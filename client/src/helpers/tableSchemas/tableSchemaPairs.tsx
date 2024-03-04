@@ -75,7 +75,7 @@ export const tableSchemaPairs = ({
 		'uppercase text-sm md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3 xl:row-auto xl:col-start-3 xl:col-end-4 xl:text-base xl:font-bold text-right md:pr-6'
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	const lastPassedPairIndex = participantsData.findLastIndex(pair => pair.passed)
+	const lastCalledPairIndex = participantsData.findLastIndex(pair => pair.calledForPreparation)
 
 	return participantsData.map((pair, i) => {
 		const currentPairTime = getTimeTuplePlusMinutes(
@@ -130,7 +130,7 @@ export const tableSchemaPairs = ({
 		const waitingJudgeCompetitonPage =
 			isJudgeCompetitionPage && !pair.calledForPreparation && !currentFightingGroupIndex
 
-		const disableCallUpIfNoFirstTwoButtons = lastPassedPairIndex + 3 === i || lastPassedPairIndex + 4 === i
+		const disableCallUpIfNoFirstTwoButtons = !(lastCalledPairIndex + 1 === i || lastCalledPairIndex + 2 === i)
 		const disableCallUpButton =
 			Boolean(maxPairs && currentPairs && maxPairs <= currentPairs?.length) || disableCallUpIfNoFirstTwoButtons
 

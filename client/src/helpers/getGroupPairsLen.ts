@@ -8,7 +8,7 @@ export const getGroupPairsLen = ({
 	nextRoundParticipantsLen: number
 }) => {
 	let roundPairsLen = nextRoundParticipantsLen / 2 + currentPairsLen / 2
-	let allPairsLen = passedPairsLen + (currentPairsLen - passedPairsLen) + Math.ceil(roundPairsLen)
+	let allPairsLen = passedPairsLen + currentPairsLen + Math.ceil(roundPairsLen)
 	// TODO
 	// let fakePairToIncreaseTime = 0;
 
