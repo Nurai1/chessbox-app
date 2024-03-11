@@ -168,7 +168,5 @@ export const max99years = (time: string) => {
 }
 
 export const getAge = (time?: string) => {
-	return time && new Date().getFullYear() - new Date(time).getFullYear()
-	// TODO: uncomment
-	// return time && dayjs().diff(time, 'year')
+	return time && dayjs().diff(time, 'year')
 }
