@@ -3574,6 +3574,7 @@ export interface components {
       price?: {
         currentValue?: number;
         valueForMembers?: number;
+        currency?: string;
         pricesChanges?: ({
             daysBeforeRegistrationDate: number;
             newValue: number;
@@ -3789,6 +3790,7 @@ export interface components {
       price?: {
         currentValue?: number;
         valueForMembers?: number;
+        currency?: string;
         pricesChanges?: ({
             daysBeforeRegistrationDate: number;
             newValue: number;
