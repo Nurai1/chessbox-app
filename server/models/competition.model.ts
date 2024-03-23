@@ -17,6 +17,7 @@ const competitionSchema = new Schema<ICompetition>(
     price: {
       currentValue: Number,
       valueForMembers: Number,
+      currency: { type: String, default: '₽' },
       pricesChanges: [
         {
           daysBeforeRegistrationDate: { type: Number, required: true },

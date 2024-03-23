@@ -11659,6 +11659,9 @@
               "valueForMembers": {
                 "type": "number"
               },
+              "currency": {
+                "type": "string"
+              },
               "pricesChanges": {
                 "type": "array",
                 "items": {
@@ -12364,6 +12367,9 @@
               },
               "valueForMembers": {
                 "type": "number"
+              },
+              "currency": {
+                "type": "string"
               },
               "pricesChanges": {
                 "type": "array",
