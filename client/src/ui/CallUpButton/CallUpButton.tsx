@@ -11,7 +11,7 @@ type CallUpButtonPropsType = {
 // this component need to incapsulate state
 export const CallUpButton: FC<CallUpButtonPropsType> = ({ onCallPairPreparation, breakTime, disable }) => {
 	const [isCallpairClicked, setIsCallpairClicked] = useState(false)
-	const { callPairPreparationPending } = useAppSelector(s => s.competition)
+	const { callPairPreparationPending, defineWinnerPending } = useAppSelector(s => s.competition)
 
 	return (
 		<Button
@@ -19,10 +19,10 @@ export const CallUpButton: FC<CallUpButtonPropsType> = ({ onCallPairPreparation,
 				onCallPairPreparation()
 				setIsCallpairClicked(state => !state)
 			}}
-			disabled={breakTime || disable}
+			disabled={breakTime || disable || callPairPreparationPending || defineWinnerPending}
 			loading={callPairPreparationPending && isCallpairClicked}
 		>
-			Call up
+			Start
 		</Button>
 	)
 }

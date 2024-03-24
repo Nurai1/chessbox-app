@@ -13,12 +13,11 @@ import { getFormattedDate, isPast, subtractMinutes } from 'src/helpers/datetime'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
 import {
-	callPairPreparation,
+	acceptPairByJudge,
 	defineWinner,
 	fetchCompetitionById,
 	fetchCompetitionJudges,
 	fetchCompetitionParticipants,
-	removeValuecallUpTimerRunningIds,
 	resetBreakTime,
 	resetBreakTimeSuccess,
 	setBreakTime,
@@ -195,13 +194,13 @@ export const JudgeCompetitionPage = (): ReactElement => {
 		}
 	}
 
-	const handleCallPairPreparationClick = (groupId: string, pairId: string) => {
-		dispatch(callPairPreparation({ competitionId: competitionId as string, groupId, pairId }))
-	}
-
-	const handleCallUpTimerOver = (pairId: string) => {
-		dispatch(removeValuecallUpTimerRunningIds(pairId))
-		dispatch(fetchCompetitionParticipants(competitionId as string))
+	const handleCallPairPreparationClick = (
+		groupId: string,
+		pairId: string,
+		whiteUserId: string,
+		blackUserId: string
+	) => {
+		dispatch(acceptPairByJudge({ competitionId: competitionId as string, groupId, pairId, whiteUserId, blackUserId }))
 	}
 
 	const handleWinnerChoose = (data?: Record<string, ChooseWinnerType>) => {
@@ -335,7 +334,6 @@ export const JudgeCompetitionPage = (): ReactElement => {
 								authorizedUser={authorizedUser}
 								isJudgeCompetitionPage
 								onCallPairPreparation={handleCallPairPreparationClick}
-								onCallUpTimer={handleCallUpTimerOver}
 								onChooseWinner={handleWinnerChoose}
 								maxPairs={2}
 								currentPairs={currentPairs}

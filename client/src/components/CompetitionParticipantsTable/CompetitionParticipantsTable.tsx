@@ -37,9 +37,8 @@ type CompetitionParticipantsTablePropsType = {
 	authorizedUser?: UserSchema | null
 	currentUserPairRef?: MutableRefObject<undefined | { pair?: PairType; startTime: string }>
 	isJudgeCompetitionPage?: boolean
-	onCallPairPreparation?: (groupId: string, pairId: string) => void
+	onCallPairPreparation?: (groupId: string, pairId: string, whiteUserId: string, blackUserId: string) => void
 	isBreakTime?: boolean
-	onCallUpTimer?: (pairId: string) => void
 	maxPairs?: number
 	currentPairs?: string[]
 	onChooseWinner?: (data?: Record<string, ChooseWinnerType>) => void
@@ -58,7 +57,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 }) => {
 	const dispatch = useAppDispatch()
 	const { competitionId } = useParams()
-	const { launchNextGroupRoundPending } = useAppSelector(s => s.competition)
+	const { launchNextGroupRoundPending, callPairPreparationPending } = useAppSelector(s => s.competition)
 	const currentGroupIndex = competitionData.groups?.findIndex(group => group.isCompleted === false)
 	const startPointTimeTuple = getStartPointTimeTuple(competitionData)
 
@@ -175,6 +174,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 											currentGroupIndex,
 											isJudgeCompetitionPage,
 											lastPairIndex: (passedPairs?.length ?? 0) - currentRoundPairs.filter(p => p.passed).length,
+											callPairPreparationPending,
 											...rest
 										})}
 									/>

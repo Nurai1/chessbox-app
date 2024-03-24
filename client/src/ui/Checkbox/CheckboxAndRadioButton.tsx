@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import { twMerge } from 'tailwind-merge'
 import { ReactComponent as CheckMark } from 'src/assets/check-mark.svg'
+import { twMerge } from 'tailwind-merge'
 
 type CheckboxPropsType =
 	| {

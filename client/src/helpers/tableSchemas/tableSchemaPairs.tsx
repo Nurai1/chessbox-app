@@ -4,7 +4,7 @@ import { ChooseWinner } from 'src/components'
 import { localTZName } from 'src/helpers/datetime'
 import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
 import { ChooseWinnerType, CompetitionSchema, PairSchema, UserSchema } from 'src/types'
-import { Button, CallUpButton, CallUpTimer } from 'src/ui'
+import { Button, CallUpButton } from 'src/ui'
 import { TIME_FOR_PAIR } from '../../constants/time'
 
 export type PairType = {
@@ -25,7 +25,7 @@ export const tableSchemaPairs = ({
 	groupIndex,
 	groupId,
 	onCallPairPreparation,
-	onCallUpTimer,
+	callPairPreparationPending,
 	currentPairs,
 	onChooseWinner,
 	currentGroupIndex,
@@ -43,11 +43,11 @@ export const tableSchemaPairs = ({
 	}
 	breakTime?: CompetitionSchema['breakTime']
 	isJudgeCompetitionPage?: boolean
+	callPairPreparationPending?: boolean
 	maxPairs?: number
 	groupIndex?: number
 	groupId?: string
-	onCallPairPreparation?: (groupId: string, pairId: string) => void
-	onCallUpTimer?: (pairId: string) => void
+	onCallPairPreparation?: (groupId: string, pairId: string, whiteUserId: string, blackUserId: string) => void
 	currentPairs?: string[]
 	onChooseWinner?: (data?: Record<string, ChooseWinnerType>) => void
 	currentGroupIndex?: number
@@ -93,15 +93,16 @@ export const tableSchemaPairs = ({
 				pair,
 				startTime: currentPairTime
 			}
-		const isTimerOver = () => {
-			if (onCallUpTimer && pair.calledForPreparation) {
-				onCallUpTimer(pair._id as string)
-			}
-		}
 
 		const handleCallPairPreparation = () => {
-			if (onCallPairPreparation) {
-				onCallPairPreparation(groupId as string, pair._id as string)
+			if (
+				onCallPairPreparation &&
+				groupId &&
+				pair._id &&
+				pair.whiteParticipantData?._id &&
+				pair.blackParticipantData?._id
+			) {
+				onCallPairPreparation(groupId, pair._id, pair.whiteParticipantData._id, pair.blackParticipantData._id)
 			}
 		}
 
@@ -113,8 +114,6 @@ export const tableSchemaPairs = ({
 			!pair.acceptedForFight?.blackParticipant || !pair.acceptedForFight?.whiteParticipant
 		const showCallupButton =
 			isJudgeCompetitionPage && !pair.calledForPreparation && currentFightingGroupIndex && !pair.passed
-		const showCallUpTimer =
-			pair.calledForPreparation && isJudgeCompetitionPage && !bothParticipantsAccepted && !oneOfParticipantsDisqualified
 		const showWinnerButton =
 			(isJudgeCompetitionPage && oneOfParticipantsDisqualified && !pair.winner) ||
 			(isJudgeCompetitionPage && bothParticipantsAccepted && !pair.winner)
@@ -130,9 +129,9 @@ export const tableSchemaPairs = ({
 		const waitingJudgeCompetitonPage =
 			isJudgeCompetitionPage && !pair.calledForPreparation && !currentFightingGroupIndex
 
-		const disableCallUpIfNoFirstTwoButtons = !(lastCalledPairIndex + 1 === i || lastCalledPairIndex + 2 === i)
-		const disableCallUpButton =
-			Boolean(maxPairs && currentPairs && maxPairs <= currentPairs?.length) || disableCallUpIfNoFirstTwoButtons
+		const disableCallUpButton = !(
+			i - lastCalledPairIndex > 0 && i - lastCalledPairIndex <= (maxPairs ?? 0) - (currentPairs?.length ?? 0)
+		)
 
 		return {
 			cells: [
@@ -176,9 +175,12 @@ export const tableSchemaPairs = ({
 									disable={disableCallUpButton}
 								/>
 							)}
-							{showCallUpTimer && <CallUpTimer onTimeOver={isTimerOver} minutes={1} seconds={59} id={pair._id} />}
 							{onDefineWinner && showWinnerButton && (
-								<Button onClick={() => onDefineWinner(pair._id as string)} loading={defineWinnerPending}>
+								<Button
+									onClick={() => onDefineWinner(pair._id as string)}
+									disabled={callPairPreparationPending}
+									loading={defineWinnerPending}
+								>
 									Winner
 								</Button>
 							)}

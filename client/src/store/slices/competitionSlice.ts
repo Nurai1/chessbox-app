@@ -18,6 +18,7 @@ import {
 	UserSchema
 } from 'src/types'
 
+import { omit } from 'remeda'
 import {
 	acceptForFightApi,
 	addNewParticipantApi,
@@ -179,6 +180,22 @@ export const callPairPreparation = createAsyncThunk(
 	'competition/callPairPreparationApi',
 	async (callPairPreparationData: CallPairPreparationSchema, thunkApi) => {
 		const response = await callPairPreparationApi(callPairPreparationData)
+		if (response.error)
+			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
+
+		return response.data
+	}
+)
+
+export const acceptPairByJudge = createAsyncThunk(
+	'competition/acceptPairByJudge',
+	async (data: CallPairPreparationSchema & { whiteUserId: string; blackUserId: string }, thunkApi) => {
+		await callPairPreparationApi(data)
+		await acceptForFightApi({ ...omit(data, ['whiteUserId', 'blackUserId']), userId: data.whiteUserId })
+		const response = await acceptForFightApi({
+			...omit(data, ['whiteUserId', 'blackUserId']),
+			userId: data.blackUserId
+		})
 		if (response.error)
 			return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
 
@@ -526,6 +543,19 @@ export const competitionSlice = createSlice({
 		[setBreakTime.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.setBreakTimePending = false
 			state.setBreakTimeError = action.payload.errorMessage
+		},
+		[acceptPairByJudge.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
+			state.data = action.payload
+			state.callPairPreparationSuccess = true
+			state.callPairPreparationPending = false
+		},
+		[acceptPairByJudge.pending.type]: state => {
+			state.callPairPreparationPending = true
+			state.callPairPreparationError = undefined
+		},
+		[acceptPairByJudge.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
+			state.callPairPreparationPending = false
+			state.callPairPreparationError = action.payload.errorMessage
 		},
 		[callPairPreparation.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.data = action.payload
