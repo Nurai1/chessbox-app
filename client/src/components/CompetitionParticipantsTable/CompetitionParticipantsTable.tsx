@@ -1,5 +1,7 @@
 import { FC, MutableRefObject } from 'react'
 import { useParams } from 'react-router-dom'
+import { ReactComponent as RookBlack } from 'src/assets/rook-black.svg'
+import { ReactComponent as RookWhite } from 'src/assets/rook-white.svg'
 import { getAge, getFormattedDate } from 'src/helpers/datetime'
 import { getGroupPairsLen } from 'src/helpers/getGroupPairsLen'
 import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
@@ -15,6 +17,7 @@ import {
 	WeightCategorySchema
 } from 'src/types'
 import { Accordion, Button, Loader, TableBody } from 'src/ui'
+import { twMerge } from 'tailwind-merge'
 import { TIME_FOR_PAIR } from '../../constants/time'
 
 const getStartPointTimeTuple = (competitionData: CompetitionSchema) => {
@@ -202,6 +205,9 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 											const nextRoundParticipant = participants
 												? participants.find(({ _id: pId }) => pId === participantId)
 												: null
+											const otherParticipantInPair = participants
+												? participants.find(({ _id: pId }) => pId === nextRoundParticipants[participantIdx + 1])
+												: null
 
 											if (currentUserPairRef && participantId === authorizedUser?._id) {
 												currentUserPairRef.current = {
@@ -213,24 +219,59 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 												}
 											}
 
-											return (
-												<div key={nextRoundParticipant?._id} className='flex h-20 w-full items-center py-3 md:pr-6'>
-													<div className='h-full w-[50px] font-bold'>{participantIdx + 1}</div>
-													<div className='flex h-full grow flex-col'>
+											return participantIdx % 2 === 0 ? (
+												<div key={nextRoundParticipant?._id} className='flex w-full items-start gap-1 py-3 md:pr-6'>
+													<div className='h-full min-w-[24px] font-bold md:min-w-[50px]'>{participantIdx + 1}</div>
+													<div className='flex h-full w-[35%] grow flex-col'>
 														<div className='mb-[7px] text-sm text-black xl:text-base'>
 															{nextRoundParticipant?.fullName}
+															<a
+																href={`https://lichess.org/@/${nextRoundParticipant?.chessPlatform?.username}`}
+																className={twMerge(
+																	'flex items-center gap-1 text-base font-medium underline transition hover:opacity-70'
+																)}
+																target='_blank'
+																rel='noreferrer'
+															>
+																<RookWhite className='h-[1.5rem] min-w-[1rem]' />
+																<div className='truncate'>{nextRoundParticipant?.chessPlatform?.username ?? '—'}</div>
+															</a>
 														</div>
 														<div className='text-[#6C6A6C]'>
 															{getAge(nextRoundParticipant?.birthDate as string)} age, {nextRoundParticipant?.weight} kg
 														</div>
 													</div>
+													{otherParticipantInPair && (
+														<div className='flex h-full w-[35%] grow flex-col'>
+															<div className='mb-[7px] text-sm text-black xl:text-base'>
+																{otherParticipantInPair?.fullName}
+																<a
+																	href={`https://lichess.org/@/${otherParticipantInPair?.chessPlatform?.username}`}
+																	className={twMerge(
+																		'flex items-center gap-1 text-base font-medium underline transition hover:opacity-70'
+																	)}
+																	target='_blank'
+																	rel='noreferrer'
+																>
+																	<RookBlack className='h-[1.5rem] min-w-[1rem]' />
+																	<div className='truncate'>
+																		{otherParticipantInPair?.chessPlatform?.username ?? '—'}
+																	</div>
+																</a>
+															</div>
+															<div className='text-[#6C6A6C]'>
+																{getAge(otherParticipantInPair?.birthDate as string)} age,{' '}
+																{otherParticipantInPair?.weight} kg
+															</div>
+														</div>
+													)}
 													<div>
 														<span className='text-sm uppercase text-[#4565D9] md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3 xl:col-start-3 xl:col-end-4 xl:row-auto xl:text-base xl:font-bold'>
 															WAITING
 														</span>
 													</div>
 												</div>
-											)
+											) : null
 										})}
 								</>
 							) : (
