@@ -133,7 +133,8 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 						currentRoundPairs,
 						passedPairs,
 						nextRoundParticipants,
-						isCompleted
+						isCompleted,
+						firstPairOrder
 					},
 					groupIndex
 				) => {
@@ -156,6 +157,11 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 						((pairsBeforeLen + currentRoundPairsLen) * TIME_FOR_PAIR) / competitionJudgesLen
 					).join(':')
 
+					const dynamicFirstPairOrder =
+						(firstPairOrder ?? 0) +
+						(passedPairs?.length ?? 0) -
+						(currentRoundPairs ? currentRoundPairs.filter(p => p.passed).length : 0)
+
 					const tableData = () => (
 						// eslint-disable-next-line react/jsx-no-useless-fragment
 						<>
@@ -176,7 +182,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 											groupId: _id,
 											currentGroupIndex,
 											isJudgeCompetitionPage,
-											lastPairIndex: (passedPairs?.length ?? 0) - currentRoundPairs.filter(p => p.passed).length,
+											firstPairOrder: dynamicFirstPairOrder,
 											callPairPreparationPending,
 											...rest
 										})}
@@ -221,7 +227,9 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 
 											return participantIdx % 2 === 0 ? (
 												<div key={nextRoundParticipant?._id} className='flex w-full items-start gap-1 py-3 md:pr-6'>
-													<div className='h-full min-w-[24px] font-bold md:min-w-[50px]'>{participantIdx + 1}</div>
+													<div className='h-full min-w-[24px] font-bold md:min-w-[50px]'>
+														{(firstPairOrder ?? 0) + currentRoundPairs.length + participantIdx / 2 + 1}
+													</div>
 													<div className='flex h-full w-[35%] grow flex-col'>
 														<div className='mb-[7px] text-sm text-black xl:text-base'>
 															{nextRoundParticipant?.fullName}

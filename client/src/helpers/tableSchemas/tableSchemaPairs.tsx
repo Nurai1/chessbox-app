@@ -31,7 +31,7 @@ export const tableSchemaPairs = ({
 	currentGroupIndex,
 	defineWinnerPending,
 	onDefineWinner,
-	lastPairIndex = 0
+	firstPairOrder = 0
 }: {
 	tableData: PairSchema[]
 	participants: UserSchema[]
@@ -53,7 +53,7 @@ export const tableSchemaPairs = ({
 	currentGroupIndex?: number
 	defineWinnerPending?: boolean
 	onDefineWinner?: (pairId: string) => void
-	lastPairIndex?: number
+	firstPairOrder?: number
 }) => {
 	const participantsData = tableData.reduce((acc, pair) => {
 		const blackParticipantData = participants.find(({ _id }) => pair.blackParticipant === _id)
@@ -136,7 +136,7 @@ export const tableSchemaPairs = ({
 		return {
 			cells: [
 				{
-					node: <span>{lastPairIndex + i + 1}</span>,
+					node: <span>{firstPairOrder + i + 1}</span>,
 					classes: 'max-w-[20px] text-base xl:font-bold xl:max-w-[50px]'
 				},
 				{

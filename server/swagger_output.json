@@ -11640,6 +11640,9 @@
                   "type": "object",
                   "properties": {}
                 },
+                "firstPairOrder": {
+                  "type": "number"
+                },
                 "_id": {
                   "type": "string"
                 }
@@ -12081,6 +12084,9 @@
             "type": "object",
             "properties": {}
           },
+          "firstPairOrder": {
+            "type": "number"
+          },
           "_id": {
             "type": "string"
           }
@@ -12351,6 +12357,9 @@
                 "olympicGrid": {
                   "type": "object",
                   "properties": {}
+                },
+                "firstPairOrder": {
+                  "type": "number"
                 }
               },
               "required": [
@@ -12777,6 +12786,9 @@
           "olympicGrid": {
             "type": "object",
             "properties": {}
+          },
+          "firstPairOrder": {
+            "type": "number"
           }
         }
       },

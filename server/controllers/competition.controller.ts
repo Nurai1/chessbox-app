@@ -5,6 +5,7 @@ import { NODEMAILER_TRANSPORT_CONFIG, SMTP_USER_MAIL } from '../constants';
 import { Competition, User } from '../models/index';
 import { ICompetition, ICompetitionGroup, IPair } from '../types/index';
 import { getPairsWithJudges } from '../utils/competition';
+import { getPairsAmountByParticipants } from '../utils/getPairsAmountByParticipants';
 import { getParticipantsAmountForCurrentRound } from '../utils/getParticipantsAmountForCurrentRound';
 import {
   changeTreeLeaveWithWinnerId,
@@ -578,12 +579,28 @@ export const setCompetitionGroupsOrders = async (
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
 
+  let groupFirstPairOrder = 1;
   const newGroups = competition?.groups
     .map((g) => ({
       ...g,
       order: orders.find((order) => order.groupId === g._id?.toString())?.order,
     }))
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    .map((g, groupIndex, sortedGroups) => {
+      groupFirstPairOrder += sortedGroups[groupIndex - 1]
+        ? getPairsAmountByParticipants(
+            sortedGroups[groupIndex - 1].currentRoundPairs.length * 2 +
+              sortedGroups[groupIndex - 1].nextRoundParticipants.length
+          )
+        : 0;
+
+      return {
+        ...g,
+        order: orders.find((order) => order.groupId === g._id?.toString())
+          ?.order,
+        firstPairOrder: groupFirstPairOrder,
+      };
+    });
 
   competition.groups = newGroups;
   await competition.save();

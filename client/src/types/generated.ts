@@ -3569,6 +3569,7 @@ export interface components {
             })[];
           isCompleted?: boolean;
           olympicGrid?: Record<string, never>;
+          firstPairOrder?: number;
           _id?: string;
         })[];
       price?: {
@@ -3701,6 +3702,7 @@ export interface components {
         })[];
       isCompleted?: boolean;
       olympicGrid?: Record<string, never>;
+      firstPairOrder?: number;
       _id?: string;
     };
     /** Pair */
@@ -3786,6 +3788,7 @@ export interface components {
             })[];
           isCompleted?: boolean;
           olympicGrid?: Record<string, never>;
+          firstPairOrder?: number;
         })[];
       price?: {
         currentValue?: number;
@@ -3913,6 +3916,7 @@ export interface components {
         })[];
       isCompleted?: boolean;
       olympicGrid?: Record<string, never>;
+      firstPairOrder?: number;
     };
     /** Pair */
     PairBody: {

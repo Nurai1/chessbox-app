@@ -48,6 +48,7 @@ export const competitionGroupSchema = new Schema<ICompetitionGroup>(
     currentRoundPairs: [pairSchema],
     isCompleted: { type: Boolean, default: false },
     olympicGrid: {},
+    firstPairOrder: { type: Number },
   },
   { versionKey: false }
 );
