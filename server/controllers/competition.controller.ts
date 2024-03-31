@@ -589,8 +589,10 @@ export const setCompetitionGroupsOrders = async (
     .map((g, groupIndex, sortedGroups) => {
       groupFirstPairOrder += sortedGroups[groupIndex - 1]
         ? getPairsAmountByParticipants(
-            sortedGroups[groupIndex - 1].currentRoundPairs.length * 2 +
-              sortedGroups[groupIndex - 1].nextRoundParticipants.length
+            // @ts-ignore
+            sortedGroups[groupIndex - 1]._doc.currentRoundPairs.length * 2 +
+              // @ts-ignore
+              sortedGroups[groupIndex - 1]._doc.nextRoundParticipants.length
           )
         : 0;
 

@@ -46,7 +46,7 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 			<div className='flex w-full flex-col'>
 				<div className='flex justify-between'>
 					<div className='flex w-[45%]'>
-						<div>
+						<div className='flex w-full flex-col gap-0.5'>
 							{(areBothDisqualified || pair.acceptedForFight?.whiteParticipant) &&
 							isJudgeCompetitionPage &&
 							!pair.winner ? (
@@ -55,12 +55,12 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 									value={pair.whiteParticipant}
 									type='radio'
 									title={pair.whiteParticipantData?.fullName}
-									classes='mb-1 -ml-8'
+									classes='-ml-8'
 									onChange={handleWinnerIdChoose}
 									checked={winner?.[pair._id as string]?.winnerId === pair.whiteParticipantData?._id}
 								/>
 							) : (
-								<p className='mb-1 text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
+								<p className='text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
 							)}
 							{(env === 'dev' || env === 'local') && (
 								// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
@@ -81,9 +81,6 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 									<CopyIcon />
 								</div>
 							)}
-							<p className='text-xs xl:text-base'>
-								{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight} kg
-							</p>
 							<a
 								href={`https://lichess.org/@/${pair?.whiteParticipantData?.chessPlatform?.username}`}
 								className={twMerge(
@@ -96,6 +93,12 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 								<RookWhite className='h-[1.5rem] min-w-[1rem]' />
 								<div className='truncate'>{pair?.whiteParticipantData?.chessPlatform?.username ?? '—'}</div>
 							</a>
+							<p className='text-xs xl:text-base'>
+								{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight} kg
+							</p>
+							<p className='text-xs xl:text-base'>
+								{pair.whiteParticipantData?.address?.city}, {pair.whiteParticipantData?.address?.country}
+							</p>
 							{pair.disqualified?.whiteParticipant && <p className='mt-1 text-error-red'>Disqualification</p>}
 						</div>
 						{pair.winner === pair.whiteParticipant && <GoldMedalIcon className='ml-2.5 h-6 w-5' />}
@@ -103,7 +106,7 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 					<span className='mx-[2%] w-[6%] text-sm text-black xl:text-base'>VS</span>
 					<div className='flex w-[45%]'>
 						<div className='ml-auto flex w-fit xl:ml-10'>
-							<div>
+							<div className='flex w-full flex-col gap-0.5'>
 								{(areBothDisqualified || pair.acceptedForFight?.blackParticipant) &&
 								isJudgeCompetitionPage &&
 								!pair.winner ? (
@@ -112,12 +115,12 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 										value={pair.blackParticipant}
 										type='radio'
 										title={pair.blackParticipantData?.fullName}
-										classes='mb-1 -ml-8'
+										classes='-ml-8'
 										onChange={handleWinnerIdChoose}
 										checked={winner?.[pair._id as string]?.winnerId === pair.blackParticipantData?._id}
 									/>
 								) : (
-									<p className='mb-1 text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
+									<p className='text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
 								)}
 								{(env === 'dev' || env === 'local') && (
 									// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
@@ -138,9 +141,6 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 										<CopyIcon />
 									</div>
 								)}
-								<p className='text-xs xl:text-base'>
-									{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight} kg
-								</p>
 								<a
 									href={`https://lichess.org/@/${pair?.blackParticipantData?.chessPlatform?.username}`}
 									className={twMerge(
@@ -153,6 +153,12 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 									<RookBlack className='h-[1.5rem] min-w-[1rem]' />
 									<div className='truncate'>{pair?.blackParticipantData?.chessPlatform?.username ?? '—'}</div>
 								</a>
+								<p className='text-xs xl:text-base'>
+									{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight} kg
+								</p>
+								<p className='text-xs xl:text-base'>
+									{pair.whiteParticipantData?.address?.city}, {pair.whiteParticipantData?.address?.country}
+								</p>
 								{pair.disqualified?.blackParticipant && <p className='mt-1 text-error-red'>Disqualification</p>}
 							</div>
 							{pair.winner === pair.blackParticipant && <GoldMedalIcon className='ml-2.5 h-6 w-5' />}

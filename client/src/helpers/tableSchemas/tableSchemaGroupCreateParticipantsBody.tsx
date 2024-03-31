@@ -10,7 +10,14 @@ export const tableSchemaGroupCreateParticipantsBody = (tableData: ParticipantSch
 					classes: `max-w-[3rem] pr-2 py-2 min-h-[5.25rem] ${user.groupOverlap ? 'text-error-red' : 'text-black'}`
 				},
 				{
-					node: user.fullName,
+					node: (
+						<div>
+							<div>{user.fullName}</div>
+							<div className='text-grey'>
+								{user.address?.city}, {user.address?.country}
+							</div>
+						</div>
+					),
 					classes: `max-w-[12.5rem] px-2 py-2 min-h-[5.25rem] ${user.groupOverlap ? 'text-error-red' : 'text-black'}`
 				},
 				{

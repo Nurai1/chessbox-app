@@ -5,7 +5,7 @@ import { Input } from '../../ui'
 export const tableSchemaGroupParticipants = (
 	tableData: (UserSchema & { userGridPlace?: string | undefined; setUserGridPlace?: (val?: string) => void })[]
 ) => {
-	return tableData.map(({ fullName, birthDate, weight, userGridPlace, setUserGridPlace }, i) => {
+	return tableData.map(({ fullName, birthDate, weight, userGridPlace, setUserGridPlace, address }, i) => {
 		return {
 			cells: [
 				setUserGridPlace
@@ -18,7 +18,14 @@ export const tableSchemaGroupParticipants = (
 							classes: 'flex-center max-w-[3rem] pr-1 text-black'
 						},
 				{
-					node: fullName,
+					node: (
+						<div>
+							<div>{fullName}</div>
+							<div className='text-grey'>
+								{address?.city}, {address?.country}
+							</div>
+						</div>
+					),
 					classes: 'max-w-[16rem] px-1 text-black items-center'
 				},
 				{

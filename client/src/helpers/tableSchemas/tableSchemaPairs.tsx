@@ -136,7 +136,7 @@ export const tableSchemaPairs = ({
 		return {
 			cells: [
 				{
-					node: <span>{firstPairOrder + i + 1}</span>,
+					node: <span>{firstPairOrder + i}</span>,
 					classes: 'max-w-[20px] text-base xl:font-bold xl:max-w-[50px]'
 				},
 				{

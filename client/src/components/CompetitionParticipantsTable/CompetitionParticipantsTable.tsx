@@ -157,10 +157,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 						((pairsBeforeLen + currentRoundPairsLen) * TIME_FOR_PAIR) / competitionJudgesLen
 					).join(':')
 
-					const dynamicFirstPairOrder =
-						(firstPairOrder ?? 0) +
-						(passedPairs?.length ?? 0) -
-						(currentRoundPairs ? currentRoundPairs.filter(p => p.passed).length : 0)
+					const dynamicFirstPairOrder = (firstPairOrder ?? 0) + (passedPairs?.length ?? 0)
 
 					const tableData = () => (
 						// eslint-disable-next-line react/jsx-no-useless-fragment
@@ -226,13 +223,16 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 											}
 
 											return participantIdx % 2 === 0 ? (
-												<div key={nextRoundParticipant?._id} className='flex w-full items-start gap-1 py-3 md:pr-6'>
+												<div
+													key={nextRoundParticipant?._id}
+													className='flex w-full items-start gap-1 py-3 text-[#6C6A6C] md:pr-6'
+												>
 													<div className='h-full min-w-[24px] font-bold md:min-w-[50px]'>
-														{(firstPairOrder ?? 0) + currentRoundPairs.length + participantIdx / 2 + 1}
+														{(firstPairOrder ?? 0) + currentRoundPairs.length + participantIdx / 2}
 													</div>
-													<div className='flex h-full w-[35%] grow flex-col'>
-														<div className='mb-[7px] text-sm text-black xl:text-base'>
-															{nextRoundParticipant?.fullName}
+													<div className='flex h-full w-[35%] grow flex-col gap-0.5'>
+														<div className='text-sm xl:text-base'>
+															<span className='text-black'>{nextRoundParticipant?.fullName}</span>
 															<a
 																href={`https://lichess.org/@/${nextRoundParticipant?.chessPlatform?.username}`}
 																className={twMerge(
@@ -245,14 +245,17 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 																<div className='truncate'>{nextRoundParticipant?.chessPlatform?.username ?? '—'}</div>
 															</a>
 														</div>
-														<div className='text-[#6C6A6C]'>
+														<div>
 															{getAge(nextRoundParticipant?.birthDate as string)} age, {nextRoundParticipant?.weight} kg
+														</div>
+														<div>
+															{nextRoundParticipant?.address?.city}, {nextRoundParticipant?.address?.country}
 														</div>
 													</div>
 													{otherParticipantInPair && (
-														<div className='flex h-full w-[35%] grow flex-col'>
-															<div className='mb-[7px] text-sm text-black xl:text-base'>
-																{otherParticipantInPair?.fullName}
+														<div className='flex h-full w-[35%] grow flex-col gap-0.5'>
+															<div className='text-sm xl:text-base'>
+																<span className='text-black'>{otherParticipantInPair?.fullName}</span>
 																<a
 																	href={`https://lichess.org/@/${otherParticipantInPair?.chessPlatform?.username}`}
 																	className={twMerge(
@@ -267,9 +270,12 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 																	</div>
 																</a>
 															</div>
-															<div className='text-[#6C6A6C]'>
+															<div>
 																{getAge(otherParticipantInPair?.birthDate as string)} age,{' '}
 																{otherParticipantInPair?.weight} kg
+															</div>
+															<div>
+																{otherParticipantInPair?.address?.city}, {otherParticipantInPair?.address?.country}
 															</div>
 														</div>
 													)}
