@@ -1,20 +1,21 @@
 import { ReactElement, useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { uniqBy } from 'remeda'
+import { CompetitionCreateHeader } from 'src/components'
 import { AppRoute } from 'src/constants/appRoute'
+import { tableSchemaJudgeToPairs } from 'src/helpers/tableSchemas/tableSchemaJudgeToPairs'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { Loader, TableBody, RoundedBorderWrapper, Button, BottomFixedContainer, Alert, Accordion } from 'src/ui'
 import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
 	fetchCompetitionParticipants,
-	setPairJudges,
 	resetPairJudgeAssignStatus,
-	setCompetitionData
+	setCompetitionData,
+	setPairJudges
 } from 'src/store/slices/competitionSlice'
-import { tableSchemaJudgeToPairs } from 'src/helpers/tableSchemas/tableSchemaJudgeToPairs'
-import { SetJudgesToPairsSchema, CompetitionGroupSchema, CompetitionSchema } from 'src/types'
-import { CompetitionCreateHeader } from 'src/components'
 import { updateCompetitionsListCompetition } from 'src/store/slices/competitionsSlice'
+import { CompetitionGroupSchema, CompetitionSchema, SetJudgesToPairsSchema } from 'src/types'
+import { Accordion, Alert, BottomFixedContainer, Button, Loader, RoundedBorderWrapper, TableBody } from 'src/ui'
 
 export type SelectedJudge = {
 	id: string
@@ -60,7 +61,7 @@ export const JudgeAssignPage = (): ReactElement => {
 		if (existingJudgeMatchChosen) {
 			return existingJudgeMatchChosen._id
 		}
-		return judges && judges[i % 2 === 0 ? 0 : 1]._id
+		return judges && judges[i % judges.length]._id
 	}
 
 	useEffect(() => {
@@ -131,15 +132,39 @@ export const JudgeAssignPage = (): ReactElement => {
 		})
 
 		setErrorInfo('')
-		newSelectJudge?.forEach(groupInfo =>
-			groupInfo.pairs.forEach((pair, i, pairs) => {
-				if (pairs[i + 1]) {
-					if (pair.judgeId === pairs[i + 1].judgeId) {
-						setErrorInfo("There shouldn't be two similar judge in a row.")
-					}
+		newSelectJudge?.forEach(groupInfo => {
+			let index = 0
+			let amountPairsPassed = 0
+			const maxPairs = judges?.length
+			const pairsGroupedByJudgesLength = groupInfo.pairs?.reduce<
+				{
+					id: string
+					judgeId: string
+				}[][]
+			>((acc, pair) => {
+				if (!acc[index]) {
+					acc[index] = [pair]
+				} else {
+					acc[index].push(pair)
+				}
+				amountPairsPassed += 1
+				if (amountPairsPassed === maxPairs) {
+					amountPairsPassed = 0
+					index += 1
+				}
+
+				return acc
+			}, [])
+			pairsGroupedByJudgesLength.forEach(groupedPair => {
+				const uniqued = uniqBy(groupedPair, item => item.judgeId)
+				if (uniqued.length !== groupedPair.length) {
+					const group = groups?.find(g => g._id === groupInfo.id)
+					setErrorInfo(
+						`There shouldn't be similar judges in a row. Group with gender ${group?.gender}, age ${group?.ageCategory?.from}-${group?.ageCategory?.to}, weight ${group?.weightCategory?.from}-${group?.weightCategory?.to} kg.`
+					)
 				}
 			})
-		)
+		})
 	}
 
 	const handleDoneClick = () => {

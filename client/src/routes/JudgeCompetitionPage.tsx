@@ -335,7 +335,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 								isJudgeCompetitionPage
 								onCallPairPreparation={handleCallPairPreparationClick}
 								onChooseWinner={handleWinnerChoose}
-								maxPairs={2}
+								maxPairs={competitionData.judges?.length}
 								currentPairs={currentPairs}
 								defineWinnerPending={defineWinnerPending}
 								onDefineWinner={handleDefineWinner}

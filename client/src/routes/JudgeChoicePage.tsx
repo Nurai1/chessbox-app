@@ -10,8 +10,6 @@ import { fetchAllJudges } from 'src/store/slices/usersSlice'
 import { UserSchema } from 'src/types'
 import { Alert, Button, TableBody } from 'src/ui'
 
-const MAX_JUDGES = 2
-
 export const JudgeChoicePage = (): ReactElement => {
 	const { competitionId } = useParams()
 	const navigate = useNavigate()
@@ -22,7 +20,6 @@ export const JudgeChoicePage = (): ReactElement => {
 	const { setCompetitionJudgesError, setCompetitionJudgesSuccess, setCompetitionJudgesPending } = useAppSelector(
 		s => s.competition
 	)
-	const maxJudgesReached = selectedJudgesId.length >= MAX_JUDGES
 
 	useEffect(() => {
 		if (!competitionData) {
@@ -83,8 +80,7 @@ export const JudgeChoicePage = (): ReactElement => {
 		tableSchemaJudges({
 			judges,
 			onSelect: handleSelectJudge,
-			selectedJudgesId,
-			disableCheckboxes: maxJudgesReached
+			selectedJudgesId
 		})
 
 	return (
@@ -101,8 +97,8 @@ export const JudgeChoicePage = (): ReactElement => {
 					<Button
 						onClick={handleSubmit}
 						classes='w-full mt-4 md:w-[223px] xl:mt-11'
-						disabled={!maxJudgesReached}
 						loading={setCompetitionJudgesPending}
+						disabled={selectedJudgesId.length === 0}
 					>
 						Continue
 					</Button>
