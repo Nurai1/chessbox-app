@@ -4,7 +4,7 @@
     "client": "cd client && pnpm start",
     "client-build": "cd client && pnpm build",
     "full": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "set-env": "export $(cat env.txt | xargs)",
+    "set-env": "source env.sh",
     "connect": "ssh -L 9000:127.0.0.1:9000 felix@chessboxingfit.com"
   }
 }

@@ -1,3 +1,4 @@
+import { findLastIndex } from 'remeda'
 import { MutableRefObject } from 'react'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 import { ChooseWinner } from 'src/components'
@@ -21,12 +22,10 @@ export const tableSchemaPairs = ({
 	currentUser,
 	breakTime,
 	isJudgeCompetitionPage,
-	maxPairs,
 	groupIndex,
 	groupId,
 	onCallPairPreparation,
 	callPairPreparationPending,
-	currentPairs,
 	onChooseWinner,
 	currentGroupIndex,
 	defineWinnerPending,
@@ -44,11 +43,9 @@ export const tableSchemaPairs = ({
 	breakTime?: CompetitionSchema['breakTime']
 	isJudgeCompetitionPage?: boolean
 	callPairPreparationPending?: boolean
-	maxPairs?: number
 	groupIndex?: number
 	groupId?: string
 	onCallPairPreparation?: (groupId: string, pairId: string, whiteUserId: string, blackUserId: string) => void
-	currentPairs?: string[]
 	onChooseWinner?: (data?: Record<string, ChooseWinnerType>) => void
 	currentGroupIndex?: number
 	defineWinnerPending?: boolean
@@ -73,9 +70,7 @@ export const tableSchemaPairs = ({
 
 	const statusStyle =
 		'uppercase text-sm md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3 xl:row-auto xl:col-start-3 xl:col-end-4 xl:text-base xl:font-bold text-right md:pr-6'
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	const lastCalledPairIndex = participantsData.findLastIndex(pair => pair.calledForPreparation)
+	const lastCompletedPairIndex = findLastIndex(participantsData, pair => !!pair.winner)
 
 	return participantsData.map((pair, i) => {
 		const currentPairTime = getTimeTuplePlusMinutes(
@@ -129,10 +124,6 @@ export const tableSchemaPairs = ({
 		const waitingJudgeCompetitonPage =
 			isJudgeCompetitionPage && !pair.calledForPreparation && !currentFightingGroupIndex
 
-		const disableCallUpButton = !(
-			i - lastCalledPairIndex > 0 && i - lastCalledPairIndex <= (maxPairs ?? 0) - (currentPairs?.length ?? 0)
-		)
-
 		return {
 			cells: [
 				{
@@ -172,13 +163,12 @@ export const tableSchemaPairs = ({
 								<CallUpButton
 									onCallPairPreparation={handleCallPairPreparation}
 									breakTime={Boolean(breakTime?.minutes)}
-									disable={disableCallUpButton}
 								/>
 							)}
 							{onDefineWinner && showWinnerButton && (
 								<Button
 									onClick={() => onDefineWinner(pair._id as string)}
-									disabled={callPairPreparationPending}
+									disabled={lastCompletedPairIndex + 1 !== i || callPairPreparationPending}
 									loading={defineWinnerPending}
 								>
 									Winner

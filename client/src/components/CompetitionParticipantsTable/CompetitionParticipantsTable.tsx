@@ -42,8 +42,6 @@ type CompetitionParticipantsTablePropsType = {
 	isJudgeCompetitionPage?: boolean
 	onCallPairPreparation?: (groupId: string, pairId: string, whiteUserId: string, blackUserId: string) => void
 	isBreakTime?: boolean
-	maxPairs?: number
-	currentPairs?: string[]
 	onChooseWinner?: (data?: Record<string, ChooseWinnerType>) => void
 	defineWinnerPending?: boolean
 	onDefineWinner?: (pairId: string) => void
