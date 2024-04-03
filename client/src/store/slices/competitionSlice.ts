@@ -294,6 +294,7 @@ export interface CompetitionState {
 	groupDeletePending?: boolean
 	groupDeleteSuccess?: boolean
 	groupDeleteError?: string
+	setParticipantsOrdersByGroupSuccess?: boolean
 	addNewParticipantPending?: boolean
 	addNewParticipantError?: string
 	addNewParticipantSuccess?: boolean
@@ -490,6 +491,7 @@ export const competitionSlice = createSlice({
 		},
 		[setParticipantsOrdersByGroup.fulfilled.type]: (state, action: PayloadAction<CompetitionSchema>) => {
 			state.loading = true
+			state.setParticipantsOrdersByGroupSuccess = true
 			state.data = action.payload
 		},
 		[setParticipantsOrdersByGroup.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {

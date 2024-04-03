@@ -24,7 +24,7 @@ export const CreatePairsPage = (): ReactElement => {
 	const competitionData = useAppSelector(s => s.competition.data)
 	const judges = useAppSelector(s => s.competition.judges[competitionId as string])
 	const allParticipantsData = useAppSelector(s => s.competition.participants[competitionId as string])
-	const { error, loading } = useAppSelector(s => s.competition)
+	const { error, loading, setParticipantsOrdersByGroupSuccess } = useAppSelector(s => s.competition)
 	const [alertData, setAlertData] = useState<AlertType>({ show: false, type: 'success' })
 
 	useEffect(() => {
@@ -63,6 +63,12 @@ export const CreatePairsPage = (): ReactElement => {
 	useEffect(() => {
 		if (error) setAlertData({ show: true, type: 'error', subtitle: error })
 	}, [error])
+
+	useEffect(() => {
+		if (setParticipantsOrdersByGroupSuccess) {
+			navigate(`../${AppRoute.OrdersGroupAssign}`)
+		}
+	}, [setParticipantsOrdersByGroupSuccess, navigate])
 
 	return (
 		<main className='container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]'>
@@ -159,7 +165,6 @@ export const CreatePairsPage = (): ReactElement => {
 								)
 
 								dispatch(setParticipantsOrdersByGroup({ data, id: competitionId }))
-								navigate(`../${AppRoute.OrdersGroupAssign}`)
 							}
 						}}
 					>

@@ -10,7 +10,13 @@ export const getPrefilledOlympicGrid = (
   allParticipants: string[],
   currentRoundParticipantsAmount: number,
   circlesAmount: number
-) => {
+): GridTree => {
+  if (allParticipants.length === 1) {
+    return {
+      pair: [{ userId: allParticipants[0] }, {}],
+    };
+  }
+
   let stack: (() => void)[] = [];
   const gridTree: GridTree = { pair: [{}, {}] };
 
@@ -50,8 +56,8 @@ export const getPrefilledOlympicGrid = (
         exceptCurrentRoundParticipantsAmount -= 2;
       } else if (currentRoundParticipants.length) {
         gridTreeNode.pair = [
-          { userId: currentRoundParticipants.pop() },
-          { userId: currentRoundParticipants.pop() },
+          { userId: currentRoundParticipants.shift() },
+          { userId: currentRoundParticipants.shift() },
         ];
       }
 
