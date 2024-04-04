@@ -1,9 +1,9 @@
-import { Button } from 'src/ui'
 import { ClampedText } from 'src/components/ClampedText/ClampedText'
-import { ParticipantsRequestedCheckTable } from 'src/routes/VerifyPaymentPage'
-import { getAge } from 'src/helpers/datetime'
 import { MAX_PAYMENT_REQUEST_COUNT } from 'src/constants/maxRequestCount'
+import { getAge } from 'src/helpers/datetime'
+import { ParticipantsRequestedCheckTable } from 'src/routes/VerifyPaymentPage'
 import { CompetitionPaymentPaidType } from 'src/types'
+import { Button } from 'src/ui'
 
 type TableSchemaPaymentCheckProps = {
 	tableData: ParticipantsRequestedCheckTable[]
@@ -46,6 +46,9 @@ export const tableSchemaPaymentCheck = ({
 									<p className='inline-block  text-black'>{userData?.email}</p>
 									<p className='mt-1.5 text-sm'>
 										{userData?.gender}, {getAge(userData?.birthDate)} age, {userData?.weight} kg
+									</p>
+									<p className='mt-1.5 text-sm'>
+										{userData?.address?.city}, {userData?.address?.country}
 									</p>
 								</div>
 								{requestedCount && requestedCount < MAX_PAYMENT_REQUEST_COUNT && (
