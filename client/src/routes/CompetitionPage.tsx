@@ -265,68 +265,72 @@ export const CompetitionPage = (): ReactElement => {
 									isCompetitionPage
 								/>
 							)}
-							{authorizedUser?.role === Role.ChiefJudge && (
-								<div>
-									{timeBeforeStart && (
-										<div>
-											<TimerBeforeCompetitionStarts
-												competitionData={competitionData}
-												onTimeOver={() => setIsTimeOver(true)}
-											/>
-											{authorizedUser?.role === Role.ChiefJudge && isTimeOver && (
-												<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:p-0 lg:shadow-none'>
-													<Button
-														classes='w-full lg:mb-[1.25rem]'
-														onClick={() => {
-															if (competitionId && !competitionData?.started) dispatch(startCompetition(competitionId))
-															navigate(AppRoute.JudgeCompetition)
-														}}
-													>
-														To competition
-													</Button>
-												</div>
-											)}
-										</div>
-									)}
-									<div className='static mt-5 bg-white p-0 shadow-none'>
-										<Button
-											classes='w-full'
-											type='outlined'
-											onClick={async () => {
-												const competitionExcelRows = competitionData.groups?.reduce(
-													(acc, group) => {
-														return [...acc, ...getXlsxRowsForGroup(group, participants)]
-													},
-													[] as (string | undefined)[][]
-												)
+							{authorizedUser?.role === Role.ChiefJudge &&
+								(timeBeforeStart || competitionData.chiefJudgeEndedConfiguration) && (
+									<div>
+										{timeBeforeStart && (
+											<div>
+												<TimerBeforeCompetitionStarts
+													competitionData={competitionData}
+													onTimeOver={() => setIsTimeOver(true)}
+												/>
+												{authorizedUser?.role === Role.ChiefJudge && isTimeOver && (
+													<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:p-0 lg:shadow-none'>
+														<Button
+															classes='w-full lg:mb-[1.25rem]'
+															onClick={() => {
+																if (competitionId && !competitionData?.started)
+																	dispatch(startCompetition(competitionId))
+																navigate(AppRoute.JudgeCompetition)
+															}}
+														>
+															To competition
+														</Button>
+													</div>
+												)}
+											</div>
+										)}
+										{competitionData.chiefJudgeEndedConfiguration && (
+											<div className='static mt-5 bg-white p-0 shadow-none'>
+												<Button
+													classes='w-full'
+													type='outlined'
+													onClick={async () => {
+														const competitionExcelRows = competitionData.groups?.reduce(
+															(acc, group) => {
+																return [...acc, ...getXlsxRowsForGroup(group, participants)]
+															},
+															[] as (string | undefined)[][]
+														)
 
-												const maxRowLength = competitionExcelRows?.reduce((acc, row) => {
-													return row.length > acc ? row.length : acc
-												}, 0)
+														const maxRowLength = competitionExcelRows?.reduce((acc, row) => {
+															return row.length > acc ? row.length : acc
+														}, 0)
 
-												try {
-													if (competitionExcelRows) {
-														const { downloadFile } = await generateXlsx(competitionExcelRows, {
-															columns: Array(maxRowLength)
-																.fill(null)
-																?.map(() => ({ wch: 30 }))
-														})
+														try {
+															if (competitionExcelRows) {
+																const { downloadFile } = await generateXlsx(competitionExcelRows, {
+																	columns: Array(maxRowLength)
+																		.fill(null)
+																		?.map(() => ({ wch: 30 }))
+																})
 
-														downloadFile(`${competitionData.name}.xlsx`)
-													}
-												} catch (e) {
-													// eslint-disable-next-line no-console
-													console.log('Error while xlsx generated')
-													// eslint-disable-next-line no-console
-													console.error(e)
-												}
-											}}
-										>
-											Download olympic grid
-										</Button>
+																downloadFile(`${competitionData.name}.xlsx`)
+															}
+														} catch (e) {
+															// eslint-disable-next-line no-console
+															console.log('Error while xlsx generated')
+															// eslint-disable-next-line no-console
+															console.error(e)
+														}
+													}}
+												>
+													Download olympic grid
+												</Button>
+											</div>
+										)}
 									</div>
-								</div>
-							)}
+								)}
 							<TimerBeforeParticipantFight currentPair={currentUserPairRef.current?.pair} />
 							{isCompetitionOver && (
 								<div>

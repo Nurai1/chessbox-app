@@ -155,7 +155,10 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 						((pairsBeforeLen + currentRoundPairsLen) * TIME_FOR_PAIR) / competitionJudgesLen
 					).join(':')
 
-					const dynamicFirstPairOrder = (firstPairOrder ?? 0) + (passedPairs?.length ?? 0)
+					const dynamicFirstPairOrder =
+						(firstPairOrder ?? 0) +
+						(passedPairs?.length ?? 0) -
+						(currentRoundPairs?.filter(pair => pair.passed).length ?? 0)
 
 					const tableData = () => (
 						// eslint-disable-next-line react/jsx-no-useless-fragment
@@ -226,7 +229,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 													className='flex w-full items-start gap-1 py-3 text-[#6C6A6C] md:pr-6'
 												>
 													<div className='h-full min-w-[24px] font-bold md:min-w-[50px]'>
-														{(firstPairOrder ?? 0) + currentRoundPairs.length + participantIdx / 2}
+														{dynamicFirstPairOrder + currentRoundPairs.length + participantIdx / 2}
 													</div>
 													<div className='flex h-full w-[35%] grow flex-col gap-0.5'>
 														<div className='text-sm xl:text-base'>
