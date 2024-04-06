@@ -157,7 +157,7 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 									{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight} kg
 								</p>
 								<p className='text-xs xl:text-base'>
-									{pair.whiteParticipantData?.address?.city}, {pair.whiteParticipantData?.address?.country}
+									{pair.blackParticipantData?.address?.city}, {pair.blackParticipantData?.address?.country}
 								</p>
 								{pair.disqualified?.blackParticipant && <p className='mt-1 text-error-red'>Disqualification</p>}
 							</div>

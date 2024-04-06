@@ -1,6 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { uniqBy } from 'remeda'
 import { CompetitionCreateHeader } from 'src/components'
 import { AppRoute } from 'src/constants/appRoute'
 import { tableSchemaJudgeToPairs } from 'src/helpers/tableSchemas/tableSchemaJudgeToPairs'
@@ -132,39 +131,40 @@ export const JudgeAssignPage = (): ReactElement => {
 		})
 
 		setErrorInfo('')
-		newSelectJudge?.forEach(groupInfo => {
-			let index = 0
-			let amountPairsPassed = 0
-			const maxPairs = judges?.length
-			const pairsGroupedByJudgesLength = groupInfo.pairs?.reduce<
-				{
-					id: string
-					judgeId: string
-				}[][]
-			>((acc, pair) => {
-				if (!acc[index]) {
-					acc[index] = [pair]
-				} else {
-					acc[index].push(pair)
-				}
-				amountPairsPassed += 1
-				if (amountPairsPassed === maxPairs) {
-					amountPairsPassed = 0
-					index += 1
-				}
+		// disable validation for now
+		// newSelectJudge?.forEach(groupInfo => {
+		// 	let index = 0
+		// 	let amountPairsPassed = 0
+		// 	const maxPairs = judges?.length
+		// 	const pairsGroupedByJudgesLength = groupInfo.pairs?.reduce<
+		// 		{
+		// 			id: string
+		// 			judgeId: string
+		// 		}[][]
+		// 	>((acc, pair) => {
+		// 		if (!acc[index]) {
+		// 			acc[index] = [pair]
+		// 		} else {
+		// 			acc[index].push(pair)
+		// 		}
+		// 		amountPairsPassed += 1
+		// 		if (amountPairsPassed === maxPairs) {
+		// 			amountPairsPassed = 0
+		// 			index += 1
+		// 		}
 
-				return acc
-			}, [])
-			pairsGroupedByJudgesLength.forEach(groupedPair => {
-				const uniqued = uniqBy(groupedPair, item => item.judgeId)
-				if (uniqued.length !== groupedPair.length) {
-					const group = groups?.find(g => g._id === groupInfo.id)
-					setErrorInfo(
-						`There shouldn't be similar judges in a row. Group with gender ${group?.gender}, age ${group?.ageCategory?.from}-${group?.ageCategory?.to}, weight ${group?.weightCategory?.from}-${group?.weightCategory?.to} kg.`
-					)
-				}
-			})
-		})
+		// 		return acc
+		// 	}, [])
+		// 	pairsGroupedByJudgesLength.forEach(groupedPair => {
+		// 		const uniqued = uniqBy(groupedPair, item => item.judgeId)
+		// 		if (uniqued.length !== groupedPair.length) {
+		// 			const group = groups?.find(g => g._id === groupInfo.id)
+		// 			setErrorInfo(
+		// 				`There shouldn't be similar judges in a row. Group with gender ${group?.gender}, age ${group?.ageCategory?.from}-${group?.ageCategory?.to}, weight ${group?.weightCategory?.from}-${group?.weightCategory?.to} kg.`
+		// 			)
+		// 		}
+		// 	})
+		// })
 	}
 
 	const handleDoneClick = () => {

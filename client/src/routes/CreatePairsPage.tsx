@@ -7,6 +7,7 @@ import {
 	fetchCompetitionById,
 	fetchCompetitionJudges,
 	fetchCompetitionParticipants,
+	setIsSetParticipantsOrdersByGroupSuccess,
 	setParticipantsOrdersByGroup
 } from 'src/store/slices/competitionSlice'
 import { Accordion, Alert, BottomFixedContainer, Button, Loader, RoundedBorderWrapper, TableBody } from 'src/ui'
@@ -66,9 +67,10 @@ export const CreatePairsPage = (): ReactElement => {
 
 	useEffect(() => {
 		if (setParticipantsOrdersByGroupSuccess) {
+			dispatch(setIsSetParticipantsOrdersByGroupSuccess(false))
 			navigate(`../${AppRoute.OrdersGroupAssign}`)
 		}
-	}, [setParticipantsOrdersByGroupSuccess, navigate])
+	}, [dispatch, setParticipantsOrdersByGroupSuccess, navigate])
 
 	return (
 		<main className='container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]'>
@@ -170,6 +172,11 @@ export const CreatePairsPage = (): ReactElement => {
 					>
 						Confirm the pairs
 					</Button>
+					{competitionData?.groups?.every(group => group.olympicGrid) && (
+						<Button type='outlined' onClick={() => navigate(`../${AppRoute.OrdersGroupAssign}`)}>
+							Go to the next step
+						</Button>
+					)}
 				</div>
 			</BottomFixedContainer>
 		</main>

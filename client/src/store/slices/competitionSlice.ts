@@ -395,6 +395,9 @@ export const competitionSlice = createSlice({
 			action: PayloadAction<{ newParticipant: UserSchema; competitionId: string }>
 		) => {
 			state.participants[action.payload.competitionId]?.push(action.payload.newParticipant)
+		},
+		setIsSetParticipantsOrdersByGroupSuccess: (state, action: PayloadAction<boolean>) => {
+			state.setParticipantsOrdersByGroupSuccess = action.payload
 		}
 	},
 	extraReducers: {
@@ -659,7 +662,8 @@ export const {
 	resetBreakTimeSuccess,
 	addValuecallUpTimerRunningIds,
 	removeValuecallUpTimerRunningIds,
-	addCompetitionParticipant
+	addCompetitionParticipant,
+	setIsSetParticipantsOrdersByGroupSuccess
 } = competitionSlice.actions
 
 export default competitionSlice.reducer

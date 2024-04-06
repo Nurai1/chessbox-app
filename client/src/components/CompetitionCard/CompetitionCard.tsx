@@ -145,7 +145,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 			{timeBeforeStart && (
 				<CompetitionCardTimer
 					competitionData={competition}
-					title={<span>Approximate time before&nbsp;To confirm participation press READY! start:</span>}
+					title={<span>Approximate time before&nbsp;start:</span>}
 					classes='mt-2'
 				/>
 			)}

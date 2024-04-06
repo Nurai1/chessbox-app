@@ -1,7 +1,7 @@
-import { PairSchema, UserSchema } from 'src/types'
 import { getAge } from 'src/helpers/datetime'
-import { Select } from 'src/ui'
 import { SelectedJudge } from 'src/routes/JudgeAssignPage'
+import { PairSchema, UserSchema } from 'src/types'
+import { Select } from 'src/ui'
 
 type TableSchemaJudgeToPairsType = {
 	tableData: PairSchema[]
@@ -75,18 +75,24 @@ export const tableSchemaJudgeToPairs = ({
 						<div className='grid w-full gap-[0.925rem] lg:grid-cols-[2fr_1fr] xl:lg:grid-cols-[55%_35%] xl:gap-[10%]'>
 							<div className='flex justify-between'>
 								<div className='w-[45%]'>
-									<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
+									<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
+									<p className=' text-xs xl:text-base'>
+										{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight} kg
+									</p>
 									<p className='text-xs xl:text-base'>
-										{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight} kg
+										{pair.whiteParticipantData?.address?.city}, {pair.whiteParticipantData?.address?.country}
 									</p>
 								</div>
 								<span className='mx-[2%] w-[6%] text-sm text-black xl:text-base'>VS</span>
 								<div className='w-[45%]'>
 									<div className='ml-auto w-fit lg:ml-[32%]'>
-										<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
-										<p className=' text-xs xl:text-base'>
-											{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight}{' '}
+										<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
+										<p className='text-xs xl:text-base'>
+											{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight}{' '}
 											kg
+										</p>
+										<p className='text-xs xl:text-base'>
+											{pair.blackParticipantData?.address?.city}, {pair.blackParticipantData?.address?.country}
 										</p>
 									</div>
 								</div>
