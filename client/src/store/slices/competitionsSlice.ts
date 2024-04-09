@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { CompetitionSchema, ErrorPayload } from 'src/types'
 import { getCompetitionsApi } from 'src/api/requests/competitions'
+import { CompetitionSchema, ErrorPayload } from 'src/types'
 
 export const fetchCompetitions = createAsyncThunk('competitions/fetchAll', async (_, thunkApi) => {
 	const response = await getCompetitionsApi()

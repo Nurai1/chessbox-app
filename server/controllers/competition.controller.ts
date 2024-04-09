@@ -19,7 +19,10 @@ import {
 const { CLIENT_URL } = process.env;
 
 export const getCompetitions = async (req: Request, res: Response) => {
-  const competitions = await Competition.find({});
+  const competitions = await Competition.find({}).sort({
+    endDate: 'desc',
+    startDate: 'asc',
+  });
 
   res.send(competitions);
 };
@@ -333,7 +336,7 @@ export const createCompetitionGroup = async (
     }),
   };
 
-  competition.groups = [groupWithJudges, ...competition.groups];
+  competition.groups = [...competition.groups, groupWithJudges];
 
   await competition.save();
 
