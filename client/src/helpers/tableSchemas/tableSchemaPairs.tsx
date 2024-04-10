@@ -1,8 +1,7 @@
-import { findLastIndex } from 'remeda'
 import { MutableRefObject } from 'react'
+import { findLastIndex } from 'remeda'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 import { ChooseWinner } from 'src/components'
-import { localTZName } from 'src/helpers/datetime'
 import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
 import { ChooseWinnerType, CompetitionSchema, PairSchema, UserSchema } from 'src/types'
 import { Button, CallUpButton } from 'src/ui'
@@ -134,9 +133,9 @@ export const tableSchemaPairs = ({
 					node: (
 						<div className='grid w-full grid-cols-[1fr_80px] gap-[14px] lg:grid-cols-[1fr_110px] lg:gap-[28px] xl:grid-cols-[25%_50%_15%] xl:gap-[5%]'>
 							<div className='md:col-start-1 md:col-end-3 xl:col-auto'>
-								<p className='gri mb-[6px] text-base text-black xl:font-bold'>
+								{/* <p className='gri mb-[6px] text-base text-black xl:font-bold'>
 									{currentPairTime} ({localTZName})
-								</p>
+								</p> */}
 								<a
 									href={`https://wa.me/${pair.judgeData?.socialNetworks?.whatsup}`}
 									target='_blank'

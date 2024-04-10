@@ -5,16 +5,22 @@ import { ReactComponent as RookWhite } from 'src/assets/rook-white.svg'
 import { ReactComponent as RookBlack } from 'src/assets/rook-black.svg'
 import { ReactComponent as Dumbbell } from 'src/assets/dumbbell.svg'
 import { PairType } from 'src/helpers/tableSchemas/tableSchemaJudgeToPairs'
-import { getAge, localTZName } from 'src/helpers/datetime'
+import { getAge } from 'src/helpers/datetime'
 
 type MatchInfoPropsType = {
 	pairData?: PairType
 	zoomLink?: string
 	classes?: string
+	// eslint-disable-next-line react/no-unused-prop-types
 	startTime?: string
 }
 
-export const PairInfo: FC<MatchInfoPropsType> = ({ pairData, zoomLink, startTime, classes }) => {
+export const PairInfo: FC<MatchInfoPropsType> = ({
+	pairData,
+	zoomLink,
+	//  startTime,
+	classes
+}) => {
 	return (
 		<div
 			className={twMerge(
@@ -23,13 +29,13 @@ export const PairInfo: FC<MatchInfoPropsType> = ({ pairData, zoomLink, startTime
 			)}
 		>
 			<div className='mb-[17px] lg:ml-auto lg:mb-0 lg:w-[30%]'>
-				<div className='mb-[5px]'>
+				{/* <div className='mb-[5px]'>
 					<span className='font-bold xl:text-4xl'>{startTime}</span>
 					<span className='font-bold lg:mt-[6px] lg:block lg:text-xs lg:font-normal lg:text-[#6C6A6C] xl:text-2xl xl:font-semibold'>
 						{' '}
 						({localTZName})
 					</span>
-				</div>
+				</div> */}
 				<a
 					className='mb-[6px] inline-block font-medium underline transition hover:opacity-70 xl:mb-[18px] xl:text-2xl xl:font-semibold'
 					href={zoomLink}

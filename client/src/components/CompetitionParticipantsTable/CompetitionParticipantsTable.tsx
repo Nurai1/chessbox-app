@@ -74,10 +74,10 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 		gender,
 		ageCategory,
 		weightCategory,
-		pairsBeforeLen,
+		// pairsBeforeLen,
 		// for nextRoundParticipants calculation
-		currentRoundPairsLen = 0,
-		competitionJudgesLen,
+		// currentRoundPairsLen = 0,
+		// competitionJudgesLen,
 		classes
 	}: {
 		pairsBeforeLen: number
@@ -89,13 +89,13 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 		classes?: string
 	}) => (
 		<h3 className={`font-bold xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px] ${classes}`}>
-			{getTimeTuplePlusMinutes(
+			{/* {getTimeTuplePlusMinutes(
 				startPointTimeTuple,
 				((pairsBeforeLen + currentRoundPairsLen) * TIME_FOR_PAIR) / competitionJudgesLen +
 					((pairsBeforeLen + currentRoundPairsLen) % competitionJudgesLen === 0
 						? 0
 						: TIME_FOR_PAIR / competitionJudgesLen)
-			).join(':')}
+			).join(':')} */}
 			<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}- {ageCategory?.to} age,{' '}
 			{weightCategory?.from}-{weightCategory?.to}kg
 		</h3>
