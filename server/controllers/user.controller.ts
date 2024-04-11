@@ -9,7 +9,7 @@ import {
   NODEMAILER_TRANSPORT_CONFIG,
   RESOURCES,
   ROLES,
-  SMTP_USER_MAIL,
+  SMTP_USER_OFFICIAL_MAIL,
 } from '../constants';
 import { User } from '../models/index';
 import ac from '../roles';
@@ -77,7 +77,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     return res.status(404).send({ error: "User wasn't found by email" });
 
   const mailOptions = {
-    from: SMTP_USER_MAIL,
+    from: SMTP_USER_OFFICIAL_MAIL,
     to: email,
     subject: 'Chessboxing Online. Password Reset',
     text: `Follow this link to reset your password: \n${CLIENT_URL}/?email=${encodeURIComponent(

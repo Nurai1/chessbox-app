@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 
 import nodemailer from 'nodemailer';
-import { NODEMAILER_TRANSPORT_CONFIG, SMTP_USER_MAIL } from '../constants';
+import {
+  NODEMAILER_TRANSPORT_CONFIG,
+  SMTP_USER_OFFICIAL_MAIL,
+} from '../constants';
 import { Competition, User } from '../models/index';
 import { ICompetition, ICompetitionGroup, IPair } from '../types/index';
 import { getPairsWithJudges } from '../utils/competition';
@@ -1035,7 +1038,7 @@ export const setUserPaymentRequestToCheck = async (
   const transporter = nodemailer.createTransport(NODEMAILER_TRANSPORT_CONFIG);
 
   const mailOptions = {
-    from: SMTP_USER_MAIL,
+    from: SMTP_USER_OFFICIAL_MAIL,
     to: 'sayapov@bk.ru',
     subject: 'Просьба проверить оплату в chessbox приложении',
     text: `Пользователь ${user?.fullName} просит проверить оплату в chessbox приложении.\n Ссылка на проверку: ${CLIENT_URL}/#/competitions/${id}/verify-payment`,

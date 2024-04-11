@@ -19,8 +19,8 @@ export const ACTIONS = {
   createAny: 'createAny',
 } as const;
 
-// TODO: remove it
 export const SMTP_USER_MAIL = 'carryitthroughlife@gmail.com';
+export const SMTP_USER_OFFICIAL_MAIL = 'no-reply@chessboxingfit.com';
 
 export const NODEMAILER_TRANSPORT_CONFIG = {
   service: 'gmail',
