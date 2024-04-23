@@ -7,7 +7,11 @@ import jwt from 'jsonwebtoken';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as swaggerUi from 'swagger-ui-express';
 import { User } from './models/index';
-import { competitionRouter, userRouter } from './routes/index';
+import {
+  competitionDataRouter,
+  competitionRouter,
+  userRouter,
+} from './routes/index';
 import * as swaggerFile from './swagger_output.json';
 
 export const app = express();
@@ -94,6 +98,8 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use('/api', competitionRouter);
+
+app.use('/api', competitionDataRouter);
 
 app.use('/api', userRouter);
 

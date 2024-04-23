@@ -7,6 +7,8 @@ import { ReactComponent as HourGlass } from 'src/assets/hourglass.svg'
 import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
 import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
+import { ReactComponent as BigSearchLoopIcon } from 'src/assets/big-search-loop.svg'
+
 import {
 	CompetitionInfo,
 	CompetitionParticipantsTable,
@@ -37,15 +39,19 @@ import {
 } from 'src/store/slices/competitionSlice'
 import { CompetitionGroupSchema, ParticipantSchema, UserPaymentInfo } from 'src/types'
 import { BreakTimer, Button, Loader, Modal, TableBody, Tag } from 'src/ui'
+import { twMerge } from 'tailwind-merge'
 import { generateXlsx } from '../helpers/generateDocsFromDefinition'
 import { getPriceText } from '../helpers/getPriceText'
 import { getXlsxRowsForGroup } from '../helpers/getXlsxRowsForGroup'
+import configEnv from '../configEnv'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
 	const { competitionId } = useParams()
 	const currentUserPairRef = useRef<{ pair?: PairType; startTime: string }>()
 	const navigate = useNavigate()
+	const [showBannerLoop, setShowBannerLoop] = useState(false)
+	const [showFullBanner, setShowFullBanner] = useState(false)
 	const [isSideMenuParticipantsOpen, setIsSideMenuParticipantsOpen] = useState(false)
 	const [isSideMenuResultOpen, setIsSideMenuResultOpen] = useState(false)
 	const [currentUserRequestData, setCurrentUserRequestData] = useState<UserPaymentInfo>()
@@ -189,7 +195,7 @@ export const CompetitionPage = (): ReactElement => {
 				{fetchError && <h2>{fetchError}</h2>}
 				{competitionData && (
 					<>
-						<div className='lg:grid lg:grid-cols-[1fr_13.75rem] lg:gap-[0_15px] xl:grid-cols-[1fr_24.5rem] xl:gap-[0_40px]'>
+						<div className='lg:grid lg:grid-cols-[1fr_17.75rem] lg:gap-[0_15px] xl:grid-cols-[1fr_24.5rem] xl:gap-[0_40px]'>
 							<div>
 								<h1 className='mb-[15px] text-heading-4 lg:mb-[10px] xl:mb-[24px] xl:text-heading-1'>
 									{competitionData.name}
@@ -210,147 +216,176 @@ export const CompetitionPage = (): ReactElement => {
 								</div>
 								<CompetitionRequirements competitionRequirements={competitionData.requirements} classes='mb-6' />
 							</div>
-							{showRegistrationEndsTimer && (
-								<RegistrationEndsTimer
-									competitionData={competitionData}
-									onTimeOver={() => setIsRegistrationClosed(true)}
-									classes={isParticipant ? 'hidden' : ''}
-									isCompetitonPage
+							<div className='flex flex-col gap-2'>
+								{/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+								<div
+									onClick={() => {
+										setShowFullBanner(true)
+									}}
+									className='relative h-[400px] cursor-pointer self-start'
+									onMouseEnter={() => {
+										setShowBannerLoop(true)
+									}}
+									onMouseLeave={() => {
+										setShowBannerLoop(false)
+									}}
 								>
-									<Button
-										onClick={handleSideMenuParticipantsOpen}
-										type='outlined'
-										classes='w-full lg:font-normal lg:text-sm xl:text-base xl:font-bold'
+									<img
+										className={twMerge('h-full rounded-lg')}
+										src={`${configEnv.serviceApiUrl}/api/competitionBanner/${competitionId}`}
+										alt='Competition Banner'
+									/>
+									{showBannerLoop && (
+										<div className='absolute inset-0 z-20 hidden md:block'>
+											<div className='h-full w-full rounded-lg bg-slate-600 opacity-25' />
+											<div className='flex-center absolute inset-0'>
+												<BigSearchLoopIcon className='z-20 h-12 w-12 stroke-white opacity-100' />
+											</div>
+										</div>
+									)}
+								</div>
+								{showRegistrationEndsTimer && (
+									<RegistrationEndsTimer
+										competitionData={competitionData}
+										onTimeOver={() => setIsRegistrationClosed(true)}
+										classes={isParticipant ? 'hidden' : ''}
+										isCompetitonPage
 									>
-										<span>
-											Check out <span className='hidden xl:inline'>other</span>
-											&nbsp;participants
-										</span>
-									</Button>
-								</RegistrationEndsTimer>
-							)}
-							{requestAwaitAcception && (
-								<RequestAwaitAcception isCompetitionPage>
-									<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:w-full lg:p-0 lg:shadow-none'>
 										<Button
-											classes='w-full lg:text-xs lg:font-normal xl:font-bold xl:text-base'
-											type='outlined'
 											onClick={handleSideMenuParticipantsOpen}
+											type='outlined'
+											classes='w-full lg:font-normal lg:text-sm xl:text-base xl:font-bold'
 										>
 											<span>
 												Check out <span className='hidden xl:inline'>other</span>
 												&nbsp;participants
 											</span>
 										</Button>
-									</div>
-								</RequestAwaitAcception>
-							)}
-							{showYouAreParticipant && (
-								<YouAreParticipant
-									onSideMenuOpen={handleSideMenuParticipantsOpen}
-									classes='my-9 lg:m-0'
-									isCompetitionPage
-								/>
-							)}
-							{registrationClosed && (
-								<CompetitionInfo
-									title={
-										<span className='block lg:mt-2 lg:text-heading-4 xl:mt-0 xl:max-w-[15rem] xl:text-heading-3'>
-											Registration Closed
-										</span>
-									}
-									img={
-										<HourGlass className='h-7 w-7 lg:absolute lg:right-6 lg:bottom-6 lg:h-10 lg:w-10 xl:right-10 xl:bottom-10 xl:h-16 xl:w-16' />
-									}
-									isCompetitionPage
-								/>
-							)}
-							{authorizedUser?.role === Role.ChiefJudge &&
-								(timeBeforeStart || competitionData.chiefJudgeEndedConfiguration) && (
-									<div>
-										{timeBeforeStart && (
-											<div>
-												<TimerBeforeCompetitionStarts
-													competitionData={competitionData}
-													onTimeOver={() => setIsTimeOver(true)}
-												/>
-												{authorizedUser?.role === Role.ChiefJudge && isTimeOver && (
-													<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:p-0 lg:shadow-none'>
-														<Button
-															classes='w-full lg:mb-[1.25rem]'
-															onClick={() => {
-																if (competitionId && !competitionData?.started)
-																	dispatch(startCompetition(competitionId))
-																navigate(AppRoute.JudgeCompetition)
-															}}
-														>
-															To competition
-														</Button>
-													</div>
-												)}
-											</div>
-										)}
-										{competitionData.chiefJudgeEndedConfiguration && (
-											<div className='static mt-5 bg-white p-0 shadow-none'>
-												<Button
-													classes='w-full'
-													type='outlined'
-													onClick={async () => {
-														const competitionExcelRows = competitionData.groups?.reduce(
-															(acc, group) => {
-																return [...acc, ...getXlsxRowsForGroup(group, participants)]
-															},
-															[] as (string | undefined)[][]
-														)
+									</RegistrationEndsTimer>
+								)}
+								{requestAwaitAcception && (
+									<RequestAwaitAcception isCompetitionPage>
+										<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:w-full lg:p-0 lg:shadow-none'>
+											<Button
+												classes='w-full lg:text-xs lg:font-normal xl:font-bold xl:text-base'
+												type='outlined'
+												onClick={handleSideMenuParticipantsOpen}
+											>
+												<span>
+													Check out <span className='hidden xl:inline'>other</span>
+													&nbsp;participants
+												</span>
+											</Button>
+										</div>
+									</RequestAwaitAcception>
+								)}
+								{showYouAreParticipant && (
+									<YouAreParticipant
+										onSideMenuOpen={handleSideMenuParticipantsOpen}
+										classes='my-9 lg:m-0'
+										isCompetitionPage
+									/>
+								)}
+								{registrationClosed && (
+									<CompetitionInfo
+										title={
+											<span className='block lg:mt-2 lg:text-heading-4 xl:mt-0 xl:max-w-[15rem] xl:text-heading-3'>
+												Registration Closed
+											</span>
+										}
+										img={
+											<HourGlass className='h-7 w-7 lg:absolute lg:right-6 lg:bottom-6 lg:h-10 lg:w-10 xl:right-10 xl:bottom-10 xl:h-16 xl:w-16' />
+										}
+										isCompetitionPage
+									/>
+								)}
+								{authorizedUser?.role === Role.ChiefJudge &&
+									(timeBeforeStart || competitionData.chiefJudgeEndedConfiguration) && (
+										<div>
+											{timeBeforeStart && (
+												<div>
+													<TimerBeforeCompetitionStarts
+														competitionData={competitionData}
+														onTimeOver={() => setIsTimeOver(true)}
+													/>
+													{authorizedUser?.role === Role.ChiefJudge && isTimeOver && (
+														<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:p-0 lg:shadow-none'>
+															<Button
+																classes='w-full lg:mb-[1.25rem]'
+																onClick={() => {
+																	if (competitionId && !competitionData?.started)
+																		dispatch(startCompetition(competitionId))
+																	navigate(AppRoute.JudgeCompetition)
+																}}
+															>
+																To competition
+															</Button>
+														</div>
+													)}
+												</div>
+											)}
+											{competitionData.chiefJudgeEndedConfiguration && (
+												<div className='static mt-5 bg-white p-0 shadow-none'>
+													<Button
+														classes='w-full'
+														type='outlined'
+														onClick={async () => {
+															const competitionExcelRows = competitionData.groups?.reduce(
+																(acc, group) => {
+																	return [...acc, ...getXlsxRowsForGroup(group, participants)]
+																},
+																[] as (string | undefined)[][]
+															)
 
-														const maxRowLength = competitionExcelRows?.reduce((acc, row) => {
-															return row.length > acc ? row.length : acc
-														}, 0)
+															const maxRowLength = competitionExcelRows?.reduce((acc, row) => {
+																return row.length > acc ? row.length : acc
+															}, 0)
 
-														try {
-															if (competitionExcelRows) {
-																const { downloadFile } = await generateXlsx(competitionExcelRows, {
-																	columns: Array(maxRowLength)
-																		.fill(null)
-																		?.map(() => ({ wch: 30 }))
-																})
+															try {
+																if (competitionExcelRows) {
+																	const { downloadFile } = await generateXlsx(competitionExcelRows, {
+																		columns: Array(maxRowLength)
+																			.fill(null)
+																			?.map(() => ({ wch: 30 }))
+																	})
 
-																downloadFile(`${competitionData.name}.xlsx`)
+																	downloadFile(`${competitionData.name}.xlsx`)
+																}
+															} catch (e) {
+																// eslint-disable-next-line no-console
+																console.log('Error while xlsx generated')
+																// eslint-disable-next-line no-console
+																console.error(e)
 															}
-														} catch (e) {
-															// eslint-disable-next-line no-console
-															console.log('Error while xlsx generated')
-															// eslint-disable-next-line no-console
-															console.error(e)
-														}
-													}}
-												>
-													Download olympic grid
+														}}
+													>
+														Download olympic grid
+													</Button>
+												</div>
+											)}
+										</div>
+									)}
+								<TimerBeforeParticipantFight currentPair={currentUserPairRef.current?.pair} />
+								{isCompetitionOver && (
+									<div>
+										<CompetitionInfo
+											title={<p className='font-bold xl:text-heading-3'>This competition is&nbsp;over</p>}
+											place={yourPlace}
+											img={
+												<Place className='h-7 w-7 lg:absolute lg:right-6 lg:bottom-6 lg:h-10 lg:w-10 xl:right-10 xl:bottom-10 xl:h-16 xl:w-16' />
+											}
+											isCompetitionPage
+										/>
+										{authorizedUser?.role !== Role.ChiefJudge && currentUserGroup && (
+											<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:mt-5 lg:p-0 lg:shadow-none'>
+												<Button classes='w-full' onClick={handleSideMenuResultOpenCurrentUser} type='outlined'>
+													Competition results
 												</Button>
 											</div>
 										)}
 									</div>
 								)}
-							<TimerBeforeParticipantFight currentPair={currentUserPairRef.current?.pair} />
-							{isCompetitionOver && (
-								<div>
-									<CompetitionInfo
-										title={<p className='font-bold xl:text-heading-3'>This competition is&nbsp;over</p>}
-										place={yourPlace}
-										img={
-											<Place className='h-7 w-7 lg:absolute lg:right-6 lg:bottom-6 lg:h-10 lg:w-10 xl:right-10 xl:bottom-10 xl:h-16 xl:w-16' />
-										}
-										isCompetitionPage
-									/>
-									{authorizedUser?.role !== Role.ChiefJudge && currentUserGroup && (
-										<div className='fixed inset-x-0 bottom-0 bg-white p-6 shadow-lg lg:static lg:mt-5 lg:p-0 lg:shadow-none'>
-											<Button classes='w-full' onClick={handleSideMenuResultOpenCurrentUser} type='outlined'>
-												Competition results
-											</Button>
-										</div>
-									)}
-								</div>
-							)}
+							</div>
 							<div>
 								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
 								<p className='mb-9'>{competitionData.description}</p>
@@ -465,6 +500,19 @@ export const CompetitionPage = (): ReactElement => {
 					</>
 				}
 			/>
+			{showFullBanner && (
+				// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+				<div
+					className='fixed right-6 top-6 hidden h-[calc(100vh-50px)] w-[calc(100vw-50px)] items-center justify-end md:flex'
+					onClick={() => setShowFullBanner(false)}
+				>
+					<img
+						className={twMerge('max-h-[100%]')}
+						src={`${configEnv.serviceApiUrl}/api/competitionBanner/${competitionId}`}
+						alt='Competition Full Banner'
+					/>
+				</div>
+			)}
 			<Modal
 				isOpen={isSideMenuResultOpen}
 				onClose={() => setIsSideMenuResultOpen(false)}
