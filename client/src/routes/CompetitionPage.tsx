@@ -3,11 +3,11 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
 import { ReactComponent as ArrowRightIcon } from 'src/assets/arrow-right-long.svg'
 import { ReactComponent as BanknoteIcon } from 'src/assets/banknote.svg'
+import { ReactComponent as BigSearchLoopIcon } from 'src/assets/big-search-loop.svg'
 import { ReactComponent as HourGlass } from 'src/assets/hourglass.svg'
 import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
 import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
-import { ReactComponent as BigSearchLoopIcon } from 'src/assets/big-search-loop.svg'
 
 import {
 	CompetitionInfo,
@@ -40,10 +40,10 @@ import {
 import { CompetitionGroupSchema, ParticipantSchema, UserPaymentInfo } from 'src/types'
 import { BreakTimer, Button, Loader, Modal, TableBody, Tag } from 'src/ui'
 import { twMerge } from 'tailwind-merge'
+import configEnv from '../configEnv'
 import { generateXlsx } from '../helpers/generateDocsFromDefinition'
 import { getPriceText } from '../helpers/getPriceText'
 import { getXlsxRowsForGroup } from '../helpers/getXlsxRowsForGroup'
-import configEnv from '../configEnv'
 
 export const CompetitionPage = (): ReactElement => {
 	const dispatch = useAppDispatch()
@@ -222,7 +222,7 @@ export const CompetitionPage = (): ReactElement => {
 									onClick={() => {
 										setShowFullBanner(true)
 									}}
-									className='relative h-[400px] cursor-pointer self-start'
+									className='relative max-h-[400px] cursor-pointer self-start'
 									onMouseEnter={() => {
 										setShowBannerLoop(true)
 									}}
@@ -234,6 +234,9 @@ export const CompetitionPage = (): ReactElement => {
 										className={twMerge('h-full rounded-lg')}
 										src={`${configEnv.serviceApiUrl}/api/competitionBanner/${competitionId}`}
 										alt='Competition Banner'
+										onError={({ currentTarget }) => {
+											currentTarget.style.display = 'none'
+										}}
 									/>
 									{showBannerLoop && (
 										<div className='absolute inset-0 z-20 hidden md:block'>

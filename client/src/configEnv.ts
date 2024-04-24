@@ -49,8 +49,8 @@ const prodConfig: AppConfig = {
 
 const dockerConfig: AppConfig = {
 	type: 'docker',
-	publicUrl: `/`,
-	serviceApiUrl: `/`
+	publicUrl: 'https://chessboxingfit.com',
+	serviceApiUrl: 'https://chessboxingfit.com'
 }
 
 const getConfig = (): AppConfig => {
