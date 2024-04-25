@@ -231,7 +231,7 @@ export const CompetitionPage = (): ReactElement => {
 									}}
 								>
 									<img
-										className={twMerge('h-full rounded-lg')}
+										className={twMerge('max-h-[400px] rounded-lg')}
 										src={`${configEnv.serviceApiUrl}/api/competitionBanner/${competitionId}`}
 										alt='Competition Banner'
 										onError={({ currentTarget }) => {

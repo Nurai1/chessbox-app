@@ -102,6 +102,11 @@
 		}
 	}
 
+	.ios_scroll_issue {
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+	}
+
 	.loading-skeleton::after {
 		content: ' ';
 		display: block; /* Enable animation */

@@ -4,7 +4,7 @@ import { Header } from 'src/components'
 
 export const MainLayout = (): ReactElement => {
 	return (
-		<div className='relative flex h-screen min-h-screen flex-col overflow-x-hidden'>
+		<div className='ios_scroll_issue relative flex h-screen min-h-screen flex-col overflow-x-hidden'>
 			<Header />
 			<Outlet />
 		</div>
