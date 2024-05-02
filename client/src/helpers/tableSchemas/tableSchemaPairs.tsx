@@ -21,12 +21,10 @@ export const tableSchemaPairs = ({
 	currentUser,
 	breakTime,
 	isJudgeCompetitionPage,
-	groupIndex,
 	groupId,
 	onCallPairPreparation,
 	callPairPreparationPending,
 	onChooseWinner,
-	currentGroupIndex,
 	defineWinnerPending,
 	onDefineWinner,
 	firstPairOrder = 0
@@ -42,11 +40,9 @@ export const tableSchemaPairs = ({
 	breakTime?: CompetitionSchema['breakTime']
 	isJudgeCompetitionPage?: boolean
 	callPairPreparationPending?: boolean
-	groupIndex?: number
 	groupId?: string
 	onCallPairPreparation?: (groupId: string, pairId: string, whiteUserId: string, blackUserId: string) => void
 	onChooseWinner?: (data?: Record<string, ChooseWinnerType>) => void
-	currentGroupIndex?: number
 	defineWinnerPending?: boolean
 	onDefineWinner?: (pairId: string) => void
 	firstPairOrder?: number
@@ -100,14 +96,12 @@ export const tableSchemaPairs = ({
 			}
 		}
 
-		const currentFightingGroupIndex = currentGroupIndex === groupIndex
 		const bothParticipantsDisqualified = pair.disqualified?.blackParticipant && pair.disqualified?.whiteParticipant
 		const oneOfParticipantsDisqualified = pair.disqualified?.blackParticipant || pair.disqualified?.whiteParticipant
 		const bothParticipantsAccepted = pair.acceptedForFight?.blackParticipant && pair.acceptedForFight?.whiteParticipant
 		const oneOfParticipantsNotAccepted =
 			!pair.acceptedForFight?.blackParticipant || !pair.acceptedForFight?.whiteParticipant
-		const showCallupButton =
-			isJudgeCompetitionPage && !pair.calledForPreparation && currentFightingGroupIndex && !pair.passed
+		const showCallupButton = isJudgeCompetitionPage && !pair.calledForPreparation && !pair.passed
 		const showWinnerButton =
 			(isJudgeCompetitionPage && oneOfParticipantsDisqualified && !pair.winner) ||
 			(isJudgeCompetitionPage && bothParticipantsAccepted && !pair.winner)
@@ -120,8 +114,6 @@ export const tableSchemaPairs = ({
 			!pair.calledForPreparation &&
 			!isJudgeCompetitionPage &&
 			!bothParticipantsDisqualified
-		const waitingJudgeCompetitonPage =
-			isJudgeCompetitionPage && !pair.calledForPreparation && !currentFightingGroupIndex
 
 		return {
 			cells: [
@@ -151,7 +143,6 @@ export const tableSchemaPairs = ({
 							)}
 							{finished && <div className={`text-[#6DDA64] ${statusStyle}`}>FINISHED</div>}
 							{waitingCompetitonPage && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
-							{waitingJudgeCompetitonPage && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
 							<ChooseWinner
 								pair={pair}
 								groupId={groupId as string}
