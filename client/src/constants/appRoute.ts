@@ -9,6 +9,7 @@ export const AppRoute = {
 	EditProfile: 'edit-profile',
 	ForgotPassword: 'forgot-password',
 	ChangePassword: 'change-password',
+	EmailConfirmation: 'email-confirmation',
 	JudgeChoice: 'judge-choice',
 	CreateGroup: 'create-group',
 	CreatePairs: 'create-pairs',

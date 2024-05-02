@@ -87,6 +87,31 @@ userRouter.post(
   controllerErrorHandler(UserController.signup)
 );
 
+userRouter.patch(
+  '/user/confirmEmail',
+  /*	#swagger.requestBody = {
+          required: true,
+          content: {
+              "application/json": {
+                  schema: {
+                      type: "object",
+                      properties: {
+                        email: {  
+                          type: "string",
+                        },
+                        confirmationCode: {  
+                          type: "string",
+                        },
+                      },
+                      required: ["email", "confirmationCode"]
+                  }
+              },
+          }
+      } 
+    */
+  controllerErrorHandler(UserController.confirmEmail)
+);
+
 userRouter.post(
   '/login',
   /*	#swagger.requestBody = {

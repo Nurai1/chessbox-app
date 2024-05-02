@@ -9,6 +9,8 @@ export type WeightCategorySchema = components['schemas']['CompetitionGroup']['we
 export type PairSchema = components['schemas']['Pair']
 export type CompetitionRequirementsSchema = components['schemas']['Competition']['requirements']
 export type SignUpDataSchema = paths['/api/signup']['post']['requestBody']['content']['application/json']
+export type ConfirmEmailDataSchema =
+	paths['/api/user/confirmEmail']['patch']['requestBody']['content']['application/json']
 export type SignInDataSchema = paths['/api/login']['post']['requestBody']['content']['application/json']
 export type ChangePasswordDataSchema =
 	paths['/api/user/changePassword']['patch']['requestBody']['content']['application/json']

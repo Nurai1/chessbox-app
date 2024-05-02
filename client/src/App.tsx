@@ -23,6 +23,7 @@ import { SignUpPage } from 'src/routes/SignUpPage'
 import { UILibrary } from 'src/routes/UILibrary'
 import { VerifyPaymentPage } from 'src/routes/VerifyPaymentPage'
 import { checkAuth } from 'src/store/slices/userSlice'
+import { ConfirmationEmailPage } from './routes/ConfirmationEmailPage'
 
 const App = () => {
 	const dispatch = useAppDispatch()
@@ -111,6 +112,7 @@ const App = () => {
 					/>
 					<Route element={<ForgotPasswordPage />} path={AppRoute.ForgotPassword} />
 					<Route element={<ChangePasswordPage />} path={AppRoute.ChangePassword} />
+					<Route element={<ConfirmationEmailPage />} path={AppRoute.EmailConfirmation} />
 					<Route element={<Route404 />} path={AppRoute.NotFound} />
 				</Route>
 			</Routes>
