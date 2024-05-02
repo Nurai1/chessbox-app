@@ -17,6 +17,7 @@ export interface Address {
 export interface IUser {
   _id: Types.ObjectId;
   email: string;
+  emailConfirmed: boolean;
   firstName: string;
   lastName: string;
   fullName: string;
@@ -34,7 +35,7 @@ export interface IUser {
   address: Address;
   fightClub: { name: string };
   ratingNumber: number;
-  passwordResetCode: number | null;
+  oneTimeCode: number | null;
   currentGroupId?: string;
   competitionsHistory: {
     competitionId: string;

@@ -22,6 +22,7 @@ import {
   passwordParser,
 } from '../utils/validation';
 
+const transporter = nodemailer.createTransport(NODEMAILER_TRANSPORT_CONFIG);
 const { CLIENT_URL } = process.env;
 
 async function hashPassword(password: string) {
@@ -39,13 +40,13 @@ export const changePassword = async (req: Request, res: Response) => {
   if (!user)
     return res.status(404).send({ error: "User wasn't found by email" });
 
-  if (user.passwordResetCode === null) {
+  if (user.oneTimeCode === null) {
     return res
       .status(400)
       .send({ error: 'Password Reset Link was timed out.' });
   }
 
-  if (user.passwordResetCode !== passwordResetCode) {
+  if (user.oneTimeCode !== passwordResetCode) {
     return res
       .status(400)
       .send({ error: 'Password Reset Code does not match.' });
@@ -64,13 +65,11 @@ export const changePassword = async (req: Request, res: Response) => {
 export const forgotPassword = async (req: Request, res: Response) => {
   const { email } = req.body;
 
-  const transporter = nodemailer.createTransport(NODEMAILER_TRANSPORT_CONFIG);
-
   const passwordResetCode = Math.floor(Math.random() * 9000 + 1000);
 
   const user = await User.findOneAndUpdate(
     { email },
-    { passwordResetCode },
+    { oneTimeCode: passwordResetCode },
     { new: true }
   );
   if (!user)
@@ -79,7 +78,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
   const mailOptions = {
     from: SMTP_USER_OFFICIAL_MAIL,
     to: email,
-    subject: 'Chessboxing Online. Password Reset',
+    subject: 'Chessboxing Fit Online. Password Reset',
     text: `Follow this link to reset your password: \n${CLIENT_URL}/?email=${encodeURIComponent(
       email
     )}&passwordResetCode=${passwordResetCode}#/change-password`,
@@ -89,16 +88,16 @@ export const forgotPassword = async (req: Request, res: Response) => {
     await transporter.sendMail(mailOptions);
   } catch (err) {
     console.error(err);
-    return res.status(500).send({ error: 'Email service has not send email.' });
+    return res.status(500).send({ error: 'Email service has not sent email.' });
   }
 
   setTimeout(async () => {
     await User.findOneAndUpdate(
       { email },
-      { passwordResetCode: null },
+      { oneTimeCode: null },
       { new: true }
     );
-  }, 300000);
+  }, 600000);
 
   res.sendStatus(200);
 };
@@ -116,19 +115,17 @@ export const signup = async (req: Request, res: Response) => {
   }
 
   const hashedPassword = await hashPassword(password);
+  const confirmationCode = Math.floor(Math.random() * 9000 + 1000);
+
   const newUser = new User({
     ...userData,
     role: 'participant',
     fullName: `${userData.firstName} ${userData.lastName}`,
     hashedPassword,
+    oneTimeCode: confirmationCode,
     ratingNumber: 1000,
+    emailConfirmed: false,
   });
-
-  const accessToken = jwt.sign(
-    { userId: newUser._id, hashedPassword },
-    process.env.JWT_SECRET_KEY || '',
-    { expiresIn: '7d' }
-  );
 
   try {
     await newUser.save();
@@ -138,10 +135,60 @@ export const signup = async (req: Request, res: Response) => {
     throw err;
   }
 
-  res.json({
-    data: newUser,
-    accessToken,
-  });
+  const mailOptions = {
+    from: SMTP_USER_OFFICIAL_MAIL,
+    to: userData.email,
+    subject: 'Chessboxing Fit Online. Confirm your email.',
+    text: `Follow this link to confirm your email: \n${CLIENT_URL}/?email=${encodeURIComponent(
+      userData.email
+    )}&confirmationCode=${confirmationCode}#/email-confirmation`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({ error: 'Email service has not sent email.' });
+  }
+
+  setTimeout(async () => {
+    const user = await User.findOne({ email: userData.email });
+    if (user?.emailConfirmed) {
+      await User.findOneAndUpdate(
+        { email: userData.email },
+        { oneTimeCode: null }
+      );
+    } else {
+      await User.findOneAndDelete({ email: userData.email });
+    }
+  }, 600000);
+
+  res.send(newUser);
+};
+
+export const confirmEmail = async (req: Request, res: Response) => {
+  const { email, confirmationCode } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user)
+    return res
+      .status(400)
+      .send({ error: 'User with the email does not exist.' });
+
+  if (user.oneTimeCode !== Number(confirmationCode)) {
+    return res.status(400).send({ error: 'Confirmation Code does not match.' });
+  }
+
+  await User.findOneAndUpdate({ email }, { emailConfirmed: true });
+
+  const accessToken = jwt.sign(
+    { userId: user._id, hashedPassword: user.hashedPassword },
+    process.env.JWT_SECRET_KEY || '',
+    { expiresIn: '7d' }
+  );
+
+  res.send({ user, accessToken });
 };
 
 export const login = async (req: Request, res: Response) => {

@@ -114,6 +114,85 @@ export interface paths {
       };
     };
   };
+  "/api/user/confirmEmail": {
+    patch: {
+      requestBody: {
+        content: {
+          "application/json": {
+            email: string;
+            confirmationCode: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Client error. */
+        400: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Unauthorized error. */
+        401: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Permissions error. */
+        403: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Not Found error. */
+        404: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Internal server error. */
+        500: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+  };
   "/api/login": {
     post: {
       requestBody: {
@@ -3612,6 +3691,7 @@ export interface components {
     /** User */
     User: {
       email: string;
+      emailConfirmed?: boolean;
       chessPlatform?: {
         username?: string;
       };
@@ -3637,7 +3717,7 @@ export interface components {
       gender?: "woman" | "man";
       ratingNumber?: number;
       weight?: number;
-      passwordResetCode?: number;
+      oneTimeCode?: number;
       currentGroupId?: string;
       competitionsHistory?: ({
           competitionId?: string;
@@ -3829,6 +3909,7 @@ export interface components {
     /** User */
     UserBody: {
       email: string;
+      emailConfirmed?: boolean;
       chessPlatform?: {
         username?: string;
       };
@@ -3854,7 +3935,7 @@ export interface components {
       gender?: "woman" | "man";
       ratingNumber?: number;
       weight?: number;
-      passwordResetCode?: number;
+      oneTimeCode?: number;
       currentGroupId?: string;
       competitionsHistory?: ({
           competitionId?: string;

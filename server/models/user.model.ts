@@ -12,6 +12,7 @@ const userSchema = new Schema<IUser>(
       required: true,
       trim: true,
     },
+    emailConfirmed: { type: Boolean },
     chessPlatform: {
       username: {
         type: String,
@@ -50,7 +51,7 @@ const userSchema = new Schema<IUser>(
     gender: { type: String, enum: ['woman', 'man'] },
     ratingNumber: { type: Number },
     weight: { type: Number },
-    passwordResetCode: { type: Number },
+    oneTimeCode: { type: Number },
     currentGroupId: String,
     competitionsHistory: [
       {

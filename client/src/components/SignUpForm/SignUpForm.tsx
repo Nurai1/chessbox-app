@@ -29,7 +29,7 @@ export const SignUpForm = (): ReactElement => {
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
-	const { authError, authLoading } = useAppSelector(state => state.user)
+	const { authError, authLoading, needCheckEmail } = useAppSelector(state => state.user)
 
 	const onChange = (value?: string, name?: string) => {
 		setFormData({
@@ -245,6 +245,11 @@ export const SignUpForm = (): ReactElement => {
 						Sign In
 					</Link>
 				</p>
+				{needCheckEmail && (
+					<div className='mt-2'>
+						<Alert type='info' subtitle='Please, check you email to confirm.' />
+					</div>
+				)}
 				{authError && (
 					<div className='mt-2'>
 						<Alert subtitle={authError} />
