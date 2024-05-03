@@ -188,7 +188,7 @@ export const confirmEmail = async (req: Request, res: Response) => {
     { expiresIn: '7d' }
   );
 
-  res.send({ user, accessToken });
+  res.send({ data: user, accessToken });
 };
 
 export const login = async (req: Request, res: Response) => {
