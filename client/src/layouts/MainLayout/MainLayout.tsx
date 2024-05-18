@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Header } from 'src/components'
-import { Modal } from '../../ui'
+import { Button, Modal } from '../../ui'
 
 export const MainLayout = (): ReactElement => {
 	const [showI18nWarningModal, setShowI18nWarningModal] = useState(!localStorage.getItem('showedI18nWarningModal'))
@@ -19,6 +19,18 @@ export const MainLayout = (): ReactElement => {
 				modalType='regular'
 				content={<div className='flex-center'>Вы можете менять язык справа сверху в приложении.</div>}
 				title='Русский язык появился!'
+				submitButton={
+					<Button
+						type='primary'
+						classes='w-full'
+						onClick={() => {
+							setShowI18nWarningModal(false)
+							localStorage.setItem('showedI18nWarningModal', 'true')
+						}}
+					>
+						Закрыть
+					</Button>
+				}
 			/>
 		</div>
 	)
