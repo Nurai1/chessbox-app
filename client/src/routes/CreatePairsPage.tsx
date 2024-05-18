@@ -14,11 +14,13 @@ import { Accordion, Alert, BottomFixedContainer, Button, Loader, RoundedBorderWr
 import { AlertPropTypes } from 'src/ui/Alert/Alert'
 import { getObjectsFromIds } from '../helpers/getObjectFromId'
 import { tableSchemaGroupParticipants } from '../helpers/tableSchemas/tableSchemaGroupParticipants'
+import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
 
 type AlertType = {
 	show: boolean
 } & AlertPropTypes
 export const CreatePairsPage = (): ReactElement => {
+	const { t } = useOptionalTranslation()
 	const { competitionId } = useParams()
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
@@ -81,13 +83,13 @@ export const CreatePairsPage = (): ReactElement => {
 				classes={`fixed -right-56 w-56 transition-[right] duration-300 ${alertData.show && 'right-8'}`}
 			/>
 			<CompetitionCreateHeader
-				title='Create pairs 3/5'
+				title={`${t('createPairs')} 3/5`}
 				backArrowPath={`../${AppRoute.CreateGroup}`}
 				competitionData={competitionData}
 				judges={judges}
 			/>
 
-			<h2 className='mb-8 text-heading-3'>Order for olympic grid</h2>
+			<h2 className='mb-8 text-heading-3'>{t('orderOlympicGrid')}</h2>
 
 			{competitionData?.groups?.length !== 0 && (
 				<RoundedBorderWrapper classes='!py-2'>
@@ -97,8 +99,8 @@ export const CreatePairsPage = (): ReactElement => {
 								key={groupId}
 								title={
 									<h3 className='font-bold xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
-										<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
-										{weightCategory?.from}-{weightCategory?.to} kg
+										<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} {t('years')},{' '}
+										{weightCategory?.from}-{weightCategory?.to} {t('kg')}
 										<span className='text-zinc-400'> {allParticipantsGroupIds?.length}</span>
 									</h3>
 								}
@@ -116,7 +118,8 @@ export const CreatePairsPage = (): ReactElement => {
 															[groupId]: { ...state[groupId], [user?._id as string]: place }
 														}))
 												}
-											}))
+											})),
+											t
 										)}
 									/>
 								) : (
@@ -130,7 +133,7 @@ export const CreatePairsPage = (): ReactElement => {
 			<BottomFixedContainer classes='xl:pl-[7.5rem] xl:pr-[7.5rem]'>
 				<div className='flex flex-wrap gap-2.5'>
 					<Button type='outlined' onClick={() => navigate(`../${AppRoute.CreateGroup}`)}>
-						Previous step
+						{t('previousStep')}
 					</Button>
 					<Button
 						classes='min-w-[8rem] xl:min-w-[15.625rem]'
@@ -170,7 +173,7 @@ export const CreatePairsPage = (): ReactElement => {
 							}
 						}}
 					>
-						Confirm the pairs
+						{t('confirmPairs')}
 					</Button>
 					{competitionData?.groups?.every(group => group.olympicGrid) && (
 						<Button type='outlined' onClick={() => navigate(`../${AppRoute.OrdersGroupAssign}`)}>

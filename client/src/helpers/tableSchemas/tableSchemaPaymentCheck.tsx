@@ -1,3 +1,4 @@
+import { TFunction } from 'src/hooks/useOptionalTranslation'
 import { ClampedText } from 'src/components/ClampedText/ClampedText'
 import { MAX_PAYMENT_REQUEST_COUNT } from 'src/constants/maxRequestCount'
 import { getAge } from 'src/helpers/datetime'
@@ -11,6 +12,7 @@ type TableSchemaPaymentCheckProps = {
 	handleAcceptPaymentFalse?: (payment: CompetitionPaymentPaidType) => void
 	competitionId?: string
 	setUserPaymentPaidPending?: boolean
+	t: TFunction
 }
 
 const setRequestParams = (competitionId: string, userId: string, paid: boolean) => ({
@@ -28,7 +30,8 @@ export const tableSchemaPaymentCheck = ({
 	handleAcceptPaymentTrue,
 	handleAcceptPaymentFalse,
 	competitionId,
-	setUserPaymentPaidPending
+	setUserPaymentPaidPending,
+	t
 }: TableSchemaPaymentCheckProps) => {
 	return tableData.map(({ userData, message, requestedCount }, i) => {
 		return {
@@ -45,7 +48,7 @@ export const tableSchemaPaymentCheck = ({
 									<p className='inline-block w-80 text-black'>{userData?.fullName}</p>
 									<p className='inline-block  text-black'>{userData?.email}</p>
 									<p className='mt-1.5 text-sm'>
-										{userData?.gender}, {getAge(userData?.birthDate)} age, {userData?.weight} kg
+										{userData?.gender}, {getAge(userData?.birthDate)} {t('years')}, {userData?.weight} {t('kg')}
 									</p>
 									<p className='mt-1.5 text-sm'>
 										{userData?.address?.city}, {userData?.address?.country}
@@ -63,7 +66,7 @@ export const tableSchemaPaymentCheck = ({
 												loading={setUserPaymentPaidPending}
 												classes='w-[11.375rem] mr-2.5'
 											>
-												Paid
+												{t('paid')}
 											</Button>
 										)}
 										{handleAcceptPaymentFalse && (
@@ -77,7 +80,7 @@ export const tableSchemaPaymentCheck = ({
 												classes='w-[11.375rem]'
 												type='outlined'
 											>
-												Not paid
+												{t('notPaid')}
 											</Button>
 										)}
 									</div>

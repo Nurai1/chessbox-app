@@ -2,6 +2,7 @@ import { useState, FC } from 'react'
 import { ReactComponent as Banknote } from 'src/assets/banknote.svg'
 import { ReactComponent as Persons } from 'src/assets/persons.svg'
 import { ratingTableSchema } from 'src/helpers/tableSchemas/tableSchema'
+import { t } from 'i18next'
 import {
 	Button,
 	HorizontalTabs,
@@ -15,8 +16,9 @@ import {
 } from '../ui'
 import { UsersTableWithTitle, CompetitionCard } from '../components'
 import { usersMock, competitionsMock } from '../mock'
+import { TFunction } from '../hooks/useOptionalTranslation'
 
-const usersTable = ratingTableSchema(usersMock)
+const usersTable = ratingTableSchema(usersMock, t as TFunction)
 const tabsContent = ['Active competitions', 'My competitions', 'Archive']
 export const UILibrary: FC = () => {
 	const [activeIndex, setActiveIndex] = useState(0)

@@ -1,7 +1,8 @@
-import { NavLink } from 'react-router-dom'
-import { useAppSelector } from 'src/hooks/redux'
-import { AppRoute } from 'src/constants/appRoute'
 import { FC } from 'react'
+import { NavLink } from 'react-router-dom'
+import { AppRoute } from 'src/constants/appRoute'
+import { useAppSelector } from 'src/hooks/redux'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type UserMenuPropsType = {
 	onLinkClick: () => void
@@ -9,6 +10,7 @@ type UserMenuPropsType = {
 }
 
 export const UserMenu: FC<UserMenuPropsType> = ({ onLinkClick, onLogoutClick }) => {
+	const { t } = useOptionalTranslation()
 	const authorizedUser = useAppSelector(state => state.user.authorizedUser)
 
 	const activeLink = ({ isActive }: { isActive: boolean }) => (isActive ? { fontWeight: '600' } : {})
@@ -28,7 +30,7 @@ export const UserMenu: FC<UserMenuPropsType> = ({ onLinkClick, onLogoutClick }) 
 								style={activeLink}
 								onClick={onLinkClick}
 							>
-								Profile
+								{t('profile')}
 							</NavLink>
 						</li>
 						<li className='py-2.5'>
@@ -38,7 +40,7 @@ export const UserMenu: FC<UserMenuPropsType> = ({ onLinkClick, onLogoutClick }) 
 								style={activeLink}
 								onClick={onLinkClick}
 							>
-								Competitions
+								{t('competitions')}
 							</NavLink>
 						</li>
 						<li className='py-2.5'>
@@ -48,12 +50,12 @@ export const UserMenu: FC<UserMenuPropsType> = ({ onLinkClick, onLogoutClick }) 
 								style={activeLink}
 								onClick={onLinkClick}
 							>
-								Rating
+								{t('rating')}
 							</NavLink>
 						</li>
 						<li className='py-2.5'>
 							<button type='button' onClick={onLogoutClick}>
-								Sign Out
+								{t('signOut')}
 							</button>
 						</li>
 					</ul>
@@ -63,7 +65,7 @@ export const UserMenu: FC<UserMenuPropsType> = ({ onLinkClick, onLogoutClick }) 
 				<ul className='px-6 py-[1.875rem]'>
 					<li className='py-2.5'>
 						<NavLink to={AppRoute.SignIn} className='py-1 transition hover:opacity-70' onClick={onLinkClick}>
-							Sign In
+							{t('signIn')}
 						</NavLink>
 					</li>
 					<li className='py-2.5'>
@@ -73,7 +75,7 @@ export const UserMenu: FC<UserMenuPropsType> = ({ onLinkClick, onLogoutClick }) 
 							style={activeLink}
 							onClick={onLinkClick}
 						>
-							Competitions
+							{t('competitions')}
 						</NavLink>
 					</li>
 					<li className='py-2.5'>
@@ -83,7 +85,7 @@ export const UserMenu: FC<UserMenuPropsType> = ({ onLinkClick, onLogoutClick }) 
 							style={activeLink}
 							onClick={onLinkClick}
 						>
-							Rating
+							{t('rating')}
 						</NavLink>
 					</li>
 				</ul>

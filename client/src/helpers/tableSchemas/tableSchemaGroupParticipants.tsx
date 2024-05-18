@@ -1,9 +1,11 @@
 import { getAge } from 'src/helpers/datetime'
 import { UserSchema } from 'src/types'
+import { TFunction } from 'src/hooks/useOptionalTranslation'
 import { Input } from '../../ui'
 
 export const tableSchemaGroupParticipants = (
-	tableData: (UserSchema & { userGridPlace?: string | undefined; setUserGridPlace?: (val?: string) => void })[]
+	tableData: (UserSchema & { userGridPlace?: string | undefined; setUserGridPlace?: (val?: string) => void })[],
+	t: TFunction
 ) => {
 	return tableData.map(({ fullName, birthDate, weight, userGridPlace, setUserGridPlace, address }, i) => {
 		return {
@@ -31,7 +33,7 @@ export const tableSchemaGroupParticipants = (
 				{
 					node: (
 						<p>
-							{getAge(birthDate)} <span>age</span>
+							{getAge(birthDate)} <span>{t('years')}</span>
 						</p>
 					),
 					classes: 'max-w-[9rem] px-1 text-black items-center'
@@ -39,7 +41,7 @@ export const tableSchemaGroupParticipants = (
 				{
 					node: (
 						<p>
-							{weight} <span>kg</span>
+							{weight} <span>{t('kg')}</span>
 						</p>
 					),
 					classes: 'pl-1 text-black items-center'

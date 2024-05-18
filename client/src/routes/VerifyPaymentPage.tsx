@@ -15,12 +15,14 @@ import {
 } from 'src/store/slices/competitionSlice'
 import { CompetitionPaymentPaidType, UserPaymentInfo, UserSchema } from 'src/types'
 import { Accordion, TableBody } from 'src/ui'
+import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
 
 export type ParticipantsRequestedCheckTable = {
 	userData?: UserSchema
 } & UserPaymentInfo
 
 export const VerifyPaymentPage = (): ReactElement => {
+	const { t } = useOptionalTranslation()
 	const [participantsRequestCheck, setParticipantsRequestCheck] = useState<ParticipantsRequestedCheckTable[]>()
 	const [participantsExcluded, setParticipantsExcluded] = useState<ParticipantsRequestedCheckTable[]>()
 	const [participantsPaid, setParticipantsPaid] = useState<ParticipantsRequestedCheckTable[]>()
@@ -89,10 +91,12 @@ export const VerifyPaymentPage = (): ReactElement => {
 			handleAcceptPaymentTrue,
 			handleAcceptPaymentFalse,
 			competitionId,
-			setUserPaymentPaidPending
+			setUserPaymentPaidPending,
+			t
 		})
-	const participantExcludedTable = participantsExcluded && tableSchemaPaymentCheck({ tableData: participantsExcluded })
-	const participantsPaidTable = participantsPaid && tableSchemaPaymentCheck({ tableData: participantsPaid })
+	const participantExcludedTable =
+		participantsExcluded && tableSchemaPaymentCheck({ tableData: participantsExcluded, t })
+	const participantsPaidTable = participantsPaid && tableSchemaPaymentCheck({ tableData: participantsPaid, t })
 
 	const showRequestTable = competitionData?.usersPaymentInfo && paymentInfoUsers?.length !== 0
 
@@ -105,32 +109,23 @@ export const VerifyPaymentPage = (): ReactElement => {
 				className='hover mt-11 mb-8 flex items-center gap-6 text-heading-2 hover:opacity-70'
 			>
 				<ArrowLeftIcon />
-				Participants
+				{t('participants')}
 			</Link>
 
 			{showRequestTable && (
 				<div className='rounded-3xl border border-pale-grey px-8'>
 					{participantRequestedTable && (
-						<Accordion
-							title={<h3 className='text-heading-4'>These participants request to check payment</h3>}
-							isOpenDefault
-						>
+						<Accordion title={<h3 className='text-heading-4'>{t('checkPayment')}</h3>} isOpenDefault>
 							<TableBody rows={participantRequestedTable} />
 						</Accordion>
 					)}
 					{participantExcludedTable && (
-						<Accordion
-							title={<h3 className='text-heading-4'>Participants excluded due to 3 incorrect payment request</h3>}
-							isOpenDefault
-						>
+						<Accordion title={<h3 className='text-heading-4'>{t('participantExcluded')}</h3>} isOpenDefault>
 							<TableBody rows={participantExcludedTable} />
 						</Accordion>
 					)}
 					{participantsPaidTable && (
-						<Accordion
-							title={<h3 className='text-heading-4'>Participants admitted to the competition</h3>}
-							isOpenDefault
-						>
+						<Accordion title={<h3 className='text-heading-4'>{t('participantAdmitted')}</h3>} isOpenDefault>
 							<TableBody rows={participantsPaidTable} />
 						</Accordion>
 					)}

@@ -1,104 +1,112 @@
-export const validatorConfigSingUp = {
-	firstName: {
-		isRequired: {
-			errorMessage: 'First name is required'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
+
+export const useValidatorConfigSingUp = () => {
+	const { t } = useOptionalTranslation()
+
+	const validatorConfigSingUp = {
+		firstName: {
+			isRequired: {
+				errorMessage: t('required')
+			},
+			latinLettersAllowed: {
+				errorMessage: t('latinLettersAllowed')
+			}
 		},
-		latinLettersAllowed: {
-			errorMessage: 'Only latin letters are allowed'
-		}
-	},
-	lastName: {
-		isRequired: {
-			errorMessage: 'Last name is required'
+		lastName: {
+			isRequired: {
+				errorMessage: t('required')
+			},
+			latinLettersAllowed: {
+				errorMessage: t('latinLettersAllowed')
+			}
 		},
-		latinLettersAllowed: {
-			errorMessage: 'Only latin letters are allowed'
-		}
-	},
-	weight: {
-		isRequired: {
-			errorMessage: 'Weight is required'
+		weight: {
+			isRequired: {
+				errorMessage: t('required')
+			},
+			isNumber: {
+				errorMessage: t('isNumber')
+			},
+			maxWeight: {
+				errorMessage: t('maxWeight')
+			}
 		},
-		isNumber: {
-			errorMessage: 'Weight must be a number'
+		gender: {
+			isRequired: {
+				errorMessage: t('required')
+			}
 		},
-		maxWeight: {
-			errorMessage: '199 max value'
-		}
-	},
-	gender: {
-		isRequired: {
-			errorMessage: 'Gender is required'
-		}
-	},
-	birthDate: {
-		isRequired: {
-			errorMessage: 'Birthday is required'
+		birthDate: {
+			isRequired: {
+				errorMessage: t('required')
+			},
+			isDateValid: {
+				errorMessage: t('isDateValid')
+			},
+			isFuture: {
+				errorMessage: t('isFuture')
+			},
+			maxAge: {
+				errorMessage: t('maxAge')
+			}
 		},
-		isDateValid: {
-			errorMessage: 'Enter correct date in DD.MM.YYYY. For example 10.07.1999'
+		fightClub: {
+			isRequired: {
+				errorMessage: t('required')
+			}
 		},
-		isFuture: {
-			errorMessage: "Birthday can't be future"
+		country: {
+			isRequired: {
+				errorMessage: t('required')
+			}
 		},
-		maxAge: {
-			errorMessage: '99 max age'
-		}
-	},
-	fightClub: {
-		isRequired: {
-			errorMessage: 'Fight Club is required'
-		}
-	},
-	country: {
-		isRequired: {
-			errorMessage: 'Country is required'
-		}
-	},
-	city: {
-		isRequired: {
-			errorMessage: 'City is required'
-		}
-	},
-	email: {
-		isRequired: {
-			errorMessage: 'Email is required'
+		city: {
+			isRequired: {
+				errorMessage: t('required')
+			}
 		},
-		isEmail: {
-			errorMessage: 'Email incorrect'
-		}
-	},
-	chessPlatformUserName: {
-		isRequired: {
-			errorMessage: '`Lichess` is required'
-		}
-	},
-	password: {
-		isRequired: {
-			errorMessage: 'Password is required'
+		email: {
+			isRequired: {
+				errorMessage: t('required')
+			},
+			isEmail: {
+				errorMessage: t('incorrect')
+			}
 		},
-		isPassword: {
-			errorMessage: 'Password must contain number, letter and special character'
+		chessPlatformUserName: {
+			isRequired: {
+				errorMessage: t('required')
+			}
 		},
-		minLength: {
-			errorMessage: 'Minimum 8 characters'
+		password: {
+			isRequired: {
+				errorMessage: t('required')
+			},
+			isPassword: {
+				errorMessage: t('isPassword')
+			},
+			minLength: {
+				errorMessage: t('minLength')
+			},
+			isPasswordEqual: {
+				errorMessage: t('isPasswordEqual')
+			}
 		},
-		isPasswordEqual: {
-			errorMessage: 'Passwords do not match'
-		}
-	},
-	passwordConfirm: {
-		isRequired: {
-			errorMessage: 'Repeat Password is required'
-		},
-		isPassword: {
-			errorMessage: 'Password must contain number, letter and special character'
-		},
-		minLength: {
-			errorMessage: 'Minimum 8 characters'
-		},
-		isPasswordEqual: {
-			errorMessage: 'Passwords do not match'
+		passwordConfirm: {
+			isRequired: {
+				errorMessage: t('required')
+			},
+			isPassword: {
+				errorMessage: t('isPassword')
+			},
+			minLength: {
+				errorMessage: t('minLength')
+			},
+			isPasswordEqual: {
+				errorMessage: t('isPasswordEqual')
+			}
 		}
 	}
+
+	return validatorConfigSingUp
 }

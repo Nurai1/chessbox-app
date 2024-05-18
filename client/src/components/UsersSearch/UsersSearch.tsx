@@ -1,10 +1,11 @@
 import { FC, ReactElement, useEffect, useState } from 'react'
-import { twMerge } from 'tailwind-merge'
 import { ReactComponent as SettingsIcon } from 'src/assets/settings.svg'
 import { useAppDispatch } from 'src/hooks/redux'
-import { setUserFilter, resetFilter } from 'src/store/slices/usersSlice'
-import { Tag, Input, Modal, Button } from 'src/ui'
+import { resetFilter, setUserFilter } from 'src/store/slices/usersSlice'
+import { Button, Input, Modal, Tag } from 'src/ui'
+import { twMerge } from 'tailwind-merge'
 import { UserFilter, UserFilterType } from '../UserFilter'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type SearchPropsType = {
 	classes?: string
@@ -15,6 +16,7 @@ type FilterValuesType = {
 } & UserFilterType
 
 export const UsersSearch: FC<SearchPropsType> = ({ classes }) => {
+	const { t } = useOptionalTranslation()
 	const [searchValue, setSearchValue] = useState<null | string>(null)
 	const [filterValues, setFilterValues] = useState<FilterValuesType>({})
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -89,7 +91,7 @@ export const UsersSearch: FC<SearchPropsType> = ({ classes }) => {
 			tagsData.push(
 				<Tag
 					type='search'
-					text={`${data.weightFrom ?? '0'}${data.weightFrom && !data.weightTo ? '+' : '-'}${data.weightTo ?? ''} kg`}
+					text={`${data.weightFrom ?? '0'}${data.weightFrom && !data.weightTo ? '+' : '-'}${data.weightTo ?? ''} ${t('kg')}`}
 					key='weigh'
 					onClick={() =>
 						updateState({
@@ -105,7 +107,7 @@ export const UsersSearch: FC<SearchPropsType> = ({ classes }) => {
 			tagsData.push(
 				<Tag
 					type='search'
-					text='Man'
+					text={t('man')}
 					key='withMen'
 					onClick={() =>
 						updateState({
@@ -120,7 +122,7 @@ export const UsersSearch: FC<SearchPropsType> = ({ classes }) => {
 			tagsData.push(
 				<Tag
 					type='search'
-					text='Woman'
+					text={t('woman')}
 					key='withWomen'
 					onClick={() =>
 						updateState({
@@ -147,7 +149,7 @@ export const UsersSearch: FC<SearchPropsType> = ({ classes }) => {
 	return (
 		<div className={twMerge('', classes)}>
 			<div className={twMerge('flex items-center gap-[20px]')}>
-				<Input onChange={handleSearchInput} value={searchValue ?? ''} isSearch placeholder='Search users' />
+				<Input onChange={handleSearchInput} value={searchValue ?? ''} isSearch placeholder={t('searchUsers')} />
 				<button
 					onClick={handleModalOpen}
 					className={`relative transition hover:opacity-70 ${
@@ -167,13 +169,13 @@ export const UsersSearch: FC<SearchPropsType> = ({ classes }) => {
 			<Modal
 				isOpen={isModalOpen}
 				onClose={handleModalOpen}
-				title='Filter'
+				title={t('filter')}
 				content={
 					<UserFilter onChange={handleFilter} inputValues={filterValues} setValidationError={setValidationError} />
 				}
 				clearButton={
 					<button onClick={handleClearFilter} type='button' className='text-base font-bold transition hover:opacity-70'>
-						Clean up
+						{t('cleanUp')}
 					</button>
 				}
 				submitButton={
@@ -187,7 +189,7 @@ export const UsersSearch: FC<SearchPropsType> = ({ classes }) => {
 						}}
 						disabled={validationError}
 					>
-						Show
+						{t('show')}
 					</Button>
 				}
 			/>

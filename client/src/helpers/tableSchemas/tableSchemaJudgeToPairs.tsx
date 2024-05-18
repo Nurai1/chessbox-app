@@ -1,3 +1,4 @@
+import { TFunction } from 'src/hooks/useOptionalTranslation'
 import { getAge } from 'src/helpers/datetime'
 import { SelectedJudge } from 'src/routes/JudgeAssignPage'
 import { PairSchema, UserSchema } from 'src/types'
@@ -10,6 +11,7 @@ type TableSchemaJudgeToPairsType = {
 	groupId?: string
 	selectedJudges?: SelectedJudge
 	onSelect: (selectedJudgeData: SelectedJudge) => void
+	t: TFunction
 }
 
 export type PairType = {
@@ -25,7 +27,8 @@ export const tableSchemaJudgeToPairs = ({
 	judges,
 	groupId,
 	selectedJudges,
-	onSelect
+	onSelect,
+	t
 }: TableSchemaJudgeToPairsType) => {
 	const participantsData = tableData.reduce((acc, pair) => {
 		const blackParticipantData = participants.find(({ _id }) => pair.blackParticipant === _id)
@@ -77,7 +80,8 @@ export const tableSchemaJudgeToPairs = ({
 								<div className='w-[45%]'>
 									<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.whiteParticipantData?.fullName}</p>
 									<p className=' text-xs xl:text-base'>
-										{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight} kg
+										{getAge(pair.whiteParticipantData?.birthDate as string)} {t('years')},{' '}
+										{pair.whiteParticipantData?.weight} {t('kg')}
 									</p>
 									<p className='text-xs xl:text-base'>
 										{pair.whiteParticipantData?.address?.city}, {pair.whiteParticipantData?.address?.country}
@@ -88,8 +92,8 @@ export const tableSchemaJudgeToPairs = ({
 									<div className='ml-auto w-fit lg:ml-[32%]'>
 										<p className='mb-[7px] text-sm text-black xl:text-base'>{pair.blackParticipantData?.fullName}</p>
 										<p className='text-xs xl:text-base'>
-											{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight}{' '}
-											kg
+											{getAge(pair.blackParticipantData?.birthDate as string)} {t('years')},{' '}
+											{pair.blackParticipantData?.weight} {t('kg')}
 										</p>
 										<p className='text-xs xl:text-base'>
 											{pair.blackParticipantData?.address?.city}, {pair.blackParticipantData?.address?.country}
@@ -99,7 +103,7 @@ export const tableSchemaJudgeToPairs = ({
 							</div>
 							<div>
 								<div className='flex items-center gap-[0.625rem] text-sm text-black xl:text-base'>
-									Judge:
+									{t('judge')}:
 									<Select
 										onChange={value => handleSelectJudge(value, pair)}
 										menuOptions={judges.map(({ fullName, _id }) => ({ value: fullName, id: _id as string }))}

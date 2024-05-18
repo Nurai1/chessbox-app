@@ -1,7 +1,8 @@
 import { UserSchema } from 'src/types'
 import { getAge } from 'src/helpers/datetime'
+import { TFunction } from 'src/hooks/useOptionalTranslation'
 
-export const tableSchemaParticipants = (tableData: UserSchema[]) => {
+export const tableSchemaParticipants = (tableData: UserSchema[], t: TFunction) => {
 	return tableData.map(user => {
 		return {
 			cells: [
@@ -13,7 +14,7 @@ export const tableSchemaParticipants = (tableData: UserSchema[]) => {
 								{user.address?.country}
 								{user.address?.country ? ',' : ''} {user.address?.city}
 							</p>
-							<p className='text-grey'>{`${getAge(user.birthDate)} age, ${user.weight} kg`}</p>
+							<p className='text-grey'>{`${getAge(user.birthDate)} ${t('years')}, ${user.weight} ${t('kg')}`}</p>
 						</div>
 					),
 					classes: '!grow-[2] md:!grow !py-[13px]'
@@ -28,7 +29,11 @@ export const tableSchemaParticipants = (tableData: UserSchema[]) => {
 					classes: 'hidden !py-[13px] md:block'
 				},
 				{
-					node: <p className='ml-auto text-sm font-normal text-black xl:text-base'>{user?.ratingNumber} Points</p>,
+					node: (
+						<p className='ml-auto text-sm font-normal text-black xl:text-base'>
+							{user?.ratingNumber} {t('points')}
+						</p>
+					),
 					classes: '!py-[13px]'
 				}
 			]
@@ -36,7 +41,7 @@ export const tableSchemaParticipants = (tableData: UserSchema[]) => {
 	})
 }
 
-export const tableSchemaResults = (tableData: UserSchema[]) => {
+export const tableSchemaResults = (tableData: UserSchema[], t: TFunction) => {
 	return tableData.map((user, index) => {
 		return {
 			cells: [
@@ -52,7 +57,7 @@ export const tableSchemaResults = (tableData: UserSchema[]) => {
 								{user.address?.country}
 								{user.address?.country ? ',' : ''} {user.address?.city}
 							</p>
-							<p className='text-grey'>{`${getAge(user.birthDate)} age, ${user.weight} kg`}</p>
+							<p className='text-grey'>{`${getAge(user.birthDate)} ${t('years')}, ${user.weight} ${t('kg')}`}</p>
 						</div>
 					),
 					classes: '!grow-[2] md:!grow !py-[13px]'
@@ -67,7 +72,11 @@ export const tableSchemaResults = (tableData: UserSchema[]) => {
 					classes: 'hidden !py-[13px] md:block'
 				},
 				{
-					node: <p className='ml-auto text-sm font-normal text-black xl:text-base'>{user?.ratingNumber} Points</p>,
+					node: (
+						<p className='ml-auto text-sm font-normal text-black xl:text-base'>
+							{user?.ratingNumber} {t('points')}
+						</p>
+					),
 					classes: '!py-[13px]'
 				}
 			]

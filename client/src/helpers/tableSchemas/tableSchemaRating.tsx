@@ -2,9 +2,10 @@ import { ReactComponent as MedalGold } from 'src/assets/medal-gold.svg'
 import { ReactComponent as MedalSilver } from 'src/assets/medal-silver.svg'
 import { ReactComponent as MedalBronze } from 'src/assets/medal-bronze.svg'
 import { UserSchema } from 'src/types'
+import { TFunction } from 'src/hooks/useOptionalTranslation'
 import { getAge } from '../datetime'
 
-export const tableSchemaRating = (tableData: UserSchema[]) => {
+export const tableSchemaRating = (tableData: UserSchema[], t: TFunction) => {
 	const renderMedal = (index: number) => {
 		if (index === 1) {
 			return (
@@ -51,7 +52,7 @@ export const tableSchemaRating = (tableData: UserSchema[]) => {
 								{user.fullName}
 							</p>
 							<p className='flex items-center truncate text-sm xl:hidden'>
-								{getAge(user.birthDate)} age, {user.weight} kg
+								{getAge(user.birthDate)} {t('years')}, {user.weight} {t('kg')}
 							</p>
 							<p className='whitespace-nowrap text-sm lg:hidden'>
 								{user?.address?.country}, {user?.address?.city}
@@ -63,7 +64,7 @@ export const tableSchemaRating = (tableData: UserSchema[]) => {
 				{
 					node: (
 						<p className='flex items-center truncate text-ellipsis text-sm  xl:text-base'>
-							{getAge(user.birthDate)} age, {user.weight} kg
+							{getAge(user.birthDate)} {t('years')}, {user.weight} {t('kg')}
 						</p>
 					),
 					classes: 'items-center max-w-[11.5rem] !p-2 text-black hidden xl:flex'
@@ -78,7 +79,9 @@ export const tableSchemaRating = (tableData: UserSchema[]) => {
 				},
 				{
 					node: (
-						<p className='flex items-center truncate text-ellipsis text-sm xl:text-base'>{user?.ratingNumber} Points</p>
+						<p className='flex items-center truncate text-ellipsis text-sm xl:text-base'>
+							{user?.ratingNumber} {t('points')}
+						</p>
 					),
 					classes: 'flex !p-2 text-black !grow-0 min-w-[6rem]  lg:min-w-[9rem] '
 				}

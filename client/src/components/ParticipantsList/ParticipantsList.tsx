@@ -1,8 +1,9 @@
 import { FC, useState } from 'react'
-import { TableBody, TableHeader } from 'src/ui'
-import { tableSchemaGroupCreateParticipantsBody } from 'src/helpers/tableSchemas/tableSchemaGroupCreateParticipantsBody'
 import { tableHeaderSchemaParticipantsList } from 'src/helpers/tableSchemas/tableHeaderSchemaParticipantsList'
+import { tableSchemaGroupCreateParticipantsBody } from 'src/helpers/tableSchemas/tableSchemaGroupCreateParticipantsBody'
 import { UserSchema } from 'src/types'
+import { TableBody, TableHeader } from 'src/ui'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type ParticipantsListPropsType = {
 	participants: ParticipantsListTable
@@ -28,6 +29,7 @@ export enum SortType {
 }
 
 export const ParticipantsList: FC<ParticipantsListPropsType> = ({ participants, onSort, classes }) => {
+	const { t } = useOptionalTranslation()
 	const [activeList, setActiveList] = useState(ActiveListStatus.InGroup)
 	const [activeSort, setActiveSort] = useState<string>()
 
@@ -36,10 +38,10 @@ export const ParticipantsList: FC<ParticipantsListPropsType> = ({ participants, 
 		setActiveSort(sortType)
 	}
 
-	const tableHeaderColumns = tableHeaderSchemaParticipantsList({ activeSort, handleClick })
+	const tableHeaderColumns = tableHeaderSchemaParticipantsList({ activeSort, handleClick, t })
 	const noParticipants = participants.inGroup.length === 0 && participants.outGroup.length === 0
-	const participantsInGroupTable = tableSchemaGroupCreateParticipantsBody(participants.inGroup)
-	const participantsOutGroupTable = tableSchemaGroupCreateParticipantsBody(participants.outGroup)
+	const participantsInGroupTable = tableSchemaGroupCreateParticipantsBody(participants.inGroup, t)
+	const participantsOutGroupTable = tableSchemaGroupCreateParticipantsBody(participants.outGroup, t)
 
 	const renderParticipantsTable = () => {
 		return activeList === 'inGroup' ? (
@@ -58,7 +60,7 @@ export const ParticipantsList: FC<ParticipantsListPropsType> = ({ participants, 
 				}`}
 				onClick={() => setActiveList(ActiveListStatus.InGroup)}
 			>
-				Participants <span className='text-disabled-grey'>{participantsInGroupTable.length}</span>
+				{t('participants')} <span className='text-disabled-grey'>{participantsInGroupTable.length}</span>
 			</button>
 			<button
 				type='button'
@@ -67,7 +69,7 @@ export const ParticipantsList: FC<ParticipantsListPropsType> = ({ participants, 
 				}`}
 				onClick={() => setActiveList(ActiveListStatus.OutGroup)}
 			>
-				Outgroup <span className='text-disabled-grey'>{participantsOutGroupTable.length}</span>
+				{t('outgroup')} <span className='text-disabled-grey'>{participantsOutGroupTable.length}</span>
 			</button>
 			<div className='-mb-5 -mt-px rounded-l-3xl border border-pale-grey px-10 pt-2 pb-5'>
 				<TableHeader columns={tableHeaderColumns} />

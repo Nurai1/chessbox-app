@@ -1,11 +1,12 @@
 import { FC } from 'react'
-import { twMerge } from 'tailwind-merge'
-import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
-import { ReactComponent as RookWhite } from 'src/assets/rook-white.svg'
-import { ReactComponent as RookBlack } from 'src/assets/rook-black.svg'
 import { ReactComponent as Dumbbell } from 'src/assets/dumbbell.svg'
-import { PairType } from 'src/helpers/tableSchemas/tableSchemaJudgeToPairs'
+import { ReactComponent as RookBlack } from 'src/assets/rook-black.svg'
+import { ReactComponent as RookWhite } from 'src/assets/rook-white.svg'
+import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 import { getAge } from 'src/helpers/datetime'
+import { PairType } from 'src/helpers/tableSchemas/tableSchemaJudgeToPairs'
+import { twMerge } from 'tailwind-merge'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type MatchInfoPropsType = {
 	pairData?: PairType
@@ -21,6 +22,7 @@ export const PairInfo: FC<MatchInfoPropsType> = ({
 	//  startTime,
 	classes
 }) => {
+	const { t } = useOptionalTranslation()
 	return (
 		<div
 			className={twMerge(
@@ -42,10 +44,10 @@ export const PairInfo: FC<MatchInfoPropsType> = ({
 					target='_blank'
 					rel='noreferrer'
 				>
-					Link to Zoom
+					{t('linkToZoom')}
 				</a>
 				<p className='mb-[6px] text-xs text-[#6C6A6C] xl:text-2xl xl:font-semibold'>
-					Judge: {pairData?.judgeData?.fullName ?? '—'}
+					{t('judge')}: {pairData?.judgeData?.fullName ?? '—'}
 				</p>
 				{pairData?.judgeData?.socialNetworks?.whatsup && (
 					<a
@@ -80,7 +82,7 @@ export const PairInfo: FC<MatchInfoPropsType> = ({
 					<p className='flex w-fit items-center gap-[11px] text-xs text-[#6C6A6C] xl:text-2xl xl:font-semibold'>
 						<Dumbbell className='xl:h-[34px] xl:min-w-[34px]' />
 						{pairData?.whiteParticipantData?.birthDate && pairData?.whiteParticipantData?.weight
-							? `${getAge(pairData?.whiteParticipantData?.birthDate)} age, ${pairData?.whiteParticipantData?.weight} kg`
+							? `${getAge(pairData?.whiteParticipantData?.birthDate)} ${t('years')}, ${pairData?.whiteParticipantData?.weight} ${t('kg')}`
 							: '—'}
 					</p>
 				</div>
@@ -107,7 +109,8 @@ export const PairInfo: FC<MatchInfoPropsType> = ({
 						</a>
 						<p className='flex w-fit items-center gap-[11px] text-xs text-[#6C6A6C] xl:text-2xl xl:font-semibold'>
 							<Dumbbell className='xl:h-[34px] xl:min-w-[34px]' />
-							{getAge(pairData?.blackParticipantData?.birthDate)} age, {pairData?.blackParticipantData?.weight} kg
+							{getAge(pairData?.blackParticipantData?.birthDate)} {t('years')}, {pairData?.blackParticipantData?.weight}{' '}
+							{t('kg')}
 						</p>
 					</div>
 				</div>

@@ -2,9 +2,10 @@ import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
 import { ReactComponent as WhatsAppIcon } from 'src/assets/whatsapp.svg'
-import { Loader } from 'src/ui'
-import { CompetitionSchema, UserSchema } from 'src/types'
 import { getFormattedDate } from 'src/helpers/datetime'
+import { CompetitionSchema, UserSchema } from 'src/types'
+import { Loader } from 'src/ui'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type CompetitionCreateHeaderPropsType = {
 	title: string
@@ -19,6 +20,7 @@ export const CompetitionCreateHeader: FC<CompetitionCreateHeaderPropsType> = ({
 	competitionData,
 	judges
 }) => {
+	const { t } = useOptionalTranslation()
 	const navigate = useNavigate()
 	const dateStart = competitionData && getFormattedDate(competitionData.startDate, 'MMM D, HH:mm')
 
@@ -44,7 +46,7 @@ export const CompetitionCreateHeader: FC<CompetitionCreateHeaderPropsType> = ({
 			)}
 			{judges && (
 				<div className='mb-5 md:mb-8 xl:mb-12 xl:ml-8'>
-					<h3 className='mb-1 font-semibold lg:mb-3 xl:text-right xl:text-2xl'>Judges</h3>
+					<h3 className='mb-1 font-semibold lg:mb-3 xl:text-right xl:text-2xl'>{t('judges')}</h3>
 					<div className='flex flex-wrap gap-3 lg:gap-6 xl:justify-between'>
 						{judges.map(judge => (
 							<div className='flex flex-col' key={judge._id}>

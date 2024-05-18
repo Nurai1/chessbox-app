@@ -27,11 +27,13 @@ import { CompetitionRequirementsSchema, ParticipantSchema } from 'src/types'
 import { Accordion, Alert, BottomFixedContainer, Button, Loader, RoundedBorderWrapper, TableBody } from 'src/ui'
 import { AlertPropTypes } from 'src/ui/Alert/Alert'
 import { getObjectsFromIds } from '../helpers/getObjectFromId'
+import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
 
 type AlertType = {
 	show: boolean
 } & AlertPropTypes
 export const CreateGroupPage = (): ReactElement => {
+	const { t } = useOptionalTranslation()
 	const { competitionId } = useParams()
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
@@ -56,7 +58,7 @@ export const CreateGroupPage = (): ReactElement => {
 					if (group.allParticipants?.includes(participant._id as string)) {
 						participantsGroup[i] = {
 							...participant,
-							group: `${group.gender}, ${group.ageCategory?.from}-${group.ageCategory?.to}, ${group.weightCategory?.from}-${group.weightCategory?.to} kg`
+							group: `${group.gender}, ${group.ageCategory?.from}-${group.ageCategory?.to}, ${group.weightCategory?.from}-${group.weightCategory?.to} ${t('kg')}`
 						}
 					}
 				})
@@ -310,7 +312,7 @@ export const CreateGroupPage = (): ReactElement => {
 				classes={`fixed -right-56 w-56 transition-[right] duration-300 ${alertData.show && 'right-8'}`}
 			/>
 			<CompetitionCreateHeader
-				title='Create groups 2/4'
+				title={`${t('createGroups')} 2/4`}
 				backArrowPath={`../${AppRoute.JudgeChoice}`}
 				competitionData={competitionData}
 				judges={judges}
@@ -338,7 +340,7 @@ export const CreateGroupPage = (): ReactElement => {
 					<Loader />
 				)}
 			</div>
-			<h2 className='mb-8 text-heading-3'>Groups</h2>
+			<h2 className='mb-8 text-heading-3'>{t('groups')}</h2>
 			{competitionData?.groups?.length !== 0 && (
 				<RoundedBorderWrapper classes='!py-2'>
 					{competitionData?.groups?.map(
@@ -364,15 +366,15 @@ export const CreateGroupPage = (): ReactElement => {
 								}
 								title={
 									<h3 className='font-bold xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
-										<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
-										{weightCategory?.from}-{weightCategory?.to} kg
+										<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} {t('years')},{' '}
+										{weightCategory?.from}-{weightCategory?.to} {t('kg')}
 										<span className='text-zinc-400'> {allParticipantsGroupIds?.length}</span>
 									</h3>
 								}
 							>
 								{allParticipants && allParticipantsGroupIds ? (
 									<TableBody
-										rows={tableSchemaGroupParticipants(getObjectsFromIds(allParticipantsGroupIds, allParticipants))}
+										rows={tableSchemaGroupParticipants(getObjectsFromIds(allParticipantsGroupIds, allParticipants), t)}
 									/>
 								) : (
 									<Loader />
@@ -382,11 +384,11 @@ export const CreateGroupPage = (): ReactElement => {
 					)}
 				</RoundedBorderWrapper>
 			)}
-			{competitionData?.groups?.length === 0 && <p>No groups created</p>}
+			{competitionData?.groups?.length === 0 && <p>{t('noGroups')}</p>}
 			<BottomFixedContainer classes='xl:pl-[7.5rem] xl:pr-[7.5rem]'>
 				<div className='flex flex-wrap gap-2.5'>
 					<Button type='outlined' onClick={() => navigate(`../${AppRoute.JudgeChoice}`)}>
-						Previous step
+						{t('previousStep')}
 					</Button>
 					<Button
 						classes='min-w-[8rem] xl:min-w-[15.625rem]'
@@ -397,7 +399,7 @@ export const CreateGroupPage = (): ReactElement => {
 						}}
 						disabled={allParticipants?.some(participant => !participant.group)}
 					>
-						Confirm the groups
+						{t('confirmGroups')}
 					</Button>
 				</div>
 			</BottomFixedContainer>

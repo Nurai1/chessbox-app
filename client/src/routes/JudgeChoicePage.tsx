@@ -9,8 +9,10 @@ import { updateCompetitionsListJudges } from 'src/store/slices/competitionsSlice
 import { fetchAllJudges } from 'src/store/slices/usersSlice'
 import { UserSchema } from 'src/types'
 import { Alert, Button, TableBody } from 'src/ui'
+import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
 
 export const JudgeChoicePage = (): ReactElement => {
+	const { t } = useOptionalTranslation()
 	const { competitionId } = useParams()
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
@@ -86,11 +88,11 @@ export const JudgeChoicePage = (): ReactElement => {
 	return (
 		<main className='container relative mx-auto grow px-4 py-8 md:py-9 xl:py-14 xl:pl-[6.5rem] xl:pr-[3.125rem]'>
 			<CompetitionCreateHeader
-				title='Assign judges 1/4'
+				title={`${t('assignJudges')} 1/4`}
 				competitionData={competitionData}
 				backArrowPath={`/${AppRoute.Competitions}/${competitionId}`}
 			/>
-			<h2 className='mb-2 text-2xl font-semibold leading-normal xl:text-[3.125rem] xl:font-bold'>Judges</h2>
+			<h2 className='mb-2 text-2xl font-semibold leading-normal xl:text-[3.125rem] xl:font-bold'>{t('judges')}</h2>
 			{judgesTable && (
 				<div className='border-b border-zinc-300 pb-6  xl:pb-12'>
 					<TableBody rows={judgesTable} />
@@ -100,7 +102,7 @@ export const JudgeChoicePage = (): ReactElement => {
 						loading={setCompetitionJudgesPending}
 						disabled={selectedJudgesId.length === 0}
 					>
-						Continue
+						{t('continue')}
 					</Button>
 					{setCompetitionJudgesError && (
 						<Alert type='error' subtitle={setCompetitionJudgesError} classes='mt-6 w-fit xl:mt-9' />

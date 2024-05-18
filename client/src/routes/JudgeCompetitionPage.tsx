@@ -30,12 +30,14 @@ import { Alert, BreakTimer, Button, Input, Loader, Modal, Tag } from 'src/ui'
 import { AlertPropTypes } from 'src/ui/Alert/Alert'
 import { endCompetitionApi } from '../api/requests/competitions'
 import { getPriceText } from '../helpers/getPriceText'
+import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
 
 type AlertType = {
 	show: boolean
 } & AlertPropTypes
 
 export const JudgeCompetitionPage = (): ReactElement => {
+	const { t } = useOptionalTranslation()
 	const { competitionId } = useParams()
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
@@ -242,21 +244,19 @@ export const JudgeCompetitionPage = (): ReactElement => {
 								<p className='mb-6 text-heading-3 text-grey'>{dateStart}</p>
 								<div className='mb-9 flex flex-wrap gap-4'>
 									{competitionData.price && (
-										<Tag img={<BanknoteIcon className='max-5 mr-2' />} text={getPriceText(competitionData)} />
+										<Tag img={<BanknoteIcon className='max-5 mr-2' />} text={getPriceText(competitionData, t)} />
 									)}
 									{competitionData.participants && (
 										<Tag
 											img={<PersonsIcon className='max-5 mr-2' />}
-											text={`${competitionData.participants.length} participant${
-												competitionData.participants.length === 1 ? '' : 's'
-											} enrolled`}
+											text={`${competitionData.participants.length} ${t('participantsEnrolled')}`}
 										/>
 									)}
 								</div>
 								<div className='grid grid-cols-[1fr_16.25rem] gap-x-14 gap-y-6'>
 									<CompetitionRequirements competitionRequirements={competitionData.requirements} />
 									<div className='col-start-2 col-end-3 row-start-1 row-end-3'>
-										<h3 className='mb-5 font-bold'>Judges</h3>
+										<h3 className='mb-5 font-bold'>{t('judges')}</h3>
 										{judges &&
 											judges.map(({ fullName, socialNetworks, _id }) => (
 												<div className='mb-5 last:mb-0' key={_id}>
@@ -274,7 +274,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 											))}
 									</div>
 									<div>
-										<p className='mb-2 text-[#6C6A6C] xl:font-bold'>Description:</p>
+										<p className='mb-2 text-[#6C6A6C] xl:font-bold'>{t('description')}:</p>
 										<p className='mb-9'>{competitionData.description}</p>
 									</div>
 								</div>
@@ -282,7 +282,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 							{!isCompetitionOver && !allGroupsCompleted && (
 								<div>
 									<div className='relative mb-9 h-fit rounded-2xl border-2 p-10 text-heading-3'>
-										The competition is on!
+										{t('competitionOn')}!
 										<TwoStarsIcon className='absolute top-[7rem] right-[3.5rem] w-10' />
 									</div>
 									{breakTime && !isTimerOver ? (
@@ -292,7 +292,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 										</div>
 									) : (
 										<Button classes='w-full' onClick={handleModalShow} disabled={Boolean(currentPairs.length)}>
-											Take a break
+											{t('takeBreak')}
 										</Button>
 									)}
 								</div>
@@ -324,7 +324,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 							)}
 						</div>
 						<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
-							Competition schedule
+							{t('competitionSchedule')}
 						</h2>
 						{competitionData.groups?.length !== 0 && participants && judges && authorizedUser ? (
 							<CompetitionParticipantsTable
@@ -374,7 +374,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 								disabled={!Boolean(breakInterval) || setBreakTimePending}
 								loading={setBreakTimePending}
 							>
-								Done
+								{t('done')}
 							</Button>
 							<Button onClick={handleModalShow} type='outlined' classes='w-full'>
 								Cancel

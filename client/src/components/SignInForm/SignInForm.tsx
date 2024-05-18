@@ -1,15 +1,18 @@
 import { ReactElement, useState } from 'react'
-import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { Input, Button, Alert } from 'src/ui'
-import { validator } from 'src/helpers/validation/validator'
-import { validatorConfigSingIn } from 'src/helpers/validation/validatorConfigSingIn'
-import { signInUser } from 'src/store/slices/userSlice'
 import { Link } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
+import { validator } from 'src/helpers/validation/validator'
+import { useValidatorConfigSingIn } from 'src/helpers/validation/validatorConfigSingIn'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { signInUser } from 'src/store/slices/userSlice'
 import { SignInDataSchema } from 'src/types'
 import { FormData } from 'src/types/formData'
+import { Alert, Button, Input } from 'src/ui'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 export const SignInForm = (): ReactElement => {
+	const { t } = useOptionalTranslation()
+	const validatorConfigSingIn = useValidatorConfigSingIn()
 	const [formData, setFormData] = useState<FormData>({
 		email: '',
 		password: ''
@@ -46,18 +49,18 @@ export const SignInForm = (): ReactElement => {
 					<Input
 						onChange={onChange}
 						value={formData?.email}
-						label='Email'
+						label={t('email')}
 						name='email'
-						placeholder='Enter Email'
+						placeholder={t('email')}
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.email}
 					/>
 					<Input
 						onChange={onChange}
 						value={formData?.password}
-						label='Password'
+						label={t('password')}
 						name='password'
-						placeholder='Enter Password'
+						placeholder={t('password')}
 						classes='h-[48px]'
 						type={showPassword ? 'text' : 'password'}
 						validationErrorText={validateErrors?.password}
@@ -65,18 +68,18 @@ export const SignInForm = (): ReactElement => {
 						showPasswordIcon
 					/>
 					<Button loading={isAuthRequestPending} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
-						Sign In
+						{t('signIn')}
 					</Button>
 				</div>
 				<div className='mt-2 flex justify-between text-sm font-thin'>
 					<Link to={`/${AppRoute.SignUp}`} className='underline transition hover:opacity-70'>
-						Sign Up
+						{t('signUp')}
 					</Link>
 					<Link
 						to={`/${AppRoute.ForgotPassword}`}
 						className='h-auto p-0 text-sm font-thin underline transition hover:opacity-70'
 					>
-						Forgot Password
+						{t('forgotPassword')}
 					</Link>
 				</div>
 				{authError && (

@@ -9,6 +9,7 @@ import { CompetitionSchema, UserSchema } from 'src/types'
 import { Button, Modal, Timer } from 'src/ui'
 import { useWindowSize } from 'usehooks-ts'
 import { getPriceText } from '../../helpers/getPriceText'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 import { CompetitionPayment } from '../CompetitionPayment'
 
 type RegistrationEndsTimerPropsType = {
@@ -26,6 +27,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 	children,
 	isCompetitonPage
 }) => {
+	const { t } = useOptionalTranslation()
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const { authorizedUser } = useAppSelector(state => state.user)
 	const navigate = useNavigate()
@@ -64,7 +66,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 								: 'font-bold text-black lg:text-2xl lg:text-grey xl:font-semibold'
 						}`}
 					>
-						Registration ends&nbsp;in:
+						{t('registrationEndsIn')}:
 					</h3>
 					<Timer
 						time={competitionData.registrationEndsAt}
@@ -91,7 +93,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 								classes={`${isCompetitonPage ? 'md:w-full' : 'w-full mt-5 2xl:mt-[1.625rem]'}`}
 								disabled={!!fitCompetitionParametersCheck}
 							>
-								Participate
+								{t('participate')}
 							</Button>
 							{children}
 						</div>
@@ -109,7 +111,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 				classes='lg:max-w-[26rem] xl:max-w-[29.375rem]'
 				content={
 					<CompetitionPayment
-						price={getPriceText(competitionData)}
+						price={getPriceText(competitionData, t)}
 						onClose={() => setIsModalOpen(false)}
 						competitionDataProps={competitionData}
 					/>

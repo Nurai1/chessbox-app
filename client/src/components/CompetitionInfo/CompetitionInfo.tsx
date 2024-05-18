@@ -1,5 +1,6 @@
 import { FC, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type CompetitionInfoPropsType = {
 	title: string | ReactNode
@@ -10,6 +11,7 @@ type CompetitionInfoPropsType = {
 }
 
 export const CompetitionInfo: FC<CompetitionInfoPropsType> = ({ title, img, place, isCompetitionPage, classes }) => {
+	const { t } = useOptionalTranslation()
 	return (
 		<div
 			className={twMerge(
@@ -24,8 +26,8 @@ export const CompetitionInfo: FC<CompetitionInfoPropsType> = ({ title, img, plac
 			<div>
 				<h3 className={`${isCompetitionPage ? 'xl:text-heading-3' : 'lg:text-heading-4'} font-bold`}>{title}</h3>
 				{place && (
-					<div className={`${isCompetitionPage ? 'lg:flex-col-reverse xl:mt-3' : ''} mt-2 flex`}>
-						<p className={`${isCompetitionPage ? 'xl:-mt-2.5' : ''} text-sm text-grey`}>Your place&nbsp;</p>
+					<div className={`${isCompetitionPage ? 'lg:flex-col-reverse xl:mt-3' : ''} mt-2 flex text-heading-4`}>
+						<p className={`${isCompetitionPage ? 'xl:-mt-2.5' : ''} text-sm text-grey`}>{t('yourPlace')}&nbsp;</p>
 						<p
 							className={`${
 								isCompetitionPage ? 'lg:text-2xl lg:font-bold lg:text-black xl:text-heading-1' : ''

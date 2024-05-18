@@ -1,9 +1,7 @@
 import { z } from 'zod'
 
-export const nonEmptyStringValidator = z
-	.string({ required_error: 'This field is required.' })
-	.min(1, { message: 'This field is required.' })
-export const nonEmptyMultipleOptionsValidator = z.string().array().nonempty({ message: 'This field is required.' })
+export const nonEmptyStringValidator = z.string({ required_error: 'Required' }).min(1, { message: 'Required' })
+export const nonEmptyMultipleOptionsValidator = z.string().array().nonempty({ message: 'Required' })
 export const moreThanStringValidator = (value: number) =>
 	nonEmptyStringValidator.min(value, { message: `Length should be equal or more than ${value}.` })
 

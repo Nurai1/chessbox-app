@@ -1,18 +1,21 @@
 import { ReactElement, useState } from 'react'
-import { Alert, Button, Input } from 'src/ui'
 import { Link } from 'react-router-dom'
-import { useAppSelector, useAppDispatch } from 'src/hooks/redux'
 import { ReactComponent as ArrowLeft } from 'src/assets/arrow-left.svg'
 import { validator } from 'src/helpers/validation/validator'
-import { validatorConfigEditUser } from 'src/helpers/validation/validatorConfigEditUser'
-import { UserSchema } from 'src/types'
+import { useValidatorConfigEditUser } from 'src/helpers/validation/validatorConfigEditUser'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { editUser, forgotPassword } from 'src/store/slices/userSlice'
+import { UserSchema } from 'src/types'
+import { Alert, Button, Input } from 'src/ui'
 // import { editUser, forgotPassword } from 'src/store/slices/userSlice'
-import { FormData } from 'src/types/formData'
 import { AppRoute } from 'src/constants/appRoute'
 import { getFormattedDate } from 'src/helpers/datetime'
+import { FormData } from 'src/types/formData'
+import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
 
 export const EditProfilePage = (): ReactElement => {
+	const { t } = useOptionalTranslation()
+	const validatorConfigEditUser = useValidatorConfigEditUser()
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
 	const { authorizedUser, editSuccess, editError, isPasswordLinkSent, editLoading, authLoading } = useAppSelector(
@@ -96,41 +99,41 @@ export const EditProfilePage = (): ReactElement => {
 					<ArrowLeft className='w-6 lg:w-8' />
 				</Link>
 				<form className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
-					<h1 className='mb-[23px] text-center text-heading-4'>Edit Profile</h1>
+					<h1 className='mb-[23px] text-center text-heading-4'>{t('editProfile')}</h1>
 					<div className='grid gap-[18px]'>
 						<Input
 							onChange={onChange}
 							value={formData?.email}
-							label='Email'
+							label={t('email')}
 							name='email'
-							placeholder='Enter Email'
+							placeholder={t('email')}
 							classes='h-[48px]'
 							disabled
 						/>
 						<Input
 							onChange={onChange}
 							value={formData?.firstName}
-							label='First Name'
+							label={t('firstName')}
 							name='firstName'
-							placeholder='Enter First Name'
+							placeholder={t('firstName')}
 							classes='h-[48px]'
 							validationErrorText={validateErrors?.firstName}
 						/>
 						<Input
 							onChange={onChange}
 							value={formData?.lastName}
-							label='Last Name'
+							label={t('lastName')}
 							name='lastName'
-							placeholder='Enter Last Name'
+							placeholder={t('lastName')}
 							classes='h-[48px]'
 							validationErrorText={validateErrors?.lastName}
 						/>
 						<Input
 							onChange={onChange}
 							value={formData?.weight?.toString()}
-							label='Weight'
+							label={t('weight')}
 							name='weight'
-							placeholder='Weight'
+							placeholder={t('weight')}
 							classes='h-[48px]'
 							type='number'
 							validationErrorText={validateErrors?.weight}
@@ -138,7 +141,7 @@ export const EditProfilePage = (): ReactElement => {
 						<Input
 							onChange={onChange}
 							value={formData?.birthDate && getFormattedDate(formData?.birthDate, 'DD.MM.YYYY')}
-							label='Birthday'
+							label={t('birthday')}
 							name='birthDate'
 							placeholder='DD.MM.YYYY'
 							classes='h-[48px]'
@@ -147,36 +150,36 @@ export const EditProfilePage = (): ReactElement => {
 						<Input
 							onChange={onChange}
 							value={formData?.fightClub}
-							label='Fight club'
+							label={t('fightClub')}
 							name='fightClub'
-							placeholder='Enter Fight Club'
+							placeholder='Fight Club'
 							classes='h-[48px]'
 							validationErrorText={validateErrors?.fightClub}
 						/>
 						<Input
 							onChange={onChange}
 							value={formData?.country}
-							label='Country'
+							label={t('country')}
 							name='country'
-							placeholder='Enter Your country'
+							placeholder='Your country'
 							classes='h-[48px]'
 							validationErrorText={validateErrors?.country}
 						/>
 						<Input
 							onChange={onChange}
 							value={formData?.city}
-							label='City'
+							label={t('city')}
 							name='city'
-							placeholder='Enter City'
+							placeholder={t('city')}
 							classes='h-[48px]'
 							validationErrorText={validateErrors?.city}
 						/>
 						<Input
 							onChange={onChange}
 							value={formData?.chessPlatformUserName}
-							label='`Lichess` Username'
+							label={`'Lichess' ${t('username')}`}
 							name='chessPlatformUserName'
-							placeholder='Enter `Lichess` Username'
+							placeholder={`'Lichess' ${t('username')}`}
 							classes='h-[48px]'
 							validationErrorText={validateErrors?.chessPlatformUserName}
 						/>
@@ -188,13 +191,13 @@ export const EditProfilePage = (): ReactElement => {
 									if (authorizedUser?.email) dispatch(forgotPassword({ email: authorizedUser?.email }))
 								}}
 							>
-								Change Password
+								{t('changePassword')}
 								{authLoading && (
 									<span className=' ml-2 inline-block h-5 w-5 animate-spin rounded-full border-[4px] border-black border-b-transparent' />
 								)}
 							</button>
 							<Button loading={editLoading} classes='w-full font-medium sm:w-[160px]' onClick={handleSubmit}>
-								Save
+								{t('save')}
 							</Button>
 						</div>
 					</div>
@@ -206,7 +209,7 @@ export const EditProfilePage = (): ReactElement => {
 							classes='mt-4'
 						/>
 					)}
-					{editSuccess && <Alert subtitle='Profile updated' type='success' classes='mt-4' />}
+					{editSuccess && <Alert subtitle={t('profileUpdated')} type='success' classes='mt-4' />}
 				</form>
 			</div>
 		</main>

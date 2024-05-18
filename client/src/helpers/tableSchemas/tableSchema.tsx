@@ -3,8 +3,9 @@ import { ReactComponent as MedalSilver } from 'src/assets/medal-silver.svg'
 import { ReactComponent as MedalBronze } from 'src/assets/medal-bronze.svg'
 import { UserSchema } from 'src/types'
 import { getAge } from 'src/helpers/datetime'
+import { TFunction } from 'src/hooks/useOptionalTranslation'
 
-export const ratingTableSchema = (tableData: UserSchema[]) => {
+export const ratingTableSchema = (tableData: UserSchema[], t: TFunction) => {
 	const renderMedal = (index: number) => {
 		if (index === 1) {
 			return (
@@ -70,8 +71,8 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
 								className='text-grey
                             md:text-base'
 							>
-								{`age ${getAge(user.birthDate)}`}
-								{`, ${user.weight} kg`}
+								{`${t('years')} ${getAge(user.birthDate)}`}
+								{`, ${user.weight} ${t('kg')}`}
 							</p>
 						</div>
 					),
@@ -92,7 +93,7 @@ export const ratingTableSchema = (tableData: UserSchema[]) => {
 							className='text-sm font-normal text-black
                     xl:text-xl xl:font-medium'
 						>
-							{user?.ratingNumber} Points
+							{user?.ratingNumber} {t('points')}
 						</p>
 					),
 					classes: '2xl:min-w-[45%] xl:min-w-[40%]'

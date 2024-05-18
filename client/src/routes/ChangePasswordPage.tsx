@@ -2,12 +2,15 @@ import { ReactElement, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
 import { validator } from 'src/helpers/validation/validator'
-import { validatorConfigChangePassword } from 'src/helpers/validation/validatorConfigChangePassword'
+import { useValidatorConfigChangePassword } from 'src/helpers/validation/validatorConfigChangePassword'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { changePassword } from 'src/store/slices/userSlice'
 import { Alert, Button, Input } from 'src/ui'
+import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
 
 export const ChangePasswordPage = (): ReactElement => {
+	const { t } = useOptionalTranslation()
+	const validatorConfigChangePassword = useValidatorConfigChangePassword()
 	// eslint-disable-next-line no-restricted-globals
 	const urlParams = useMemo(() => new URLSearchParams(location.search), [])
 	const [formData, setFormData] = useState({
@@ -45,15 +48,17 @@ export const ChangePasswordPage = (): ReactElement => {
 	return (
 		<main className='flex grow flex-col bg-pale-white py-[20px]'>
 			<form className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
-				<h1 className='mb-[8px] text-center text-heading-4'>Change Password</h1>
+				<h1 className='mb-[8px] text-center text-heading-4'>{t('changePassword')}</h1>
 				<div className='flex flex-col items-center gap-[18px]'>
-					<span className='font-medium'>Account Email: {decodeURIComponent(urlParams.get('email') as string)}</span>
+					<span className='font-medium'>
+						{t('email')}: {decodeURIComponent(urlParams.get('email') as string)}
+					</span>
 					<Input
 						onChange={onChange}
 						value={formData?.newPassword}
-						label='Password'
+						label={t('password')}
 						name='newPassword'
-						placeholder='Enter Password'
+						placeholder={t('password')}
 						classes='h-[48px]'
 						type={showPassword ? 'text' : 'password'}
 						validationErrorText={validateErrors?.newPassword}
@@ -63,9 +68,9 @@ export const ChangePasswordPage = (): ReactElement => {
 					<Input
 						onChange={onChange}
 						value={formData?.passwordConfirm}
-						label='Confirm Password'
+						label={t('confirmPassword')}
 						name='passwordConfirm'
-						placeholder='Enter Password'
+						placeholder={t('password')}
 						classes='h-[48px]'
 						type={showPassword ? 'text' : 'password'}
 						validationErrorText={validateErrors?.passwordConfirm}
@@ -73,17 +78,17 @@ export const ChangePasswordPage = (): ReactElement => {
 						showPasswordIcon
 					/>
 					<Button loading={authLoading} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
-						Change Password
+						{t('changePassword')}
 					</Button>
 				</div>
 				<div className='mt-2 flex justify-end text-sm font-thin'>
 					<Link to={`/${AppRoute.SignIn}`} className='underline transition hover:opacity-70'>
-						Sign In
+						{t('signIn')}
 					</Link>
 				</div>
 				{passwordChanged && !passwordError && (
 					<div className='mt-2'>
-						<Alert type='success' subtitle='Your password has been changed.' />
+						<Alert type='success' subtitle={t('passwordChanged')} />
 					</div>
 				)}
 				{passwordError && (

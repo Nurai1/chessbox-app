@@ -1,14 +1,17 @@
 import { TableSortButton } from 'src/ui'
 import { SortType } from 'src/components/ParticipantsList/ParticipantsList'
+import { TFunction } from 'src/hooks/useOptionalTranslation'
 
 type TableHeaderSchemaParticipantsListPropsType = {
 	handleClick: (sortType: string, sortOrder: string) => void
 	activeSort?: string
+	t: TFunction
 }
 
 export const tableHeaderSchemaParticipantsList = ({
 	handleClick,
-	activeSort
+	activeSort,
+	t
 }: TableHeaderSchemaParticipantsListPropsType) => {
 	return [
 		{ node: '', classes: 'max-w-[3rem]' },
@@ -19,7 +22,7 @@ export const tableHeaderSchemaParticipantsList = ({
 					onClick={handleClick}
 					activeClass={activeSort === SortType.Name ? 'underline' : ''}
 				>
-					Name
+					{t('name')}
 				</TableSortButton>
 			),
 			classes: 'max-w-[12.5rem] !text-base font-bold'
@@ -31,7 +34,7 @@ export const tableHeaderSchemaParticipantsList = ({
 					onClick={handleClick}
 					activeClass={activeSort === SortType.Sex ? 'underline' : ''}
 				>
-					Sex
+					{t('sex')}
 				</TableSortButton>
 			),
 			classes: 'max-w-[6.5rem] !text-base font-bold'
@@ -43,7 +46,7 @@ export const tableHeaderSchemaParticipantsList = ({
 					onClick={handleClick}
 					activeClass={activeSort === SortType.Age ? 'underline' : ''}
 				>
-					Age
+					{t('age')}
 				</TableSortButton>
 			),
 			classes: 'max-w-[6.5rem] !text-base font-bold'
@@ -55,7 +58,7 @@ export const tableHeaderSchemaParticipantsList = ({
 					onClick={handleClick}
 					activeClass={activeSort === SortType.Weight ? 'underline' : ''}
 				>
-					Weight
+					{t('weight')}
 				</TableSortButton>
 			),
 			classes: 'max-w-[6.5rem] !text-base font-bold'

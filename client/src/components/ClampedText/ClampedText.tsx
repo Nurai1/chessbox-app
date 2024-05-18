@@ -1,4 +1,5 @@
-import { useRef, ReactNode, useState, useEffect } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type ClamedTextPropsType = {
 	children: ReactNode
@@ -15,6 +16,7 @@ export const ClampedText = ({
 	fontSizeProp = 16,
 	classes
 }: ClamedTextPropsType) => {
+	const { t } = useOptionalTranslation()
 	const textRef = useRef<HTMLParagraphElement>(null)
 	const [linesNumber, setLinesNumber] = useState('')
 
@@ -49,7 +51,7 @@ export const ClampedText = ({
 						className='bg-white pl-2 transition hover:opacity-70'
 						onClick={() => setLinesNumber('')}
 					>
-						Show more
+						{t('showMore')}
 					</button>
 				</div>
 			)}

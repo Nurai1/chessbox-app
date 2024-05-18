@@ -19,6 +19,7 @@ import {
 import { Accordion, Button, Loader, TableBody } from 'src/ui'
 import { twMerge } from 'tailwind-merge'
 import { TIME_FOR_PAIR } from '../../constants/time'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 const getStartPointTimeTuple = (competitionData: CompetitionSchema) => {
 	if (!competitionData.started && competitionData.baseDate) {
@@ -56,6 +57,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 	isJudgeCompetitionPage,
 	...rest
 }) => {
+	const { t } = useOptionalTranslation()
 	const dispatch = useAppDispatch()
 	const { competitionId } = useParams()
 	const { launchNextGroupRoundPending, callPairPreparationPending } = useAppSelector(s => s.competition)
@@ -96,8 +98,9 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 						? 0
 						: TIME_FOR_PAIR / competitionJudgesLen)
 			).join(':')} */}
-			<span className='ml-3 inline-block capitalize'>{gender}</span> {ageCategory?.from}- {ageCategory?.to} age,{' '}
-			{weightCategory?.from}-{weightCategory?.to}kg
+			<span className='ml-3 inline-block capitalize'>{t(gender)}</span> {ageCategory?.from}- {ageCategory?.to}{' '}
+			{t('years')}, {weightCategory?.from}-{weightCategory?.to}
+			{t('kg')}
 		</h3>
 	)
 
@@ -167,6 +170,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 								<>
 									<TableBody
 										rows={tableSchemaPairs({
+											t,
 											tableData: currentRoundPairs,
 											participants,
 											judges,
@@ -189,7 +193,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 											loading={launchNextGroupRoundPending}
 											onClick={() => handleLaunchNextGroupRound(_id as string)}
 										>
-											Create new pairs
+											{t('createNewPairs')}
 										</Button>
 									)}
 									{!!nextRoundParticipants?.length &&
@@ -245,7 +249,8 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 															</a>
 														</div>
 														<div>
-															{getAge(nextRoundParticipant?.birthDate as string)} age, {nextRoundParticipant?.weight} kg
+															{getAge(nextRoundParticipant?.birthDate as string)} {t('years')},{' '}
+															{nextRoundParticipant?.weight} {t('kg')}
 														</div>
 														<div>
 															{nextRoundParticipant?.address?.city}, {nextRoundParticipant?.address?.country}
@@ -270,8 +275,8 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 																</a>
 															</div>
 															<div>
-																{getAge(otherParticipantInPair?.birthDate as string)} age,{' '}
-																{otherParticipantInPair?.weight} kg
+																{getAge(otherParticipantInPair?.birthDate as string)} {t('years')},{' '}
+																{otherParticipantInPair?.weight} {t('kg')}
 															</div>
 															<div>
 																{otherParticipantInPair?.address?.city}, {otherParticipantInPair?.address?.country}
@@ -280,7 +285,7 @@ export const CompetitionParticipantsTable: FC<CompetitionParticipantsTablePropsT
 													)}
 													<div>
 														<span className='text-sm uppercase text-[#4565D9] md:col-start-2 md:col-end-3 md:row-start-2 md:row-end-3 xl:col-start-3 xl:col-end-4 xl:row-auto xl:text-base xl:font-bold'>
-															WAITING
+															{t('waiting')}
 														</span>
 													</div>
 												</div>

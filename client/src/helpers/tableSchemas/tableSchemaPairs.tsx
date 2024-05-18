@@ -5,6 +5,7 @@ import { ChooseWinner } from 'src/components'
 import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
 import { ChooseWinnerType, CompetitionSchema, PairSchema, UserSchema } from 'src/types'
 import { Button, CallUpButton } from 'src/ui'
+import { TFunction } from 'src/hooks/useOptionalTranslation'
 import { TIME_FOR_PAIR } from '../../constants/time'
 
 export type PairType = {
@@ -27,7 +28,8 @@ export const tableSchemaPairs = ({
 	onChooseWinner,
 	defineWinnerPending,
 	onDefineWinner,
-	firstPairOrder = 0
+	firstPairOrder = 0,
+	t
 }: {
 	tableData: PairSchema[]
 	participants: UserSchema[]
@@ -46,6 +48,7 @@ export const tableSchemaPairs = ({
 	defineWinnerPending?: boolean
 	onDefineWinner?: (pairId: string) => void
 	firstPairOrder?: number
+	t: TFunction
 }) => {
 	const participantsData = tableData.reduce((acc, pair) => {
 		const blackParticipantData = participants.find(({ _id }) => pair.blackParticipant === _id)
@@ -135,14 +138,14 @@ export const tableSchemaPairs = ({
 									className='inline-flex gap-[8px] text-xs transition hover:opacity-70 xl:text-base'
 								>
 									<WhatsappIcon className='h-4 w-4 xl:h-6 xl:w-6' />
-									Judge: {pair.judgeData?.fullName}
+									{t('judge')}: {pair.judgeData?.fullName}
 								</a>
 							</div>
 							{inProgress && !isJudgeCompetitionPage && (
-								<div className={`text-[#FB9F16] ${statusStyle}`}>IN PROGRESS</div>
+								<div className={`uppercase text-[#FB9F16] ${statusStyle}`}>{t('inProgress')}</div>
 							)}
-							{finished && <div className={`text-[#6DDA64] ${statusStyle}`}>FINISHED</div>}
-							{waitingCompetitonPage && <div className={`text-[#4565D9] ${statusStyle}`}>WAITING</div>}
+							{finished && <div className={`uppercase text-[#6DDA64] ${statusStyle}`}>{t('finished')}</div>}
+							{waitingCompetitonPage && <div className={`uppercase text-[#4565D9] ${statusStyle}`}>{t('waiting')}</div>}
 							<ChooseWinner
 								pair={pair}
 								groupId={groupId as string}
@@ -161,7 +164,7 @@ export const tableSchemaPairs = ({
 									disabled={lastCompletedPairIndex + 1 !== i || callPairPreparationPending}
 									loading={defineWinnerPending}
 								>
-									Winner
+									{t('winner')}
 								</Button>
 							)}
 						</div>

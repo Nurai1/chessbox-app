@@ -4,10 +4,12 @@ import { fetchUsers, clearUsers } from 'src/store/slices/usersSlice'
 import { tableSchemaRating } from 'src/helpers/tableSchemas/tableSchemaRating'
 import { UsersTableWithTitle, UsersSearch } from '../components'
 import { Loader } from '../ui'
+import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
 
 const USERS_PER_STEP = 10
 
 export const RatingPage = (): ReactElement => {
+	const { t } = useOptionalTranslation()
 	const dispatch = useAppDispatch()
 	const [query, setQuery] = useState({
 		offset: 0
@@ -25,7 +27,7 @@ export const RatingPage = (): ReactElement => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchParams])
 
-	const usersTable = tableSchemaRating(users)
+	const usersTable = tableSchemaRating(users, t)
 	const hasUsers = users.length > 0
 	const hasMoreUsers = total !== users.length
 	const hasNextPage = users.length < total

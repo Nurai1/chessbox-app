@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from 'react'
-import { twMerge } from 'tailwind-merge'
-import { CheckboxAndRadioButton, Input, Button } from 'src/ui'
 import { CompetitionRequirementsSchema } from 'src/types'
+import { Button, CheckboxAndRadioButton, Input } from 'src/ui'
+import { twMerge } from 'tailwind-merge'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 export type GroupParametersForm = Omit<Errors, 'weightMessage' | 'ageMessage'> & {
 	sex?: string
@@ -37,6 +38,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 	resetFilterTrigger,
 	resetFilter
 }) => {
+	const { t } = useOptionalTranslation()
 	const [groupData, setGroupData] = useState<GroupParametersForm>({})
 	const [errors, setErrors] = useState<Errors>({})
 
@@ -72,7 +74,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 		if (Number(groupData[key1]) < minValue || Number(groupData[key1]) > maxValue) {
 			setErrors(prevSate => ({
 				...prevSate,
-				[key1]: `${minValue} > ${groupData[key1]} ${fieldName === 'Age' ? 'age' : 'kg'}`,
+				[key1]: `${minValue} > ${groupData[key1]} ${fieldName === 'Age' ? t('years') : t('kg')}`,
 				[errorTitle]: `${fieldName} is out of requirements`
 			}))
 		}
@@ -80,7 +82,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 		if (Number(groupData[key2]) > maxValue || Number(groupData[key2]) < minValue) {
 			setErrors(prevSate => ({
 				...prevSate,
-				[key2]: `${maxValue} < ${groupData[key2]} ${fieldName === 'Age' ? 'age' : 'kg'}`,
+				[key2]: `${maxValue} < ${groupData[key2]} ${fieldName === 'Age' ? t('years') : t('kg')}`,
 				[errorTitle]: `${fieldName} is out of requirements`
 			}))
 		}
@@ -135,12 +137,12 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 		<div className={twMerge('relative max-w-[16rem]', classes)}>
 			{!requirements?.gender && (
 				<div className='mb-6 flex h-12 items-center'>
-					<p className='min-w-[4.375rem] font-bold'>Sex:</p>
+					<p className='min-w-[4.375rem] font-bold'>{t('sex')}:</p>
 					<CheckboxAndRadioButton
 						name='sex'
 						type='radio'
 						onChange={onChange}
-						title='Man'
+						title={t('man')}
 						value='man'
 						checked={groupData.sex === 'man'}
 						classes='mr-2.5'
@@ -149,7 +151,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 						name='sex'
 						type='radio'
 						onChange={onChange}
-						title='Woman'
+						title={t('woman')}
 						value='woman'
 						checked={groupData.sex === 'woman'}
 					/>
@@ -157,32 +159,32 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 			)}
 
 			<div className='relative mb-9 flex'>
-				<p className='m-auto min-w-[4.375rem] font-bold'>Weight:</p>
+				<p className='m-auto min-w-[4.375rem] font-bold'>{t('weight')}:</p>
 				<Input
 					name='weightFrom'
 					type='number'
 					onChange={onChange}
-					placeholder='Min'
+					placeholder={t('min')}
 					value={groupData.weightFrom}
 					classes='mr-2'
 				/>
-				<Input name='weightTo' type='number' onChange={onChange} placeholder='Max' value={groupData.weightTo} />
+				<Input name='weightTo' type='number' onChange={onChange} placeholder={t('max')} value={groupData.weightTo} />
 				{errors.weightMessage && (
 					<span className='absolute left-[4.375rem] -bottom-6 text-xs text-error-red'>{errors.weightMessage}</span>
 				)}
 			</div>
 
 			<div className='relative mb-9 flex'>
-				<p className='m-auto min-w-[4.375rem] font-bold'>Age:</p>
+				<p className='m-auto min-w-[4.375rem] font-bold'>{t('age')}:</p>
 				<Input
 					name='ageFrom'
 					type='number'
 					onChange={onChange}
 					value={groupData.ageFrom}
-					placeholder='Min'
+					placeholder={t('min')}
 					classes='mr-2'
 				/>
-				<Input name='ageTo' type='number' onChange={onChange} value={groupData.ageTo} placeholder='Max' />
+				<Input name='ageTo' type='number' onChange={onChange} value={groupData.ageTo} placeholder={t('max')} />
 				{errors.ageMessage && (
 					<span className='absolute left-[4.375rem] -bottom-6 text-xs text-error-red'>{errors.ageMessage}</span>
 				)}
@@ -193,7 +195,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 				onClick={addGroup}
 				loading={addGroupRequestPending}
 			>
-				Add group
+				{t('addGroup')}
 			</Button>
 			<Button
 				disabled={!Object.values(errors).every(error => error === undefined)}
@@ -213,7 +215,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 					})
 				}}
 			>
-				Show
+				{t('show')}
 			</Button>
 			<Button
 				onClick={() => {
@@ -224,7 +226,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 				type='outlined'
 				classes='w-full'
 			>
-				Clean up
+				{t('cleanUp')}
 			</Button>
 			{!requirements?.gender && !groupData.sex && (
 				<p className='mt-2 text-xs text-error-red'>

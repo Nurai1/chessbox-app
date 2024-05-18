@@ -1,6 +1,7 @@
 import { FC, ReactNode } from 'react'
 // import { ReactComponent as Loader } from 'src/assets/loader.svg'
 import { twMerge } from 'tailwind-merge'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type RequestAwaitAcceptionPropsType = {
 	children?: ReactNode
@@ -8,6 +9,7 @@ type RequestAwaitAcceptionPropsType = {
 }
 
 export const RequestAwaitAcception: FC<RequestAwaitAcceptionPropsType> = ({ children, isCompetitionPage }) => {
+	const { t } = useOptionalTranslation()
 	return (
 		<div>
 			<div
@@ -22,7 +24,7 @@ export const RequestAwaitAcception: FC<RequestAwaitAcceptionPropsType> = ({ chil
 						!isCompetitionPage && 'xl:mr-auto xl:w-44'
 					)}
 				>
-					Your request to check payment has been accepted, please await confirmation.
+					{t('awaitConfirmation')}.
 				</p>
 				{/* TODO: add loader */}
 				{/* <Loader

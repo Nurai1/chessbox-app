@@ -1,6 +1,9 @@
-import { validatorConfigSingUp } from 'src/helpers/validation/validatorConfigSingUp'
+import { useValidatorConfigSingUp } from 'src/helpers/validation/validatorConfigSingUp'
 
-export const validatorConfigChangePassword = {
-	newPassword: validatorConfigSingUp.password,
-	passwordConfirm: validatorConfigSingUp.passwordConfirm
+export const useValidatorConfigChangePassword = () => {
+	const validatorConfigSingUp = useValidatorConfigSingUp()
+	return {
+		newPassword: validatorConfigSingUp.password,
+		passwordConfirm: validatorConfigSingUp.passwordConfirm
+	}
 }

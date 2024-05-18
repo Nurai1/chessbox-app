@@ -15,8 +15,10 @@ import {
 import { CompetitionGroupSchema, CompetitionGroupsOrders, CompetitionSchema } from 'src/types'
 import { Alert, BottomFixedContainer, Button, DragAndDropProvider, DragSortItem, RoundedBorderWrapper } from 'src/ui'
 import { twMerge } from 'tailwind-merge'
+import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
 
 export const OrdersToGroupAssignPage = (): ReactElement => {
+	const { t } = useOptionalTranslation()
 	const { competitionId } = useParams()
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
@@ -97,7 +99,7 @@ export const OrdersToGroupAssignPage = (): ReactElement => {
 	return (
 		<main className='container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]'>
 			<CompetitionCreateHeader
-				title='Assign orders to groups 3/4'
+				title={`${t('assignOrders')} 3/4`}
 				backArrowPath={`../${AppRoute.CreatePairs}`}
 				competitionData={competitionData}
 				judges={judges}
@@ -117,8 +119,9 @@ export const OrdersToGroupAssignPage = (): ReactElement => {
 								<DragIcon className='mr-5' />
 								<h3 className='mr-2 font-bold text-grey xl:text-2xl'>{i + 1}</h3>
 								<h3 className='font-bold xl:text-2xl'>
-									<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
-									{weightCategory?.from}-{weightCategory?.to}kg
+									<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} {t('years')},{' '}
+									{weightCategory?.from}-{weightCategory?.to}
+									{t('kg')}
 									{currentRoundPairs?.length && (
 										<span className='text-zinc-400'>
 											{' '}
@@ -134,14 +137,14 @@ export const OrdersToGroupAssignPage = (): ReactElement => {
 			<BottomFixedContainer classes='xl:pl-[7.5rem] xl:pr-[7.5rem]'>
 				<div className='flex flex-wrap gap-2.5'>
 					<Button type='outlined' onClick={handleBackClick}>
-						Previous step
+						{t('previousStep')}
 					</Button>
 					<Button
 						classes='min-w-[8rem] xl:min-w-[15.625rem]'
 						onClick={handleDoneClick}
 						loading={groupOrderAssignPending}
 					>
-						Done
+						{t('done')}
 					</Button>
 					{groupOrderAssignError && <Alert type='error' subtitle={groupOrderAssignError} />}
 				</div>

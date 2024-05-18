@@ -3,14 +3,18 @@ import { Link } from 'react-router-dom'
 import { omit } from 'remeda'
 import { AppRoute } from 'src/constants/appRoute'
 import { validator } from 'src/helpers/validation/validator'
-import { validatorConfigSingUp } from 'src/helpers/validation/validatorConfigSingUp'
+import { useValidatorConfigSingUp } from 'src/helpers/validation/validatorConfigSingUp'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { signUpUser } from 'src/store/slices/userSlice'
 import { SignUpDataSchema } from 'src/types'
 import { FormData } from 'src/types/formData'
 import { Alert, Button, Input, Select } from 'src/ui'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 export const SignUpForm = (): ReactElement => {
+	const { t } = useOptionalTranslation()
+	const validatorConfigSingUp = useValidatorConfigSingUp()
+
 	const [formData, setFormData] = useState<FormData>({
 		firstName: '',
 		lastName: '',
@@ -109,41 +113,41 @@ export const SignUpForm = (): ReactElement => {
 	return (
 		<main className='lex grow flex-col bg-pale-white py-[20px]'>
 			<form className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
-				<h1 className='mb-[8px] text-center text-heading-4'>Sign Up</h1>
+				<h1 className='mb-[8px] text-center text-heading-4'>{t('signUp')}</h1>
 				<div className='grid gap-[18px]'>
 					<Input
 						onChange={onMomentValidationChange}
 						value={formData?.email}
-						label='Email'
+						label={t('email')}
 						name='email'
-						placeholder='Enter Email'
+						placeholder={t('email')}
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.email}
 					/>
 					<Input
 						onChange={onMomentValidationChange}
 						value={formData?.firstName}
-						label='First Name'
+						label={t('firstName')}
 						name='firstName'
-						placeholder='Enter First Name'
+						placeholder={t('firstName')}
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.firstName}
 					/>
 					<Input
 						onChange={onMomentValidationChange}
 						value={formData?.lastName}
-						label='Last Name'
+						label={t('lastName')}
 						name='lastName'
-						placeholder='Enter Last Name'
+						placeholder={t('lastName')}
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.lastName}
 					/>
 					<Input
 						onChange={onChange}
 						value={formData?.weight?.toString()}
-						label='Weight'
+						label={t('weight')}
 						name='weight'
-						placeholder='Weight'
+						placeholder={t('weight')}
 						classes='h-[48px]'
 						type='number'
 						validationErrorText={validateErrors?.weight}
@@ -152,10 +156,10 @@ export const SignUpForm = (): ReactElement => {
 						chosenId={formData.gender}
 						onChange={onChange}
 						menuOptions={[
-							{ value: 'Man', id: 'man' },
-							{ value: 'Woman', id: 'woman' }
+							{ value: t('man'), id: 'man' },
+							{ value: t('woman'), id: 'woman' }
 						]}
-						label='Gender'
+						label={t('gender')}
 						placeholder='Select gender'
 						name='gender'
 						validationErrorText={validateErrors?.gender}
@@ -164,7 +168,7 @@ export const SignUpForm = (): ReactElement => {
 					<Input
 						onChange={onChange}
 						value={formData?.birthDate?.toString()}
-						label='Birthday'
+						label={t('birthday')}
 						name='birthDate'
 						placeholder='DD.MM.YYYY'
 						classes='h-[48px]'
@@ -173,45 +177,45 @@ export const SignUpForm = (): ReactElement => {
 					<Input
 						onChange={onChange}
 						value={formData?.fightClub}
-						label='Fight club'
+						label={t('fightClub')}
 						name='fightClub'
-						placeholder='Enter Fight Club'
+						placeholder='Fight Club'
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.fightClub}
 					/>
 					<Input
 						onChange={onChange}
 						value={formData?.country}
-						label='Country'
+						label={t('country')}
 						name='country'
-						placeholder='Enter Your country'
+						placeholder='Your country'
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.country}
 					/>
 					<Input
 						onChange={onChange}
 						value={formData?.city}
-						label='City'
+						label={t('city')}
 						name='city'
-						placeholder='Enter City'
+						placeholder={t('city')}
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.city}
 					/>
 					<Input
 						onChange={onChange}
 						value={formData?.chessPlatformUserName}
-						label='`Lichess` Username'
+						label={`'Lichess' ${t('username')}`}
 						name='chessPlatformUserName'
-						placeholder='Enter `Lichess` Username'
+						placeholder={`'Lichess' ${t('username')}`}
 						classes='h-[48px]'
 						validationErrorText={validateErrors?.chessPlatformUserName}
 					/>
 					<Input
 						onChange={onChange}
 						value={formData?.password}
-						label='Password'
+						label={t('password')}
 						name='password'
-						placeholder='Enter Password'
+						placeholder={t('password')}
 						classes='h-[48px]'
 						type={showPassword ? 'text' : 'password'}
 						validationErrorText={validateErrors?.password}
@@ -221,9 +225,9 @@ export const SignUpForm = (): ReactElement => {
 					<Input
 						onChange={onChange}
 						value={formData?.passwordConfirm}
-						label='Repeat Password'
+						label={t('repeatPassword')}
 						name='passwordConfirm'
-						placeholder='Repeat Password'
+						placeholder={t('repeatPassword')}
 						classes='h-[48px]'
 						type={showConfirmPassword ? 'text' : 'password'}
 						validationErrorText={validateErrors?.passwordConfirm}
@@ -232,22 +236,22 @@ export const SignUpForm = (): ReactElement => {
 					/>
 					{!!Object.keys(validateErrors).length && (
 						<div className='mt-2'>
-							<Alert subtitle='Check all fields for validation errors.' />
+							<Alert subtitle={t('validationErrorsAll')} />
 						</div>
 					)}
 					<Button loading={authLoading} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
-						Sign Up
+						{t('signUp')}
 					</Button>
 				</div>
 				<p className='mt-2 text-sm font-thin'>
-					Already have an account?{' '}
+					{t('haveAccount')}?{' '}
 					<Link to={`/${AppRoute.SignIn}`} className='underline transition hover:opacity-70'>
-						Sign In
+						{t('signIn')}
 					</Link>
 				</p>
 				{needCheckEmail && (
 					<div className='mt-2'>
-						<Alert type='info' subtitle='Please, check you email to confirm.' />
+						<Alert type='info' subtitle={t('checkEmailConfirm')} />
 					</div>
 				)}
 				{authError && (

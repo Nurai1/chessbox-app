@@ -1,7 +1,8 @@
 import { FC } from 'react'
-import { twMerge } from 'tailwind-merge'
-import { CompetitionGroupSchema } from 'src/types'
 import { ReactComponent as ArrowRightIcon } from 'src/assets/arrow-right.svg'
+import { CompetitionGroupSchema } from 'src/types'
+import { twMerge } from 'tailwind-merge'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type CompetitionResultListPropsType = {
 	competitionData: CompetitionGroupSchema[]
@@ -10,6 +11,7 @@ type CompetitionResultListPropsType = {
 }
 
 export const CompetitionResultList: FC<CompetitionResultListPropsType> = ({ competitionData, classes, onClick }) => {
+	const { t } = useOptionalTranslation()
 	return (
 		<div className={twMerge('grid gap-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4', classes)}>
 			{competitionData.map(group => (
@@ -21,10 +23,10 @@ export const CompetitionResultList: FC<CompetitionResultListPropsType> = ({ comp
 				>
 					<div className='text-left font-semibold xl:text-2xl'>
 						<p>
-							{group.ageCategory?.from} - {group.ageCategory?.to} age,
+							{group.ageCategory?.from} - {group.ageCategory?.to} {t('years')},
 						</p>
 						<p>
-							{group.weightCategory?.from} - {group.weightCategory?.to} kg
+							{group.weightCategory?.from} - {group.weightCategory?.to} {t('kg')}
 						</p>
 					</div>
 					<ArrowRightIcon className='mr-5 h-6 w-6 lg:mr-2 xl:h-8 xl:w-8' />

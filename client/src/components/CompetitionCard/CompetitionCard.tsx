@@ -20,6 +20,7 @@ import { CompetitionSchema } from 'src/types'
 import { Tag } from 'src/ui'
 import { useWindowSize } from 'usehooks-ts'
 import { getPriceText } from '../../helpers/getPriceText'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 import { setCompetitionData } from '../../store/slices/competitionSlice'
 
 type CompetitionPropsType = {
@@ -27,6 +28,7 @@ type CompetitionPropsType = {
 }
 
 export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
+	const { t } = useOptionalTranslation()
 	const navigate = useNavigate()
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const { startDate, registrationEndsAt, endDate, name, price, description, participants, _id } = competition
@@ -94,12 +96,11 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 				)}
 				{screenWidth >= BreakPoint.Xl && (
 					<div className='mt-4 flex flex-wrap gap-4 '>
-						{price?.currentValue && <Tag img={<Banknote className='max-5 mr-2' />} text={getPriceText(competition)} />}
+						{price?.currentValue && (
+							<Tag img={<Banknote className='max-5 mr-2' />} text={getPriceText(competition, t)} />
+						)}
 						{participants && (
-							<Tag
-								img={<Persons className='max-5' />}
-								text={`${participants.length} participant${participants.length === 1 ? '' : 's'} enrolled`}
-							/>
+							<Tag img={<Persons className='max-5' />} text={`${participants.length} ${t('participantsEnrolled')}`} />
 						)}
 					</div>
 				)}
@@ -114,11 +115,13 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 				<p className={`${style['competition-card_text-col-limit']} text-[#3A3A40]`}>{description}</p>
 				{screenWidth < BreakPoint.Xl && (
 					<div className='mt-4 flex flex-wrap gap-4 '>
-						{price?.currentValue && <Tag img={<Banknote className='max-5 mr-2' />} text={getPriceText(competition)} />}
+						{price?.currentValue && (
+							<Tag img={<Banknote className='max-5 mr-2' />} text={getPriceText(competition, t)} />
+						)}
 						{participants && (
 							<Tag
 								img={<Persons className='max-5 mr-2' />}
-								text={`${participants.length} participant${participants.length === 1 ? '' : 's'} enrolled`}
+								text={`${participants.length} ${t('participantsEnrolled')}`}
 							/>
 						)}
 					</div>
@@ -126,26 +129,26 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 			</div>
 			{showRegistrationEndsTimer && <RegistrationEndsTimer competitionData={competition} />}
 			{requestAwaitAcception && <RequestAwaitAcception />}
-			{showYouAreParticipant && <YouAreParticipant />}
+			{showYouAreParticipant && <YouAreParticipant classes='max-h-[9.375rem]' />}
 			{registrationClosed && (
 				<CompetitionInfo
-					title={<p className='lg:w-40'>Registration closed</p>}
+					title={<p className='lg:w-40'>{t('registrationClosed')}</p>}
 					img={<Hourglass className='h-7 w-7 lg:absolute lg:bottom-6 lg:right-6 lg:h-[2.375rem] lg:w-[2.375rem]' />}
 					classes='lg:max-h-[9.375rem]'
 				/>
 			)}
 			{isCompetitionOver && (
 				<CompetitionInfo
-					title={<p className='lg:w-[13rem]'>This competition is&nbsp;over</p>}
+					title={<p className='lg:w-[13rem]'>{t('competitionOver')}</p>}
 					img={<Place className='h-7 w-7 lg:absolute lg:bottom-6 lg:right-6 lg:h-[2.375rem] lg:w-[2.375rem]' />}
-					classes='lg:max-h-[9.375rem]'
+					classes='lg:max-h-[10.375rem]'
 					place={yourPlace}
 				/>
 			)}
 			{timeBeforeStart && (
 				<CompetitionCardTimer
 					competitionData={competition}
-					title={<span>Approximate time before&nbsp;start:</span>}
+					title={<span>{t('timeBeforeStart')}:</span>}
 					classes='mt-2'
 				/>
 			)}

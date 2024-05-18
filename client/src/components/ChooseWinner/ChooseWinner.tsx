@@ -10,6 +10,7 @@ import { ChooseWinnerType } from 'src/types'
 import { CheckboxAndRadioButton } from 'src/ui'
 import { twMerge } from 'tailwind-merge'
 import { getEnv } from '../../configEnv'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 const env = getEnv()
 
@@ -21,6 +22,7 @@ type ChooseWinnerPropsType = {
 }
 
 export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetitionPage, groupId, onChooseWinner }) => {
+	const { t } = useOptionalTranslation()
 	const { competitionId } = useParams()
 
 	const [winner, setWinner] = useState<Record<string, ChooseWinnerType>>()
@@ -94,7 +96,8 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 								<div className='truncate'>{pair?.whiteParticipantData?.chessPlatform?.username ?? '—'}</div>
 							</a>
 							<p className='text-xs xl:text-base'>
-								{getAge(pair.whiteParticipantData?.birthDate as string)} age, {pair.whiteParticipantData?.weight} kg
+								{getAge(pair.whiteParticipantData?.birthDate as string)} {t('years')},{' '}
+								{pair.whiteParticipantData?.weight} {t('kg')}
 							</p>
 							<p className='text-xs xl:text-base'>
 								{pair.whiteParticipantData?.address?.city}, {pair.whiteParticipantData?.address?.country}
@@ -154,7 +157,8 @@ export const ChooseWinner: FC<ChooseWinnerPropsType> = ({ pair, isJudgeCompetiti
 									<div className='truncate'>{pair?.blackParticipantData?.chessPlatform?.username ?? '—'}</div>
 								</a>
 								<p className='text-xs xl:text-base'>
-									{getAge(pair.blackParticipantData?.birthDate as string)} age, {pair.blackParticipantData?.weight} kg
+									{getAge(pair.blackParticipantData?.birthDate as string)} {t('years')},{' '}
+									{pair.blackParticipantData?.weight} {t('kg')}
 								</p>
 								<p className='text-xs xl:text-base'>
 									{pair.blackParticipantData?.address?.city}, {pair.blackParticipantData?.address?.country}

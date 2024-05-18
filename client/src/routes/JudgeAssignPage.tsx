@@ -15,6 +15,7 @@ import {
 import { updateCompetitionsListCompetition } from 'src/store/slices/competitionsSlice'
 import { CompetitionGroupSchema, CompetitionSchema, SetJudgesToPairsSchema } from 'src/types'
 import { Accordion, Alert, BottomFixedContainer, Button, Loader, RoundedBorderWrapper, TableBody } from 'src/ui'
+import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
 
 export type SelectedJudge = {
 	id: string
@@ -25,6 +26,7 @@ export type SelectedJudge = {
 }
 
 export const JudgeAssignPage = (): ReactElement => {
+	const { t } = useOptionalTranslation()
 	const { competitionId } = useParams()
 	const [selectedJudges, setSelectedJudges] = useState<SetJudgesToPairsSchema>()
 	const [groups, setGroups] = useState<CompetitionGroupSchema[] | undefined>()
@@ -185,7 +187,7 @@ export const JudgeAssignPage = (): ReactElement => {
 	return (
 		<main className='container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]'>
 			<CompetitionCreateHeader
-				title='Connect judges to pairs 4/4'
+				title={`${t('connectJudges')} 4/4`}
 				backArrowPath={`../${AppRoute.OrdersGroupAssign}`}
 				competitionData={competitionData}
 				judges={judges}
@@ -199,8 +201,9 @@ export const JudgeAssignPage = (): ReactElement => {
 							isOpenDefault
 							title={
 								<h3 className='font-bold xl:text-2xl [&:not(:first-child)]:border-t [&:not(:first-child)]:pt-[24px]'>
-									<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} age,{' '}
-									{weightCategory?.from}-{weightCategory?.to}kg
+									<span className='capitalize'>{gender}</span> {ageCategory?.from}-{ageCategory?.to} {t('years')},{' '}
+									{weightCategory?.from}-{weightCategory?.to}
+									{t('kg')}
 									{currentRoundPairs?.length && (
 										<span className='text-zinc-400'>
 											{' '}
@@ -218,7 +221,8 @@ export const JudgeAssignPage = (): ReactElement => {
 										judges,
 										groupId,
 										selectedJudges: selectedJudges?.judgesByGroups && selectedJudges?.judgesByGroups[i],
-										onSelect: handleJudgeSelect
+										onSelect: handleJudgeSelect,
+										t
 									})}
 								/>
 							) : (
@@ -231,7 +235,7 @@ export const JudgeAssignPage = (): ReactElement => {
 			<BottomFixedContainer classes='xl:pl-[7.5rem] xl:pr-[7.5rem]'>
 				<div className='flex flex-wrap gap-2.5'>
 					<Button type='outlined' onClick={handleBackClick}>
-						Previous step
+						{t('previousStep')}
 					</Button>
 					<Button
 						classes='min-w-[8rem] xl:min-w-[15.625rem]'
@@ -239,7 +243,7 @@ export const JudgeAssignPage = (): ReactElement => {
 						loading={setPairJudgesPending}
 						disabled={!!errorInfo}
 					>
-						Done
+						{t('done')}
 					</Button>
 					{setPairJudgesError && <Alert type='error' subtitle={setPairJudgesError} />}
 					{errorInfo && <Alert type='error' subtitle={errorInfo} />}

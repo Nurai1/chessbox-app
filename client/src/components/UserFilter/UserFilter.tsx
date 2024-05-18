@@ -1,6 +1,7 @@
-import { FC, useState, useEffect } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { FC, useEffect, useState } from 'react'
 import { CheckboxAndRadioButton, Input } from 'src/ui'
+import { twMerge } from 'tailwind-merge'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 export type UserFilterType = {
 	ageFrom?: number
@@ -26,6 +27,7 @@ type ValidationErrors = {
 }
 
 export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, setValidationError, classes }) => {
+	const { t } = useOptionalTranslation()
 	const [errors, setErrors] = useState<ValidationErrors>({
 		weightFrom: null,
 		weightTo: null,
@@ -51,17 +53,17 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, set
 
 		if (Number(inputValues[key1]) > value) {
 			setValidationError(true)
-			setErrors({ ...errors, [key1]: `${value} max value` })
+			setErrors({ ...errors, [key1]: `${value} ${t('minValue')}` })
 		}
 
 		if (Number(inputValues[key2]) > value) {
 			setValidationError(true)
-			setErrors({ ...errors, [key2]: `${value} max value` })
+			setErrors({ ...errors, [key2]: `${value} ${t('maxValue')}` })
 		}
 
 		if (inputValues[key2] && Number(inputValues[key1]) > Number(inputValues[key2])) {
 			setValidationError(true)
-			setErrors({ ...errors, [key2]: 'cannot be less than min value' })
+			setErrors({ ...errors, [key2]: t('lessMinValue') })
 		}
 
 		return null
@@ -77,12 +79,12 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, set
 	return (
 		<div className={twMerge('flex flex-col gap-[20px]', classes)}>
 			<div className='flex gap-[10px] pb-[10px]'>
-				<h3 className='min-w-[61px] text-sm font-bold'>Sex:</h3>
+				<h3 className='min-w-[61px] text-sm font-bold'>{t('sex')}:</h3>
 				<CheckboxAndRadioButton
 					onChange={onChange}
 					type='checkbox'
 					checked={inputValues.withMen}
-					title='Man'
+					title={t('man')}
 					name='withMen'
 					classes='mr-[10px]'
 				/>
@@ -90,17 +92,17 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, set
 					onChange={onChange}
 					type='checkbox'
 					checked={inputValues.withWomen}
-					title='Woman'
+					title={t('woman')}
 					name='withWomen'
 				/>
 			</div>
 			<div className='flex items-center gap-[10px]'>
-				<h3 className='min-w-[61px] text-sm font-bold'>Weight:</h3>
+				<h3 className='min-w-[61px] text-sm font-bold'>{t('weight')}:</h3>
 				<Input
 					onChange={onChange}
 					value={inputValues?.weightFrom?.toString()}
 					classes='mr-[7px] h-[48px]'
-					placeholder='Min'
+					placeholder={t('min')}
 					name='weightFrom'
 					type='number'
 					validationErrorText={errors.weightFrom}
@@ -109,19 +111,19 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, set
 					onChange={onChange}
 					value={inputValues?.weightTo?.toString()}
 					classes='h-[48px]'
-					placeholder='Max'
+					placeholder={t('max')}
 					name='weightTo'
 					type='number'
 					validationErrorText={errors.weightTo}
 				/>
 			</div>
 			<div className='flex items-center gap-[10px]'>
-				<h3 className='min-w-[61px] text-sm font-bold'>Age:</h3>
+				<h3 className='min-w-[61px] text-sm font-bold'>{t('age')}:</h3>
 				<Input
 					onChange={onChange}
 					value={inputValues?.ageFrom?.toString()}
 					classes='mr-[7px] h-[48px]'
-					placeholder='Min'
+					placeholder={t('min')}
 					name='ageFrom'
 					type='number'
 					validationErrorText={errors.ageFrom}
@@ -130,7 +132,7 @@ export const UserFilter: FC<UserFilterPropsType> = ({ onChange, inputValues, set
 					onChange={onChange}
 					value={inputValues?.ageTo?.toString()}
 					classes='h-[48px]'
-					placeholder='Max'
+					placeholder={t('max')}
 					name='ageTo'
 					type='number'
 					validationErrorText={errors.ageTo}

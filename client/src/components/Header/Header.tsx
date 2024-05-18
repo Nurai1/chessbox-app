@@ -97,7 +97,7 @@ export const Header = (): ReactElement => {
 										className='mr-6 font-bold transition hover:opacity-70'
 										style={activeLink}
 									>
-										Competitions
+										{t('competitions')}
 									</NavLink>
 									<NavLink
 										to={AppRoute.Rating}
@@ -107,7 +107,7 @@ export const Header = (): ReactElement => {
 										{t('rating')}
 									</NavLink>
 									<button onClick={handleLogOut} type='button' className='font-bold transition hover:opacity-70'>
-										Sign Out
+										{t('signOut')}
 									</button>
 								</>
 							)}

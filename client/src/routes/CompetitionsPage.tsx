@@ -1,16 +1,18 @@
 import { ReactElement, useEffect, useState } from 'react'
+import { CompetitionCard } from 'src/components'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { HorizontalTabs, Loader } from 'src/ui'
-import { fetchCompetitions } from 'src/store/slices/competitionsSlice'
 import {
 	activeCompetitionsSelector,
 	currentUserCompetitionsSelector,
 	expiredCompetitionsSelector
 } from 'src/store/selectors/competitions'
-import { CompetitionCard } from 'src/components'
+import { fetchCompetitions } from 'src/store/slices/competitionsSlice'
 import { CompetitionSchema } from 'src/types'
+import { HorizontalTabs, Loader } from 'src/ui'
+import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
 
 export const CompetitionsPage = (): ReactElement => {
+	const { t } = useOptionalTranslation()
 	const dispatch = useAppDispatch()
 	const { data: competitionData, loading: isLoading } = useAppSelector(state => state.competitions)
 	const [competitions, setCompetitions] = useState<{
@@ -53,7 +55,7 @@ export const CompetitionsPage = (): ReactElement => {
 						tabs={[
 							{
 								isActive: competitions.activeIndex === 0,
-								title: 'Active',
+								title: t('active'),
 								onClick: () => {
 									setCompetitions({
 										activeIndex: 0,
@@ -63,7 +65,7 @@ export const CompetitionsPage = (): ReactElement => {
 							},
 							{
 								isActive: competitions.activeIndex === 1,
-								title: 'My competitions',
+								title: t('myCompetitions'),
 								onClick: () => {
 									setCompetitions({
 										activeIndex: 1,
@@ -73,7 +75,7 @@ export const CompetitionsPage = (): ReactElement => {
 							},
 							{
 								isActive: competitions.activeIndex === 2,
-								title: 'Archive',
+								title: t('archive'),
 								onClick: () => {
 									setCompetitions({
 										activeIndex: 2,

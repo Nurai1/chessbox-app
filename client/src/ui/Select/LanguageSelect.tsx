@@ -6,11 +6,11 @@ import { Select } from './Select'
 
 export const LanguageSelect: FC<{ className?: string }> = ({ className }) => {
 	const { i18n } = useOptionalTranslation()
-
+	const chosenId = (i18n.language ?? i18n.resolvedLanguage)?.slice(0, 2)
 	return (
 		<div className={twMerge('w-[45px]', className)}>
 			<Select
-				chosenId={i18n.language}
+				chosenId={chosenId}
 				onChange={val => {
 					i18n.changeLanguage(val)
 				}}

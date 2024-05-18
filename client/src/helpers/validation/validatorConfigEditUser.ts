@@ -1,43 +1,48 @@
-export const validatorConfigEditUser = {
-	firstName: {
-		isRequired: {
-			errorMessage: 'First name is required'
-		}
-	},
-	lastName: {
-		isRequired: {
-			errorMessage: 'Second name is required'
-		}
-	},
-	weight: {
-		isRequired: {
-			errorMessage: 'Weight is required'
+import { t } from 'i18next'
+
+export const useValidatorConfigEditUser = () => {
+	const validatorConfigEditUser = {
+		firstName: {
+			isRequired: {
+				errorMessage: t('required')
+			}
 		},
-		isNumber: {
-			errorMessage: 'Weight must be a number'
+		lastName: {
+			isRequired: {
+				errorMessage: t('required')
+			}
 		},
-		maxWeight: {
-			errorMessage: '199 max value'
-		}
-	},
-	fightClub: {
-		isRequired: {
-			errorMessage: 'Fight Club is required'
-		}
-	},
-	country: {
-		isRequired: {
-			errorMessage: 'Country is required'
-		}
-	},
-	city: {
-		isRequired: {
-			errorMessage: 'City is required'
-		}
-	},
-	chessPlatformUserName: {
-		isRequired: {
-			errorMessage: '`Lichess` is required'
+		weight: {
+			isRequired: {
+				errorMessage: t('required')
+			},
+			isNumber: {
+				errorMessage: t('isNumber')
+			},
+			maxWeight: {
+				errorMessage: t('maxWeight')
+			}
+		},
+		fightClub: {
+			isRequired: {
+				errorMessage: t('required')
+			}
+		},
+		country: {
+			isRequired: {
+				errorMessage: t('required')
+			}
+		},
+		city: {
+			isRequired: {
+				errorMessage: t('required')
+			}
+		},
+		chessPlatformUserName: {
+			isRequired: {
+				errorMessage: t('required')
+			}
 		}
 	}
+	return validatorConfigEditUser
 }

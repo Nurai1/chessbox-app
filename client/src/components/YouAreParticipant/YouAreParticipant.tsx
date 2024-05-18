@@ -4,6 +4,7 @@ import { ReactComponent as TwoStarsIcon } from 'src/assets/two-stars.svg'
 import { Button } from 'src/ui'
 
 import { twMerge } from 'tailwind-merge'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type YouAreParticipantPropsType =
 	| {
@@ -18,6 +19,7 @@ type YouAreParticipantPropsType =
 	  }
 
 export const YouAreParticipant: FC<YouAreParticipantPropsType> = ({ onSideMenuOpen, isCompetitionPage, classes }) => {
+	const { t } = useOptionalTranslation()
 	return (
 		<div
 			className={twMerge(
@@ -39,12 +41,10 @@ export const YouAreParticipant: FC<YouAreParticipantPropsType> = ({ onSideMenuOp
 						isCompetitionPage ? 'mb-4 xl:text-heading-3' : 'lg:mb-3 lg:text-2xl lg:font-semibold'
 					} py-5 text-center font-bold lg:p-0 lg:text-left`}
 				>
-					You are <br className='hidden lg:inline' /> participant!
+					{t('youAre')} <br className='hidden lg:inline' /> {t('participant')}!
 				</h3>
 				{isCompetitionPage && (
-					<p className='text-center text-xs lg:text-left xl:text-base'>
-						Additional information will be published later
-					</p>
+					<p className='text-center text-xs lg:text-left xl:text-base'>{t('informationWillPublished')}</p>
 				)}
 				<ThreeStarsIcon
 					className={`${
@@ -66,9 +66,7 @@ export const YouAreParticipant: FC<YouAreParticipantPropsType> = ({ onSideMenuOp
 					} absolute left-0 top-4`}
 				/>
 				{!isCompetitionPage && (
-					<p className='text-center text-sm text-grey lg:max-w-[11rem] lg:text-left'>
-						Go to the competition page for details
-					</p>
+					<p className='text-center text-sm text-grey lg:max-w-[11rem] lg:text-left'>{t('goToPage')}</p>
 				)}
 			</div>
 
@@ -79,8 +77,7 @@ export const YouAreParticipant: FC<YouAreParticipantPropsType> = ({ onSideMenuOp
 						type='outlined'
 						classes='w-full lg:font-normal lg:text-sm lg:px-0 xl:text-base xl:font-bold'
 					>
-						Check out <span className='hidden xl:inline'>other</span>
-						participants
+						{t('checkParticipants')}
 					</Button>
 				</div>
 			)}

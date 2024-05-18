@@ -1,7 +1,8 @@
-import { FC, useState, useEffect, memo } from 'react'
+import { FC, memo, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { calcTime, getEndTime, getEndTimeBySeconds, isPast } from '../../helpers/datetime'
 import { addZero } from '../../helpers/addZero'
+import { calcTime, getEndTime, getEndTimeBySeconds, isPast } from '../../helpers/datetime'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type TimerPropsType = (
 	| {
@@ -31,6 +32,7 @@ const Timer: FC<TimerPropsType> = memo(
 		showDays = true,
 		handleTimeOver
 	}) => {
+		const { t } = useOptionalTranslation()
 		const [endTime, setEndTime] = useState<{
 			seconds: number
 			minutes: number
@@ -62,7 +64,7 @@ const Timer: FC<TimerPropsType> = memo(
 						clearInterval(timer)
 						return
 					}
-					setEndTime(t => calcTime({ time: t, perMinute: showDays }))
+					setEndTime(curTime => calcTime({ time: curTime, perMinute: showDays }))
 				},
 				showDays ? 60000 : 1000
 			)
@@ -89,7 +91,7 @@ const Timer: FC<TimerPropsType> = memo(
 							{endTime ? addZero(endTime.days.toString()) : '0'}
 						</span>
 						<span className={twMerge('block text-xs font-normal xl:mt-2 xl:text-sm', countLabelsClasses)}>
-							{endTime?.days === 1 ? 'day' : 'days'}
+							{endTime?.days === 1 ? t('day') : t('days')}
 						</span>
 					</li>
 				)}
@@ -108,7 +110,7 @@ const Timer: FC<TimerPropsType> = memo(
 						{endTime ? addZero(endTime.hours.toString()) : 0}
 					</span>
 					<span className={twMerge('block text-xs font-normal xl:mt-2 xl:text-sm', countLabelsClasses)}>
-						{endTime?.hours === 1 ? 'hour' : 'hours'}
+						{endTime?.hours === 1 ? t('hour') : t('hours')}
 					</span>
 				</li>
 				<li
@@ -126,7 +128,7 @@ const Timer: FC<TimerPropsType> = memo(
 						{endTime ? addZero(endTime.minutes.toString()) : 0}
 					</span>
 					<span className={twMerge('block text-xs font-normal xl:mt-2 xl:text-sm', countLabelsClasses)}>
-						{endTime?.minutes === 1 ? 'minute' : 'minutes'}
+						{endTime?.minutes === 1 ? t('minute') : t('minutes')}
 					</span>
 				</li>
 				{!showDays && (
@@ -145,7 +147,7 @@ const Timer: FC<TimerPropsType> = memo(
 							{endTime ? addZero(endTime.seconds.toString()) : '0'}
 						</span>
 						<span className={twMerge('block text-xs font-normal xl:mt-2 xl:text-sm', countLabelsClasses)}>
-							{endTime?.seconds === 1 ? 'second' : 'seconds'}
+							{endTime?.seconds === 1 ? t('second') : t('seconds')}
 						</span>
 					</li>
 				)}

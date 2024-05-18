@@ -12,6 +12,7 @@ import { Alert, Button, Input } from 'src/ui'
 import { AlertPropTypes } from 'src/ui/Alert/Alert'
 import { twMerge } from 'tailwind-merge'
 import { useWindowSize } from 'usehooks-ts'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type CompetitionPaymentPropsType = {
 	onClose: () => void
@@ -27,6 +28,7 @@ type AlertType = {
 let userInput = ''
 
 export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onClose, competitionDataProps }) => {
+	const { t } = useOptionalTranslation()
 	const [message, setMessage] = useState(userInput)
 	const [copyAlertData, setCopyAlertData] = useState<AlertType>({
 		type: 'success',
@@ -99,7 +101,7 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 				<ArrowLeftIcon className='w-[1.375rem]' />
 			</button>
 			{price && <p className=' text-grey'>{price}</p>}
-			<p>Transfer from Russia on bank account:</p>
+			<p>{t('transferAccount')}:</p>
 			<div className='grid gap-2'>
 				<div className='flex flex-col items-center justify-center gap-1'>
 					<span className='font-medium text-gray-500 lg:font-bold'>Расчетный счет(Р/С):</span>
@@ -139,7 +141,7 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 				</div>
 				<div className='flex items-center justify-center'>
 					<a href='/public/для оплаты.docx' download className='underline transition hover:opacity-70'>
-						Download additional info
+						{t('downloadInfo')}
 					</a>
 				</div>
 			</div>
@@ -151,9 +153,9 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 					loading={seTuserPaymentRequestToCheckPending}
 					disabled={currentUserRequestData?.requestedCount === 3}
 				>
-					Transferred!
+					{t('transferred')}!
 				</Button>
-				<p className='mt-2 text-center text-sm'>You can request check payment only 3 times.</p>
+				<p className='mt-2 text-center text-sm'>{t('warningCheckPayment')}.</p>
 				{currentUserRequestData?.requestedCount && currentUserRequestData.requestedCount < 3 && (
 					<p className='mt-2 text-center text-sm'>
 						You have requested <strong>{currentUserRequestData?.requestedCount}</strong> times
@@ -165,7 +167,7 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 					</p>
 				)}
 			</div>
-			<p className='text-center '>If you have any questions, please contact:</p>
+			<p className='text-center '>{t('haveQuestions')}:</p>
 			<div>
 				<a
 					href={`https://wa.me/${'+74957891500'}`}

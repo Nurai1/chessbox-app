@@ -44,8 +44,10 @@ import configEnv from '../configEnv'
 import { generateXlsx } from '../helpers/generateDocsFromDefinition'
 import { getPriceText } from '../helpers/getPriceText'
 import { getXlsxRowsForGroup } from '../helpers/getXlsxRowsForGroup'
+import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
 
 export const CompetitionPage = (): ReactElement => {
+	const { t } = useOptionalTranslation()
 	const dispatch = useAppDispatch()
 	const { competitionId } = useParams()
 	const currentUserPairRef = useRef<{ pair?: PairType; startTime: string }>()
@@ -69,7 +71,7 @@ export const CompetitionPage = (): ReactElement => {
 	const isCompetitionStartsWithinAnHour =
 		competitionData && isPast(subtractMinutes(competitionData.startDate, 60)) && !isCompetitionOver
 	const isCompetitionOnGoing = competitionData && isPast(competitionData.startDate) && !isCompetitionOver
-	const participantsTable = participants && tableSchemaParticipants(participants)
+	const participantsTable = participants && tableSchemaParticipants(participants, t)
 	const [isTimeOver, setIsTimeOver] = useState(competitionData && isPast(competitionData.startDate))
 	const [isRegistrationClosed, setIsRegistrationClosed] = useState(false)
 	const [resultModalData, setResultModalData] = useState<{ title: ReactNode; data: typeof participantsTable }>()
@@ -151,10 +153,10 @@ export const CompetitionPage = (): ReactElement => {
 				title: (
 					<>
 						Result <span className='capitalize'>{group?.gender}</span>, <br /> {group?.ageCategory?.from}-
-						{group?.ageCategory?.to} age, {group?.weightCategory?.from} - {group?.weightCategory?.to} kg
+						{group?.ageCategory?.to} {t('years')}, {group?.weightCategory?.from} - {group?.weightCategory?.to} {t('kg')}
 					</>
 				),
-				data: tableSchemaResults(resultParticipants as ParticipantSchema[])
+				data: tableSchemaResults(resultParticipants as ParticipantSchema[], t)
 			})
 		}
 	}
@@ -203,14 +205,12 @@ export const CompetitionPage = (): ReactElement => {
 								<p className='mb-[15px] text-sm text-grey xl:mb-[24px] xl:text-heading-3'>{dateStart}</p>
 								<div className='mb-[35px] flex flex-wrap gap-4 xl:mb-[64px]'>
 									{competitionData.price && (
-										<Tag img={<BanknoteIcon className='max-5 mr-2' />} text={getPriceText(competitionData)} />
+										<Tag img={<BanknoteIcon className='max-5 mr-2' />} text={getPriceText(competitionData, t)} />
 									)}
 									{competitionData.participants && (
 										<Tag
 											img={<PersonsIcon className='max-5 mr-2' />}
-											text={`${competitionData.participants.length} participant${
-												competitionData.participants.length === 1 ? '' : 's'
-											} enrolled`}
+											text={`${competitionData.participants.length} ${t('participantsEnrolled')}`}
 										/>
 									)}
 								</div>
@@ -259,10 +259,7 @@ export const CompetitionPage = (): ReactElement => {
 											type='outlined'
 											classes='w-full lg:font-normal lg:text-sm xl:text-base xl:font-bold'
 										>
-											<span>
-												Check out <span className='hidden xl:inline'>other</span>
-												&nbsp;participants
-											</span>
+											<span>{t('checkParticipants')}</span>
 										</Button>
 									</RegistrationEndsTimer>
 								)}
@@ -274,10 +271,7 @@ export const CompetitionPage = (): ReactElement => {
 												type='outlined'
 												onClick={handleSideMenuParticipantsOpen}
 											>
-												<span>
-													Check out <span className='hidden xl:inline'>other</span>
-													&nbsp;participants
-												</span>
+												<span>{t('checkParticipants')}</span>
 											</Button>
 										</div>
 									</RequestAwaitAcception>
@@ -293,7 +287,7 @@ export const CompetitionPage = (): ReactElement => {
 									<CompetitionInfo
 										title={
 											<span className='block lg:mt-2 lg:text-heading-4 xl:mt-0 xl:max-w-[15rem] xl:text-heading-3'>
-												Registration Closed
+												{t('registrationClosed')}
 											</span>
 										}
 										img={
@@ -321,7 +315,7 @@ export const CompetitionPage = (): ReactElement => {
 																	navigate(AppRoute.JudgeCompetition)
 																}}
 															>
-																To competition
+																{t('toCompetition')}
 															</Button>
 														</div>
 													)}
@@ -362,7 +356,7 @@ export const CompetitionPage = (): ReactElement => {
 															}
 														}}
 													>
-														Download olympic grid
+														{t('downloadOlympicGrid')}
 													</Button>
 												</div>
 											)}
@@ -390,7 +384,7 @@ export const CompetitionPage = (): ReactElement => {
 								)}
 							</div>
 							<div>
-								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>Description:</p>
+								<p className='mb-[8px] text-[#6C6A6C] xl:font-bold'>{t('description')}:</p>
 								<p className='mb-9'>{competitionData.description}</p>
 								{authorizedUser?.role === Role.ChiefJudge && !competitionData.chiefJudgeEndedConfiguration && (
 									<div className={`${!isRegistrationClosed && 'pointer-events-none opacity-30'}`}>
@@ -448,7 +442,7 @@ export const CompetitionPage = (): ReactElement => {
 								{!allGroupsPassed && competitionData.groups?.length !== 0 && participants && judges && (
 									<>
 										<h2 className='mb-[20px] text-xl font-medium md:mb-[34px] xl:text-4xl xl:font-bold'>
-											Competition schedule
+											{t('competitionSchedule')}
 										</h2>
 										<CompetitionParticipantsTable
 											competitionData={competitionData}
@@ -465,14 +459,16 @@ export const CompetitionPage = (): ReactElement => {
 							<>
 								{!!competitionResult?.man.length && (
 									<>
-										<h2 className='mb-4 text-heading-6 font-semibold xl:mb-7 xl:text-heading-2'>Results / Man</h2>
+										<h2 className='mb-4 text-heading-6 font-semibold xl:mb-7 xl:text-heading-2'>
+											{t('results')} / {t('man')}
+										</h2>
 										<CompetitionResultList competitionData={competitionResult.man} onClick={handleSideMenuResultOpen} />
 									</>
 								)}
 								{!!competitionResult?.woman.length && (
 									<>
 										<h2 className='mb-4 mt-7 text-heading-6 font-semibold xl:my-14 xl:mb-7 xl:text-heading-2'>
-											Results / Woman
+											{t('results')} / {t('woman')}
 										</h2>
 										<CompetitionResultList
 											competitionData={competitionResult.woman}
@@ -488,7 +484,7 @@ export const CompetitionPage = (): ReactElement => {
 			<Modal
 				isOpen={isSideMenuParticipantsOpen}
 				onClose={handleSideMenuParticipantsOpen}
-				title='Participants'
+				title={t('participants')}
 				modalType='sideMenu'
 				bottomGradient
 				content={

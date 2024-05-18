@@ -7,8 +7,11 @@ import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/compet
 import { acceptForFight } from 'src/store/slices/competitionSlice'
 import { Button, Timer } from 'src/ui'
 import { twMerge } from 'tailwind-merge'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
+// TODO: make it i18n internalization if add it again
 export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ currentPair }) => {
+	const { t } = useOptionalTranslation()
 	const { competitionId } = useParams()
 	const dispatch = useAppDispatch()
 
@@ -47,13 +50,13 @@ export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ cu
 					)}
 					{disqualified && (
 						<>
-							<h3 className='text-title xl:text-heading-3'>You are disqualified</h3>
+							<h3 className='text-title xl:text-heading-3'>{t('youDisqualified')}</h3>
 							<span className='text-caption lg:text-base'>
 								You are disqualified from competition because you missed start
 							</span>
 						</>
 					)}
-					{exeptedFight && <h3 className='text-title xl:text-heading-3'>You are in!</h3>}
+					{exeptedFight && <h3 className='text-title xl:text-heading-3'>{t('youIn')}!</h3>}
 				</div>
 				<div className='flex items-baseline lg:flex-col lg:gap-[20px]'>
 					{!exeptedFight && !disqualified && competitionData && (
@@ -96,7 +99,7 @@ export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ cu
 						rel='noreferrer'
 						className='mx-auto font-medium underline transition hover:opacity-70 xl:mt-6 xl:text-heading-4'
 					>
-						Link to Zoom
+						{t('linkToZoom')}
 					</a>
 				</div>
 			)}

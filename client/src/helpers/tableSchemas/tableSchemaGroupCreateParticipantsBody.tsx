@@ -1,7 +1,8 @@
 import { ParticipantSchema } from 'src/types'
 import { getAge } from 'src/helpers/datetime'
+import { TFunction } from 'src/hooks/useOptionalTranslation'
 
-export const tableSchemaGroupCreateParticipantsBody = (tableData: ParticipantSchema[]) => {
+export const tableSchemaGroupCreateParticipantsBody = (tableData: ParticipantSchema[], t: TFunction) => {
 	return tableData.map((user, i) => {
 		return {
 			cells: [
@@ -27,11 +28,19 @@ export const tableSchemaGroupCreateParticipantsBody = (tableData: ParticipantSch
 					}`
 				},
 				{
-					node: <span>{getAge(user.birthDate)} age</span>,
+					node: (
+						<span>
+							{getAge(user.birthDate)} {t('years')}
+						</span>
+					),
 					classes: `max-w-[6.5rem] px-2 py-2 min-h-[5.25rem] ${user.groupOverlap ? 'text-error-red' : 'text-black'}`
 				},
 				{
-					node: <span>{user.weight} kg</span>,
+					node: (
+						<span>
+							{user.weight} {t('kg')}
+						</span>
+					),
 					classes: `max-w-[6.5rem] px-2 py-2 min-h-[5.25rem] ${user.groupOverlap ? 'text-error-red' : 'text-black'}`
 				},
 				{
