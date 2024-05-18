@@ -1,17 +1,20 @@
 import { ReactElement, useState } from 'react'
-import { Link, useLocation, NavLink, useNavigate } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
-import { useWindowSize } from 'usehooks-ts'
-import { twMerge } from 'tailwind-merge'
-import { Burger, Modal } from 'src/ui'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { ReactComponent as Logo } from 'src/assets/logo.svg'
 import { UserMenu } from 'src/components/UserMenu'
-import { logout } from 'src/store/slices/userSlice'
-import { BreakPoint } from 'src/constants/breakPoints'
-import { AuthorizationStatus } from 'src/constants/authorizationStatus'
 import { AppRoute } from 'src/constants/appRoute'
+import { AuthorizationStatus } from 'src/constants/authorizationStatus'
+import { BreakPoint } from 'src/constants/breakPoints'
+import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
+import { logout } from 'src/store/slices/userSlice'
+import { Burger, Modal } from 'src/ui'
+import { twMerge } from 'tailwind-merge'
+import { useWindowSize } from 'usehooks-ts'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
+import { LanguageSelect } from '../../ui/Select/LanguageSelect'
 
 export const Header = (): ReactElement => {
+	const { t } = useOptionalTranslation()
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
 	const dispatch = useAppDispatch()
 	const { pathname } = useLocation()
@@ -51,10 +54,13 @@ export const Header = (): ReactElement => {
 					)}
 
 					{screenWidth < BreakPoint.Xl && (
-						<Burger classes={isRatingPage ? 'scale-75 translate-x-3' : ''} onClick={handleMenuOpen} />
+						<div className='flex items-center'>
+							<LanguageSelect className='mr-2' />
+							<Burger classes={isRatingPage ? 'scale-75 translate-x-3' : ''} onClick={handleMenuOpen} />
+						</div>
 					)}
 					{screenWidth >= BreakPoint.Xl && (
-						<div className={isRatingPage ? 'text-sm' : ''}>
+						<div className={twMerge('flex items-center', isRatingPage ? 'text-sm' : '')}>
 							{authorizationStatus === AuthorizationStatus.NoAuth && (
 								<>
 									<NavLink
@@ -62,17 +68,17 @@ export const Header = (): ReactElement => {
 										className='mr-6 font-bold transition hover:opacity-70'
 										style={activeLink}
 									>
-										Competitions
+										{t('competitions')}
 									</NavLink>
 									<NavLink
 										to={AppRoute.Rating}
 										className='mr-6 font-bold transition hover:opacity-70'
 										style={activeLink}
 									>
-										Rating
+										{t('rating')}
 									</NavLink>
 									<Link to={AppRoute.SignIn} className='font-bold transition hover:opacity-70'>
-										Sign In
+										{t('signIn')}
 									</Link>
 								</>
 							)}
@@ -84,7 +90,7 @@ export const Header = (): ReactElement => {
 										className='mr-6 font-bold transition hover:opacity-70'
 										style={activeLink}
 									>
-										Profile
+										{t('profile')}
 									</NavLink>
 									<NavLink
 										to={AppRoute.Competitions}
@@ -98,13 +104,14 @@ export const Header = (): ReactElement => {
 										className='mr-6 font-bold transition hover:opacity-70'
 										style={activeLink}
 									>
-										Rating
+										{t('rating')}
 									</NavLink>
 									<button onClick={handleLogOut} type='button' className='font-bold transition hover:opacity-70'>
 										Sign Out
 									</button>
 								</>
 							)}
+							<LanguageSelect className='ml-2' />
 						</div>
 					)}
 				</div>

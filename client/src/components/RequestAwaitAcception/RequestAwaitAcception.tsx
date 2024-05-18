@@ -22,7 +22,7 @@ export const RequestAwaitAcception: FC<RequestAwaitAcceptionPropsType> = ({ chil
 						!isCompetitionPage && 'xl:mr-auto xl:w-44'
 					)}
 				>
-					Your request has been accepted, please await confirmation. <br className='hidden lg:block' /> (about 2 days)
+					Your request to check payment has been accepted, please await confirmation.
 				</p>
 				{/* TODO: add loader */}
 				{/* <Loader
