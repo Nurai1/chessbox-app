@@ -1,6 +1,7 @@
 import { FC, useState } from 'react'
 import { useAppSelector } from 'src/hooks/redux'
 import { Button } from 'src/ui/Button'
+import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
 type CallUpButtonPropsType = {
 	onCallPairPreparation: () => void
@@ -12,6 +13,7 @@ type CallUpButtonPropsType = {
 export const CallUpButton: FC<CallUpButtonPropsType> = ({ onCallPairPreparation, breakTime, disable }) => {
 	const [isCallpairClicked, setIsCallpairClicked] = useState(false)
 	const { callPairPreparationPending, defineWinnerPending } = useAppSelector(s => s.competition)
+	const { t } = useOptionalTranslation()
 
 	return (
 		<Button
@@ -22,7 +24,7 @@ export const CallUpButton: FC<CallUpButtonPropsType> = ({ onCallPairPreparation,
 			disabled={breakTime || disable || callPairPreparationPending || defineWinnerPending}
 			loading={callPairPreparationPending && isCallpairClicked}
 		>
-			Start
+			{t('start')}
 		</Button>
 	)
 }

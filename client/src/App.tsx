@@ -24,6 +24,7 @@ import { UILibrary } from 'src/routes/UILibrary'
 import { VerifyPaymentPage } from 'src/routes/VerifyPaymentPage'
 import { checkAuth } from 'src/store/slices/userSlice'
 import { ConfirmationEmailPage } from './routes/ConfirmationEmailPage'
+import 'src/i18n/i18n'
 
 const App = () => {
 	const dispatch = useAppDispatch()
