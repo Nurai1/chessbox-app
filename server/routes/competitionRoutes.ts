@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { ACTIONS, RESOURCES } from '../constants';
+import { ACTIONS, MONGO_ENV, RESOURCES } from '../constants';
 import { CompetitionController, UserController } from '../controllers/index';
 import { allowIfLoggedin, grantAccess } from '../controllers/user.controller';
 import { controllerErrorHandler } from '../utils/controllerErrorHandler';
@@ -25,27 +25,6 @@ competitionRouter.get(
             schema: [{ $ref: '#/definitions/Competition' }]
     } */
   controllerErrorHandler(CompetitionController.getCompetitions)
-);
-
-competitionRouter.post(
-  '/competition',
-  // #swagger.description = 'Cоздавать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.'
-  /*	#swagger.requestBody = {
-          required: true,
-          content: {
-              "application/json": {
-                  schema: { $ref: "#/definitions/CompetitionBody" }
-              },
-          }
-      } 
-    */
-  /* #swagger.responses[200] = {
-            description: 'Competition successfully created.',
-            schema: { $ref: '#/definitions/Competition' }
-    } */
-  // UserController.allowIfLoggedin,
-  // UserController.grantAccessACTIONS.createAny, RESOURCES.COMPETITION),
-  controllerErrorHandler(CompetitionController.createCompetition)
 );
 
 competitionRouter.patch(
@@ -247,24 +226,59 @@ competitionRouter.patch(
   controllerErrorHandler(CompetitionController.setJudgesToPairs)
 );
 
-competitionRouter.patch(
-  '/competition/:id',
-  // #swagger.description = 'Редактировать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.'
-  /*	#swagger.requestBody = {
-          required: true,
-          content: {
-              "application/json": {
-                  schema: { $ref: "#/definitions/Competition" }
-              },
-          }
-      } 
-    */
-  /* #swagger.responses[200] = {
+// for developers only
+if (MONGO_ENV !== 'develop') {
+  competitionRouter.delete(
+    '/competition/:id',
+    // #swagger.description = 'Удалять смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.'
+    /* #swagger.responses[200] = {
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  controllerErrorHandler(CompetitionController.updateCompetition)
-);
+    controllerErrorHandler(CompetitionController.deleteCompetition)
+  );
+
+  competitionRouter.post(
+    '/competition',
+    // #swagger.description = 'Cоздавать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.'
+    /*	#swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: { $ref: "#/definitions/CompetitionBody" }
+                },
+            }
+        } 
+      */
+    /* #swagger.responses[200] = {
+              description: 'Competition successfully created.',
+              schema: { $ref: '#/definitions/Competition' }
+      } */
+    // UserController.allowIfLoggedin,
+    // UserController.grantAccessACTIONS.createAny, RESOURCES.COMPETITION),
+    controllerErrorHandler(CompetitionController.createCompetition)
+  );
+
+  competitionRouter.patch(
+    '/competition/:id',
+    // #swagger.description = 'Редактировать смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.'
+    /*	#swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: { $ref: "#/definitions/Competition" }
+                },
+            }
+        } 
+      */
+    /* #swagger.responses[200] = {
+              description: '',
+              schema: { $ref: '#/definitions/Competition' }
+      } */
+    controllerErrorHandler(CompetitionController.updateCompetition)
+  );
+}
+
 competitionRouter.patch(
   '/competition/:id/recalculatePairsTime',
   // #swagger.description = ''
@@ -394,16 +408,6 @@ competitionRouter.patch(
             schema: { $ref: '#/definitions/Competition' }
     } */
   controllerErrorHandler(CompetitionController.updateCompetitionZoomLink)
-);
-
-competitionRouter.delete(
-  '/competition/:id',
-  // #swagger.description = 'Удалять смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.'
-  /* #swagger.responses[200] = {
-            description: '',
-            schema: { $ref: '#/definitions/Competition' }
-    } */
-  controllerErrorHandler(CompetitionController.deleteCompetition)
 );
 
 competitionRouter.delete(

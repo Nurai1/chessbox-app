@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { ACTIONS, RESOURCES } from '../constants';
+import { ACTIONS, MONGO_ENV, RESOURCES } from '../constants';
 import { UserController } from '../controllers/index';
 import { createUser } from '../controllers/user.controller';
 import { controllerErrorHandler } from '../utils/controllerErrorHandler';
@@ -288,37 +288,6 @@ userRouter.get(
   controllerErrorHandler(UserController.getAllJudges)
 );
 
-userRouter.post(
-  '/user',
-  // #swagger.description = 'Для внутренних нужд разработчиков, не использовать в коде.'
-  /*	#swagger.requestBody = {
-          required: true,
-          content: {
-              "application/json": {
-                  schema: { 
-                    type: "object",
-                      properties: {
-                        password: {  
-                          type: "string",
-                        },
-                        user: {
-                          $ref: "#/definitions/UserBody"
-                        }
-                      },
-                      required: ["password", "user"]
-                    }
-                  }
-              },
-          }
-      } 
-    */
-  /* #swagger.responses[200] = {
-            description: '',
-            schema: { $ref: '#/definitions/User' }
-    } */
-  controllerErrorHandler(createUser)
-);
-
 userRouter.patch(
   '/user/currentUser',
   /* #swagger.security = [{
@@ -342,34 +311,68 @@ userRouter.patch(
   controllerErrorHandler(UserController.updateCurrentUser)
 );
 
-userRouter.patch(
-  '/user',
-  // #swagger.description = 'Для внутренних нужд разработчиков, не использовать в коде.'
-  /*	#swagger.requestBody = {
-          required: true,
-          content: {
-              "application/json": {
-                  schema: { $ref: "#/definitions/User" }
-              },
-          }
-      } 
-    */
-  /* #swagger.responses[200] = {
+// for developers only
+if (MONGO_ENV !== 'develop') {
+  userRouter.delete(
+    '/user/:id',
+    // #swagger.description = 'Для внутренних нужд разработчиков, не использовать в коде.'
+    /* #swagger.responses[200] = {
             description: '',
             schema: { $ref: '#/definitions/User' }
     } */
-  controllerErrorHandler(UserController.updateUser)
-);
+    controllerErrorHandler(UserController.deleteUser)
+  );
 
-userRouter.delete(
-  '/user/:id',
-  // #swagger.description = 'Для внутренних нужд разработчиков, не использовать в коде.'
-  /* #swagger.responses[200] = {
-            description: '',
-            schema: { $ref: '#/definitions/User' }
-    } */
-  controllerErrorHandler(UserController.deleteUser)
-);
+  userRouter.post(
+    '/user',
+    // #swagger.description = 'Для внутренних нужд разработчиков, не использовать в коде.'
+    /*	#swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: { 
+                      type: "object",
+                        properties: {
+                          password: {  
+                            type: "string",
+                          },
+                          user: {
+                            $ref: "#/definitions/UserBody"
+                          }
+                        },
+                        required: ["password", "user"]
+                      }
+                    }
+                },
+            }
+        } 
+      */
+    /* #swagger.responses[200] = {
+              description: '',
+              schema: { $ref: '#/definitions/User' }
+      } */
+    controllerErrorHandler(createUser)
+  );
+
+  userRouter.patch(
+    '/user',
+    // #swagger.description = 'Для внутренних нужд разработчиков, не использовать в коде.'
+    /*	#swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: { $ref: "#/definitions/User" }
+                },
+            }
+        } 
+      */
+    /* #swagger.responses[200] = {
+              description: '',
+              schema: { $ref: '#/definitions/User' }
+      } */
+    controllerErrorHandler(UserController.updateUser)
+  );
+}
 
 routerMockForSwaggerGenerator.use(
   '/api',

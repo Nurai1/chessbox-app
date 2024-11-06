@@ -6,6 +6,7 @@ import cors from 'cors';
 import jwt from 'jsonwebtoken';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as swaggerUi from 'swagger-ui-express';
+import { MONGO_ENV } from './constants';
 import { User } from './models/index';
 import {
   competitionDataRouter,
@@ -18,11 +19,6 @@ export const app = express();
 
 const { TokenExpiredError } = jwt;
 
-const remoteMongoUri = process.env.MONGO_URI;
-const mongoEnv = remoteMongoUri?.slice(
-  remoteMongoUri.lastIndexOf('mongodb.net/') + 'mongodb.net/'.length,
-  remoteMongoUri.lastIndexOf('?retryWrites=true&w=majority')
-);
 const { JWT_SECRET_KEY, ENVIRONMENT } = process.env;
 
 const PORT = Number(process.env.PORT) || 8080;
@@ -31,7 +27,9 @@ const HOST = ENVIRONMENT === 'development' ? 'localhost' : '0.0.0.0';
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-if (mongoEnv === 'copy' || mongoEnv === 'staging')
+const remoteMongoUri = process.env.MONGO_URI;
+
+if (MONGO_ENV === 'copy' || MONGO_ENV === 'staging')
   app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(
@@ -60,7 +58,7 @@ const { connection } = mongoose;
 connection.once('open', () => {
   console.log(
     'MongoDB database connection established successfully on mongo env: ',
-    mongoEnv
+    MONGO_ENV
   );
 });
 

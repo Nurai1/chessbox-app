@@ -29,3 +29,9 @@ export const NODEMAILER_TRANSPORT_CONFIG = {
     pass: process.env.SMTP_SERVICE_PASSKEY,
   },
 };
+
+const remoteMongoUri = process.env.MONGO_URI;
+export const MONGO_ENV = remoteMongoUri?.slice(
+  remoteMongoUri.lastIndexOf('mongodb.net/') + 'mongodb.net/'.length,
+  remoteMongoUri.lastIndexOf('?retryWrites=true&w=majority')
+);
