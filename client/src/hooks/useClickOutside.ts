@@ -6,7 +6,7 @@ export function useClickOutside({
 	modalOptions
 }: {
 	element: HTMLElement | null
-	onClick: () => void
+	onClick?: () => void
 	modalOptions?: { isModal: true; isModalOpen: boolean }
 }) {
 	const { isModal, isModalOpen } = modalOptions || {}
@@ -32,7 +32,7 @@ export function useClickOutside({
 
 		const documentClickHandler = () => {
 			if (!isElementTarget.current && !documentHandlerSkip.current) {
-				onClick()
+				onClick?.()
 			}
 
 			documentHandlerSkip.current = false

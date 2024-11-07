@@ -108,7 +108,7 @@ type SuccessAuth = {
 
 const initialState: UserState = {
 	data: null,
-	loading: true,
+	loading: false,
 	authLoading: false,
 	editLoading: false,
 	authorizationStatus: AuthorizationStatus.Unknown,
@@ -161,6 +161,7 @@ export const currentUserSlice = createSlice({
 		[fetchUserById.fulfilled.type]: (state, action: PayloadAction<UserSchema>) => {
 			state.loading = false
 			state.data = action.payload ?? null
+			state.authorizedUser = action.payload ?? null
 		},
 		[fetchUserById.pending.type]: state => {
 			state.loading = true

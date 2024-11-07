@@ -1,12 +1,12 @@
-import { ReactComponent as XmarkIcon } from 'src/assets/x-mark.svg'
-import { ReactComponent as XmarkIconBig } from 'src/assets/x-mark-big.svg'
-import { useClickOutside } from 'src/hooks/useClickOutside'
 import { FC, ReactElement, ReactNode, useEffect, useRef } from 'react'
+import { ReactComponent as XmarkIconBig } from 'src/assets/x-mark-big.svg'
+import { ReactComponent as XmarkIcon } from 'src/assets/x-mark.svg'
+import { useClickOutside } from 'src/hooks/useClickOutside'
 import { twMerge } from 'tailwind-merge'
 
 export const Modal: FC<{
 	isOpen: boolean
-	onClose: () => void
+	onClose?: () => void
 	content: ReactElement
 	title?: ReactNode
 	submitButton?: ReactElement
@@ -38,7 +38,7 @@ export const Modal: FC<{
 	useEffect(() => {
 		const onKeydown = (ev: KeyboardEvent) => {
 			if (isOpen && ev.key === 'Escape') {
-				onClose()
+				onClose?.()
 			}
 		}
 
@@ -66,14 +66,16 @@ export const Modal: FC<{
 						<div className='relative rounded-[15px] bg-white px-[18px] py-[25px] md:px-[40px]'>
 							<div className='mb-px flex min-h-[1.5rem]'>
 								{clearButton}
-								<button
-									type='button'
-									className='z-10 ml-auto focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white'
-									onClick={onClose}
-								>
-									<span className='sr-only'>Close</span>
-									<XmarkIcon onClick={onClose} className='transition hover:opacity-70' />
-								</button>
+								{onClose && (
+									<button
+										type='button'
+										className='z-10 ml-auto focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white'
+										onClick={onClose}
+									>
+										<span className='sr-only'>Close</span>
+										<XmarkIcon onClick={onClose} className='transition hover:opacity-70' />
+									</button>
+								)}
 							</div>
 
 							<h2 className='flex-center mt-[-27px] w-full text-2xl font-semibold leading-none text-gray-800'>

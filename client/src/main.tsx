@@ -1,11 +1,11 @@
-import { ErrorBoundary } from 'src/containers/ErrorBoundary'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { SpinnerSuspense } from 'src/ui'
-import App from 'src/App'
 import { Provider } from 'react-redux'
-import './index.css'
+import App from 'src/App'
+import { ErrorBoundary } from 'src/containers/ErrorBoundary'
 import { store } from 'src/store'
+import { SpinnerSuspense } from 'src/ui'
+import './index.css'
 
 const container = document.querySelector('#root')
 if (container) {

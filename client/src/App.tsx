@@ -4,6 +4,7 @@ import { PrivateRoute } from 'src/components/PrivateRoute'
 import { AppRoute } from 'src/constants/appRoute'
 import { Role } from 'src/constants/role'
 import { useAppDispatch } from 'src/hooks/redux'
+import 'src/i18n/i18n'
 import { MainLayout } from 'src/layouts'
 import { Route404 } from 'src/routes/404'
 import { ChangePasswordPage } from 'src/routes/ChangePasswordPage'
@@ -24,7 +25,6 @@ import { UILibrary } from 'src/routes/UILibrary'
 import { VerifyPaymentPage } from 'src/routes/VerifyPaymentPage'
 import { checkAuth } from 'src/store/slices/userSlice'
 import { ConfirmationEmailPage } from './routes/ConfirmationEmailPage'
-import 'src/i18n/i18n'
 
 const App = () => {
 	const dispatch = useAppDispatch()

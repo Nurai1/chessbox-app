@@ -151,17 +151,18 @@ export const signup = async (req: Request, res: Response) => {
     return res.status(500).send({ error: 'Email service has not sent email.' });
   }
 
-  setTimeout(async () => {
-    const user = await User.findOne({ email: userData.email });
-    if (user?.emailConfirmed) {
-      await User.findOneAndUpdate(
-        { email: userData.email },
-        { oneTimeCode: null }
-      );
-    } else {
-      await User.findOneAndDelete({ email: userData.email });
-    }
-  }, 600000);
+  // no need to delete user after 10 minutes, let this email with confirmation hold at email
+  // setTimeout(async () => {
+  //   const user = await User.findOne({ email: userData.email });
+  //   if (user?.emailConfirmed) {
+  //     await User.findOneAndUpdate(
+  //       { email: userData.email },
+  //       { oneTimeCode: null }
+  //     );
+  //   } else {
+  //     await User.findOneAndDelete({ email: userData.email });
+  //   }
+  // }, 600000);
 
   res.send(newUser);
 };
@@ -180,7 +181,9 @@ export const confirmEmail = async (req: Request, res: Response) => {
     return res.status(400).send({ error: 'Confirmation Code does not match.' });
   }
 
-  await User.findOneAndUpdate({ email }, { emailConfirmed: true });
+  user.emailConfirmed = true;
+  user.oneTimeCode = null;
+  await user.save();
 
   const accessToken = jwt.sign(
     { userId: user._id, hashedPassword: user.hashedPassword },
