@@ -1,18 +1,21 @@
 import { ReactElement, useEffect, useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { Header } from 'src/components'
+import { AppRoute } from '../../constants/appRoute'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
-import { fetchUserById } from '../../store/slices/userSlice'
+import { fetchUserById, logout } from '../../store/slices/userSlice'
 import { Button, Modal } from '../../ui'
 
 export const MainLayout = (): ReactElement => {
 	const { authorizedUser: user, loading: userLoading } = useAppSelector(state => state.user)
-	const [showI18nWarningModal, setShowI18nWarningModal] = useState(!localStorage.getItem('showedI18nWarningModal'))
 	const [showBlockEmailConfirmModal, setShowBlockEmailConfirmModal] = useState(false)
 	const dispatch = useAppDispatch()
+	const navigate = useNavigate()
 
 	useEffect(() => {
-		if (user && !user.emailConfirmed) {
+		// if user.emailConfirmed is undefined, it is an old user, whose email is not confirmed
+		// we check only new users
+		if (user && user.role === 'participant' && user.emailConfirmed === false) {
 			setShowBlockEmailConfirmModal(true)
 		} else if (user && user.emailConfirmed) {
 			setShowBlockEmailConfirmModal(false)
@@ -24,28 +27,6 @@ export const MainLayout = (): ReactElement => {
 			<Header />
 			<Outlet />
 			<Modal
-				isOpen={showI18nWarningModal}
-				onClose={() => {
-					setShowI18nWarningModal(false)
-					localStorage.setItem('showedI18nWarningModal', 'true')
-				}}
-				modalType='regular'
-				content={<div className='flex-center'>Вы можете менять язык справа сверху в приложении.</div>}
-				title='Русский язык появился!'
-				submitButton={
-					<Button
-						type='primary'
-						classes='w-full'
-						onClick={() => {
-							setShowI18nWarningModal(false)
-							localStorage.setItem('showedI18nWarningModal', 'true')
-						}}
-					>
-						Закрыть
-					</Button>
-				}
-			/>
-			<Modal
 				isOpen={showBlockEmailConfirmModal}
 				modalType='regular'
 				content={
@@ -56,16 +37,30 @@ export const MainLayout = (): ReactElement => {
 				}
 				title='Подтвердите почту'
 				submitButton={
-					<Button
-						type='primary'
-						classes='w-full'
-						loading={userLoading}
-						onClick={() => {
-							if (user?._id) dispatch(fetchUserById(user?._id))
-						}}
-					>
-						Подтвердил(а)
-					</Button>
+					<div className='flex flex-col gap-2'>
+						<Button
+							type='ghost'
+							classes='w-full'
+							loading={userLoading}
+							onClick={() => {
+								dispatch(logout())
+								setShowBlockEmailConfirmModal(false)
+								navigate(`/${AppRoute.SignIn}`)
+							}}
+						>
+							Выйти из аккаунта
+						</Button>
+						<Button
+							type='primary'
+							classes='w-full'
+							loading={userLoading}
+							onClick={() => {
+								if (user?._id) dispatch(fetchUserById(user?._id))
+							}}
+						>
+							Подтвердил(а)
+						</Button>
+					</div>
 				}
 			/>
 		</div>
