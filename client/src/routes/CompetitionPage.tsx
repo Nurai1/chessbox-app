@@ -9,6 +9,7 @@ import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
 import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
 
+import { title } from 'process'
 import {
 	CompetitionInfo,
 	CompetitionParticipantsTable,
@@ -119,11 +120,9 @@ export const CompetitionPage = (): ReactElement => {
 	}, [isSideMenuParticipantsOpen])
 
 	useEffect(() => {
-		if (currentUserPairRef) {
-			dispatch(fetchCompetitionParticipants(competitionId as string))
-		}
+		dispatch(fetchCompetitionParticipants(competitionId as string))
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentUserPairRef])
+	}, [])
 
 	useEffect(() => {
 		if (competitionData) {

@@ -3,9 +3,9 @@ import { findLastIndex } from 'remeda'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 import { ChooseWinner } from 'src/components'
 import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
+import { TFunction } from 'src/hooks/useOptionalTranslation'
 import { ChooseWinnerType, CompetitionSchema, PairSchema, UserSchema } from 'src/types'
 import { Button, CallUpButton } from 'src/ui'
-import { TFunction } from 'src/hooks/useOptionalTranslation'
 import { TIME_FOR_PAIR } from '../../constants/time'
 
 export type PairType = {
