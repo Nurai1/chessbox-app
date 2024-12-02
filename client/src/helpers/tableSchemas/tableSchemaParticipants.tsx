@@ -1,6 +1,6 @@
-import { UserSchema } from 'src/types'
 import { getAge } from 'src/helpers/datetime'
 import { TFunction } from 'src/hooks/useOptionalTranslation'
+import { UserSchema } from 'src/types'
 
 export const tableSchemaParticipants = (tableData: UserSchema[], t: TFunction) => {
 	return tableData.map(user => {
@@ -41,13 +41,36 @@ export const tableSchemaParticipants = (tableData: UserSchema[], t: TFunction) =
 	})
 }
 
+const getPlaceForTableSchemaResults = (index: number) => {
+	const place = index + 1
+	if (place === 1 || place === 2 || place === 3) {
+		return place
+	}
+	if (place === 4) {
+		return place - 1
+	}
+
+	const log2OfPlace = Math.log2(place)
+	const bottomPlace = Math.floor(log2OfPlace)
+	const topPlace = Math.ceil(log2OfPlace)
+
+	if (bottomPlace !== topPlace) {
+		return `${2 ** bottomPlace + 1} - ${2 ** topPlace}`
+	}
+
+	return `${2 ** (bottomPlace - 1) + 1} - ${2 ** topPlace}`
+}
 export const tableSchemaResults = (tableData: UserSchema[], t: TFunction) => {
 	return tableData.map((user, index) => {
 		return {
 			cells: [
 				{
-					node: <p className='max-w-[40px] text-sm font-medium text-black xl:text-base'>{index + 1}</p>,
-					classes: '!py-[13px] !grow-0'
+					node: (
+						<p className='whitespace-nowrap text-sm font-medium text-black xl:text-base'>
+							{getPlaceForTableSchemaResults(index)}
+						</p>
+					),
+					classes: '!py-[13px] !grow-0 min-w-[40px] flex justify-center'
 				},
 				{
 					node: (
