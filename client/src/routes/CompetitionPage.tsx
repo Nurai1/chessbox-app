@@ -9,7 +9,6 @@ import { ReactComponent as PersonsIcon } from 'src/assets/persons.svg'
 import { ReactComponent as Place } from 'src/assets/place.svg'
 import { ReactComponent as WarningIcon } from 'src/assets/warning.svg'
 
-import { title } from 'process'
 import {
 	CompetitionInfo,
 	CompetitionParticipantsTable,
