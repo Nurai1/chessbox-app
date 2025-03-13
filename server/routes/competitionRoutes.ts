@@ -227,7 +227,7 @@ competitionRouter.patch(
 );
 
 // for developers only
-if (MONGO_ENV !== 'develop') {
+if (MONGO_ENV !== 'main') {
   competitionRouter.delete(
     '/competition/:id',
     // #swagger.description = 'Удалять смогут только разработчики, будет удалено из апи перед релизом. Не использовать в коде.'
@@ -276,6 +276,19 @@ if (MONGO_ENV !== 'develop') {
               schema: { $ref: '#/definitions/Competition' }
       } */
     controllerErrorHandler(CompetitionController.updateCompetition)
+  );
+
+  competitionRouter.patch(
+    '/competition/:id/allUsersPaymentRequestToCheck',
+    // #swagger.description = 'Только для ускорения тестирования.'
+    /* #swagger.security = [{
+      "apiKeyAuth": []
+  }] */
+    /* #swagger.responses[200] = {
+            description: '',
+            schema: { $ref: '#/definitions/Competition' }
+    } */
+    controllerErrorHandler(CompetitionController.allUsersPaymentRequestToCheck)
   );
 }
 
@@ -554,24 +567,6 @@ competitionRouter.patch(
   grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
   controllerErrorHandler(CompetitionController.setCompetitionBreakTime)
 );
-
-if (
-  process.env.ENVIRONMENT === 'staging' ||
-  process.env.ENVIRONMENT === 'development'
-) {
-  competitionRouter.patch(
-    '/competition/:id/allUsersPaymentRequestToCheck',
-    // #swagger.description = 'Только для ускорения тестирования.'
-    /* #swagger.security = [{
-      "apiKeyAuth": []
-  }] */
-    /* #swagger.responses[200] = {
-            description: '',
-            schema: { $ref: '#/definitions/Competition' }
-    } */
-    controllerErrorHandler(CompetitionController.allUsersPaymentRequestToCheck)
-  );
-}
 
 competitionRouter.patch(
   '/competition/:id/setUserPaymentRequestToCheck/:userId',

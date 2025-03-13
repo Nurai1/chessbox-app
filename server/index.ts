@@ -29,8 +29,9 @@ app.use(express.urlencoded({ extended: true }));
 
 const remoteMongoUri = process.env.MONGO_URI;
 
-if (MONGO_ENV === 'copy' || MONGO_ENV === 'staging')
+if (MONGO_ENV !== 'main') {
   app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+}
 
 app.use(
   cors({

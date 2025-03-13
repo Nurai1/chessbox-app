@@ -1,17 +1,17 @@
-import { get, patch, post, del } from 'src/api/api'
+import { del, get, patch, post } from 'src/api/api'
 import {
+	AcceptPairFightBodySchema,
+	CallPairPreparationSchema,
+	CompetitionGroupSchema,
+	CompetitionGroupsOrdersSchema,
+	DefineWinnerSchema,
+	DeleteCompetitionGroupSchema,
+	LaunchNextGroupRoundApiSchema,
+	ParticipantsOrdersByGroupSchema,
+	SeTuserPaymentRequestToCheckApiSchema,
 	SetCompetitionJudgesSchema,
 	SetJudgesToPairsSchema,
-	CompetitionGroupsOrdersSchema,
-	CompetitionGroupSchema,
-	DeleteCompetitionGroupSchema,
-	CallPairPreparationSchema,
-	DefineWinnerSchema,
-	AcceptPairFightBodySchema,
-	LaunchNextGroupRoundApiSchema,
-	SeTuserPaymentRequestToCheckApiSchema,
-	SetUserPaymentPaidApiSchema,
-	ParticipantsOrdersByGroupSchema
+	SetUserPaymentPaidApiSchema
 } from 'src/types'
 
 export const getCompetitionsApi = async () => {

@@ -312,7 +312,7 @@ userRouter.patch(
 );
 
 // for developers only
-if (MONGO_ENV !== 'develop') {
+if (MONGO_ENV !== 'main') {
   userRouter.delete(
     '/user/:id',
     // #swagger.description = 'Для внутренних нужд разработчиков, не использовать в коде.'
