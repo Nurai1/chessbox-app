@@ -19,10 +19,10 @@ export const app = express();
 
 const { TokenExpiredError } = jwt;
 
-const { JWT_SECRET_KEY, ENVIRONMENT } = process.env;
+const { JWT_SECRET_KEY, IS_DOCKER } = process.env;
 
 const PORT = Number(process.env.PORT) || 8080;
-const HOST = ENVIRONMENT === 'development' ? 'localhost' : '0.0.0.0';
+const HOST = IS_DOCKER === 'false' ? 'localhost' : '0.0.0.0';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
