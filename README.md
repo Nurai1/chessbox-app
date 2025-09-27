@@ -10,6 +10,8 @@ Project in NodeJs, MongoDB, Express and React. It is the app for business that h
 
 ```bash
 gcloud auth login
+gcloud config set project my-project-1550874636271
+gcloud compute ssh instance-warsaw-chessbox --zone europe-central2-c
 gcloud auth configure-docker europe-north1-docker.pkg.dev
 docker login europe-north1-docker.pkg.dev
 ```
@@ -85,3 +87,11 @@ Restart gateway
 ```bash
 docker compose exec gateway nginx -s reload
 ```
+Old SSL INFO:
+For changing ssl keys:
+In certbot/conf/live/chessboxingfit.com change keys.
+
+Convert keys:
+cat certificate.crt ca_bundle.crt > fullchain.pem
+cp private.key privkey.pem
+
