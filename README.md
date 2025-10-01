@@ -58,7 +58,7 @@ docker compose push
 
 ## SSL
 
-To start the project with ssl you need to rebuild `gateway` service and setup `certbot`.
+To start the project with ssl you need to rebuild `gateway` service and add ssl certificate on virtual machine locally
 
 ### Start ssl mode
 
@@ -68,28 +68,11 @@ To start the project in ssl mode you need to set `MODE` variable and follow inst
 export MODE=ssl
 ```
 
-### Setup Cerbot
-
-Init a new cert (use it for a new project only)
-
-```bash
-sh setup-certbot.sh  # init new cert
-```
-
-Start cert renewal service
-
-```
-sh start-certbot.sh  # auto renewal
-```
-
 Restart gateway
 
 ```bash
 docker compose exec gateway nginx -s reload
 ```
-Old SSL INFO:
-For changing ssl keys:
-In certbot/conf/live/chessboxingfit.com change keys.
 
 Convert keys:
 cat certificate.crt ca_bundle.crt > fullchain.pem

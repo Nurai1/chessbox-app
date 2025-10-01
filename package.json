@@ -5,6 +5,7 @@
     "client-build": "cd client && pnpm build",
     "full": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "set-env": "source env.sh",
-    "connect": "ssh -L 9000:127.0.0.1:9000 felix@chessboxingfit.com"
+    "connect-old": "ssh -L 9000:127.0.0.1:9000 felix@chessboxingfit.com",
+    "connect": "gcloud compute ssh instance-warsaw-chessbox --zone europe-central2-c"
   }
 }

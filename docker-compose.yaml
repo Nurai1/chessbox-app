@@ -4,7 +4,7 @@ services:
   gateway:
     platform: linux/amd64
     container_name: gateway-${DENV:-dev}-${MODE:-http}
-    image: europe-north1-docker.pkg.dev/xenon-height-415204/chessboxingfit/gateway-${DENV:-dev}-${MODE:-http}
+    image: europe-north1-docker.pkg.dev/my-project-1550874636271/chessboxingfit/gateway-${DENV:-dev}-${MODE:-http}
     build: 
       context: ./gateway
       args:
@@ -14,8 +14,7 @@ services:
       - ${PROJECT_PORT:-8080}:80
       - ${PROJECT_SSL_PORT:-443}:443
     volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+      - /etc/ssl/chessboxingfit:/etc/ssl/chessboxingfit:ro
     depends_on:
       - client
       - server
@@ -25,7 +24,7 @@ services:
   client:
     platform: linux/amd64
     container_name: client-${DENV:-dev}
-    image: europe-north1-docker.pkg.dev/xenon-height-415204/chessboxingfit/client-${DENV:-dev}
+    image: europe-north1-docker.pkg.dev/my-project-1550874636271/chessboxingfit/client-${DENV:-dev}
     build: 
       context: ./client
     restart: always
@@ -35,7 +34,7 @@ services:
   server:
     platform: linux/amd64
     container_name: server-${DENV:-dev}
-    image: europe-north1-docker.pkg.dev/xenon-height-415204/chessboxingfit/server-${DENV:-dev}
+    image: europe-north1-docker.pkg.dev/my-project-1550874636271/chessboxingfit/server-${DENV:-dev}
     build: ./server
     restart: always
     environment:
