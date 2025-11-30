@@ -75,13 +75,16 @@ export const forgotPassword = async (req: Request, res: Response) => {
   if (!user)
     return res.status(404).send({ error: "User wasn't found by email" });
 
+  const resetLink = `${CLIENT_URL}/?email=${encodeURIComponent(
+    email
+  )}&passwordResetCode=${passwordResetCode}#/change-password`;
+
   const mailOptions = {
     from: SMTP_USER_OFFICIAL_MAIL,
     to: email,
     subject: 'Chessboxing Fit Online. Password Reset',
-    text: `Follow this link to reset your password: \n${CLIENT_URL}/?email=${encodeURIComponent(
-      email
-    )}&passwordResetCode=${passwordResetCode}#/change-password`,
+    text: `Follow this link to reset your password: \n${resetLink}`,
+    html: `<p>Follow this link to reset your password:</p><p><a href="${resetLink}">${resetLink}</a></p>`,
   };
 
   try {
@@ -135,13 +138,16 @@ export const signup = async (req: Request, res: Response) => {
     throw err;
   }
 
+  const confirmationLink = `${CLIENT_URL}/?email=${encodeURIComponent(
+    userData.email
+  )}&confirmationCode=${confirmationCode}#/email-confirmation`;
+
   const mailOptions = {
     from: SMTP_USER_OFFICIAL_MAIL,
     to: userData.email,
     subject: 'Chessboxing Fit Online. Confirm your email.',
-    text: `Follow this link to confirm your email: \n${CLIENT_URL}/?email=${encodeURIComponent(
-      userData.email
-    )}&confirmationCode=${confirmationCode}#/email-confirmation`,
+    text: `Follow this link to confirm your email: \n${confirmationLink}`,
+    html: `<p>Follow this link to confirm your email:</p><p><a href="${confirmationLink}">${confirmationLink}</a></p>`,
   };
 
   try {
