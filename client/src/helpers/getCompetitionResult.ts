@@ -1,5 +1,5 @@
-import { CompetitionSchema, CompetitionGroupSchema } from 'src/types'
 import { Gender } from 'src/constants/gender'
+import { CompetitionGroupSchema, CompetitionSchema } from 'src/types'
 
 type CompetitionResultType = {
 	[Gender.Woman]: CompetitionGroupSchema[]
@@ -7,7 +7,7 @@ type CompetitionResultType = {
 }
 
 export const getCompetitionResult = (competitionData: CompetitionSchema) => {
-	if (competitionData && competitionData.groups && competitionData.groups[0]?.results?.length !== 0) {
+	if (competitionData && competitionData.groups) {
 		return competitionData.groups?.reduce(
 			(acc, group) => {
 				if (group.gender === Gender.Woman) {
