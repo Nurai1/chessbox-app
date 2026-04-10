@@ -2,7 +2,6 @@ import { FC } from 'react'
 import { ReactComponent as Dumbbell } from 'src/assets/dumbbell.svg'
 import { ReactComponent as RookBlack } from 'src/assets/rook-black.svg'
 import { ReactComponent as RookWhite } from 'src/assets/rook-white.svg'
-import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 import { getAge } from 'src/helpers/datetime'
 import { PairType } from 'src/helpers/tableSchemas/tableSchemaJudgeToPairs'
 import { twMerge } from 'tailwind-merge'
@@ -50,13 +49,9 @@ export const PairInfo: FC<MatchInfoPropsType> = ({
 					{t('judge')}: {pairData?.judgeData?.fullName ?? '—'}
 				</p>
 				{pairData?.judgeData?.socialNetworks?.whatsup && (
-					<a
-						className='inline-flex items-center gap-[10px] text-xs text-[#6C6A6C] transition hover:opacity-70 xl:text-2xl xl:font-semibold'
-						href={`https://wa.me/${pairData?.judgeData?.socialNetworks?.whatsup}`}
-					>
-						{pairData?.judgeData?.socialNetworks?.whatsup}
-						<WhatsappIcon className='xl:min-w-9 h-[0.8125rem] w-[0.8125rem] lg:h-[1.125rem] lg:min-w-[1.125rem] xl:h-9' />
-					</a>
+					<div className='inline-flex items-center text-xs text-[#6C6A6C] xl:text-2xl xl:font-semibold'>
+						{t('phone')}: {pairData.judgeData?.socialNetworks?.whatsup}
+					</div>
 				)}
 			</div>
 			<div className='flex gap-x-3 overflow-hidden lg:w-[60%] lg:gap-x-6'>

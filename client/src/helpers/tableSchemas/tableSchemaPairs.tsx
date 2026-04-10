@@ -1,6 +1,5 @@
 import { MutableRefObject } from 'react'
 import { findLastIndex } from 'remeda'
-import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 import { ChooseWinner } from 'src/components'
 import { getTimeTuplePlusMinutes } from 'src/helpers/getTimeTuplePlusMinutes'
 import { TFunction } from 'src/hooks/useOptionalTranslation'
@@ -131,15 +130,12 @@ export const tableSchemaPairs = ({
 								{/* <p className='gri mb-[6px] text-base text-black xl:font-bold'>
 									{currentPairTime} ({localTZName})
 								</p> */}
-								<a
-									href={`https://wa.me/${pair.judgeData?.socialNetworks?.whatsup}`}
-									target='_blank'
-									rel='noreferrer'
-									className='inline-flex gap-[8px] text-xs transition hover:opacity-70 xl:text-base'
-								>
-									<WhatsappIcon className='h-4 w-4 xl:h-6 xl:w-6' />
+								<div className='inline-flex gap-[8px] text-xs xl:text-base'>
 									{t('judge')}: {pair.judgeData?.fullName}
-								</a>
+								</div>
+								<div className='inline-flex gap-[8px] text-xs transition xl:text-base'>
+									{t('phone')}: {pair.judgeData?.socialNetworks?.whatsup}
+								</div>
 							</div>
 							{inProgress && !isJudgeCompetitionPage && (
 								<div className={`uppercase text-[#FB9F16] ${statusStyle}`}>{t('inProgress')}</div>

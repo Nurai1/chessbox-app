@@ -27,6 +27,7 @@ export const EnDictionary = {
   points: 'Points',
   competitionSchedule: 'Competition schedule',
   judge: 'Judge',
+  phone: 'Phone',
   waiting: 'waiting',
   finished: 'finished',
   inProgress: 'in progress',

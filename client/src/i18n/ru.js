@@ -27,6 +27,7 @@ export const RuDictionary = {
   points: 'Очки',
   competitionSchedule: 'Расписание соревнования',
   judge: 'Судья',
+  phone: 'Номер',
   waiting: 'Ожидает',
   finished: 'Окончен',
   inProgress: 'Бой идет',
