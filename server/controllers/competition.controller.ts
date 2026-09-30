@@ -766,7 +766,9 @@ export const defineWinner = async (
         .map((gp) => ({
           userId: gp._id,
           placeNumber: gp.competitionsHistory?.find(
-            (gpHistPoint) => gpHistPoint.competitionId === competitionId
+            (gpHistPoint) =>
+              gpHistPoint.competitionId === competitionId &&
+              gpHistPoint.groupId === groupId
           )?.placeNumber as number,
         }))
         .sort((a, b) => (a.placeNumber ?? 0) - (b.placeNumber ?? 0));
