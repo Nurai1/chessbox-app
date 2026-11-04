@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { NavLink } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
+import { Role } from 'src/constants/role'
 import { useAppSelector } from 'src/hooks/redux'
 import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
@@ -23,6 +24,18 @@ export const UserMenu: FC<UserMenuPropsType> = ({ onLinkClick, onLogoutClick }) 
 						<span className='text-neutral-500'>{authorizedUser.email}</span>
 					</div>
 					<ul className='px-6 py-[1.875rem]'>
+						{authorizedUser.role === Role.Coach && (
+							<li className='py-2.5'>
+								<NavLink
+									to={`/${AppRoute.CoachParticipants}`}
+									className='py-1 transition hover:opacity-70'
+									style={activeLink}
+									onClick={onLinkClick}
+								>
+									{t('coachStudents')}
+								</NavLink>
+							</li>
+						)}
 						<li className='py-2.5'>
 							<NavLink
 								to={AppRoute.EditProfile}

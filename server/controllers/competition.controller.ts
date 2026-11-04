@@ -1,13 +1,20 @@
 import { Request, Response } from 'express';
 
+import { isValidObjectId } from 'mongoose';
 import nodemailer from 'nodemailer';
+import { z } from 'zod';
 import {
   NODEMAILER_TRANSPORT_CONFIG,
   SMTP_USER_OFFICIAL_MAIL,
 } from '../constants';
 import { Competition, User } from '../models/index';
-import { ICompetition, ICompetitionGroup, IPair } from '../types/index';
+import { ICompetition, ICompetitionGroup, IPair, IUser } from '../types/index';
 import { getPairsWithJudges } from '../utils/competition';
+import {
+  canRequestParticipantPayment,
+  fitsCompetitionRequirements,
+  isCompetitionRegistrationOpen,
+} from '../utils/competitionRegistration';
 import { getPairsAmountByParticipants } from '../utils/getPairsAmountByParticipants';
 import { getParticipantsAmountForCurrentRound } from '../utils/getParticipantsAmountForCurrentRound';
 import {
@@ -370,23 +377,31 @@ export const addNewParticipant = async (
   req: Request<{ id: string }, any, { userId: string }>,
   res: Response
 ) => {
-  if (!req.body?.userId && !req.params?.id) return res.sendStatus(400);
+  if (!isValidObjectId(req.body?.userId) || !isValidObjectId(req.params.id)) {
+    return res
+      .status(400)
+      .send({ error: 'Invalid competition or participant ID.' });
+  }
   const { userId } = req.body;
 
   const competition = await Competition.findOne({ _id: req.params.id });
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
 
-  const user = await User.findOne({ _id: userId });
-  if (!user) return res.status(404).send({ error: "user wasn't found" });
-
-  if (competition && user) {
-    user.save();
-
-    competition.participants = [...competition.participants, user._id];
-    await competition.save();
+  const payment = competition.usersPaymentInfo?.find(
+    (info) => info.userId.toString() === userId
+  );
+  if (!payment?.paid) {
+    return res.status(409).send({
+      error: 'Payment must be approved before admitting a participant.',
+    });
   }
-  res.send(competition);
+  const updatedCompetition = await Competition.findByIdAndUpdate(
+    req.params.id,
+    { $addToSet: { participants: userId } },
+    { new: true }
+  );
+  return res.send(updatedCompetition);
 };
 
 export const callPairPreparation = async (
@@ -994,12 +1009,42 @@ export const setUserPaymentRequestToCheck = async (
   res: Response
 ) => {
   const { id, userId } = req.params;
-  const { message } = req.body;
+  if (!isValidObjectId(id) || !isValidObjectId(userId)) {
+    return res
+      .status(400)
+      .send({ error: 'Invalid competition or participant ID.' });
+  }
+  const parsed = z
+    .object({ message: z.string().optional() })
+    .safeParse(req.body ?? {});
+  if (!parsed.success) {
+    return res.status(400).send({ error: 'Invalid payment request message.' });
+  }
+  const { message } = parsed.data;
+  const user = await User.findById(userId);
+  if (!user)
+    return res.status(404).send({ error: 'Participant was not found.' });
+  if (!canRequestParticipantPayment(res.locals.loggedInUser as IUser, user)) {
+    return res.status(403).send({
+      error: 'You can only register yourself or participants you created.',
+    });
+  }
 
   const competition = await Competition.findOne({ _id: id });
 
   if (!competition)
     return res.status(404).send({ error: "Competition wasn't found" });
+
+  if (!isCompetitionRegistrationOpen(competition)) {
+    return res
+      .status(400)
+      .send({ error: 'Registration for this competition is closed.' });
+  }
+  if (!fitsCompetitionRequirements(competition, user)) {
+    return res.status(400).send({
+      error: 'The participant does not meet the competition requirements.',
+    });
+  }
 
   const requestUserPayInfo = competition.usersPaymentInfo?.find(
     (p) => p.userId.toString() === userId
@@ -1007,35 +1052,78 @@ export const setUserPaymentRequestToCheck = async (
 
   const requestedCount = requestUserPayInfo?.requestedCount ?? 0;
 
+  // Repeated clicks must not consume attempts or reset an approved payment.
+  if (
+    requestUserPayInfo?.paid ||
+    requestUserPayInfo?.requestedToCheck ||
+    competition.participants.some(
+      (participant) => participant.toString() === userId
+    )
+  ) {
+    return res.send(competition);
+  }
+
   if (requestedCount >= 3) {
     return res.status(400).send({
       error:
         'You requested to check a payment more than 3 times. You can not participate in the competition.',
     });
   }
-  if (requestUserPayInfo) {
-    requestUserPayInfo.requestedToCheck = true;
-    requestUserPayInfo.paid = false;
-    requestUserPayInfo.requestedCount = requestedCount + 1;
-    requestUserPayInfo.message = message;
-  } else {
-    const newUserPayInfo = {
-      userId,
-      paid: false,
-      requestedToCheck: true,
-      requestedCount: 1,
-      message,
-    };
-    competition.usersPaymentInfo = competition.usersPaymentInfo
-      ? [...competition.usersPaymentInfo, newUserPayInfo]
-      : [newUserPayInfo];
+  const updatedCompetition = requestUserPayInfo
+    ? await Competition.findOneAndUpdate(
+        {
+          _id: id,
+          usersPaymentInfo: {
+            $elemMatch: {
+              userId,
+              paid: { $ne: true },
+              requestedToCheck: { $ne: true },
+              requestedCount,
+            },
+          },
+        },
+        {
+          $set: {
+            'usersPaymentInfo.$.requestedToCheck': true,
+            'usersPaymentInfo.$.message': message ?? '',
+          },
+          $inc: { 'usersPaymentInfo.$.requestedCount': 1 },
+        },
+        { new: true }
+      )
+    : await Competition.findOneAndUpdate(
+        {
+          _id: id,
+          usersPaymentInfo: { $not: { $elemMatch: { userId } } },
+        },
+        {
+          $push: {
+            usersPaymentInfo: {
+              userId,
+              paid: false,
+              requestedToCheck: true,
+              requestedCount: 1,
+              message,
+            },
+          },
+        },
+        { new: true }
+      );
+
+  if (!updatedCompetition) {
+    const currentCompetition = await Competition.findById(id);
+    const currentPayment = currentCompetition?.usersPaymentInfo?.find(
+      (info) => info.userId.toString() === userId
+    );
+    if (currentPayment?.paid || currentPayment?.requestedToCheck) {
+      return res.send(currentCompetition);
+    }
+    return res.status(409).send({
+      error: 'Registration changed. Refresh the competition and try again.',
+    });
   }
 
-  await competition.save();
-
-  res.send(competition);
-
-  const user = await User.findOne({ _id: userId });
+  res.send(updatedCompetition);
 
   const transporter = nodemailer.createTransport(NODEMAILER_TRANSPORT_CONFIG);
 
@@ -1087,7 +1175,14 @@ export const setUserPaymentPaid = async (
   res: Response
 ) => {
   const { id, userId } = req.params;
-  const { paid } = req.body;
+  const paid = req.body?.paid;
+  if (
+    !isValidObjectId(id) ||
+    !isValidObjectId(userId) ||
+    typeof paid !== 'boolean'
+  ) {
+    return res.status(400).send({ error: 'Invalid payment confirmation.' });
+  }
 
   const competition = await Competition.findOne({ _id: id });
 
@@ -1102,12 +1197,35 @@ export const setUserPaymentPaid = async (
     return res.status(404).send({ error: "User Pay Info wasn't found" });
   }
 
-  paidUserPayInfo.requestedToCheck = paid;
-  paidUserPayInfo.paid = paid;
+  if (paidUserPayInfo.paid) {
+    return paid
+      ? res.send(competition)
+      : res
+          .status(409)
+          .send({ error: 'This participant has already been admitted.' });
+  }
 
-  await competition.save();
-
-  res.send(competition);
+  // Payment approval and admission are one atomic change to the competition.
+  const updatedCompetition = await Competition.findOneAndUpdate(
+    {
+      _id: id,
+      usersPaymentInfo: { $elemMatch: { userId, paid: { $ne: true } } },
+    },
+    {
+      $set: {
+        'usersPaymentInfo.$.paid': paid,
+        'usersPaymentInfo.$.requestedToCheck': false,
+      },
+      ...(paid ? { $addToSet: { participants: userId } } : {}),
+    },
+    { new: true }
+  );
+  if (!updatedCompetition) {
+    return res
+      .status(409)
+      .send({ error: 'Payment status changed. Refresh the competition.' });
+  }
+  return res.send(updatedCompetition);
 };
 
 export const getCompetitionPaymentInfoUsers = async (

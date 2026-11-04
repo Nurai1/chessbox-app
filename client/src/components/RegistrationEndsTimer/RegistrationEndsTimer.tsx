@@ -32,12 +32,16 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 	const { authorizedUser } = useAppSelector(state => state.user)
 	const navigate = useNavigate()
 	const { width: screenWidth } = useWindowSize()
+	const isCoach = authorizedUser?.role === Role.Coach
 
-	const fitCompetitionParametersCheck = checkParticipantFitRequirements(competitionData, authorizedUser as UserSchema)
+	const fitCompetitionParametersCheck =
+		!isCoach && checkParticipantFitRequirements(competitionData, authorizedUser as UserSchema)
 
 	const handleParticipateClick = () => {
 		if (!authorizedUser) {
 			navigate(`/${AppRoute.SignIn}`)
+		} else if (isCoach) {
+			navigate(`/${AppRoute.CoachParticipants}?competitionId=${competitionData._id}`)
 		} else {
 			setIsModalOpen(true)
 		}
@@ -93,7 +97,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 								classes={`${isCompetitonPage ? 'md:w-full' : 'w-full mt-5 2xl:mt-[1.625rem]'}`}
 								disabled={!!fitCompetitionParametersCheck}
 							>
-								{t('participate')}
+								{t(isCoach ? 'coachRegisterStudents' : 'participate')}
 							</Button>
 							{children}
 						</div>

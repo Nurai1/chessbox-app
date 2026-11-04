@@ -4,6 +4,7 @@ export const AppRoute = {
 	Competitions: 'competitions',
 	Competition: ':competitionId',
 	Rating: 'rating',
+	CoachParticipants: 'coach/participants',
 	SignUp: 'signup',
 	SignIn: 'signin',
 	EditProfile: 'edit-profile',

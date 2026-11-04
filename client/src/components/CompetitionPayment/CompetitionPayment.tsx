@@ -3,6 +3,7 @@ import { ReactComponent as ArrowLeftIcon } from 'src/assets/arrow-left.svg'
 import { ReactComponent as CopyIcon } from 'src/assets/copy.svg'
 import { ReactComponent as WhatsappIcon } from 'src/assets/whatsapp.svg'
 import { BreakPoint } from 'src/constants/breakPoints'
+import { MAX_PAYMENT_REQUEST_COUNT } from 'src/constants/maxRequestCount'
 import { copyToClipboard } from 'src/helpers/copyToClipboard'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { seTuserPaymentRequestToCheck } from 'src/store/slices/competitionSlice'
@@ -151,21 +152,23 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 					onClick={handleSubmit}
 					classes='text-base w-full'
 					loading={seTuserPaymentRequestToCheckPending}
-					disabled={currentUserRequestData?.requestedCount === 3}
+					disabled={Boolean(
+						currentUserRequestData?.paid ||
+							currentUserRequestData?.requestedToCheck ||
+							(currentUserRequestData?.requestedCount ?? 0) >= MAX_PAYMENT_REQUEST_COUNT
+					)}
 				>
 					{t('transferred')}!
 				</Button>
 				<p className='mt-2 text-center text-sm'>{t('warningCheckPayment')}.</p>
-				{currentUserRequestData?.requestedCount && currentUserRequestData.requestedCount < 3 && (
+				{currentUserRequestData?.requestedCount && currentUserRequestData.requestedCount < MAX_PAYMENT_REQUEST_COUNT && (
 					<p className='mt-2 text-center text-sm'>
 						You have requested <strong>{currentUserRequestData?.requestedCount}</strong> times
 					</p>
 				)}
-				{currentUserRequestData?.requestedCount === 3 && (
-					<p className='mt-2 text-center text-sm'>
-						You requested to check a payment more than 3 times. You can not participate in the competition.
-					</p>
-				)}
+				{currentUserRequestData?.requestedCount === MAX_PAYMENT_REQUEST_COUNT &&
+					!currentUserRequestData.requestedToCheck &&
+					!currentUserRequestData.paid && <p className='mt-2 text-center text-sm'>{t('coachRequestLimit')}</p>}
 			</div>
 			<p className='text-center '>{t('haveQuestions')}:</p>
 			<div>

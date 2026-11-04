@@ -54,7 +54,7 @@ export const tableSchemaPaymentCheck = ({
 										{userData?.address?.city}, {userData?.address?.country}
 									</p>
 								</div>
-								{requestedCount && requestedCount < MAX_PAYMENT_REQUEST_COUNT && (
+								{requestedCount && requestedCount <= MAX_PAYMENT_REQUEST_COUNT && (
 									<div>
 										{handleAcceptPaymentTrue && (
 											<Button

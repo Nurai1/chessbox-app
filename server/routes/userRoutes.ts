@@ -1,12 +1,42 @@
 import express from 'express';
 
-import { ACTIONS, MONGO_ENV, RESOURCES } from '../constants';
+import { ACTIONS, MONGO_ENV, RESOURCES, ROLES } from '../constants';
+import {
+  createCoachParticipant,
+  getCoachParticipants,
+} from '../controllers/coach.controller';
+import { requireRole } from '../utils/requireRole';
 import { UserController } from '../controllers/index';
 import { createUser } from '../controllers/user.controller';
 import { controllerErrorHandler } from '../utils/controllerErrorHandler';
 import { routerMockForSwaggerGenerator } from '../utils/routerMockForSwaggerGenerator';
 
 export const userRouter = express.Router();
+
+userRouter.get(
+  '/coach/participants',
+  // #swagger.description = 'Participants created by the authenticated coach.'
+  /* #swagger.security = [{ "apiKeyAuth": [] }] */
+  /* #swagger.responses[200] = { schema: [{ $ref: '#/definitions/User' }] } */
+  UserController.allowIfLoggedin,
+  requireRole(ROLES.COACH),
+  controllerErrorHandler(getCoachParticipants)
+);
+
+userRouter.post(
+  '/coach/participants',
+  // #swagger.description = 'Create a participant without email confirmation. The coach session is preserved.'
+  /* #swagger.security = [{ "apiKeyAuth": [] }] */
+  /* #swagger.requestBody = {
+    required: true,
+    content: { "application/json": { schema: { $ref: '#/definitions/CoachParticipantInput' } } }
+  } */
+  /* #swagger.responses[201] = { schema: { $ref: '#/definitions/User' } } */
+  /* #swagger.responses[409] = { schema: { error: 'An account with this email already exists.' } } */
+  UserController.allowIfLoggedin,
+  requireRole(ROLES.COACH),
+  controllerErrorHandler(createCoachParticipant)
+);
 
 userRouter.post(
   '/signup',
@@ -320,6 +350,8 @@ if (MONGO_ENV !== 'main') {
             description: '',
             schema: { $ref: '#/definitions/User' }
     } */
+    UserController.allowIfLoggedin,
+    requireRole(ROLES.CHIEF_JUDGE),
     controllerErrorHandler(UserController.deleteUser)
   );
 
@@ -351,6 +383,8 @@ if (MONGO_ENV !== 'main') {
               description: '',
               schema: { $ref: '#/definitions/User' }
       } */
+    UserController.allowIfLoggedin,
+    requireRole(ROLES.CHIEF_JUDGE),
     controllerErrorHandler(createUser)
   );
 
@@ -370,6 +404,8 @@ if (MONGO_ENV !== 'main') {
               description: '',
               schema: { $ref: '#/definitions/User' }
       } */
+    UserController.allowIfLoggedin,
+    requireRole(ROLES.CHIEF_JUDGE),
     controllerErrorHandler(UserController.updateUser)
   );
 }

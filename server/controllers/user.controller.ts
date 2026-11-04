@@ -15,11 +15,11 @@ import { User } from '../models/index';
 import ac from '../roles';
 import { IUser } from '../types/index';
 import { getUTCFormattedDate } from '../utils/datetime';
-import { errorUniqueCheck } from '../utils/errors';
 import {
   CreateUserParser,
   emailParser,
   passwordParser,
+  UpdateProfileParser,
 } from '../utils/validation';
 
 const transporter = nodemailer.createTransport(NODEMAILER_TRANSPORT_CONFIG);
@@ -106,17 +106,16 @@ export const forgotPassword = async (req: Request, res: Response) => {
 };
 
 export const signup = async (req: Request, res: Response) => {
-  const { password, ...userData } = req.body;
-
   const userValidRes = CreateUserParser.safeParse(req.body);
 
   if (!userValidRes.success) {
-    res.status(400).send({
+    return res.status(400).send({
       error: 'Validation Error. Some fields do not match requirements.',
       issues: userValidRes.error.issues,
     });
   }
 
+  const { password, ...userData } = userValidRes.data;
   const hashedPassword = await hashPassword(password);
   const confirmationCode = Math.floor(Math.random() * 9000 + 1000);
 
@@ -133,8 +132,11 @@ export const signup = async (req: Request, res: Response) => {
   try {
     await newUser.save();
   } catch (err: any) {
-    errorUniqueCheck({ err, res });
-
+    if (err.code === 11000) {
+      return res
+        .status(409)
+        .send({ error: 'An account with this email already exists.' });
+    }
     throw err;
   }
 
@@ -450,36 +452,23 @@ export const deleteUser = async (req: Request, res: Response) => {
 };
 
 export const updateCurrentUser = async (req: Request, res: Response) => {
-  if (!req.body) return res.sendStatus(400);
-  const result = req.body;
-
-  const accessToken = req.headers['x-access-token'];
-
-  const { userId } = jwt.decode(accessToken as string) as jwt.JwtPayload;
-
-  if (req.body.password) {
-    const passwordValidRes = passwordParser.safeParse(req.body.password);
-
-    if (!passwordValidRes.success) {
-      res.status(400).send({
-        error: 'Password does not match requirements.',
-      });
-    }
+  const parsed = UpdateProfileParser.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).send({ error: 'Invalid profile data.' });
   }
-
-  if (req.body.email) {
-    const emailValidRes = emailParser.safeParse(req.body.email);
-
-    if (!emailValidRes.success) {
-      res.status(400).send({
-        error: 'Email does not match requirements.',
-      });
-    }
-  }
+  const result = parsed.data;
+  const currentUser = res.locals.loggedInUser as IUser;
 
   const updatedUser = await User.findOneAndUpdate(
-    { _id: userId },
-    { ...result, fullName: `${result.firstName} ${result.lastName}` },
+    { _id: currentUser._id },
+    {
+      $set: {
+        ...result,
+        fullName: `${result.firstName ?? currentUser.firstName} ${
+          result.lastName ?? currentUser.lastName
+        }`,
+      },
+    },
     {
       new: true,
     }

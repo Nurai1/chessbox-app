@@ -5,6 +5,7 @@
   "license": "MIT",
   "exports": "./dist/app.js",
   "scripts": {
+    "test": "node -r ts-node/register/transpile-only --test tests/coach.test.cjs tests/competitionRegistration.test.cjs",
     "start": "nodemon index.ts",
     "swagger": "ts-node generateSwaggerApi.ts && npm run generate-client-types && npm start",
     "start-js": "node index.js",

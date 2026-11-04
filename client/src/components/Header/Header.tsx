@@ -5,6 +5,7 @@ import { UserMenu } from 'src/components/UserMenu'
 import { AppRoute } from 'src/constants/appRoute'
 import { AuthorizationStatus } from 'src/constants/authorizationStatus'
 import { BreakPoint } from 'src/constants/breakPoints'
+import { Role } from 'src/constants/role'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { logout } from 'src/store/slices/userSlice'
 import { Burger, Modal } from 'src/ui'
@@ -22,6 +23,7 @@ export const Header = (): ReactElement => {
 	const isRatingPage = pathname.includes(AppRoute.Rating)
 	const { width: screenWidth } = useWindowSize()
 	const authorizationStatus = useAppSelector(state => state.user.authorizationStatus)
+	const isCoach = useAppSelector(state => state.user.authorizedUser?.role === Role.Coach)
 
 	const handleMenuOpen = () => {
 		setIsMenuOpen(!isMenuOpen)
@@ -85,6 +87,15 @@ export const Header = (): ReactElement => {
 
 							{authorizationStatus === AuthorizationStatus.Auth && (
 								<>
+									{isCoach && (
+										<NavLink
+											to={`/${AppRoute.CoachParticipants}`}
+											className='mr-6 font-bold transition hover:opacity-70'
+											style={activeLink}
+										>
+											{t('coachStudents')}
+										</NavLink>
+									)}
 									<NavLink
 										to={AppRoute.EditProfile}
 										className='mr-6 font-bold transition hover:opacity-70'

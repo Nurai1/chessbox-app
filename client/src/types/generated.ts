@@ -5,6 +5,180 @@
 
 
 export interface paths {
+  "/api/coach/participants": {
+    /** @description Participants created by the authenticated coach. */
+    get: {
+      responses: {
+        /** @description OK */
+        200: {
+          content: {
+            "application/json": (components["schemas"]["User"])[];
+            "application/xml": (components["schemas"]["User"])[];
+          };
+        };
+        /** @description Client error. */
+        400: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Unauthorized error. */
+        401: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Permissions error. */
+        403: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Not Found error. */
+        404: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Internal server error. */
+        500: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    /** @description Create a participant without email confirmation. The coach session is preserved. */
+    post: {
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["CoachParticipantInput"];
+        };
+      };
+      responses: {
+        /** @description Created */
+        201: {
+          content: {
+            "application/json": components["schemas"]["User"];
+            "application/xml": components["schemas"]["User"];
+          };
+        };
+        /** @description Client error. */
+        400: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Unauthorized error. */
+        401: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Permissions error. */
+        403: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Not Found error. */
+        404: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Conflict */
+        409: {
+          content: {
+            "application/json": {
+              /** @example An account with this email already exists. */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example An account with this email already exists. */
+              error?: string;
+            };
+          };
+        };
+        /** @description Internal server error. */
+        500: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+  };
   "/api/signup": {
     post: {
       requestBody: {
@@ -2069,6 +2243,92 @@ export interface paths {
       };
     };
   };
+  "/api/competition/{id}/allUsersPaymentRequestToCheck": {
+    /** @description Только для ускорения тестирования. */
+    patch: {
+      parameters: {
+        path: {
+          id: string;
+        };
+      };
+      responses: {
+        /** @description OK */
+        200: {
+          content: {
+            "application/json": components["schemas"]["Competition"];
+            "application/xml": components["schemas"]["Competition"];
+          };
+        };
+        /** @description Client error. */
+        400: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+              data?: Record<string, never>;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+              data?: Record<string, never>;
+            };
+          };
+        };
+        /** @description Unauthorized error. */
+        401: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Permissions error. */
+        403: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Not Found error. */
+        404: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+        /** @description Internal server error. */
+        500: {
+          content: {
+            "application/json": {
+              /** @example string */
+              error?: string;
+            };
+            "application/xml": {
+              /** @example string */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+  };
   "/api/competition/{id}/recalculatePairsTime": {
     patch: {
       parameters: {
@@ -3303,92 +3563,6 @@ export interface paths {
       };
     };
   };
-  "/api/competition/{id}/allUsersPaymentRequestToCheck": {
-    /** @description Только для ускорения тестирования. */
-    patch: {
-      parameters: {
-        path: {
-          id: string;
-        };
-      };
-      responses: {
-        /** @description OK */
-        200: {
-          content: {
-            "application/json": components["schemas"]["Competition"];
-            "application/xml": components["schemas"]["Competition"];
-          };
-        };
-        /** @description Client error. */
-        400: {
-          content: {
-            "application/json": {
-              /** @example string */
-              error?: string;
-              data?: Record<string, never>;
-            };
-            "application/xml": {
-              /** @example string */
-              error?: string;
-              data?: Record<string, never>;
-            };
-          };
-        };
-        /** @description Unauthorized error. */
-        401: {
-          content: {
-            "application/json": {
-              /** @example string */
-              error?: string;
-            };
-            "application/xml": {
-              /** @example string */
-              error?: string;
-            };
-          };
-        };
-        /** @description Permissions error. */
-        403: {
-          content: {
-            "application/json": {
-              /** @example string */
-              error?: string;
-            };
-            "application/xml": {
-              /** @example string */
-              error?: string;
-            };
-          };
-        };
-        /** @description Not Found error. */
-        404: {
-          content: {
-            "application/json": {
-              /** @example string */
-              error?: string;
-            };
-            "application/xml": {
-              /** @example string */
-              error?: string;
-            };
-          };
-        };
-        /** @description Internal server error. */
-        500: {
-          content: {
-            "application/json": {
-              /** @example string */
-              error?: string;
-            };
-            "application/xml": {
-              /** @example string */
-              error?: string;
-            };
-          };
-        };
-      };
-    };
-  };
   "/api/competition/{id}/setUserPaymentRequestToCheck/{userId}": {
     patch: {
       parameters: {
@@ -3581,6 +3755,27 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    CoachParticipantInput: {
+      /** Format: email */
+      email: string;
+      password: string;
+      firstName: string;
+      lastName: string;
+      weight: number;
+      birthDate: string;
+      /** @description woman or man */
+      gender: string;
+      chessPlatform: {
+        username: string;
+      };
+      address: {
+        country: string;
+        city: string;
+      };
+      fightClub: {
+        name: string;
+      };
+    };
     /** Competition */
     Competition: {
       /** Format: date-time */
@@ -3707,7 +3902,8 @@ export interface components {
         name?: string;
       };
       /** @enum {string} */
-      role: "participant" | "judge" | "chief_judge" | "admin";
+      role: "participant" | "coach" | "judge" | "chief_judge" | "admin";
+      coachId?: string;
       /** Format: date-time */
       birthDate?: string;
       socialNetworks?: {
@@ -3925,7 +4121,8 @@ export interface components {
         name?: string;
       };
       /** @enum {string} */
-      role: "participant" | "judge" | "chief_judge" | "admin";
+      role: "participant" | "coach" | "judge" | "chief_judge" | "admin";
+      coachId?: string;
       /** Format: date-time */
       birthDate?: string;
       socialNetworks?: {

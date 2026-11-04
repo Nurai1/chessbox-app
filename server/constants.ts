@@ -1,5 +1,6 @@
 export const ROLES = {
   PARTICIPANT: 'participant',
+  COACH: 'coach',
   JUDGE: 'judge',
   CHIEF_JUDGE: 'chief_judge',
 } as const;

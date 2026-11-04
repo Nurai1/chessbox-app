@@ -9,6 +9,7 @@ import { MainLayout } from 'src/layouts'
 import { Route404 } from 'src/routes/404'
 import { ChangePasswordPage } from 'src/routes/ChangePasswordPage'
 import { CompetitionPage } from 'src/routes/CompetitionPage'
+import { CoachParticipantsPage } from 'src/routes/CoachParticipantsPage'
 import { CompetitionsPage } from 'src/routes/CompetitionsPage'
 import { CreateGroupPage } from 'src/routes/CreateGroupPage'
 import { CreatePairsPage } from 'src/routes/CreatePairsPage'
@@ -101,12 +102,20 @@ const App = () => {
 						</Route>
 					</Route>
 					<Route element={<RatingPage />} path={AppRoute.Rating} />
+					<Route
+						path={AppRoute.CoachParticipants}
+						element={
+							<PrivateRoute role={Role.Coach} redirectPath={`/${AppRoute.Competitions}`}>
+								<CoachParticipantsPage />
+							</PrivateRoute>
+						}
+					/>
 					<Route element={<SignUpPage />} path={AppRoute.SignUp} />
 					<Route element={<SignInPage />} path={AppRoute.SignIn} />
 					<Route
 						path={AppRoute.EditProfile}
 						element={
-							<PrivateRoute role={Role.Admin || Role.Judge || Role.ChiefJudge || Role.Participant}>
+							<PrivateRoute role={[Role.Admin, Role.Judge, Role.ChiefJudge, Role.Participant, Role.Coach]}>
 								<EditProfilePage />
 							</PrivateRoute>
 						}

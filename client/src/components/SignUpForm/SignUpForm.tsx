@@ -1,17 +1,22 @@
 import { ReactElement, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { omit } from 'remeda'
+import { createCoachParticipantApi } from 'src/api/requests/coach'
 import { AppRoute } from 'src/constants/appRoute'
 import { validator } from 'src/helpers/validation/validator'
 import { useValidatorConfigSingUp } from 'src/helpers/validation/validatorConfigSingUp'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { signUpUser } from 'src/store/slices/userSlice'
-import { SignUpDataSchema } from 'src/types'
+import { SignUpDataSchema, UserSchema } from 'src/types'
 import { FormData } from 'src/types/formData'
 import { Alert, Button, Input, Select } from 'src/ui'
 import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 
-export const SignUpForm = (): ReactElement => {
+type SignUpFormProps = {
+	onCreateParticipant?: (participant: UserSchema) => void
+}
+
+export const SignUpForm = ({ onCreateParticipant }: SignUpFormProps): ReactElement => {
 	const { t } = useOptionalTranslation()
 	const validatorConfigSingUp = useValidatorConfigSingUp()
 
@@ -34,6 +39,10 @@ export const SignUpForm = (): ReactElement => {
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
 	const { authError, authLoading, needCheckEmail } = useAppSelector(state => state.user)
+	const [createLoading, setCreateLoading] = useState(false)
+	const [createError, setCreateError] = useState<string>()
+	const isCoachCreation = Boolean(onCreateParticipant)
+	const Container = isCoachCreation ? 'div' : 'main'
 
 	const onChange = (value?: string, name?: string) => {
 		setFormData({
@@ -99,21 +108,46 @@ export const SignUpForm = (): ReactElement => {
 		}, {} as SignUpDataSchema)
 	}
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
+		if (createLoading || (!isCoachCreation && authLoading)) return
 		const errors = validator(formData, validatorConfigSingUp)
 
 		if (Object.keys(errors).length) {
 			setValidateErrors(errors)
 		} else {
 			setValidateErrors({})
-			dispatch(signUpUser(adaptDataToServer()))
+			if (!onCreateParticipant) {
+				dispatch(signUpUser(adaptDataToServer()))
+				return
+			}
+			setCreateLoading(true)
+			setCreateError(undefined)
+			try {
+				const response = await createCoachParticipantApi(adaptDataToServer())
+				if (response.error || !response.data) {
+					setCreateError(response.error?.error || t('coachRequestFailed'))
+				} else {
+					onCreateParticipant(response.data)
+				}
+			} catch {
+				setCreateError(t('coachRequestFailed'))
+			} finally {
+				setCreateLoading(false)
+			}
 		}
 	}
 
 	return (
-		<main className='lex grow flex-col bg-pale-white py-[20px]'>
-			<form className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
-				<h1 className='mb-[8px] text-center text-heading-4'>{t('signUp')}</h1>
+		<Container className='flex grow flex-col bg-pale-white py-[20px]'>
+			<form
+				className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'
+				onSubmit={event => {
+					event.preventDefault()
+					handleSubmit()
+				}}
+			>
+				<h1 className='mb-[8px] text-center text-heading-4'>{t(isCoachCreation ? 'coachCreateStudent' : 'signUp')}</h1>
+				{isCoachCreation && <p className='mb-5 text-sm text-grey'>{t('coachCreateStudentHelp')}</p>}
 				<div className='grid gap-[18px]'>
 					<Input
 						onChange={onMomentValidationChange}
@@ -239,27 +273,33 @@ export const SignUpForm = (): ReactElement => {
 							<Alert subtitle={t('validationErrorsAll')} />
 						</div>
 					)}
-					<Button loading={authLoading} classes='font-medium w-full mt-[10px]' onClick={handleSubmit}>
-						{t('signUp')}
+					<Button
+						loading={isCoachCreation ? createLoading : authLoading}
+						classes='font-medium w-full mt-[10px]'
+						onClick={handleSubmit}
+					>
+						{t(isCoachCreation ? 'coachCreateStudent' : 'signUp')}
 					</Button>
 				</div>
-				<p className='mt-2 text-sm font-thin'>
-					{t('haveAccount')}?{' '}
-					<Link to={`/${AppRoute.SignIn}`} className='underline transition hover:opacity-70'>
-						{t('signIn')}
-					</Link>
-				</p>
-				{needCheckEmail && (
+				{!isCoachCreation && (
+					<p className='mt-2 text-sm font-thin'>
+						{t('haveAccount')}?{' '}
+						<Link to={`/${AppRoute.SignIn}`} className='underline transition hover:opacity-70'>
+							{t('signIn')}
+						</Link>
+					</p>
+				)}
+				{!isCoachCreation && needCheckEmail && (
 					<div className='mt-2'>
 						<Alert type='info' subtitle={t('checkEmailConfirm')} />
 					</div>
 				)}
-				{authError && (
+				{(isCoachCreation ? createError : authError) && (
 					<div className='mt-2'>
-						<Alert subtitle={authError} />
+						<Alert subtitle={isCoachCreation ? createError : authError} />
 					</div>
 				)}
 			</form>
-		</main>
+		</Container>
 	)
 }

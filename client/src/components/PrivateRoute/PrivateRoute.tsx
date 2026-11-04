@@ -8,7 +8,7 @@ import { Loader } from 'src/ui'
 
 type PrivateRoutePropsType = {
 	children: ReactElement
-	role: Role.Admin | Role.Judge | Role.ChiefJudge | Role.Participant
+	role: Role | Role[]
 	redirectPath?: string
 }
 
@@ -28,11 +28,8 @@ const PrivateRoute: FC<PrivateRoutePropsType> = ({
 		return <Navigate to={redirectPath} />
 	}
 
-	if (authorizedUserRole === role) {
-		return children
-	}
-
-	if (AuthorizationStatus.Auth) {
+	const allowedRoles = Array.isArray(role) ? role : [role]
+	if (authorizationStatus === AuthorizationStatus.Auth && allowedRoles.some(value => value === authorizedUserRole)) {
 		return children
 	}
 

@@ -42,8 +42,9 @@ const userSchema = new Schema<IUser>(
     role: {
       type: String,
       required: true,
-      enum: ['participant', 'judge', 'chief_judge', 'admin'],
+      enum: ['participant', 'coach', 'judge', 'chief_judge', 'admin'],
     },
+    coachId: { type: Schema.Types.ObjectId, ref: 'User', index: true },
     birthDate: { type: Date },
     socialNetworks: {
       whatsup: String,

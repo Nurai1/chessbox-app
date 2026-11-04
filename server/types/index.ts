@@ -24,6 +24,7 @@ export interface IUser {
   weight: number;
   hashedPassword: string;
   role: string;
+  coachId?: Types.ObjectId;
   chessPlatform: {
     username: string;
   };

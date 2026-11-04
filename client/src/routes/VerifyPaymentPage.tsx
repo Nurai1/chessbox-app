@@ -7,12 +7,7 @@ import { getFormattedDate } from 'src/helpers/datetime'
 import { tableSchemaPaymentCheck } from 'src/helpers/tableSchemas/tableSchemaPaymentCheck'
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { fetchedOrExistingCompetitionSelector } from 'src/store/selectors/competitions'
-import {
-	addNewParticipant,
-	fetchCompetitionById,
-	getPaymentInfoUsers,
-	setUserPaymentPaid
-} from 'src/store/slices/competitionSlice'
+import { fetchCompetitionById, getPaymentInfoUsers, setUserPaymentPaid } from 'src/store/slices/competitionSlice'
 import { CompetitionPaymentPaidType, UserPaymentInfo, UserSchema } from 'src/types'
 import { Accordion, TableBody } from 'src/ui'
 import { useOptionalTranslation } from '../hooks/useOptionalTranslation'
@@ -58,11 +53,12 @@ export const VerifyPaymentPage = (): ReactElement => {
 					participant.requestedToCheck &&
 					participant.requestedCount &&
 					!participant.paid &&
-					participant.requestedCount < MAX_PAYMENT_REQUEST_COUNT
+					participant.requestedCount <= MAX_PAYMENT_REQUEST_COUNT
 			)
 			const participantsExcludedData = allParticipantsRequestedCheck?.filter(
 				participant =>
-					participant.requestedToCheck &&
+					!participant.paid &&
+					!participant.requestedToCheck &&
 					participant.requestedCount &&
 					participant.requestedCount >= MAX_PAYMENT_REQUEST_COUNT
 			)
@@ -77,7 +73,6 @@ export const VerifyPaymentPage = (): ReactElement => {
 
 	const handleAcceptPaymentTrue = (payment: CompetitionPaymentPaidType) => {
 		dispatch(setUserPaymentPaid(payment))
-		dispatch(addNewParticipant(payment.path))
 	}
 
 	const handleAcceptPaymentFalse = (payment: CompetitionPaymentPaidType) => {

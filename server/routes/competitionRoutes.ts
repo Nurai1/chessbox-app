@@ -1,10 +1,11 @@
 import express from 'express';
 
-import { ACTIONS, MONGO_ENV, RESOURCES } from '../constants';
+import { ACTIONS, MONGO_ENV, RESOURCES, ROLES } from '../constants';
 import { CompetitionController, UserController } from '../controllers/index';
 import { allowIfLoggedin, grantAccess } from '../controllers/user.controller';
 import { controllerErrorHandler } from '../utils/controllerErrorHandler';
 import '../utils/dotenvConfig';
+import { requireRole } from '../utils/requireRole';
 import { routerMockForSwaggerGenerator } from '../utils/routerMockForSwaggerGenerator';
 
 export const competitionRouter = express.Router();
@@ -504,6 +505,7 @@ competitionRouter.patch(
         } 
     */
   UserController.allowIfLoggedin,
+  requireRole(ROLES.CHIEF_JUDGE),
   controllerErrorHandler(CompetitionController.addNewParticipant)
 );
 
@@ -593,8 +595,7 @@ competitionRouter.patch(
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  // UserController.allowIfLoggedin,
-  // UserController.grantAccess(ACTIONS.updateOwn, RESOURCES.COMPETITION),
+  UserController.allowIfLoggedin,
   controllerErrorHandler(CompetitionController.setUserPaymentRequestToCheck)
 );
 
@@ -624,8 +625,8 @@ competitionRouter.patch(
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
-  // UserController.allowIfLoggedin,
-  // UserController.grantAccess(ACTIONS.updateAny, RESOURCES.COMPETITION),
+  UserController.allowIfLoggedin,
+  requireRole(ROLES.CHIEF_JUDGE),
   controllerErrorHandler(CompetitionController.setUserPaymentPaid)
 );
 
