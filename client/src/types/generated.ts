@@ -210,13 +210,15 @@ export interface paths {
           content: {
             "application/json": {
               /** @example string */
-              accessToken?: string;
-              data?: components["schemas"]["User"];
+              email?: string;
+              /** @example false */
+              emailConfirmed?: boolean;
             };
             "application/xml": {
               /** @example string */
-              accessToken?: string;
-              data?: components["schemas"]["User"];
+              email?: string;
+              /** @example false */
+              emailConfirmed?: boolean;
             };
           };
         };
@@ -289,6 +291,7 @@ export interface paths {
     };
   };
   "/api/user/confirmEmail": {
+    /** @description Confirm email on any device. Does not create or change a login session; repeated confirmation succeeds. */
     patch: {
       requestBody: {
         content: {
@@ -299,6 +302,19 @@ export interface paths {
         };
       };
       responses: {
+        /** @description OK */
+        200: {
+          content: {
+            "application/json": {
+              /** @example true */
+              emailConfirmed?: boolean;
+            };
+            "application/xml": {
+              /** @example true */
+              emailConfirmed?: boolean;
+            };
+          };
+        };
         /** @description Client error. */
         400: {
           content: {

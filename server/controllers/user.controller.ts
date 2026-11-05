@@ -17,6 +17,7 @@ import { IUser } from '../types/index';
 import { getUTCFormattedDate } from '../utils/datetime';
 import {
   CreateUserParser,
+  ConfirmEmailParser,
   emailParser,
   passwordParser,
   UpdateProfileParser,
@@ -172,11 +173,15 @@ export const signup = async (req: Request, res: Response) => {
   //   }
   // }, 600000);
 
-  res.send(newUser);
+  res.send({ email: newUser.email, emailConfirmed: false });
 };
 
 export const confirmEmail = async (req: Request, res: Response) => {
-  const { email, confirmationCode } = req.body;
+  const parsed = ConfirmEmailParser.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).send({ error: 'Confirmation link is not valid.' });
+  }
+  const { email, confirmationCode } = parsed.data;
 
   const user = await User.findOne({ email });
 
@@ -185,7 +190,12 @@ export const confirmEmail = async (req: Request, res: Response) => {
       .status(400)
       .send({ error: 'User with the email does not exist.' });
 
-  if (user.oneTimeCode !== Number(confirmationCode)) {
+  // Confirmation is independent of login and safe to repeat on another device.
+  if (user.emailConfirmed) {
+    return res.send({ emailConfirmed: true });
+  }
+
+  if (user.oneTimeCode !== confirmationCode) {
     return res.status(400).send({ error: 'Confirmation Code does not match.' });
   }
 
@@ -193,13 +203,7 @@ export const confirmEmail = async (req: Request, res: Response) => {
   user.oneTimeCode = null;
   await user.save();
 
-  const accessToken = jwt.sign(
-    { userId: user._id, hashedPassword: user.hashedPassword },
-    process.env.JWT_SECRET_KEY || '',
-    { expiresIn: '7d' }
-  );
-
-  res.send({ data: user, accessToken });
+  return res.send({ emailConfirmed: true });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -214,6 +218,12 @@ export const login = async (req: Request, res: Response) => {
   const validPassword = await validatePassword(password, user.hashedPassword);
   if (!validPassword)
     return res.status(400).send({ error: 'Password is not correct' });
+
+  if (user.emailConfirmed === false) {
+    return res.status(403).send({
+      error: 'Please confirm your email before signing in.',
+    });
+  }
 
   const accessToken = jwt.sign(
     { userId: user._id, hashedPassword: user.hashedPassword },

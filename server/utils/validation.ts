@@ -2,6 +2,12 @@ import { z } from 'zod';
 
 export const emailParser = z.string().email().min(5);
 export const passwordParser = z.string().min(4 /* 8 */);
+export const ConfirmEmailParser = z.object({
+  email: emailParser,
+  confirmationCode: z
+    .union([z.string().regex(/^\d{4}$/), z.number().int().min(1000).max(9999)])
+    .transform(Number),
+});
 export const CreateUserParser = z.object({
   email: emailParser,
   password: passwordParser,

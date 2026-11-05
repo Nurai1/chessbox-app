@@ -38,7 +38,7 @@ export const SignUpForm = ({ onCreateParticipant }: SignUpFormProps): ReactEleme
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 	const [validateErrors, setValidateErrors] = useState<Record<string, string>>({})
 	const dispatch = useAppDispatch()
-	const { authError, authLoading, needCheckEmail } = useAppSelector(state => state.user)
+	const { authError, authLoading, needCheckEmail, registrationEmail } = useAppSelector(state => state.user)
 	const [createLoading, setCreateLoading] = useState(false)
 	const [createError, setCreateError] = useState<string>()
 	const isCoachCreation = Boolean(onCreateParticipant)
@@ -135,6 +135,25 @@ export const SignUpForm = ({ onCreateParticipant }: SignUpFormProps): ReactEleme
 				setCreateLoading(false)
 			}
 		}
+	}
+
+	if (!isCoachCreation && needCheckEmail) {
+		const email = registrationEmail || formData.email || ''
+		return (
+			<main className='flex grow flex-col bg-pale-white py-[20px]'>
+				<section className='m-auto max-w-[488px] rounded-[6px] bg-white p-[30px_17px] md:p-[35px_57px]'>
+					<h1 className='mb-4 text-center text-heading-4'>{t('emailConfirmation')}</h1>
+					<p className='mb-4 break-words text-center'>{email}</p>
+					<Alert type='info' subtitle={t('checkEmailConfirm')} />
+					<Link
+						to={`/${AppRoute.SignIn}?email=${encodeURIComponent(email)}`}
+						className='mt-5 block text-center underline transition hover:opacity-70'
+					>
+						{t('continueToSignIn')}
+					</Link>
+				</section>
+			</main>
+		)
 	}
 
 	return (
@@ -288,11 +307,6 @@ export const SignUpForm = ({ onCreateParticipant }: SignUpFormProps): ReactEleme
 							{t('signIn')}
 						</Link>
 					</p>
-				)}
-				{!isCoachCreation && needCheckEmail && (
-					<div className='mt-2'>
-						<Alert type='info' subtitle={t('checkEmailConfirm')} />
-					</div>
 				)}
 				{(isCoachCreation ? createError : authError) && (
 					<div className='mt-2'>

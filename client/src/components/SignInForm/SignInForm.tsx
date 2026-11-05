@@ -1,5 +1,5 @@
 import { ReactElement, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { AppRoute } from 'src/constants/appRoute'
 import { validator } from 'src/helpers/validation/validator'
 import { useValidatorConfigSingIn } from 'src/helpers/validation/validatorConfigSingIn'
@@ -13,8 +13,9 @@ import { useOptionalTranslation } from '../../hooks/useOptionalTranslation'
 export const SignInForm = (): ReactElement => {
 	const { t } = useOptionalTranslation()
 	const validatorConfigSingIn = useValidatorConfigSingIn()
+	const [searchParams] = useSearchParams()
 	const [formData, setFormData] = useState<FormData>({
-		email: '',
+		email: searchParams.get('email') ?? '',
 		password: ''
 	})
 	const [showPassword, setShowPassword] = useState(false)

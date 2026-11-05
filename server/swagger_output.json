@@ -600,12 +600,13 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "accessToken": {
+                    "email": {
                       "type": "string",
                       "example": "string"
                     },
-                    "data": {
-                      "$ref": "#/components/schemas/User"
+                    "emailConfirmed": {
+                      "type": "boolean",
+                      "example": false
                     }
                   },
                   "xml": {
@@ -617,12 +618,13 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "accessToken": {
+                    "email": {
                       "type": "string",
                       "example": "string"
                     },
-                    "data": {
-                      "$ref": "#/components/schemas/User"
+                    "emailConfirmed": {
+                      "type": "boolean",
+                      "example": false
                     }
                   },
                   "xml": {
@@ -947,9 +949,42 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Confirm email on any device. Does not create or change a login session; repeated confirmation succeeds.",
         "parameters": [],
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "emailConfirmed": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "emailConfirmed": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  },
+                  "xml": {
+                    "name": "main"
+                  }
+                }
+              }
+            }
+          },
           "400": {
             "description": "Client error.",
             "content": {

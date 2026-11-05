@@ -1,12 +1,11 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { changePasswordRequest, forgotPasswordRequest, signIn } from 'src/api/requests/signIn'
-import { confirmEmailApi, signUp } from 'src/api/requests/signUp'
+import { signUp } from 'src/api/requests/signUp'
 import { editCurrentUser, getCurrentUser, getUserByIdApi } from 'src/api/requests/users'
 import { AuthorizationStatus } from 'src/constants/authorizationStatus'
-import { dropToken, saveToken } from 'src/helpers/tokenStorage'
+import { dropToken, getToken, saveToken } from 'src/helpers/tokenStorage'
 import {
 	ChangePasswordDataSchema,
-	ConfirmEmailDataSchema,
 	ErrorPayload,
 	ForgotPasswordDataSchema,
 	SignInDataSchema,
@@ -38,15 +37,8 @@ export const signUpUser = createAsyncThunk('user/signUp', async (userData: SignU
 	return response.data
 })
 
-export const confirmEmail = createAsyncThunk('user/confirmEmail', async (data: ConfirmEmailDataSchema, thunkApi) => {
-	const response = await confirmEmailApi(data)
-	if (response.error)
-		return thunkApi.rejectWithValue({ errorMessage: response.error.error, response: response.response })
-
-	return response.data
-})
-
 export const checkAuth = createAsyncThunk('user/checkAuth', async (_, thunkApi) => {
+	if (!getToken()) return null
 	const response = await getCurrentUser()
 
 	if (response.error)
@@ -99,6 +91,7 @@ export interface UserState {
 	passwordChanged?: boolean
 	isPasswordLinkSent?: boolean
 	needCheckEmail?: boolean
+	registrationEmail?: string
 }
 
 type SuccessAuth = {
@@ -123,10 +116,13 @@ export const currentUserSlice = createSlice({
 		resetAuthStatus: state => {
 			state.authLoading = false
 			state.authorizationStatus = AuthorizationStatus.NoAuth
+			state.authorizedUser = null
 		},
 		logout: state => {
 			state.authorizationStatus = AuthorizationStatus.NoAuth
 			state.authorizedUser = null
+			state.needCheckEmail = false
+			state.registrationEmail = undefined
 			dropToken()
 		}
 	},
@@ -176,48 +172,45 @@ export const currentUserSlice = createSlice({
 			state.authorizedUser = action.payload.data
 			saveToken(action.payload.accessToken)
 			state.authError = ''
+			state.needCheckEmail = false
+			state.registrationEmail = undefined
 		},
 		[signInUser.pending.type]: state => {
 			state.authLoading = true
-		},
-		[confirmEmail.fulfilled.type]: (state, action: PayloadAction<SuccessAuth>) => {
-			state.authLoading = false
-			state.authorizationStatus = AuthorizationStatus.Auth
-			state.authorizedUser = action.payload.data
-			saveToken(action.payload.accessToken)
-			state.needCheckEmail = false
-			state.authError = ''
-		},
-		[confirmEmail.rejected.type]: state => {
-			state.authLoading = false
-			state.authorizationStatus = AuthorizationStatus.NoAuth
-			state.needCheckEmail = false
 		},
 		[signInUser.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.authLoading = false
 			state.authError = action.payload.errorMessage
 			state.authorizationStatus = AuthorizationStatus.NoAuth
 		},
-		[signUpUser.fulfilled.type]: state => {
+		[signUpUser.fulfilled.type]: (state, action: ReturnType<typeof signUpUser.fulfilled>) => {
 			state.authLoading = false
 			state.needCheckEmail = true
 			state.authError = ''
+			state.registrationEmail = action.meta.arg.email
 		},
 		[signUpUser.pending.type]: state => {
 			state.authLoading = true
+			state.needCheckEmail = false
+			state.registrationEmail = undefined
 		},
 		[signUpUser.rejected.type]: (state, action: PayloadAction<ErrorPayload>) => {
 			state.authLoading = false
 			state.authError = action.payload.errorMessage
 			state.authorizationStatus = AuthorizationStatus.NoAuth
 		},
-		[checkAuth.fulfilled.type]: (state, action: PayloadAction<UserSchema>) => {
+		[checkAuth.fulfilled.type]: (state, action: PayloadAction<UserSchema | null>) => {
 			state.authLoading = false
-			state.authorizationStatus = AuthorizationStatus.Auth
+			state.authorizationStatus = action.payload ? AuthorizationStatus.Auth : AuthorizationStatus.NoAuth
 			state.authorizedUser = action.payload
 		},
 		[checkAuth.pending.type]: state => {
 			state.authLoading = true
+		},
+		[checkAuth.rejected.type]: state => {
+			state.authLoading = false
+			state.authorizationStatus = AuthorizationStatus.NoAuth
+			state.authorizedUser = null
 		},
 		[editUser.fulfilled.type]: (state, action: PayloadAction<UserSchema>) => {
 			state.editLoading = false

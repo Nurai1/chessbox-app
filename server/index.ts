@@ -67,9 +67,12 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const accessToken = req.headers['x-access-token'];
 
-    const isReqForNewToken =
-      req.url === '/api/login' || req.url === '/api/signup';
-    if (accessToken && !isReqForNewToken) {
+    const isPublicAuthRequest = [
+      '/api/login',
+      '/api/signup',
+      '/api/user/confirmEmail',
+    ].includes(req.path);
+    if (accessToken && !isPublicAuthRequest) {
       let userId;
 
       try {

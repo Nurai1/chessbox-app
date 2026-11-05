@@ -108,10 +108,8 @@ userRouter.post(
   /* #swagger.responses[200] = {
             description: '',
             schema: {
-                accessToken: "string",
-                data: {  
-                  $ref: '#/definitions/User' 
-                },
+                email: "string",
+                emailConfirmed: false,
              }
     } */
   controllerErrorHandler(UserController.signup)
@@ -119,6 +117,8 @@ userRouter.post(
 
 userRouter.patch(
   '/user/confirmEmail',
+  // #swagger.description = 'Confirm email on any device. Does not create or change a login session; repeated confirmation succeeds.'
+  /* #swagger.responses[200] = { schema: { emailConfirmed: true } } */
   /*	#swagger.requestBody = {
           required: true,
           content: {

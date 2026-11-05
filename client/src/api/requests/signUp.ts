@@ -1,4 +1,4 @@
-import { patch, post } from 'src/api/api'
+import { patchRaw, post } from 'src/api/api'
 import { ConfirmEmailDataSchema, SignUpDataSchema } from 'src/types'
 
 export const signUp = async (signUpUserData: SignUpDataSchema) => {
@@ -10,7 +10,8 @@ export const signUp = async (signUpUserData: SignUpDataSchema) => {
 }
 
 export const confirmEmailApi = async (signUpUserData: ConfirmEmailDataSchema) => {
-	const result = await patch('/api/user/confirmEmail', {
+	// The email link must work without a session, including with an expired saved token.
+	const result = await patchRaw('/api/user/confirmEmail', {
 		body: signUpUserData
 	})
 
