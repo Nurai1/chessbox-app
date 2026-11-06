@@ -1,5 +1,5 @@
 import { test, expect } from '../support/fixtures';
-import { assertProfile, fillAccount, login, openStudents, refreshStudents, requestPayment, reviewPayment, studentCard, token } from '../support/ui';
+import { assertProfile, fillAccount, login, openStudents, refreshStudents, requestPayment, reviewPayment, searchParticipant, studentCard, token } from '../support/ui';
 
 test('coach creates an immediately usable student account; only chief approval admits it', async ({ actor, data, mailbox }) => {
   const coach = await actor();
@@ -14,7 +14,8 @@ test('coach creates an immediately usable student account; only chief approval a
   const creation = coach.waitForResponse(r => r.url().endsWith('/api/coach/participants') && r.request().method() === 'POST');
   await coach.locator('form').getByRole('button', { name: 'Create student account', exact: true }).click();
   expect((await creation).status()).toBe(201);
-  const card = studentCard(coach, email);
+  const createdName = (await data.user(email)).fullName;
+  const card = studentCard(coach, createdName);
   await expect(card).toBeVisible();
   const created = await data.user(email);
   expect(created.emailConfirmed).toBe(true);
@@ -31,19 +32,21 @@ test('coach creates an immediately usable student account; only chief approval a
     rows: 1, count: 1, pending: true, paid: false, admissions: 0, message: 'Receipt for the new student',
   });
   await coach.reload();
-  await expect(studentCard(coach, email)).toContainText('Waiting for the chief judge');
-  await expect(studentCard(coach, email).getByRole('button', { name: 'Request payment verification' })).toHaveCount(0);
+  await searchParticipant(coach, createdName);
+  await expect(card).toContainText('Waiting for the chief judge');
+  await expect(card.getByRole('button', { name: 'Request payment verification' })).toHaveCount(0);
 
   await login(chief, data.chief.email);
   await reviewPayment(chief, data.competition, email, true);
   await refreshStudents(coach);
-  await expect(studentCard(coach, email)).toContainText('The student is admitted to the competition.');
+  await expect(card).toContainText('The student is admitted to the competition.');
   await expect.poll(() => data.payment(email)).toMatchObject({ rows: 1, count: 1, paid: true, pending: false, admissions: 1 });
   await chief.reload();
   await expect(chief.getByText(email, { exact: true })).toBeVisible();
   await expect(chief.getByRole('button', { name: 'Paid', exact: true })).toHaveCount(0);
   await coach.reload();
-  await expect(studentCard(coach, email)).toContainText('The student is admitted to the competition.');
+  await searchParticipant(coach, createdName);
+  await expect(card).toContainText('The student is admitted to the competition.');
   await assertProfile(coach, data.coach.email);
 });
 
@@ -54,7 +57,8 @@ for (const acceptThird of [false, true]) {
     await login(coach, data.coach.email);
     await login(chief, data.chief.email);
     await openStudents(coach, data.competition);
-    const card = studentCard(coach, data.student.email);
+    await searchParticipant(coach, data.student.fullName);
+    const card = studentCard(coach, data.student.fullName);
     for (let attempt = 1; attempt <= 3; attempt += 1) {
       await requestPayment(coach, card, `Payment attempt ${attempt}`);
       await expect.poll(() => data.payment(data.student.email)).toMatchObject({
@@ -71,6 +75,7 @@ for (const acceptThird of [false, true]) {
     await expect(card).toContainText(acceptThird ? 'The student is admitted' : 'request limit has been reached');
     await expect(card.getByRole('button', { name: 'Request payment verification', exact: true })).toHaveCount(0);
     await coach.reload();
+    await searchParticipant(coach, data.student.fullName);
     await expect(card).toContainText(acceptThird ? 'The student is admitted' : 'request limit has been reached');
     await expect.poll(() => data.payment(data.student.email)).toMatchObject({
       rows: 1, count: 3, paid: acceptThird, pending: false, admissions: acceptThird ? 1 : 0,
@@ -88,13 +93,19 @@ for (const acceptThird of [false, true]) {
   });
 }
 
-test('coach sees only their students and cannot open chief approval; participant cannot open coach tools', async ({ actor, data }) => {
+test('coach finds any participant without email and cannot open chief approval; participant cannot open coach tools', async ({ actor, data }) => {
   const coach = await actor();
   await login(coach, data.coach.email);
   await openStudents(coach, data.competition);
-  await expect(studentCard(coach, data.student.email)).toBeVisible();
-  await expect(studentCard(coach, data.otherStudent.email)).toHaveCount(0);
-  await expect(studentCard(coach, data.participant.email)).toHaveCount(0);
+  for (const account of [data.student, data.otherStudent, data.participant]) {
+    await searchParticipant(coach, account.fullName);
+    const card = studentCard(coach, account.fullName);
+    await expect(card).toContainText('Bangkok');
+    await expect(card).toContainText('Thailand');
+    await expect(card).not.toContainText(account.email);
+  }
+  await requestPayment(coach, studentCard(coach, data.participant.fullName), 'Coach request for independent participant');
+  await expect.poll(() => data.payment(data.participant.email)).toMatchObject({ count: 1, pending: true });
   await coach.goto(`/#/competitions/${data.competition._id}/verify-payment`);
   await expect(coach).toHaveURL(/#\/competitions$/);
   await expect(coach.getByRole('button', { name: 'Paid', exact: true })).toHaveCount(0);
@@ -102,8 +113,8 @@ test('coach sees only their students and cannot open chief approval; participant
   const other = await actor();
   await login(other, data.otherCoach.email);
   await openStudents(other, data.competition);
-  await expect(studentCard(other, data.otherStudent.email)).toBeVisible();
-  await expect(studentCard(other, data.student.email)).toHaveCount(0);
+  await searchParticipant(other, data.student.fullName);
+  await expect(studentCard(other, data.student.fullName)).toBeVisible();
 
   const participant = await actor();
   await login(participant, data.participant.email);
@@ -139,7 +150,8 @@ for (const state of ['closed', 'started', 'ended', 'requirements'] as const) {
     const coach = await actor();
     await login(coach, data.coach.email);
     await openStudents(coach, competition);
-    const card = studentCard(coach, data.student.email);
+    await searchParticipant(coach, data.student.fullName);
+    const card = studentCard(coach, data.student.fullName);
     await expect(card).toContainText(state === 'requirements' ? 'does not meet the age, weight or gender requirements' : /Registration closed/i);
     await expect(card.getByRole('button', { name: 'Request payment verification', exact: true })).toHaveCount(0);
     expect(await data.payment(data.student.email, competition)).toMatchObject({ rows: 0, admissions: 0 });

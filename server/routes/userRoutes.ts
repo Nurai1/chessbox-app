@@ -15,9 +15,11 @@ export const userRouter = express.Router();
 
 userRouter.get(
   '/coach/participants',
-  // #swagger.description = 'Participants created by the authenticated coach.'
+  // #swagger.description = 'Search all participant accounts by first and last name. Returns only public profile fields.'
   /* #swagger.security = [{ "apiKeyAuth": [] }] */
-  /* #swagger.responses[200] = { schema: [{ $ref: '#/definitions/User' }] } */
+  /* #swagger.parameters['search'] = { in: 'query', schema: { type: 'string' } } */
+  /* #swagger.parameters['offset'] = { in: 'query', schema: { type: 'number' } } */
+  /* #swagger.responses[200] = { schema: { items: [{ $ref: '#/definitions/CoachParticipantPublic' }], total: 0 } } */
   UserController.allowIfLoggedin,
   requireRole(ROLES.COACH),
   controllerErrorHandler(getCoachParticipants)

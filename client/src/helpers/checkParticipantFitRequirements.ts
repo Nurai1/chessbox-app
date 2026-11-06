@@ -1,7 +1,10 @@
 import { CompetitionSchema, UserSchema } from 'src/types'
 import { getAge } from './datetime'
 
-export const checkParticipantFitRequirements = (competitionData?: CompetitionSchema, authorizedUser?: UserSchema) => {
+export const checkParticipantFitRequirements = (
+	competitionData?: CompetitionSchema,
+	authorizedUser?: Pick<UserSchema, 'weight' | 'birthDate'> & { gender?: string }
+) => {
 	if (authorizedUser?.weight && authorizedUser?.birthDate && competitionData?.requirements) {
 		return (
 			authorizedUser.weight < (competitionData.requirements?.weightCategory?.from ?? 0) ||

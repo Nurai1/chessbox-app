@@ -11,11 +11,11 @@ import { useAppDispatch, useAppSelector } from 'src/hooks/redux'
 import { useOptionalTranslation } from 'src/hooks/useOptionalTranslation'
 import { setCompetitionData } from 'src/store/slices/competitionSlice'
 import { updateCompetitionsListCompetition } from 'src/store/slices/competitionsSlice'
-import { CompetitionSchema, UserSchema } from 'src/types'
+import { CoachParticipantPublicSchema, CompetitionSchema, UserSchema } from 'src/types'
 import { Alert, Button, Input, Loader, Select } from 'src/ui'
 
 type StudentRegistrationProps = {
-	participant: UserSchema
+	participant: CoachParticipantPublicSchema
 	competition?: CompetitionSchema
 	onRegistered: (competition: CompetitionSchema) => void
 }
@@ -60,9 +60,15 @@ const StudentRegistration = ({ participant, competition, onRegistered }: Student
 	return (
 		<article className='rounded-2xl border border-pale-grey p-5'>
 			<h2 className='text-heading-6'>{participant.fullName}</h2>
-			<p className='break-words text-sm text-grey'>{participant.email}</p>
 			<p className='mt-2 text-sm'>
 				{getAge(participant.birthDate)} {t('years')}, {participant.weight} {t('kg')}
+			</p>
+			<p className='text-sm'>
+				{t('coachCity')}: {participant.address?.city || '—'}
+			</p>
+			<p className='text-sm'>
+				{t('coachAddress')}:{' '}
+				{[participant.address?.city, participant.address?.country].filter(Boolean).join(', ') || '—'}
 			</p>
 			{competition && (
 				<div className='mt-4 grid gap-3'>
@@ -101,7 +107,11 @@ export const CoachParticipantsPage = (): ReactElement => {
 	const [searchParams] = useSearchParams()
 	const dispatch = useAppDispatch()
 	const coachId = useAppSelector(state => state.user.authorizedUser?._id)
-	const [participants, setParticipants] = useState<UserSchema[]>([])
+	const [participants, setParticipants] = useState<CoachParticipantPublicSchema[]>([])
+	const [total, setTotal] = useState(0)
+	const [searchInput, setSearchInput] = useState('')
+	const [search, setSearch] = useState('')
+	const [offset, setOffset] = useState(0)
 	const [competitions, setCompetitions] = useState<CompetitionSchema[]>([])
 	const [competitionId, setCompetitionId] = useState(searchParams.get('competitionId') ?? '')
 	const [loading, setLoading] = useState(true)
@@ -112,13 +122,21 @@ export const CoachParticipantsPage = (): ReactElement => {
 	const competition = competitions.find(item => item._id === competitionId)
 
 	useEffect(() => {
+		const timer = setTimeout(() => {
+			setOffset(0)
+			setSearch(searchInput.trim())
+		}, 300)
+		return () => clearTimeout(timer)
+	}, [searchInput])
+
+	useEffect(() => {
 		let cancelled = false
 		const load = async () => {
 			setLoading(true)
 			setError(undefined)
 			try {
 				const [studentsResponse, competitionsResponse] = await Promise.all([
-					getCoachParticipantsApi(),
+					getCoachParticipantsApi(search, offset),
 					getCompetitionsApi()
 				])
 				if (cancelled) return
@@ -126,7 +144,10 @@ export const CoachParticipantsPage = (): ReactElement => {
 					setError(studentsResponse.error?.error || competitionsResponse.error?.error || t('coachRequestFailed'))
 					return
 				}
-				setParticipants(studentsResponse.data ?? [])
+				setParticipants(current =>
+					offset === 0 ? (studentsResponse.data?.items ?? []) : [...current, ...(studentsResponse.data?.items ?? [])]
+				)
+				setTotal(studentsResponse.data?.total ?? 0)
 				const items = competitionsResponse.data ?? []
 				setCompetitions(items)
 				const firstOpen = items.find(item => !item.started && !item.endDate && !isPast(item.registrationEndsAt))
@@ -141,10 +162,11 @@ export const CoachParticipantsPage = (): ReactElement => {
 		return () => {
 			cancelled = true
 		}
-	}, [coachId, reload, t])
+	}, [coachId, reload, search, offset, t])
 
 	const onCreated = (participant: UserSchema) => {
-		setParticipants(current => [participant, ...current])
+		setSearchInput(participant.fullName ?? '')
+		setOffset(0)
 		setCreating(false)
 		setCreated(true)
 		setReload(value => value + 1)
@@ -180,6 +202,15 @@ export const CoachParticipantsPage = (): ReactElement => {
 				<>
 					<p className='mb-6 text-grey'>{t('coachRegistrationHelp')}</p>
 					{created && <Alert type='success' subtitle={t('coachStudentCreated')} classes='mb-5' />}
+					<div className='mb-6 max-w-xl'>
+						<Input
+						name='participantSearch'
+							label={t('coachSearchParticipants')}
+							value={searchInput}
+							onChange={value => setSearchInput(value ?? '')}
+							isSearch
+						/>
+					</div>
 					{loading && <Loader />}
 					{error && (
 						<div className='mb-5 grid gap-3'>
@@ -221,6 +252,9 @@ export const CoachParticipantsPage = (): ReactElement => {
 									/>
 								))}
 							</div>
+							{participants.length < total && (
+								<Button type='outlined' onClick={() => setOffset(value => value + 20)}>{t('coachLoadMore')}</Button>
+							)}
 						</>
 					)}
 				</>

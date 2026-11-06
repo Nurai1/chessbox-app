@@ -369,6 +369,7 @@ export const getUsers = async (
   );
 
   const allFilters = [
+    { emailConfirmed: true },
     ageTo && {
       birthDate: { $gte: new Date(ageToDate) },
     },

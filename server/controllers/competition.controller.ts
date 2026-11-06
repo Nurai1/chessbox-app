@@ -1026,7 +1026,7 @@ export const setUserPaymentRequestToCheck = async (
     return res.status(404).send({ error: 'Participant was not found.' });
   if (!canRequestParticipantPayment(res.locals.loggedInUser as IUser, user)) {
     return res.status(403).send({
-      error: 'You can only register yourself or participants you created.',
+      error: 'Only the participant or a coach can request registration.',
     });
   }
 

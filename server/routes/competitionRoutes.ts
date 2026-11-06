@@ -276,6 +276,8 @@ if (MONGO_ENV !== 'main') {
               description: '',
               schema: { $ref: '#/definitions/Competition' }
       } */
+    UserController.allowIfLoggedin,
+    requireRole(ROLES.CHIEF_JUDGE),
     controllerErrorHandler(CompetitionController.updateCompetition)
   );
 
@@ -289,6 +291,8 @@ if (MONGO_ENV !== 'main') {
             description: '',
             schema: { $ref: '#/definitions/Competition' }
     } */
+    UserController.allowIfLoggedin,
+    requireRole(ROLES.CHIEF_JUDGE),
     controllerErrorHandler(CompetitionController.allUsersPaymentRequestToCheck)
   );
 }

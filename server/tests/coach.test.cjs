@@ -69,34 +69,41 @@ mock.method(User, 'findOneAndUpdate', async (filter, update) => {
   user.set(update.$set ?? update);
   return user;
 });
+const matchesUser = (user, filter) => Object.entries(filter).every(([key, value]) => {
+  if (key === '$and') return value.every((part) => matchesUser(user, part));
+  if (key === '$or') return value.some((part) => matchesUser(user, part));
+  return value instanceof RegExp ? value.test(user[key]) : String(user[key]) === String(value);
+});
 mock.method(User, 'find', (filter) => {
   userFilters.push(filter);
   let projection = '';
+  let offset = 0;
+  let limit = Infinity;
+  const results = () => [...users.values()]
+    .filter((user) => matchesUser(user, filter))
+    .sort((a, b) => a.fullName.localeCompare(b.fullName))
+    .slice(offset, offset + limit)
+    .map((user) => {
+      const result = user.toObject();
+      const fields = projection.split(' ').filter(Boolean);
+      if (fields.length && fields.every((field) => !field.startsWith('-'))) {
+        return Object.fromEntries(Object.entries(result).filter(([key]) => fields.includes(key)));
+      }
+      fields.filter((key) => key.startsWith('-')).forEach((key) => { delete result[key.slice(1)]; });
+      return result;
+    });
   return {
     select(value) {
       projection = value;
       return this;
     },
-    async sort() {
-      return [...users.values()]
-        .filter((user) =>
-          Object.entries(filter).every(
-            ([key, value]) => String(user[key]) === String(value)
-          )
-        )
-        .map((user) => {
-          const result = user.toObject();
-          projection
-            .split(' ')
-            .filter((key) => key.startsWith('-'))
-            .forEach((key) => {
-              delete result[key.slice(1)];
-            });
-          return result;
-        });
-    },
+    sort() { return this; },
+    skip(value) { offset = value; return this; },
+    limit(value) { limit = value; return this; },
+    then(resolve, reject) { return Promise.resolve(results()).then(resolve, reject); },
   };
 });
+mock.method(User, 'countDocuments', async (filter) => [...users.values()].filter((user) => matchesUser(user, filter)).length);
 mock.method(Competition, 'findOne', async (filter) =>
   String(filter._id) === ids.competition ? snapshot() : null
 );
@@ -214,6 +221,8 @@ beforeEach(() => {
         ...profile(),
         _id: ids[name],
         email: `${name}@example.test`,
+        firstName: 'Test',
+        lastName: name,
         role,
         fullName: `Test ${name}`,
         hashedPassword: 'test-password-hash',
@@ -359,20 +368,16 @@ test('invalid and duplicate accounts do not create users or send emails', async 
   assert.equal(sentEmails.length, 0);
 });
 
-test('coach list contains only owned participants without password or reset code', async () => {
-  const response = await request('/coach/participants');
+test('coach can search all participants but receives no private fields', async () => {
+  const response = await request('/coach/participants?search=Test%20otherStudent');
   assert.equal(response.status, 200);
-  assert.deepEqual(
-    response.body.map((user) => user._id),
-    [ids.student]
-  );
-  assert.equal(response.body[0].hashedPassword, undefined);
-  assert.equal(response.body[0].oneTimeCode, undefined);
-  assert.equal(String(userFilters[0].coachId), ids.coach);
-  assert.equal(
-    (await request('/coach/participants', { actor: 'otherCoach' })).body.length,
-    0
-  );
+  assert.deepEqual(response.body.items.map((user) => user._id), [ids.otherStudent]);
+  assert.equal(response.body.total, 1);
+  assert.equal(response.body.items[0].email, undefined);
+  assert.equal(response.body.items[0].hashedPassword, undefined);
+  assert.equal(response.body.items[0].oneTimeCode, undefined);
+  assert.equal(userFilters[0].role, 'participant');
+  assert.equal((await request('/coach/participants', { actor: 'otherCoach' })).body.total, 2);
 });
 
 test('public signup cannot set coach role or claim ownership', async () => {
@@ -427,7 +432,7 @@ test('coach registration creates only a pending payment request', async () => {
   assert.equal(response.body.participants.length, 0);
 });
 
-test('coach cannot register another coach student, unrelated account or self', async () => {
+test('any coach can register any participant but cannot register self', async () => {
   assert.equal(
     (
       await request(paymentPath(), {
@@ -436,7 +441,7 @@ test('coach cannot register another coach student, unrelated account or self', a
         body: {},
       })
     ).status,
-    403
+    200
   );
   assert.equal(
     (
@@ -445,14 +450,14 @@ test('coach cannot register another coach student, unrelated account or self', a
         body: {},
       })
     ).status,
-    403
+    200
   );
   assert.equal(
     (await request(paymentPath(ids.coach), { method: 'PATCH', body: {} }))
       .status,
     403
   );
-  assert.equal(mutations.length, 0);
+  assert.equal(mutations.length, 2);
 });
 
 test('ordinary participant can still request their own registration', async () => {

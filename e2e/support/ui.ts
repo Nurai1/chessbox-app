@@ -20,10 +20,11 @@ export async function assertProfile(page: Page, email: string) {
 }
 
 export async function fillAccount(page: Page, email: string) {
+  const lastName = `Student${email.split('+')[0].slice(-8)}`;
   const fields: Record<string, string> = {
     email,
     firstName: 'Playwright',
-    lastName: 'Student',
+    lastName,
     weight: '75',
     birthDate: '15.01.2000',
     fightClub: 'E2E Club',
@@ -53,15 +54,20 @@ export async function signup(page: Page, email: string) {
 
 export async function openStudents(page: Page, competition: Competition) {
   await page.goto(`/#/coach/participants?competitionId=${competition._id}`);
-  await expect(page.getByRole('heading', { name: 'My students', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Participant registration', exact: true })).toBeVisible();
   // Explicit tournament selection makes this independent of existing DB records.
   await expect(page.getByRole('main').locator('input[readonly]')).toHaveValue(new RegExp(competition.name), {
     timeout: 30_000,
   });
 }
 
-export const studentCard = (page: Page, email: string) =>
-  page.locator('article').filter({ has: page.getByText(email, { exact: true }) });
+export async function searchParticipant(page: Page, name: string) {
+  await page.locator('input[name="participantSearch"]').fill(name);
+  await expect(studentCard(page, name)).toBeVisible();
+}
+
+export const studentCard = (page: Page, name: string) =>
+  page.locator('article').filter({ has: page.getByRole('heading', { name, exact: true }) });
 
 export async function requestPayment(page: Page, card: Locator, message: string) {
   await card.locator('textarea').fill(message);

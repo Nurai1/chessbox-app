@@ -25,17 +25,41 @@
         "tags": [
           "Users"
         ],
-        "description": "Participants created by the authenticated coach.",
-        "parameters": [],
+        "description": "Search all participant accounts by first and last name. Returns only public profile fields.",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/User"
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CoachParticipantPublic"
+                      }
+                    },
+                    "total": {
+                      "type": "number",
+                      "example": 0
+                    }
                   },
                   "xml": {
                     "name": "main"
@@ -44,9 +68,18 @@
               },
               "application/xml": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/User"
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CoachParticipantPublic"
+                      }
+                    },
+                    "total": {
+                      "type": "number",
+                      "example": 0
+                    }
                   },
                   "xml": {
                     "name": "main"
@@ -12278,6 +12311,44 @@
   },
   "components": {
     "schemas": {
+      "CoachParticipantPublic": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "weight": {
+            "type": "number"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "country": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
       "CoachParticipantInput": {
         "type": "object",
         "required": [

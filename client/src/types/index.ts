@@ -1,6 +1,7 @@
 import { components, paths } from './generated'
 
 export type UserSchema = components['schemas']['User']
+export type CoachParticipantPublicSchema = components['schemas']['CoachParticipantPublic']
 export type GetUsersParams = paths['/api/users']['get']['parameters']['query']
 export type CompetitionSchema = components['schemas']['Competition']
 export type CompetitionGroupSchema = components['schemas']['CompetitionGroup']

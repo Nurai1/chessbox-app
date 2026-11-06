@@ -4,15 +4,40 @@ import { ROLES } from '../constants';
 import { User } from '../models';
 import { CreateCoachParticipantParser } from '../utils/validation';
 
-export const getCoachParticipants = async (_req: Request, res: Response) => {
-  const participants = await User.find({
-    coachId: res.locals.loggedInUser._id,
-    role: ROLES.PARTICIPANT,
-  })
-    .select('-hashedPassword -oneTimeCode')
-    .sort({ fullName: 1 });
+export const getCoachParticipants = async (req: Request, res: Response) => {
+  const { search = '', offset = '0' } = req.query;
+  if (
+    typeof search !== 'string' ||
+    search.length > 100 ||
+    typeof offset !== 'string' ||
+    !/^\d+$/.test(offset) ||
+    !Number.isSafeInteger(Number(offset))
+  ) {
+    return res.status(400).send({ error: 'Invalid participant search.' });
+  }
 
-  return res.send(participants);
+  const tokens = search.trim().split(/\s+/).filter(Boolean);
+  const filter = {
+    role: ROLES.PARTICIPANT,
+    ...(tokens.length
+      ? {
+          $and: tokens.map((token) => {
+            const pattern = new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+            return { $or: [{ firstName: pattern }, { lastName: pattern }] };
+          }),
+        }
+      : {}),
+  };
+  const [participants, total] = await Promise.all([
+    User.find(filter)
+      .select('_id firstName lastName fullName birthDate weight gender address')
+      .sort({ fullName: 1, _id: 1 })
+      .skip(Number(offset))
+      .limit(20),
+    User.countDocuments(filter),
+  ]);
+
+  return res.send({ items: participants, total });
 };
 
 export const createCoachParticipant = async (req: Request, res: Response) => {

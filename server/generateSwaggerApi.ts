@@ -73,6 +73,22 @@ const doc = {
     },
   },
   '@definitions': {
+    CoachParticipantPublic: {
+      type: 'object',
+      properties: {
+        _id: { type: 'string' },
+        firstName: { type: 'string' },
+        lastName: { type: 'string' },
+        fullName: { type: 'string' },
+        birthDate: { type: 'string', format: 'date-time' },
+        weight: { type: 'number' },
+        gender: { type: 'string' },
+        address: {
+          type: 'object',
+          properties: { country: { type: 'string' }, city: { type: 'string' } },
+        },
+      },
+    },
     CoachParticipantInput: {
       type: 'object',
       required: [

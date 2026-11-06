@@ -71,12 +71,13 @@ export class TestData {
   }
 
   private async account(label: string, role: Role, hash: string, coachId?: ObjectId) {
+    const lastName = `${label}${this.namespace.slice(-8)}`;
     const account = {
       _id: new ObjectId(),
       email: this.email(label),
       firstName: 'Test',
-      lastName: label,
-      fullName: `Test ${label}`,
+      lastName,
+      fullName: `Test ${lastName}`,
       role,
       ...(coachId ? { coachId } : {}),
       hashedPassword: hash,

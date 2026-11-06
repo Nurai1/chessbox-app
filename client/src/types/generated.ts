@@ -6,14 +6,28 @@
 
 export interface paths {
   "/api/coach/participants": {
-    /** @description Participants created by the authenticated coach. */
+    /** @description Search all participant accounts by first and last name. Returns only public profile fields. */
     get: {
+      parameters: {
+        query?: {
+          search?: string;
+          offset?: number;
+        };
+      };
       responses: {
         /** @description OK */
         200: {
           content: {
-            "application/json": (components["schemas"]["User"])[];
-            "application/xml": (components["schemas"]["User"])[];
+            "application/json": {
+              items?: components["schemas"]["CoachParticipantPublic"][];
+              /** @example 0 */
+              total?: number;
+            };
+            "application/xml": {
+              items?: components["schemas"]["CoachParticipantPublic"][];
+              /** @example 0 */
+              total?: number;
+            };
           };
         };
         /** @description Client error. */
@@ -395,7 +409,9 @@ export interface paths {
       };
       responses: {
         /** @description OK */
-        200: never;
+        200: {
+          content: never;
+        };
         /** @description Client error. */
         400: {
           content: {
@@ -886,12 +902,12 @@ export interface paths {
         200: {
           content: {
             "application/json": {
-              items?: (components["schemas"]["User"])[];
+              items?: components["schemas"]["User"][];
               /** @example 0 */
               total?: number;
             };
             "application/xml": {
-              items?: (components["schemas"]["User"])[];
+              items?: components["schemas"]["User"][];
               /** @example 0 */
               total?: number;
             };
@@ -971,8 +987,8 @@ export interface paths {
         /** @description OK */
         200: {
           content: {
-            "application/json": (components["schemas"]["User"])[];
-            "application/xml": (components["schemas"]["User"])[];
+            "application/json": components["schemas"]["User"][];
+            "application/xml": components["schemas"]["User"][];
           };
         };
         /** @description Client error. */
@@ -1559,8 +1575,8 @@ export interface paths {
         /** @description Competition successfully obtained. */
         200: {
           content: {
-            "application/json": (components["schemas"]["Competition"])[];
-            "application/xml": (components["schemas"]["Competition"])[];
+            "application/json": components["schemas"]["Competition"][];
+            "application/xml": components["schemas"]["Competition"][];
           };
         };
         /** @description Client error. */
@@ -1996,7 +2012,7 @@ export interface paths {
       requestBody: {
         content: {
           "application/json": {
-            judgesIds: (string)[];
+            judgesIds: string[];
             competitionId: string;
           };
         };
@@ -2084,13 +2100,13 @@ export interface paths {
       requestBody: {
         content: {
           "application/json": {
-            judgesByGroups?: ({
+            judgesByGroups?: {
                 id: string;
-                pairs: ({
+                pairs: {
                     id: string;
                     judgeId: string;
-                  })[];
-              })[];
+                  }[];
+              }[];
             competitionId: string;
           };
         };
@@ -2354,7 +2370,9 @@ export interface paths {
       };
       responses: {
         /** @description OK */
-        200: never;
+        200: {
+          content: never;
+        };
         /** @description Client error. */
         400: {
           content: {
@@ -2436,7 +2454,7 @@ export interface paths {
       requestBody: {
         content: {
           "application/json": {
-            anyGroupId?: (string)[];
+            anyGroupId?: string[];
           };
         };
       };
@@ -2528,10 +2546,10 @@ export interface paths {
       requestBody: {
         content: {
           "application/json": {
-            orders: ({
+            orders: {
                 groupId: string;
                 order: number;
-              })[];
+              }[];
           };
         };
       };
@@ -3066,8 +3084,8 @@ export interface paths {
         /** @description OK */
         200: {
           content: {
-            "application/json": (components["schemas"]["CompetitionGroup"])[];
-            "application/xml": (components["schemas"]["CompetitionGroup"])[];
+            "application/json": components["schemas"]["CompetitionGroup"][];
+            "application/xml": components["schemas"]["CompetitionGroup"][];
           };
         };
         /** @description Client error. */
@@ -3243,8 +3261,8 @@ export interface paths {
         /** @description Competition's Participants */
         200: {
           content: {
-            "application/json": (components["schemas"]["User"])[];
-            "application/xml": (components["schemas"]["User"])[];
+            "application/json": components["schemas"]["User"][];
+            "application/xml": components["schemas"]["User"][];
           };
         };
         /** @description Client error. */
@@ -3328,8 +3346,8 @@ export interface paths {
         /** @description Competition's Judges */
         200: {
           content: {
-            "application/json": (components["schemas"]["User"])[];
-            "application/xml": (components["schemas"]["User"])[];
+            "application/json": components["schemas"]["User"][];
+            "application/xml": components["schemas"]["User"][];
           };
         };
         /** @description Client error. */
@@ -3413,8 +3431,8 @@ export interface paths {
         /** @description Competition's Payment Info Users */
         200: {
           content: {
-            "application/json": (components["schemas"]["User"])[];
-            "application/xml": (components["schemas"]["User"])[];
+            "application/json": components["schemas"]["User"][];
+            "application/xml": components["schemas"]["User"][];
           };
         };
         /** @description Client error. */
@@ -3508,7 +3526,9 @@ export interface paths {
       };
       responses: {
         /** @description OK */
-        200: never;
+        200: {
+          content: never;
+        };
         /** @description Client error. */
         400: {
           content: {
@@ -3771,6 +3791,20 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    CoachParticipantPublic: {
+      _id?: string;
+      firstName?: string;
+      lastName?: string;
+      fullName?: string;
+      /** Format: date-time */
+      birthDate?: string;
+      weight?: number;
+      gender?: string;
+      address?: {
+        country?: string;
+        city?: string;
+      };
+    };
     CoachParticipantInput: {
       /** Format: email */
       email: string;
@@ -3804,7 +3838,7 @@ export interface components {
       registrationEndsAt: string;
       name: string;
       description?: string;
-      groups?: ({
+      groups?: {
           ageCategory?: {
             from?: number;
             to?: number;
@@ -3817,13 +3851,13 @@ export interface components {
           currentRoundNumber: number;
           order?: number;
           lastPlaceNumber?: number;
-          nextRoundParticipants?: (string)[];
-          allParticipants?: (string)[];
-          results?: ({
+          nextRoundParticipants?: string[];
+          allParticipants?: string[];
+          results?: {
               userId?: string;
               placeNumber: number;
-            })[];
-          passedPairs?: ({
+            }[];
+          passedPairs?: {
               blackParticipant?: string;
               whiteParticipant?: string;
               winner?: string;
@@ -3839,8 +3873,8 @@ export interface components {
               };
               judge?: string;
               _id?: string;
-            })[];
-          currentRoundPairs?: ({
+            }[];
+          currentRoundPairs?: {
               blackParticipant?: string;
               whiteParticipant?: string;
               winner?: string;
@@ -3856,20 +3890,20 @@ export interface components {
               };
               judge?: string;
               _id?: string;
-            })[];
+            }[];
           isCompleted?: boolean;
           olympicGrid?: Record<string, never>;
           firstPairOrder?: number;
           _id?: string;
-        })[];
+        }[];
       price?: {
         currentValue?: number;
         valueForMembers?: number;
         currency?: string;
-        pricesChanges?: ({
+        pricesChanges?: {
             daysBeforeRegistrationDate: number;
             newValue: number;
-          })[];
+          }[];
       };
       zoomLink?: string;
       started?: boolean;
@@ -3888,15 +3922,15 @@ export interface components {
         };
         gender?: string;
       };
-      participants?: (string)[];
-      usersPaymentInfo?: ({
+      participants?: string[];
+      usersPaymentInfo?: {
           userId?: string;
           paid?: boolean;
           requestedToCheck?: boolean;
           requestedCount?: number;
           message?: string;
-        })[];
-      judges?: (string)[];
+        }[];
+      judges?: string[];
       _id?: string;
     };
     /** User */
@@ -3931,11 +3965,11 @@ export interface components {
       weight?: number;
       oneTimeCode?: number;
       currentGroupId?: string;
-      competitionsHistory?: ({
+      competitionsHistory?: {
           competitionId?: string;
           groupId?: string;
           placeNumber?: number;
-        })[];
+        }[];
       _id?: string;
     };
     /** CompetitionGroup */
@@ -3952,13 +3986,13 @@ export interface components {
       currentRoundNumber: number;
       order?: number;
       lastPlaceNumber?: number;
-      nextRoundParticipants?: (string)[];
-      allParticipants?: (string)[];
-      results?: ({
+      nextRoundParticipants?: string[];
+      allParticipants?: string[];
+      results?: {
           userId?: string;
           placeNumber: number;
-        })[];
-      passedPairs?: ({
+        }[];
+      passedPairs?: {
           blackParticipant?: string;
           whiteParticipant?: string;
           winner?: string;
@@ -3974,8 +4008,8 @@ export interface components {
           };
           judge?: string;
           _id?: string;
-        })[];
-      currentRoundPairs?: ({
+        }[];
+      currentRoundPairs?: {
           blackParticipant?: string;
           whiteParticipant?: string;
           winner?: string;
@@ -3991,7 +4025,7 @@ export interface components {
           };
           judge?: string;
           _id?: string;
-        })[];
+        }[];
       isCompleted?: boolean;
       olympicGrid?: Record<string, never>;
       firstPairOrder?: number;
@@ -4027,7 +4061,7 @@ export interface components {
       registrationEndsAt: string;
       name: string;
       description?: string;
-      groups?: ({
+      groups?: {
           ageCategory?: {
             from?: number;
             to?: number;
@@ -4040,13 +4074,13 @@ export interface components {
           currentRoundNumber: number;
           order?: number;
           lastPlaceNumber?: number;
-          nextRoundParticipants?: (string)[];
-          allParticipants?: (string)[];
-          results?: ({
+          nextRoundParticipants?: string[];
+          allParticipants?: string[];
+          results?: {
               userId?: string;
               placeNumber: number;
-            })[];
-          passedPairs?: ({
+            }[];
+          passedPairs?: {
               blackParticipant?: string;
               whiteParticipant?: string;
               winner?: string;
@@ -4061,8 +4095,8 @@ export interface components {
                 whiteParticipant?: boolean;
               };
               judge?: string;
-            })[];
-          currentRoundPairs?: ({
+            }[];
+          currentRoundPairs?: {
               blackParticipant?: string;
               whiteParticipant?: string;
               winner?: string;
@@ -4077,19 +4111,19 @@ export interface components {
                 whiteParticipant?: boolean;
               };
               judge?: string;
-            })[];
+            }[];
           isCompleted?: boolean;
           olympicGrid?: Record<string, never>;
           firstPairOrder?: number;
-        })[];
+        }[];
       price?: {
         currentValue?: number;
         valueForMembers?: number;
         currency?: string;
-        pricesChanges?: ({
+        pricesChanges?: {
             daysBeforeRegistrationDate: number;
             newValue: number;
-          })[];
+          }[];
       };
       zoomLink?: string;
       started?: boolean;
@@ -4108,15 +4142,15 @@ export interface components {
         };
         gender?: string;
       };
-      participants?: (string)[];
-      usersPaymentInfo?: ({
+      participants?: string[];
+      usersPaymentInfo?: {
           userId?: string;
           paid?: boolean;
           requestedToCheck?: boolean;
           requestedCount?: number;
           message?: string;
-        })[];
-      judges?: (string)[];
+        }[];
+      judges?: string[];
     };
     /** User */
     UserBody: {
@@ -4150,11 +4184,11 @@ export interface components {
       weight?: number;
       oneTimeCode?: number;
       currentGroupId?: string;
-      competitionsHistory?: ({
+      competitionsHistory?: {
           competitionId?: string;
           groupId?: string;
           placeNumber?: number;
-        })[];
+        }[];
     };
     /** CompetitionGroup */
     CompetitionGroupBody: {
@@ -4170,13 +4204,13 @@ export interface components {
       currentRoundNumber: number;
       order?: number;
       lastPlaceNumber?: number;
-      nextRoundParticipants?: (string)[];
-      allParticipants?: (string)[];
-      results?: ({
+      nextRoundParticipants?: string[];
+      allParticipants?: string[];
+      results?: {
           userId?: string;
           placeNumber: number;
-        })[];
-      passedPairs?: ({
+        }[];
+      passedPairs?: {
           blackParticipant?: string;
           whiteParticipant?: string;
           winner?: string;
@@ -4191,8 +4225,8 @@ export interface components {
             whiteParticipant?: boolean;
           };
           judge?: string;
-        })[];
-      currentRoundPairs?: ({
+        }[];
+      currentRoundPairs?: {
           blackParticipant?: string;
           whiteParticipant?: string;
           winner?: string;
@@ -4207,7 +4241,7 @@ export interface components {
             whiteParticipant?: boolean;
           };
           judge?: string;
-        })[];
+        }[];
       isCompleted?: boolean;
       olympicGrid?: Record<string, never>;
       firstPairOrder?: number;
@@ -4236,6 +4270,8 @@ export interface components {
   headers: never;
   pathItems: never;
 }
+
+export type $defs = Record<string, never>;
 
 export type external = Record<string, never>;
 

@@ -8,8 +8,7 @@ export const canRequestParticipantPayment = (
   participant.role === ROLES.PARTICIPANT &&
   ((actor.role === ROLES.PARTICIPANT &&
     actor._id.toString() === participant._id.toString()) ||
-    (actor.role === ROLES.COACH &&
-      participant.coachId?.toString() === actor._id.toString()));
+    actor.role === ROLES.COACH);
 
 export const isCompetitionRegistrationOpen = (competition: ICompetition) =>
   !competition.started &&
