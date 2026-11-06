@@ -23,13 +23,28 @@ export const ACTIONS = {
 export const SMTP_USER_MAIL = 'carryitthroughlife@gmail.com';
 export const SMTP_USER_OFFICIAL_MAIL = 'no-reply@chessboxingfit.com';
 
-export const NODEMAILER_TRANSPORT_CONFIG = {
-  service: 'gmail',
-  auth: {
-    user: process.env.SMTP_USER_MAIL || SMTP_USER_MAIL,
-    pass: process.env.SMTP_SERVICE_PASSKEY,
-  },
-};
+// An explicit SMTP host also allows E2E runs to deliver real mail to Mailpit.
+export const NODEMAILER_TRANSPORT_CONFIG = process.env.SMTP_HOST
+  ? {
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT || 1025),
+      secure: process.env.SMTP_SECURE === 'true',
+      ...(process.env.SMTP_SERVICE_PASSKEY
+        ? {
+            auth: {
+              user: process.env.SMTP_USER_MAIL || SMTP_USER_MAIL,
+              pass: process.env.SMTP_SERVICE_PASSKEY,
+            },
+          }
+        : {}),
+    }
+  : {
+      service: 'gmail',
+      auth: {
+        user: process.env.SMTP_USER_MAIL || SMTP_USER_MAIL,
+        pass: process.env.SMTP_SERVICE_PASSKEY,
+      },
+    };
 
 const remoteMongoUri = process.env.MONGO_URI;
 export const MONGO_ENV = remoteMongoUri?.slice(

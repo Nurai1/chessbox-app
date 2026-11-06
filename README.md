@@ -2,6 +2,8 @@
 
 Project in NodeJs, MongoDB, Express and React. It is the app for business that helps organizing sport competition.
 
+Playwright end-to-end tests (draft, setup and scenarios): [e2e/README.md](e2e/README.md).
+
 Подробное описание проекта, ролей, сценариев соревнования и текущей реализации: [PROJECT.md](PROJECT.md).
 
 ## Run the Project in docker

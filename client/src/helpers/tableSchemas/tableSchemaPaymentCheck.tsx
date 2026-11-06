@@ -42,7 +42,7 @@ export const tableSchemaPaymentCheck = ({
 				},
 				{
 					node: (
-						<div className='w-full'>
+						<div className='w-full' data-testid='payment-review'>
 							<div className='flex justify-between'>
 								<div>
 									<p className='inline-block w-80 text-black'>{userData?.fullName}</p>
