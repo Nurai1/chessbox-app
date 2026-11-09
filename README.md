@@ -78,7 +78,7 @@ Restart gateway
 docker compose exec gateway nginx -s reload
 ```
 
-Convert keys:
-cat certificate.crt ca_bundle.crt > fullchain.pem
-cp private.key privkey.pem
+### Renew certificate
+
+Certificate is valid for up to 200 days and must be reissued manually. See [SSL.md](SSL.md).
 
