@@ -19,6 +19,7 @@ export const getCoachParticipants = async (req: Request, res: Response) => {
   const tokens = search.trim().split(/\s+/).filter(Boolean);
   const filter = {
     role: ROLES.PARTICIPANT,
+    emailConfirmed: true,
     ...(tokens.length
       ? {
           $and: tokens.map((token) => {

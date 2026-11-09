@@ -139,24 +139,38 @@ test('duplicate student email shows an error and preserves both the account and 
   expect(await token(coach)).toBe(originalToken);
 });
 
-for (const state of ['closed', 'started', 'ended', 'requirements'] as const) {
-  test(`coach cannot register a student when competition is ${state}`, async ({ actor, data }) => {
+for (const state of ['closed', 'started', 'ended'] as const) {
+  test(`${state} competition is not offered to the coach, even by a direct link`, async ({ actor, data }) => {
     const competition = await data.createCompetition({
       ...(state === 'closed' ? { registrationEndsAt: new Date(Date.now() - 86400_000) } : {}),
       ...(state === 'started' ? { started: true } : {}),
       ...(state === 'ended' ? { endDate: new Date() } : {}),
-      ...(state === 'requirements' ? { requirements: { ...data.competition.requirements, gender: 'woman' } } : {}),
     });
     const coach = await actor();
     await login(coach, data.coach.email);
-    await openStudents(coach, competition);
-    await searchParticipant(coach, data.student.fullName);
-    const card = studentCard(coach, data.student.fullName);
-    await expect(card).toContainText(state === 'requirements' ? 'does not meet the age, weight or gender requirements' : /Registration closed/i);
-    await expect(card.getByRole('button', { name: 'Request payment verification', exact: true })).toHaveCount(0);
+    // The link selects an unavailable competition; the page falls back to an open one.
+    await coach.goto(`/#/coach/participants?competitionId=${competition._id}`);
+    const main = coach.getByRole('main');
+    await expect(main.getByRole('button', { name: new RegExp(data.competition.name) })).toHaveCount(1);
+    await expect(main.getByRole('button', { name: new RegExp(competition.name) })).toHaveCount(0);
+    await expect(main.locator('input[readonly]')).not.toHaveValue(new RegExp(competition.name));
     expect(await data.payment(data.student.email, competition)).toMatchObject({ rows: 0, admissions: 0 });
   });
 }
+
+test('coach cannot register a student who does not meet competition requirements', async ({ actor, data }) => {
+  const competition = await data.createCompetition({
+    requirements: { ...data.competition.requirements, gender: 'woman' },
+  });
+  const coach = await actor();
+  await login(coach, data.coach.email);
+  await openStudents(coach, competition);
+  await searchParticipant(coach, data.student.fullName);
+  const card = studentCard(coach, data.student.fullName);
+  await expect(card).toContainText('does not meet the age, weight or gender requirements');
+  await expect(card.getByRole('button', { name: 'Request payment verification', exact: true })).toHaveCount(0);
+  expect(await data.payment(data.student.email, competition)).toMatchObject({ rows: 0, admissions: 0 });
+});
 
 test('ordinary participant uses the same payment queue and is admitted by the chief', async ({ actor, data }) => {
   const participant = await actor();

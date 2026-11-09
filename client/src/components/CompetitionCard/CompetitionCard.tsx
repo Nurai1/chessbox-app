@@ -86,7 +86,7 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 							navigate(`/competitions/${_id}`)
 						}}
 						type='button'
-						className='underline hover:opacity-70'
+						className='hover:opacity-70'
 					>
 						{name}
 					</button>

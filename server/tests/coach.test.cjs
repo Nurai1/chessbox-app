@@ -380,6 +380,16 @@ test('coach can search all participants but receives no private fields', async (
   assert.equal((await request('/coach/participants', { actor: 'otherCoach' })).body.total, 2);
 });
 
+test('coach search returns only participants with a confirmed email', async () => {
+  users.get(ids.otherStudent).set({ emailConfirmed: false });
+  users.get(ids.student).set({ emailConfirmed: undefined });
+  const response = await request('/coach/participants?search=Test');
+  assert.equal(response.status, 200);
+  assert.deepEqual(response.body.items, []);
+  assert.equal(response.body.total, 0);
+  assert.equal(userFilters[0].emailConfirmed, true);
+});
+
 test('public signup cannot set coach role or claim ownership', async () => {
   const response = await request('/signup', {
     actor: null,

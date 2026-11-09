@@ -14,6 +14,9 @@ import { updateCompetitionsListCompetition } from 'src/store/slices/competitions
 import { CoachParticipantPublicSchema, CompetitionSchema, UserSchema } from 'src/types'
 import { Alert, Button, Input, Loader, Select } from 'src/ui'
 
+const isRegistrationOpen = (competition: CompetitionSchema) =>
+	!competition.started && !competition.endDate && !isPast(competition.registrationEndsAt)
+
 type StudentRegistrationProps = {
 	participant: CoachParticipantPublicSchema
 	competition?: CompetitionSchema
@@ -135,23 +138,25 @@ export const CoachParticipantsPage = (): ReactElement => {
 			setLoading(true)
 			setError(undefined)
 			try {
+				// Next pages only append participants; competitions are loaded with the first page.
 				const [studentsResponse, competitionsResponse] = await Promise.all([
 					getCoachParticipantsApi(search, offset),
-					getCompetitionsApi()
+					offset === 0 ? getCompetitionsApi() : undefined
 				])
 				if (cancelled) return
-				if (studentsResponse.error || competitionsResponse.error) {
-					setError(studentsResponse.error?.error || competitionsResponse.error?.error || t('coachRequestFailed'))
+				if (studentsResponse.error || competitionsResponse?.error) {
+					setError(studentsResponse.error?.error || competitionsResponse?.error?.error || t('coachRequestFailed'))
 					return
 				}
 				setParticipants(current =>
-					offset === 0 ? (studentsResponse.data?.items ?? []) : [...current, ...(studentsResponse.data?.items ?? [])]
+					offset === 0 ? studentsResponse.data?.items ?? [] : [...current, ...(studentsResponse.data?.items ?? [])]
 				)
 				setTotal(studentsResponse.data?.total ?? 0)
-				const items = competitionsResponse.data ?? []
-				setCompetitions(items)
-				const firstOpen = items.find(item => !item.started && !item.endDate && !isPast(item.registrationEndsAt))
-				setCompetitionId(current => current || firstOpen?._id || items[0]?._id || '')
+				if (competitionsResponse) {
+					const items = (competitionsResponse.data ?? []).filter(isRegistrationOpen)
+					setCompetitions(items)
+					setCompetitionId(current => (items.some(item => item._id === current) ? current : items[0]?._id ?? ''))
+				}
 			} catch {
 				if (!cancelled) setError(t('coachRequestFailed'))
 			} finally {
@@ -202,16 +207,44 @@ export const CoachParticipantsPage = (): ReactElement => {
 				<>
 					<p className='mb-6 text-grey'>{t('coachRegistrationHelp')}</p>
 					{created && <Alert type='success' subtitle={t('coachStudentCreated')} classes='mb-5' />}
+					{competitions.length > 0 && (
+						<div className='mb-6 grid max-w-xl gap-3'>
+							<Select
+								label={t('coachSelectCompetition')}
+								chosenId={competitionId}
+								wrapOptions
+								onChange={value => setCompetitionId(value ?? '')}
+								menuOptions={competitions.map(item => ({
+									id: item._id ?? '',
+									value: `${item.name} — ${getFormattedDate(item.startDate)}`
+								}))}
+							/>
+							{competition?.price && <p>{getPriceText(competition, t)}</p>}
+							<Button
+								type='outlined'
+								onClick={() => {
+									setOffset(0)
+									setReload(value => value + 1)
+								}}
+							>
+								{t('coachRefresh')}
+							</Button>
+						</div>
+					)}
+					{competitions.length === 0 && !loading && !error && (
+						<p className='mb-5 text-grey'>{t('coachNoCompetitions')}</p>
+					)}
+					{/* The search stays mounted while results reload, so typing is not interrupted. */}
 					<div className='mb-6 max-w-xl'>
 						<Input
-						name='participantSearch'
+							name='participantSearch'
 							label={t('coachSearchParticipants')}
 							value={searchInput}
 							onChange={value => setSearchInput(value ?? '')}
 							isSearch
 						/>
 					</div>
-					{loading && <Loader />}
+					{loading && offset === 0 && <Loader />}
 					{error && (
 						<div className='mb-5 grid gap-3'>
 							<Alert subtitle={error} />
@@ -220,28 +253,9 @@ export const CoachParticipantsPage = (): ReactElement => {
 							</Button>
 						</div>
 					)}
-					{!loading && !error && (
+					{!(offset === 0 && (loading || error)) && (
 						<>
-							{competitions.length > 0 ? (
-								<div className='mb-6 grid max-w-xl gap-3'>
-									<Select
-										label={t('coachSelectCompetition')}
-										chosenId={competitionId}
-										onChange={value => setCompetitionId(value ?? '')}
-										menuOptions={competitions.map(item => ({
-											id: item._id ?? '',
-											value: `${item.name} — ${getFormattedDate(item.startDate)}`
-										}))}
-									/>
-									{competition?.price && <p>{getPriceText(competition, t)}</p>}
-									<Button type='outlined' onClick={() => setReload(value => value + 1)}>
-										{t('coachRefresh')}
-									</Button>
-								</div>
-							) : (
-								<p className='mb-5 text-grey'>{t('coachNoCompetitions')}</p>
-							)}
-							{participants.length === 0 && <p>{t('coachNoStudents')}</p>}
+							{participants.length === 0 && !loading && <p>{t('coachNoStudents')}</p>}
 							<div className='grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
 								{participants.map(participant => (
 									<StudentRegistration
@@ -252,8 +266,11 @@ export const CoachParticipantsPage = (): ReactElement => {
 									/>
 								))}
 							</div>
-							{participants.length < total && (
-								<Button type='outlined' onClick={() => setOffset(value => value + 20)}>{t('coachLoadMore')}</Button>
+							{loading && <Loader />}
+							{!loading && !error && participants.length < total && (
+								<Button type='outlined' onClick={() => setOffset(participants.length)}>
+									{t('coachLoadMore')}
+								</Button>
 							)}
 						</>
 					)}

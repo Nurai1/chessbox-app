@@ -32,6 +32,8 @@ export type GeneralSelectProps = {
 	withSearch?: boolean
 	validationErrorText?: string
 	selectClasses?: string
+	// Keeps the dropdown within the field width and wraps long option labels.
+	wrapOptions?: boolean
 	disabled?: boolean
 	name?: string
 }
@@ -50,6 +52,7 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 	withSearch,
 	validationErrorText,
 	selectClasses,
+	wrapOptions,
 	disabled,
 	name,
 	dropdownPlaceholder
@@ -145,7 +148,8 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 				<div
 					className={twMerge(
 						'absolute right-0 z-[-10] mt-0 box-border max-h-[50vh] min-w-full overflow-y-auto rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] duration-300',
-						isOpen && 'z-20 mt-2 opacity-100'
+						isOpen && 'z-20 mt-2 opacity-100',
+						wrapOptions && 'w-full'
 					)}
 				>
 					{withSearch && (
@@ -196,7 +200,14 @@ export const Select: FC<SelectPropsType> = memo(function Select({
 											<CheckMarkIcon />
 										</span>
 									)}
-									<span className='whitespace-nowrap pl-3 text-sm'>{menuOption.value}</span>
+									<span
+										className={twMerge(
+											'whitespace-nowrap pl-3 text-sm',
+											wrapOptions && 'whitespace-normal break-words py-2'
+										)}
+									>
+										{menuOption.value}
+									</span>
 								</button>
 							)
 						})}
