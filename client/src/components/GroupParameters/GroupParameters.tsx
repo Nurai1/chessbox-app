@@ -170,7 +170,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 				/>
 				<Input name='weightTo' type='number' onChange={onChange} placeholder={t('max')} value={groupData.weightTo} />
 				{errors.weightMessage && (
-					<span className='absolute left-[4.375rem] -bottom-6 text-xs text-error-red'>{errors.weightMessage}</span>
+					<span className='absolute -bottom-6 left-[4.375rem] text-xs text-error-red'>{errors.weightMessage}</span>
 				)}
 			</div>
 
@@ -186,7 +186,7 @@ export const GroupParameters: FC<GroupParametersPropsType> = ({
 				/>
 				<Input name='ageTo' type='number' onChange={onChange} value={groupData.ageTo} placeholder={t('max')} />
 				{errors.ageMessage && (
-					<span className='absolute left-[4.375rem] -bottom-6 text-xs text-error-red'>{errors.ageMessage}</span>
+					<span className='absolute -bottom-6 left-[4.375rem] text-xs text-error-red'>{errors.ageMessage}</span>
 				)}
 			</div>
 			<Button

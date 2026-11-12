@@ -104,7 +104,7 @@ export const Modal: FC<{
 						)}
 					>
 						{showModalHeader && (
-							<div className='flex-center min-h-[3.75rem] px-6 py-2 md:py-6 md:px-[1.875rem]'>
+							<div className='flex-center min-h-[3.75rem] px-6 py-2 md:px-[1.875rem] md:py-6'>
 								<h2 className='text-2xl font-bold xl:text-4xl'>{title}</h2>
 								<button
 									type='button'

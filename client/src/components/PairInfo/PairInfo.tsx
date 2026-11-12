@@ -29,7 +29,7 @@ export const PairInfo: FC<MatchInfoPropsType> = ({
 				classes
 			)}
 		>
-			<div className='mb-[17px] lg:ml-auto lg:mb-0 lg:w-[30%]'>
+			<div className='mb-[17px] lg:mb-0 lg:ml-auto lg:w-[30%]'>
 				{/* <div className='mb-[5px]'>
 					<span className='font-bold xl:text-4xl'>{startTime}</span>
 					<span className='font-bold lg:mt-[6px] lg:block lg:text-xs lg:font-normal lg:text-[#6C6A6C] xl:text-2xl xl:font-semibold'>
@@ -65,7 +65,7 @@ export const PairInfo: FC<MatchInfoPropsType> = ({
 					<a
 						href={`https://lichess.org/@/${pairData?.whiteParticipantData?.chessPlatform?.username}`}
 						className={twMerge(
-							'mt-[16px] mb-[6px] flex items-center gap-[9px] font-medium transition hover:opacity-70 lg:mt-auto xl:mb-[10px] xl:text-2xl xl:font-semibold',
+							'mb-[6px] mt-[16px] flex items-center gap-[9px] font-medium transition hover:opacity-70 lg:mt-auto xl:mb-[10px] xl:text-2xl xl:font-semibold',
 							pairData?.whiteParticipantData?.chessPlatform?.username && 'underline'
 						)}
 						target='_blank'
@@ -93,7 +93,7 @@ export const PairInfo: FC<MatchInfoPropsType> = ({
 						<a
 							href={`https://lichess.org/@/${pairData?.blackParticipantData?.chessPlatform?.username}`}
 							className={twMerge(
-								'mt-[16px] mb-[6px] flex items-center gap-[9px] font-medium transition hover:opacity-70 lg:mt-auto xl:mb-[10px] xl:text-2xl xl:font-semibold',
+								'mb-[6px] mt-[16px] flex items-center gap-[9px] font-medium transition hover:opacity-70 lg:mt-auto xl:mb-[10px] xl:text-2xl xl:font-semibold',
 								pairData?.whiteParticipantData?.chessPlatform?.username && 'underline'
 							)}
 							target='_blank'

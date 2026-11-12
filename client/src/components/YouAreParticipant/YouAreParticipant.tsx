@@ -56,13 +56,13 @@ export const YouAreParticipant: FC<YouAreParticipantPropsType> = ({ onSideMenuOp
 				<ThreeStarsIcon
 					className={`${
 						isCompetitionPage ? 'lg:right-12 xl:right-2 xl:top-2 xl:w-[2.75rem]' : 'lg:top-4 lg:w-[2.125rem] xl:right-1'
-					} absolute right-0 -top-1 w-[1.875rem]`}
+					} absolute -top-1 right-0 w-[1.875rem]`}
 				/>
 				<TwoStarsIcon
 					className={`${
 						isCompetitionPage
-							? 'top-8 lg:left-auto lg:right-2 lg:w-[1.75rem] xl:top-[4.5rem] xl:right-[2.5rem] xl:w-[2.5rem]'
-							: 'lg:top-auto lg:bottom-2 lg:right-10 lg:left-auto xl:-bottom-1 xl:right-4'
+							? 'top-8 lg:left-auto lg:right-2 lg:w-[1.75rem] xl:right-[2.5rem] xl:top-[4.5rem] xl:w-[2.5rem]'
+							: 'lg:bottom-2 lg:left-auto lg:right-10 lg:top-auto xl:-bottom-1 xl:right-4'
 					} absolute left-0 top-4`}
 				/>
 				{!isCompetitionPage && (

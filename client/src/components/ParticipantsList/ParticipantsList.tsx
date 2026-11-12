@@ -71,7 +71,7 @@ export const ParticipantsList: FC<ParticipantsListPropsType> = ({ participants, 
 			>
 				{t('outgroup')} <span className='text-disabled-grey'>{participantsOutGroupTable.length}</span>
 			</button>
-			<div className='-mb-5 -mt-px rounded-l-3xl border border-pale-grey px-10 pt-2 pb-5'>
+			<div className='-mb-5 -mt-px rounded-l-3xl border border-pale-grey px-10 pb-5 pt-2'>
 				<TableHeader columns={tableHeaderColumns} />
 				<div className='scroll-custom h-full overflow-y-auto'>
 					{noParticipants ? <p className='text-center text-heading-4'>No matches</p> : renderParticipantsTable()}

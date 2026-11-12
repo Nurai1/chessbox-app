@@ -3,7 +3,7 @@ FROM node:20-slim AS builder
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
-RUN corepack -g install pnpm@8.12.1
+RUN corepack -g install pnpm@10.24.0
 
 
 RUN mkdir /app

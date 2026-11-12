@@ -11,9 +11,9 @@ export const ratingTableSchema = (tableData: UserSchema[], t: TFunction) => {
 			return (
 				<>
 					<MedalGold
-						className='absolute top-[-5px] left-[-7px] -z-10 h-[28px] w-[21px]
-										md:top-[-15px] md:left-[-12px] md:h-[44px] md:w-[36px]
-										xl:top-[-23px] xl:left-[-14px] xl:h-[64px] xl:w-[50px]'
+						className='absolute left-[-7px] top-[-5px] -z-10 h-[28px] w-[21px]
+										md:left-[-12px] md:top-[-15px] md:h-[44px] md:w-[36px]
+										xl:left-[-14px] xl:top-[-23px] xl:h-[64px] xl:w-[50px]'
 					/>
 					<span className='hidden md:inline'>{index}</span>
 				</>
@@ -24,9 +24,9 @@ export const ratingTableSchema = (tableData: UserSchema[], t: TFunction) => {
 			return (
 				<>
 					<MedalSilver
-						className='absolute top-[-5px] left-[-7px] -z-10 h-[28px] w-[21px]
-											md:top-[-15px] md:left-[-12px] md:h-[44px] md:w-[36px]
-											xl:top-[-23px] xl:left-[-14px] xl:h-[64px] xl:w-[50px]'
+						className='absolute left-[-7px] top-[-5px] -z-10 h-[28px] w-[21px]
+											md:left-[-12px] md:top-[-15px] md:h-[44px] md:w-[36px]
+											xl:left-[-14px] xl:top-[-23px] xl:h-[64px] xl:w-[50px]'
 					/>
 					<span className='hidden md:inline'>{index}</span>
 				</>
@@ -37,9 +37,9 @@ export const ratingTableSchema = (tableData: UserSchema[], t: TFunction) => {
 			return (
 				<>
 					<MedalBronze
-						className='absolute top-[-5px] left-[-7px] -z-10 h-[28px] w-[21px]
-											md:top-[-15px] md:left-[-12px] md:h-[44px] md:w-[36px]
-											xl:top-[-23px] xl:left-[-14px] xl:h-[64px] xl:w-[50px]'
+						className='absolute left-[-7px] top-[-5px] -z-10 h-[28px] w-[21px]
+											md:left-[-12px] md:top-[-15px] md:h-[44px] md:w-[36px]
+											xl:left-[-14px] xl:top-[-23px] xl:h-[64px] xl:w-[50px]'
 					/>
 					<span className='hidden md:inline'>{index}</span>
 				</>

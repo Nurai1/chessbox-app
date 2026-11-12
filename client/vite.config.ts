@@ -28,9 +28,12 @@ export default defineConfig(() => ({
 				initialIsOpen: false
 			},
 			typescript: true,
-		eslint: process.env.VITE_E2E === '1' ? undefined : {
-			lintCommand: 'eslint "./src/**/*.{ts,tsx}"'
-		}
+			eslint:
+				process.env.VITE_E2E === '1'
+					? undefined
+					: {
+							lintCommand: 'eslint "./src/**/*.{ts,tsx}"'
+						}
 		})
 	]
 }))

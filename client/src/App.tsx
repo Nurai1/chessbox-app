@@ -46,7 +46,7 @@ const App = () => {
 							<Route
 								path={AppRoute.JudgeChoice}
 								element={
-									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+									<PrivateRoute requiredRole={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
 										<JudgeChoicePage />
 									</PrivateRoute>
 								}
@@ -54,7 +54,7 @@ const App = () => {
 							<Route
 								path={AppRoute.CreateGroup}
 								element={
-									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+									<PrivateRoute requiredRole={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
 										<CreateGroupPage />
 									</PrivateRoute>
 								}
@@ -62,7 +62,7 @@ const App = () => {
 							<Route
 								path={AppRoute.CreatePairs}
 								element={
-									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+									<PrivateRoute requiredRole={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
 										<CreatePairsPage />
 									</PrivateRoute>
 								}
@@ -70,7 +70,7 @@ const App = () => {
 							<Route
 								path={AppRoute.OrdersGroupAssign}
 								element={
-									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+									<PrivateRoute requiredRole={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
 										<OrdersToGroupAssignPage />
 									</PrivateRoute>
 								}
@@ -78,7 +78,7 @@ const App = () => {
 							<Route
 								path={AppRoute.JudgeAssign}
 								element={
-									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+									<PrivateRoute requiredRole={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
 										<JudgeAssignPage />
 									</PrivateRoute>
 								}
@@ -86,7 +86,7 @@ const App = () => {
 							<Route
 								path={AppRoute.JudgeCompetition}
 								element={
-									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+									<PrivateRoute requiredRole={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
 										<JudgeCompetitionPage />
 									</PrivateRoute>
 								}
@@ -94,7 +94,7 @@ const App = () => {
 							<Route
 								path={AppRoute.VerifyPayment}
 								element={
-									<PrivateRoute role={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
+									<PrivateRoute requiredRole={Role.ChiefJudge} redirectPath={`/${AppRoute.Competitions}`}>
 										<VerifyPaymentPage />
 									</PrivateRoute>
 								}
@@ -105,7 +105,7 @@ const App = () => {
 					<Route
 						path={AppRoute.CoachParticipants}
 						element={
-							<PrivateRoute role={Role.Coach} redirectPath={`/${AppRoute.Competitions}`}>
+							<PrivateRoute requiredRole={Role.Coach} redirectPath={`/${AppRoute.Competitions}`}>
 								<CoachParticipantsPage />
 							</PrivateRoute>
 						}
@@ -115,7 +115,7 @@ const App = () => {
 					<Route
 						path={AppRoute.EditProfile}
 						element={
-							<PrivateRoute role={[Role.Admin, Role.Judge, Role.ChiefJudge, Role.Participant, Role.Coach]}>
+							<PrivateRoute requiredRole={[Role.Admin, Role.Judge, Role.ChiefJudge, Role.Participant, Role.Coach]}>
 								<EditProfilePage />
 							</PrivateRoute>
 						}

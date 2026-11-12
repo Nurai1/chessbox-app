@@ -97,8 +97,8 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 	}
 
 	return (
-		<div className='relative grid gap-[1rem] px-6 pb-12 pt-14 text-sm sm:px-[3.75rem] sm:pt-[1.875rem] lg:-mt-7 lg:px-0 lg:pt-0 lg:pb-6 xl:text-base'>
-			<button className='absolute top-5 left-3 lg:hidden' onClick={onClose} type='button'>
+		<div className='relative grid gap-[1rem] px-6 pb-12 pt-14 text-sm sm:px-[3.75rem] sm:pt-[1.875rem] lg:-mt-7 lg:px-0 lg:pb-6 lg:pt-0 xl:text-base'>
+			<button className='absolute left-3 top-5 lg:hidden' onClick={onClose} type='button'>
 				<ArrowLeftIcon className='w-[1.375rem]' />
 			</button>
 			{price && <p className=' text-grey'>{price}</p>}
@@ -161,11 +161,12 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 					{t('transferred')}!
 				</Button>
 				<p className='mt-2 text-center text-sm'>{t('warningCheckPayment')}.</p>
-				{currentUserRequestData?.requestedCount && currentUserRequestData.requestedCount < MAX_PAYMENT_REQUEST_COUNT && (
-					<p className='mt-2 text-center text-sm'>
-						You have requested <strong>{currentUserRequestData?.requestedCount}</strong> times
-					</p>
-				)}
+				{currentUserRequestData?.requestedCount &&
+					currentUserRequestData.requestedCount < MAX_PAYMENT_REQUEST_COUNT && (
+						<p className='mt-2 text-center text-sm'>
+							You have requested <strong>{currentUserRequestData?.requestedCount}</strong> times
+						</p>
+					)}
 				{currentUserRequestData?.requestedCount === MAX_PAYMENT_REQUEST_COUNT &&
 					!currentUserRequestData.requestedToCheck &&
 					!currentUserRequestData.paid && <p className='mt-2 text-center text-sm'>{t('coachRequestLimit')}</p>}
@@ -193,7 +194,7 @@ export const CompetitionPayment: FC<CompetitionPaymentPropsType> = ({ price, onC
 			</div>
 			<div
 				className={twMerge(
-					'invisible absolute top-8 right-8 w-56 opacity-0 transition lg:-top-24',
+					'invisible absolute right-8 top-8 w-56 opacity-0 transition lg:-top-24',
 					`${copyAlertData.show && 'opacity-1 visible'}`
 				)}
 				style={{ right: screenWidth > BreakPoint.Lg ? `calc(${screenWidth / 2}px - 85vw)` : '' }}

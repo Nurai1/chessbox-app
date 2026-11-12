@@ -101,7 +101,7 @@ export const VerifyPaymentPage = (): ReactElement => {
 			<p className='text-grey'>{dateStart}</p>
 			<Link
 				to={`/${AppRoute.Competitions}`}
-				className='hover mt-11 mb-8 flex items-center gap-6 text-heading-2 hover:opacity-70'
+				className='hover mb-8 mt-11 flex items-center gap-6 text-heading-2 hover:opacity-70'
 			>
 				<ArrowLeftIcon />
 				{t('participants')}

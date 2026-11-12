@@ -16,12 +16,12 @@ export const TimerBeforeCompetitionStarts: FC<TimerBeforeCompetitionStartsPropsT
 		<div>
 			<div
 				className='mb-5 flex items-center justify-between rounded-2xl border-2 p-3
-                    md:py-4 md:px-9
+                    md:px-9 md:py-4
                     lg:h-fit lg:flex-col lg:justify-start lg:gap-6 lg:p-4
                     xl:items-baseline xl:p-7'
 			>
 				<div>
-					<h3 className='mr-1 mb-2 text-sm xl:text-heading-3 xl:text-grey'>
+					<h3 className='mb-2 mr-1 text-sm xl:text-heading-3 xl:text-grey'>
 						Approximate time start before competition:
 					</h3>
 					{competitionData && (

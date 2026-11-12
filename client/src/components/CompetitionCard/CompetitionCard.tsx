@@ -70,10 +70,10 @@ export const CompetitionCard: FC<CompetitionPropsType> = ({ competition }) => {
 
 	return (
 		<article
-			className='grid gap-4 pt-5 pb-[1.875rem] lg:grid-cols-[auto_18.25rem]
+			className='grid gap-4 pb-[1.875rem] pt-5 lg:grid-cols-[auto_18.25rem]
 		lg:gap-[25px] lg:pt-[25px] xl:grid-cols-[37%_32%_17.3rem] xl:gap-7
 		xl:px-[23px] xl:py-[41px] 2xl:px-[26px]
-		 2xl:pt-[68px] 2xl:pb-[44px] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-b-[#DADADA]'
+		 2xl:pb-[44px] 2xl:pt-[68px] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-b-[#DADADA]'
 		>
 			<div
 				className='lg:col-start-1 lg:col-end-3

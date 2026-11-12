@@ -304,7 +304,7 @@ export const CreateGroupPage = (): ReactElement => {
 	}, [groupAddSuccess, groupAddError, groupDeleteSuccess, groupDeleteError])
 
 	return (
-		<main className='container mx-auto grow px-[17px] pt-8 pb-[5.5rem] md:py-9 md:pb-28 xl:pt-14 xl:pl-[7.5rem] xl:pr-[7.5rem]'>
+		<main className='container mx-auto grow px-[17px] pb-[5.5rem] pt-8 md:py-9 md:pb-28 xl:pl-[7.5rem] xl:pr-[7.5rem] xl:pt-14'>
 			<Alert
 				title={alertData.title}
 				subtitle={alertData.subtitle}
@@ -318,7 +318,7 @@ export const CreateGroupPage = (): ReactElement => {
 				judges={judges}
 			/>
 
-			<div className='mb-12 grid grid-cols-[16rem_auto] gap-5 overflow-hidden rounded-3xl border border-pale-grey pt-6 pl-6'>
+			<div className='mb-12 grid grid-cols-[16rem_auto] gap-5 overflow-hidden rounded-3xl border border-pale-grey pl-6 pt-6'>
 				<div className='mb-6'>
 					<GroupParameters
 						requirements={competitionData?.requirements ?? {}}

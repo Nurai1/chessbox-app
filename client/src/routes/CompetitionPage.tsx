@@ -183,7 +183,7 @@ export const CompetitionPage = (): ReactElement => {
 
 	return (
 		<>
-			<main className='container relative mx-auto grow px-4 pt-8 pb-24 md:py-9 xl:py-14 xl:pl-[6.5rem] xl:pr-[3.125rem]'>
+			<main className='container relative mx-auto grow px-4 pb-24 pt-8 md:py-9 xl:py-14 xl:pl-[6.5rem] xl:pr-[3.125rem]'>
 				<Link
 					to={`/${AppRoute.Competitions}`}
 					className='hidden transition hover:opacity-70 xl:absolute xl:left-[38px] xl:top-[77px] xl:block'
@@ -289,7 +289,7 @@ export const CompetitionPage = (): ReactElement => {
 											</span>
 										}
 										img={
-											<HourGlass className='h-7 w-7 lg:absolute lg:right-6 lg:bottom-6 lg:h-10 lg:w-10 xl:right-10 xl:bottom-10 xl:h-16 xl:w-16' />
+											<HourGlass className='h-7 w-7 lg:absolute lg:bottom-6 lg:right-6 lg:h-10 lg:w-10 xl:bottom-10 xl:right-10 xl:h-16 xl:w-16' />
 										}
 										isCompetitionPage
 									/>
@@ -367,7 +367,7 @@ export const CompetitionPage = (): ReactElement => {
 											title={<p className='font-bold xl:text-heading-3'>This competition is&nbsp;over</p>}
 											place={yourPlace}
 											img={
-												<Place className='h-7 w-7 lg:absolute lg:right-6 lg:bottom-6 lg:h-10 lg:w-10 xl:right-10 xl:bottom-10 xl:h-16 xl:w-16' />
+												<Place className='h-7 w-7 lg:absolute lg:bottom-6 lg:right-6 lg:h-10 lg:w-10 xl:bottom-10 xl:right-10 xl:h-16 xl:w-16' />
 											}
 											isCompetitionPage
 										/>
@@ -488,9 +488,9 @@ export const CompetitionPage = (): ReactElement => {
 				content={
 					<>
 						{!participants && <Loader classes='h-full' />}
-						{participants?.length === 0 && <p className='p-6 md:py-6 md:px-[1.875rem]'>No participants yet</p>}
+						{participants?.length === 0 && <p className='p-6 md:px-[1.875rem] md:py-6'>No participants yet</p>}
 						{participantsTable && (
-							<div className='p-6 md:py-6 md:px-[1.875rem]'>
+							<div className='p-6 md:px-[1.875rem] md:py-6'>
 								<TableBody rows={participantsTable} />
 							</div>
 						)}
@@ -520,7 +520,7 @@ export const CompetitionPage = (): ReactElement => {
 					// eslint-disable-next-line react/jsx-no-useless-fragment
 					<>
 						{resultModalData?.data && (
-							<div className='p-6 md:py-6 md:px-[1.875rem]'>
+							<div className='p-6 md:px-[1.875rem] md:py-6'>
 								<TableBody rows={resultModalData?.data} />
 							</div>
 						)}

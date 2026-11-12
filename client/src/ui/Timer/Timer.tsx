@@ -78,7 +78,7 @@ const Timer: FC<TimerPropsType> = memo(
 				{showDays && (
 					<li
 						className={twMerge(
-							'flex h-14 w-14 flex-col justify-center rounded-2xl border-2 border-[#DADADA] py-2 px-0.5 text-center text-base font-bold lg:h-16 lg:w-16 xl:h-[4.75rem] xl:w-[4.75rem] xl:py-2 xl:px-1',
+							'flex h-14 w-14 flex-col justify-center rounded-2xl border-2 border-[#DADADA] px-0.5 py-2 text-center text-base font-bold lg:h-16 lg:w-16 xl:h-[4.75rem] xl:w-[4.75rem] xl:px-1 xl:py-2',
 							containerClasses
 						)}
 					>
@@ -97,7 +97,7 @@ const Timer: FC<TimerPropsType> = memo(
 				)}
 				<li
 					className={twMerge(
-						'flex h-14 w-14 flex-col justify-center rounded-2xl border-2 border-[#DADADA] py-2 px-0.5 text-center text-base font-bold lg:h-16 lg:w-16 xl:h-[4.75rem] xl:w-[4.75rem] xl:py-2 xl:px-1',
+						'flex h-14 w-14 flex-col justify-center rounded-2xl border-2 border-[#DADADA] px-0.5 py-2 text-center text-base font-bold lg:h-16 lg:w-16 xl:h-[4.75rem] xl:w-[4.75rem] xl:px-1 xl:py-2',
 						containerClasses
 					)}
 				>
@@ -115,7 +115,7 @@ const Timer: FC<TimerPropsType> = memo(
 				</li>
 				<li
 					className={twMerge(
-						'flex h-14 w-14 flex-col justify-center rounded-2xl border-2 border-[#DADADA] py-2 px-0.5 text-center text-base font-bold lg:h-16 lg:w-16 xl:h-[4.75rem] xl:w-[4.75rem] xl:py-2 xl:px-1',
+						'flex h-14 w-14 flex-col justify-center rounded-2xl border-2 border-[#DADADA] px-0.5 py-2 text-center text-base font-bold lg:h-16 lg:w-16 xl:h-[4.75rem] xl:w-[4.75rem] xl:px-1 xl:py-2',
 						containerClasses
 					)}
 				>
@@ -134,7 +134,7 @@ const Timer: FC<TimerPropsType> = memo(
 				{!showDays && (
 					<li
 						className={twMerge(
-							'flex h-14 w-14 flex-col justify-center rounded-2xl border-2 border-[#DADADA] py-2 px-0.5 text-center text-base font-bold lg:h-16 lg:w-16 xl:h-[4.75rem] xl:w-[4.75rem] xl:py-2 xl:px-1',
+							'flex h-14 w-14 flex-col justify-center rounded-2xl border-2 border-[#DADADA] px-0.5 py-2 text-center text-base font-bold lg:h-16 lg:w-16 xl:h-[4.75rem] xl:w-[4.75rem] xl:px-1 xl:py-2',
 							containerClasses
 						)}
 					>

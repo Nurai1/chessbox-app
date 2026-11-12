@@ -14,7 +14,7 @@ export const RequestAwaitAcception: FC<RequestAwaitAcceptionPropsType> = ({ chil
 		<div>
 			<div
 				className={twMerge(
-					'md: flex items-center gap-6 rounded-[1.25rem] border py-5 px-4 pl-5 pr-11 sm:pl-11 sm:pr-16 md:py-6 lg:flex-col lg:gap-3 lg:px-4 lg:py-[1.125rem] xl:gap-6 xl:py-[1.875rem] xl:px-5',
+					'md: flex items-center gap-6 rounded-[1.25rem] border px-4 py-5 pl-5 pr-11 sm:pl-11 sm:pr-16 md:py-6 lg:flex-col lg:gap-3 lg:px-4 lg:py-[1.125rem] xl:gap-6 xl:px-5 xl:py-[1.875rem]',
 					!isCompetitionPage && 'lg:flex-row xl:flex-col xl:gap-0 xl:p-5'
 				)}
 			>

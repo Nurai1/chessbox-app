@@ -86,7 +86,7 @@ export const RegistrationEndsTimer: FC<RegistrationEndsTimerPropsType> = ({
 				<div
 					className={`${
 						isCompetitonPage
-							? 'fixed inset-x-0 bottom-0 bg-white py-6 px-4 shadow-[0px_1px_18px_5px_rgba(34,60,80,0.2)] lg:static lg:p-0 lg:shadow-none'
+							? 'fixed inset-x-0 bottom-0 bg-white px-4 py-6 shadow-[0px_1px_18px_5px_rgba(34,60,80,0.2)] lg:static lg:p-0 lg:shadow-none'
 							: ''
 					}`}
 				>

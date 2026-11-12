@@ -46,8 +46,8 @@ export const CompetitionsPage = (): ReactElement => {
 			{isLoading && <Loader classes='h-[80vh]' />}
 			{!isLoading && (
 				<div
-					className='xl:rounded-3xl xl:border xl:border-[#DADADA] xl:px-[25px] xl:pt-[20px] xl:pb-[5px]
-			2xl:px-[10px] 2xl:pt-[30px] 2xl:pb-[12px]'
+					className='xl:rounded-3xl xl:border xl:border-[#DADADA] xl:px-[25px] xl:pb-[5px] xl:pt-[20px]
+			2xl:px-[10px] 2xl:pb-[12px] 2xl:pt-[30px]'
 				>
 					<HorizontalTabs
 						tabMinWidth='155'

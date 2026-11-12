@@ -14,7 +14,7 @@ export const CompetitionRequirementsBordered: FC<CompetitionRequirementsBordered
 }) => {
 	const { t } = useOptionalTranslation()
 	return (
-		<div className={twMerge('max-w-[16rem] rounded-3xl border border-pale-grey py-5 px-6', classes)}>
+		<div className={twMerge('max-w-[16rem] rounded-3xl border border-pale-grey px-6 py-5', classes)}>
 			<h3 className='mb-2.5 text-2xl font-semibold'>{t('competitionRequirements')}:</h3>
 			<div className='flex justify-between'>
 				<div className='grow border-r border-pale-grey pr-4'>
@@ -23,7 +23,7 @@ export const CompetitionRequirementsBordered: FC<CompetitionRequirementsBordered
 						{competitionRequirements?.ageCategory?.from} -{competitionRequirements?.ageCategory?.to}
 					</p>
 				</div>
-				<div className='grow border-r border-pale-grey pr-4 pl-4'>
+				<div className='grow border-r border-pale-grey pl-4 pr-4'>
 					<p className='text-grey'>{t('weight')}</p>
 					<p className='font-bold'>
 						{competitionRequirements?.weightCategory?.from} -{competitionRequirements?.weightCategory?.to}{' '}

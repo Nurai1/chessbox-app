@@ -34,7 +34,7 @@ export const TimerBeforeParticipantFight: FC<{ currentPair?: PairType }> = ({ cu
 	}
 
 	return (
-		<div className={twMerge(calledForFight && 'fixed top-10 right-5 bg-white')}>
+		<div className={twMerge(calledForFight && 'fixed right-5 top-10 bg-white')}>
 			<div
 				className={twMerge(
 					'relative mb-[24px] flex w-full justify-between rounded-[12px] border p-[10px] lg:mb-0 lg:block lg:h-fit lg:w-auto xl:p-[25px]',

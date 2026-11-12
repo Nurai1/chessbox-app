@@ -283,7 +283,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 								<div>
 									<div className='relative mb-9 h-fit rounded-2xl border-2 p-10 text-heading-3'>
 										{t('competitionOn')}!
-										<TwoStarsIcon className='absolute top-[7rem] right-[3.5rem] w-10' />
+										<TwoStarsIcon className='absolute right-[3.5rem] top-[7rem] w-10' />
 									</div>
 									{breakTime && !isTimerOver ? (
 										<div className='flex items-center justify-between'>
@@ -301,7 +301,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 								<div>
 									<div className='relative mb-9 h-fit rounded-2xl border-2 p-10 text-heading-3'>
 										All groups has passed!
-										<TwoStarsIcon className='absolute top-[7rem] right-[3.5rem] w-10' />
+										<TwoStarsIcon className='absolute right-[3.5rem] top-[7rem] w-10' />
 									</div>
 									<Button
 										classes='w-full'
@@ -317,7 +317,7 @@ export const JudgeCompetitionPage = (): ReactElement => {
 								<CompetitionInfo
 									title={<p className='font-bold xl:text-heading-3'>This competition is&nbsp;over</p>}
 									img={
-										<Place className='h-7 w-7 lg:absolute lg:right-6 lg:bottom-6 lg:h-10 lg:w-10 xl:right-10 xl:bottom-10 xl:h-16 xl:w-16' />
+										<Place className='h-7 w-7 lg:absolute lg:bottom-6 lg:right-6 lg:h-10 lg:w-10 xl:bottom-10 xl:right-10 xl:h-16 xl:w-16' />
 									}
 									isCompetitionPage
 								/>

@@ -10,7 +10,7 @@ export const tableSchemaRating = (tableData: UserSchema[], t: TFunction) => {
 		if (index === 1) {
 			return (
 				<>
-					<MedalGold className='absolute top-5 left-[0.55rem] -z-10 h-auto w-7 md:top-5 lg:top-2.5 xl:left-[1.3rem]' />
+					<MedalGold className='absolute left-[0.55rem] top-5 -z-10 h-auto w-7 md:top-5 lg:top-2.5 xl:left-[1.3rem]' />
 					<span className='hidden text-sm md:inline xl:text-base'>{index}</span>
 				</>
 			)
@@ -19,7 +19,7 @@ export const tableSchemaRating = (tableData: UserSchema[], t: TFunction) => {
 		if (index === 2) {
 			return (
 				<>
-					<MedalSilver className='absolute top-5 left-[0.55rem] -z-10 h-auto w-7 md:top-5 lg:top-2.5 xl:left-[1.3rem]' />
+					<MedalSilver className='absolute left-[0.55rem] top-5 -z-10 h-auto w-7 md:top-5 lg:top-2.5 xl:left-[1.3rem]' />
 					<span className='hidden text-sm md:inline xl:text-base'>{index}</span>
 				</>
 			)
@@ -28,7 +28,7 @@ export const tableSchemaRating = (tableData: UserSchema[], t: TFunction) => {
 		if (index === 3) {
 			return (
 				<>
-					<MedalBronze className='absolute top-5 left-[0.55rem] -z-10 h-auto w-7 md:top-5 lg:top-2.5 xl:left-[1.3rem]' />
+					<MedalBronze className='absolute left-[0.55rem] top-5 -z-10 h-auto w-7 md:top-5 lg:top-2.5 xl:left-[1.3rem]' />
 					<span className='hidden text-sm md:inline xl:text-base'>{index}</span>
 				</>
 			)
